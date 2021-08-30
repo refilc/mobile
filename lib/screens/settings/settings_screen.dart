@@ -1,5 +1,4 @@
 import 'package:filcnaplo/api/providers/update_provider.dart';
-import 'package:filcnaplo/models/release.dart';
 import 'package:filcnaplo_kreta_api/providers/absence_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/event_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/exam_provider.dart';
@@ -23,10 +22,12 @@ import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
 import 'package:filcnaplo_mobile_ui/common/system_chrome.dart';
 import 'package:filcnaplo_mobile_ui/screens/news/news_screen.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/accounts/account_tile.dart';
+import 'package:filcnaplo_mobile_ui/screens/settings/accounts/account_view.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/settings_helper.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/updates/updates_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart' as tabs;
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:filcnaplo/utils/color.dart';
@@ -45,22 +46,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late UserProvider user;
   late UpdateProvider updateProvider;
   late SettingsProvider settings;
+  late KretaClient kretaClient;
   late String firstName;
   late String themeModeText;
   late String languageText;
   late String startPageTitle;
   List<Widget> accountTiles = [];
 
+  void openDKT(User u) => tabs.launch("https://dkttanulo.e-kreta.hu/sso?accessToken=${kretaClient.accessToken}");
+
   void _showBottomSheet(User u) {
     showBottomSheetMenu(context, items: [
       // TODO: i18n
       BottomSheetMenuItem(
-        onPressed: () {},
+        onPressed: () => AccountView.show(u, context: context),
         icon: Icon(FeatherIcons.user),
         title: Text("Personal details"),
       ),
       BottomSheetMenuItem(
-        onPressed: () {},
+        onPressed: () => openDKT(u),
         icon: Icon(FeatherIcons.grid, color: AppColors.of(context).teal),
         title: Text("Open DKT"), //TODO
       ),
@@ -120,6 +124,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     user = Provider.of<UserProvider>(context);
     settings = Provider.of<SettingsProvider>(context);
     updateProvider = Provider.of<UpdateProvider>(context);
+    kretaClient = Provider.of<KretaClient>(context);
 
     List<String> nameParts = user.name?.split(" ") ?? ["?"];
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];

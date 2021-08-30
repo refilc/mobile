@@ -24,14 +24,16 @@ class AccountTile extends StatelessWidget {
         leading: profileImage,
         title: name,
         subtitle: username,
-        trailing: Material(
-          color: Colors.transparent,
-          child: IconButton(
-            splashRadius: 24.0,
-            onPressed: onTapMenu,
-            icon: Icon(FeatherIcons.moreVertical, color: AppColors.of(context).text.withOpacity(0.8)),
-          ),
-        ),
+        trailing: onTapMenu != null
+            ? Material(
+                color: Colors.transparent,
+                child: IconButton(
+                  splashRadius: 24.0,
+                  onPressed: onTapMenu,
+                  icon: Icon(FeatherIcons.moreVertical, color: AppColors.of(context).text.withOpacity(0.8)),
+                ),
+              )
+            : null,
       ),
     );
   }
