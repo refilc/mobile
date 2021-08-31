@@ -4,6 +4,7 @@ import 'package:filcnaplo_kreta_api/models/lesson.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_card.dart';
 import 'package:filcnaplo_mobile_ui/common/detail.dart';
 import 'package:flutter/material.dart';
+import 'lesson_view.i18n.dart';
 
 // TODO: i18n
 class LessonView extends StatelessWidget {
@@ -53,7 +54,9 @@ class LessonView extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.w600),
             ),
             subtitle: Text(
-              lesson.substituteTeacher == "" ? lesson.teacher : lesson.substituteTeacher,
+              lesson.substituteTeacher == ""
+                  ? lesson.teacher
+                  : lesson.substituteTeacher,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(fontWeight: FontWeight.w500),
@@ -65,10 +68,16 @@ class LessonView extends StatelessWidget {
           ),
 
           // Details
-          if (lesson.room != "") Detail(title: "Room", description: lesson.room),
-          if (lesson.description != "") Detail(title: "Description", description: lesson.description),
-          if (lesson.lessonYearIndex != null) Detail(title: "Lesson Number", description: "${lesson.lessonYearIndex}."),
-          if (lesson.groupName != "") Detail(title: "Group", description: lesson.groupName),
+          if (lesson.room != "")
+            Detail(title: "Room".i18n, description: lesson.room),
+          if (lesson.description != "")
+            Detail(title: "Description".i18n, description: lesson.description),
+          if (lesson.lessonYearIndex != null)
+            Detail(
+                title: "Lesson Number".i18n,
+                description: "${lesson.lessonYearIndex}."),
+          if (lesson.groupName != "")
+            Detail(title: "Group".i18n, description: lesson.groupName),
         ],
       ),
     );

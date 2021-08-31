@@ -7,8 +7,8 @@ import 'package:filcnaplo_mobile_ui/common/detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
+import 'homework_view.i18n.dart';
 
-// TODO: i18n
 // TODO: attachments
 
 class HomeworkView extends StatelessWidget {
@@ -57,7 +57,10 @@ class HomeworkView extends StatelessWidget {
           ),
 
           // Details
-          if (homework.deadline.year != 0) Detail(title: "Deadline", description: homework.deadline.format(context)),
+          if (homework.deadline.year != 0)
+            Detail(
+                title: "deadline".i18n,
+                description: homework.deadline.format(context)),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 6.0),
             child: SelectableLinkify(

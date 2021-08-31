@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'lesson_tile.i18n.dart';
 
 // TODO: i18n
 
@@ -49,7 +50,8 @@ class LessonTile extends StatelessWidget {
     if (lesson.homeworkId != "") {
       Homework homework = Provider.of<HomeworkProvider>(context, listen: false)
           .homework
-          .firstWhere((h) => h.id == lesson.homeworkId, orElse: () => Homework.fromJson({}));
+          .firstWhere((h) => h.id == lesson.homeworkId,
+              orElse: () => Homework.fromJson({}));
 
       if (homework.id != "")
         subtiles.add(LessonSubtile(
@@ -60,7 +62,9 @@ class LessonTile extends StatelessWidget {
     }
 
     lesson.exams.forEach((e) {
-      Exam exam = Provider.of<ExamProvider>(context, listen: false).exams.firstWhere((t) => t.id == e, orElse: () => Exam.fromJson({}));
+      Exam exam = Provider.of<ExamProvider>(context, listen: false)
+          .exams
+          .firstWhere((t) => t.id == e, orElse: () => Exam.fromJson({}));
       if (exam.id != "")
         subtiles.add(LessonSubtile(
           type: LessonSubtileType.exam,
@@ -85,15 +89,20 @@ class LessonTile extends StatelessWidget {
                 onTap: onTap,
                 visualDensity: VisualDensity.compact,
                 contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
                 title: Text(
-                  !lesson.isEmpty ? lesson.subject.name.capital() : "Empty lesson", // TODO: i18n
+                  !lesson.isEmpty
+                      ? lesson.subject.name.capital()
+                      : "empty".i18n, // TODO: i18n
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 15.5,
-                    color: AppColors.of(context).text.withOpacity(!lesson.isEmpty ? 1.0 : 0.5),
+                    color: AppColors.of(context)
+                        .text
+                        .withOpacity(!lesson.isEmpty ? 1.0 : 0.5),
                   ),
                 ),
                 subtitle: lesson.description != ""
@@ -133,7 +142,11 @@ class LessonTile extends StatelessWidget {
                                 textAlign: TextAlign.center,
                                 overflow: TextOverflow.fade,
                                 maxLines: 2,
-                                style: TextStyle(fontWeight: FontWeight.w500, color: AppColors.of(context).text.withOpacity(.75)),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.of(context)
+                                        .text
+                                        .withOpacity(.75)),
                               ),
                             ),
                           ),
@@ -143,11 +156,15 @@ class LessonTile extends StatelessWidget {
                               // Fix alignment hack
                               Opacity(child: Text("EE:EE"), opacity: 0),
                               Text(
-                                DateFormat("H:mm").format(lesson.start) + "\n" + DateFormat("H:mm").format(lesson.end),
+                                DateFormat("H:mm").format(lesson.start) +
+                                    "\n" +
+                                    DateFormat("H:mm").format(lesson.end),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontWeight: FontWeight.w500,
-                                  color: AppColors.of(context).text.withOpacity(.9),
+                                  color: AppColors.of(context)
+                                      .text
+                                      .withOpacity(.9),
                                 ),
                               ),
                             ],
@@ -174,7 +191,9 @@ class LessonTile extends StatelessWidget {
 enum LessonSubtileType { homework, exam }
 
 class LessonSubtile extends StatelessWidget {
-  const LessonSubtile({Key? key, this.onPressed, required this.title, required this.type}) : super(key: key);
+  const LessonSubtile(
+      {Key? key, this.onPressed, required this.title, required this.type})
+      : super(key: key);
 
   final Function()? onPressed;
   final String title;
@@ -194,7 +213,11 @@ class LessonSubtile extends StatelessWidget {
               Center(
                 child: SizedBox(
                   width: 30.0,
-                  child: Icon(type == LessonSubtileType.homework ? FeatherIcons.home : FeatherIcons.file, size: 20.0),
+                  child: Icon(
+                      type == LessonSubtileType.homework
+                          ? FeatherIcons.home
+                          : FeatherIcons.file,
+                      size: 20.0),
                 ),
               ),
               Expanded(
