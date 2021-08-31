@@ -4,6 +4,7 @@ import 'package:filcnaplo_mobile_ui/common/detail.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/grade_tile.dart';
 import 'package:filcnaplo/utils/format.dart';
 import 'package:flutter/material.dart';
+import 'grade_view.i18n.dart';
 
 // TODO: i18n
 class GradeView extends StatelessWidget {
@@ -38,18 +39,27 @@ class GradeView extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.w500),
             ),
           ),
-          
+
           // Grade Details
-          Detail(title: "Value", description: "${grade.value.valueName} " + percentText()),
-          if (grade.description != "") Detail(title: "Description", description: grade.description),
-          if (grade.mode.description != "") Detail(title: "Mode", description: grade.mode.description),
-          if (grade.writeDate.year != 0) Detail(title: "Write Date", description: grade.writeDate.format(context)),
+          Detail(
+              title: "value".i18n,
+              description: "${grade.value.valueName} " + percentText()),
+          if (grade.description != "")
+            Detail(title: "description".i18n, description: grade.description),
+          if (grade.mode.description != "")
+            Detail(title: "mode".i18n, description: grade.mode.description),
+          if (grade.writeDate.year != 0)
+            Detail(
+                title: "date".i18n,
+                description: grade.writeDate.format(context)),
         ],
       ),
     );
   }
 
-  String percentText() => grade.value.weight != 100 && grade.value.weight > 0 ? "${grade.value.weight}%" : "";
+  String percentText() => grade.value.weight != 100 && grade.value.weight > 0
+      ? "${grade.value.weight}%"
+      : "";
 
   static show(Grade grade, {required BuildContext context}) {
     showBottomCard(context: context, child: GradeView(grade));

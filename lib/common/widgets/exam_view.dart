@@ -4,8 +4,7 @@ import 'package:filcnaplo_mobile_ui/common/bottom_card.dart';
 import 'package:filcnaplo/utils/format.dart';
 import 'package:filcnaplo_mobile_ui/common/detail.dart';
 import 'package:flutter/material.dart';
-
-// TODO: i18n
+import 'exam_view.i18n.dart';
 
 class ExamView extends StatelessWidget {
   const ExamView(this.exam, {Key? key}) : super(key: key);
@@ -49,9 +48,14 @@ class ExamView extends StatelessWidget {
           ),
 
           // Details
-          if (exam.writeDate.year != 0) Detail(title: "Write Date", description: exam.writeDate.format(context)),
-          if (exam.description != "") Detail(title: "Description", description: exam.description),
-          if (exam.mode != null) Detail(title: "Mode", description: exam.mode!.description),
+          if (exam.writeDate.year != 0)
+            Detail(
+                title: "date".i18n,
+                description: exam.writeDate.format(context)),
+          if (exam.description != "")
+            Detail(title: "description".i18n, description: exam.description),
+          if (exam.mode != null)
+            Detail(title: "mode".i18n, description: exam.mode!.description),
         ],
       ),
     );
