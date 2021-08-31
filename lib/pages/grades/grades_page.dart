@@ -96,62 +96,60 @@ class _GradesPageState extends State<GradesPage> {
     generateTiles();
 
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.only(top: 9.0),
-          child: NestedScrollView(
-            physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-            headerSliverBuilder: (context, _) => [
-              SliverAppBar(
-                centerTitle: false,
-                pinned: true,
-                floating: false,
-                snap: false,
-                actions: [
-                  // Profile Icon
-                  Padding(
-                    padding: EdgeInsets.only(right: 24.0),
-                    child: ProfileButton(
-                      child: ProfileImage(
-                        heroTag: "profile",
-                        name: firstName,
-                        backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
-                      ),
+      body: Padding(
+        padding: EdgeInsets.only(top: 9.0),
+        child: NestedScrollView(
+          physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+          headerSliverBuilder: (context, _) => [
+            SliverAppBar(
+              centerTitle: false,
+              pinned: true,
+              floating: false,
+              snap: false,
+              actions: [
+                // Profile Icon
+                Padding(
+                  padding: EdgeInsets.only(right: 24.0),
+                  child: ProfileButton(
+                    child: ProfileImage(
+                      heroTag: "profile",
+                      name: firstName,
+                      backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
                     ),
                   ),
-                ],
-                automaticallyImplyLeading: false,
-                title: Text(
-                  "Grades".i18n,
-                  style: TextStyle(color: AppColors.of(context).text, fontSize: 32.0, fontWeight: FontWeight.bold),
                 ),
-                shadowColor: AppColors.of(context).shadow.withOpacity(0.5),
+              ],
+              automaticallyImplyLeading: false,
+              title: Text(
+                "Grades".i18n,
+                style: TextStyle(color: AppColors.of(context).text, fontSize: 32.0, fontWeight: FontWeight.bold),
               ),
-            ],
-            body: RefreshIndicator(
-              onRefresh: () => gradeProvider.fetch(),
-              color: Theme.of(context).colorScheme.secondary,
-              child: ListView.builder(
-                physics: BouncingScrollPhysics(),
-                itemCount: max(subjectTiles.length, 1),
-                itemBuilder: (context, index) {
-                  if (subjectTiles.length > 0) {
-                    EdgeInsetsGeometry panelPadding = EdgeInsets.symmetric(horizontal: 24.0);
+              shadowColor: AppColors.of(context).shadow.withOpacity(0.5),
+            ),
+          ],
+          body: RefreshIndicator(
+            onRefresh: () => gradeProvider.fetch(),
+            color: Theme.of(context).colorScheme.secondary,
+            child: ListView.builder(
+              physics: BouncingScrollPhysics(),
+              itemCount: max(subjectTiles.length, 1),
+              itemBuilder: (context, index) {
+                if (subjectTiles.length > 0) {
+                  EdgeInsetsGeometry panelPadding = EdgeInsets.symmetric(horizontal: 24.0);
 
-                    if (subjectTiles[index].runtimeType == SubjectTile)
-                      return Padding(
-                          padding: panelPadding,
-                          child: PanelBody(
-                            child: subjectTiles[index],
-                            padding: EdgeInsets.symmetric(horizontal: 8.0),
-                          ));
-                    else
-                      return Padding(padding: panelPadding, child: subjectTiles[index]);
-                  } else {
-                    return Container();
-                  }
-                },
-              ),
+                  if (subjectTiles[index].runtimeType == SubjectTile)
+                    return Padding(
+                        padding: panelPadding,
+                        child: PanelBody(
+                          child: subjectTiles[index],
+                          padding: EdgeInsets.symmetric(horizontal: 8.0),
+                        ));
+                  else
+                    return Padding(padding: panelPadding, child: subjectTiles[index]);
+                } else {
+                  return Container();
+                }
+              },
             ),
           ),
         ),

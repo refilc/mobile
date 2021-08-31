@@ -49,46 +49,44 @@ class _MessagesPageState extends State<MessagesPage> {
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
 
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.only(top: 12.0),
-          child: NestedScrollView(
-            physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-            headerSliverBuilder: (context, _) => [
-              SliverAppBar(
-                pinned: true,
-                floating: false,
-                snap: false,
-                centerTitle: false,
-                actions: [
-                  // Profile Icon
-                  Padding(
-                    padding: EdgeInsets.only(right: 24.0),
-                    child: ProfileButton(
-                      child: ProfileImage(
-                        heroTag: "profile",
-                        name: firstName,
-                        backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
-                      ),
+      body: Padding(
+        padding: EdgeInsets.only(top: 12.0),
+        child: NestedScrollView(
+          physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+          headerSliverBuilder: (context, _) => [
+            SliverAppBar(
+              pinned: true,
+              floating: false,
+              snap: false,
+              centerTitle: false,
+              actions: [
+                // Profile Icon
+                Padding(
+                  padding: EdgeInsets.only(right: 24.0),
+                  child: ProfileButton(
+                    child: ProfileImage(
+                      heroTag: "profile",
+                      name: firstName,
+                      backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
                     ),
                   ),
-                ],
-                automaticallyImplyLeading: false,
-                shadowColor: AppColors.of(context).shadow.withOpacity(0.5),
-                title: Text(
-                  "Messages".i18n,
-                  style: TextStyle(color: AppColors.of(context).text, fontSize: 32.0, fontWeight: FontWeight.bold),
                 ),
-                bottom: FilterBar(items: [
-                  FilterItem(label: "Inbox".i18n),
-                  FilterItem(label: "Sent".i18n),
-                  FilterItem(label: "Trash".i18n),
-                  FilterItem(label: "Draft".i18n),
-                ], controller: filterController),
+              ],
+              automaticallyImplyLeading: false,
+              shadowColor: AppColors.of(context).shadow.withOpacity(0.5),
+              title: Text(
+                "Messages".i18n,
+                style: TextStyle(color: AppColors.of(context).text, fontSize: 32.0, fontWeight: FontWeight.bold),
               ),
-            ],
-            body: FilterView(controller: filterController, builder: filterViewBuilder),
-          ),
+              bottom: FilterBar(items: [
+                FilterItem(label: "Inbox".i18n),
+                FilterItem(label: "Sent".i18n),
+                FilterItem(label: "Trash".i18n),
+                FilterItem(label: "Draft".i18n),
+              ], controller: filterController),
+            ),
+          ],
+          body: FilterView(controller: filterController, builder: filterViewBuilder),
         ),
       ),
     );

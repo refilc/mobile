@@ -90,87 +90,85 @@ class _HomePageState extends State<HomePage> {
     const bool showLiveCard = false;
 
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.only(top: 12.0),
-          child: NestedScrollView(
-            physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-            headerSliverBuilder: (context, _) => [
-              SliverAppBar(
-                automaticallyImplyLeading: false,
-                centerTitle: false,
-                titleSpacing: 0.0,
-                // Welcome text
-                title: Padding(
-                  padding: EdgeInsets.only(left: 24.0),
-                  child: Text(
-                    greeting.i18n.fill([firstName]),
-                    overflow: TextOverflow.fade,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.0,
-                      color: Theme.of(context).textTheme.bodyText1?.color,
+      body: Padding(
+        padding: EdgeInsets.only(top: 12.0),
+        child: NestedScrollView(
+          physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+          headerSliverBuilder: (context, _) => [
+            SliverAppBar(
+              automaticallyImplyLeading: false,
+              centerTitle: false,
+              titleSpacing: 0.0,
+              // Welcome text
+              title: Padding(
+                padding: EdgeInsets.only(left: 24.0),
+                child: Text(
+                  greeting.i18n.fill([firstName]),
+                  overflow: TextOverflow.fade,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.0,
+                    color: Theme.of(context).textTheme.bodyText1?.color,
+                  ),
+                ),
+              ),
+              actions: [
+                // TODO: Search Button
+                // IconButton(
+                //   icon: Icon(FeatherIcons.search),
+                //   color: Theme.of(context).textTheme.bodyText1?.color,
+                //   splashRadius: 24.0,
+                //   onPressed: () {},
+                // ),
+
+                // Profile Icon
+                Padding(
+                  padding: EdgeInsets.only(right: 24.0),
+                  child: ProfileButton(
+                    child: ProfileImage(
+                      heroTag: "profile",
+                      name: firstName,
+                      backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
+                      newContent: updateProvider.available,
                     ),
                   ),
                 ),
-                actions: [
-                  // TODO: Search Button
-                  // IconButton(
-                  //   icon: Icon(FeatherIcons.search),
-                  //   color: Theme.of(context).textTheme.bodyText1?.color,
-                  //   splashRadius: 24.0,
-                  //   onPressed: () {},
-                  // ),
+              ],
+              expandedHeight: showLiveCard ? 234.0 : 0,
 
-                  // Profile Icon
-                  Padding(
-                    padding: EdgeInsets.only(right: 24.0),
-                    child: ProfileButton(
-                      child: ProfileImage(
-                        heroTag: "profile",
-                        name: firstName,
-                        backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
-                        newContent: updateProvider.available,
-                      ),
-                    ),
-                  ),
-                ],
-                expandedHeight: showLiveCard ? 234.0 : 0,
-
-                // Live Card
-                flexibleSpace: showLiveCard
-                    ? FlexibleSpaceBar(
-                        background: Padding(
-                          padding: EdgeInsets.only(
-                            left: 24.0,
-                            right: 24.0,
-                            top: 64.0,
-                            bottom: 52.0,
-                          ),
-                          child: LiveCard(
-                            onTap: openLiveCard,
-                          ),
+              // Live Card
+              flexibleSpace: showLiveCard
+                  ? FlexibleSpaceBar(
+                      background: Padding(
+                        padding: EdgeInsets.only(
+                          left: 24.0,
+                          right: 24.0,
+                          top: 64.0,
+                          bottom: 52.0,
                         ),
-                      )
-                    : null,
-                shadowColor: Color(0),
+                        child: LiveCard(
+                          onTap: openLiveCard,
+                        ),
+                      ),
+                    )
+                  : null,
+              shadowColor: Color(0),
 
-                // Filter Bar
-                bottom: FilterBar(items: [
-                  FilterItem(label: "All".i18n),
-                  FilterItem(label: "Grades".i18n),
-                  FilterItem(label: "Messages".i18n),
-                  FilterItem(label: "Absences".i18n),
-                ], controller: filterController),
-                pinned: true,
-                floating: false,
-                snap: false,
-              ),
-            ],
-            body: FilterView(
-              controller: filterController,
-              builder: filterViewBuilder,
+              // Filter Bar
+              bottom: FilterBar(items: [
+                FilterItem(label: "All".i18n),
+                FilterItem(label: "Grades".i18n),
+                FilterItem(label: "Messages".i18n),
+                FilterItem(label: "Absences".i18n),
+              ], controller: filterController),
+              pinned: true,
+              floating: false,
+              snap: false,
             ),
+          ],
+          body: FilterView(
+            controller: filterController,
+            builder: filterViewBuilder,
           ),
         ),
       ),

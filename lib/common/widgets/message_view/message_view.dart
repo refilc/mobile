@@ -21,23 +21,23 @@ class MessageView extends StatefulWidget {
 class _MessageViewState extends State<MessageView> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          leading: BackButton(color: AppColors.of(context).text),
-          shadowColor: Color(0),
-          actions: [
-            // Padding(
-            //   padding: EdgeInsets.only(right: 8.0),
-            //   child: IconButton(
-            //     onPressed: () {},
-            //     icon: Icon(FeatherIcons.archive, color: AppColors.of(context).text),
-            //     splashRadius: 32.0,
-            //   ),
-            // ),
-          ],
-        ),
-        body: ListView.builder(
+    return Scaffold(
+      appBar: AppBar(
+        leading: BackButton(color: AppColors.of(context).text),
+        shadowColor: Color(0),
+        actions: [
+          // Padding(
+          //   padding: EdgeInsets.only(right: 8.0),
+          //   child: IconButton(
+          //     onPressed: () {},
+          //     icon: Icon(FeatherIcons.archive, color: AppColors.of(context).text),
+          //     splashRadius: 32.0,
+          //   ),
+          // ),
+        ],
+      ),
+      body: SafeArea(
+        child: ListView.builder(
           physics: BouncingScrollPhysics(),
           itemCount: widget.messages.length,
           itemBuilder: (context, index) {
