@@ -14,8 +14,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'lesson_tile.i18n.dart';
 
-// TODO: i18n
-
 class LessonTile extends StatelessWidget {
   const LessonTile(this.lesson, {Key? key, this.onTap}) : super(key: key);
 
@@ -94,7 +92,7 @@ class LessonTile extends StatelessWidget {
                 title: Text(
                   !lesson.isEmpty
                       ? lesson.subject.name.capital()
-                      : "empty".i18n, // TODO: i18n
+                      : "empty".i18n,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(

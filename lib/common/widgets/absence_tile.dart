@@ -84,7 +84,6 @@ class AbsenceTile extends StatelessWidget {
     );
   }
 
-  // TODO: i18n
   static String justificationName(Justification state) {
     switch (state) {
       case Justification.Excused:

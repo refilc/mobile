@@ -6,7 +6,6 @@ import 'package:filcnaplo/utils/format.dart';
 import 'package:flutter/material.dart';
 import 'grade_view.i18n.dart';
 
-// TODO: i18n
 class GradeView extends StatelessWidget {
   const GradeView(this.grade, {Key? key}) : super(key: key);
 

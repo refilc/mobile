@@ -12,6 +12,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:i18n_extension/i18n_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:filcnaplo_mobile_ui/common/screens.i18n.dart';
+import 'package:filcnaplo_mobile_ui/screens/settings/settings_screen.i18n.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 class SettingsHelper {
@@ -24,6 +25,8 @@ class SettingsHelper {
     Pages.messages: "messages",
     Pages.absences: "absences",
   };
+
+  static Map<Pages, String> localizedPageTitles() => pageTitle.map((key, value) => MapEntry(key, ScreensLocalization(value).i18n));
 
   static void language(BuildContext context) {
     showBottomSheetMenu(
@@ -73,7 +76,7 @@ class SettingsHelper {
             children: [
               Icon(pageIcons[Pages.values[index]], size: 20.0, color: Theme.of(context).colorScheme.secondary),
               SizedBox(width: 16.0),
-              Text((pageTitle[Pages.values[index]] ?? "").i18n),
+              Text(localizedPageTitles()[Pages.values[index]] ?? ""),
               Spacer(),
               if (Pages.values[index] == Provider.of<SettingsProvider>(context, listen: false).startPage)
                 Icon(
@@ -110,7 +113,7 @@ class SettingsHelper {
               padding: EdgeInsets.only(right: 16.0),
               child: Icon(FeatherIcons.smartphone, size: 20.0, color: Theme.of(context).colorScheme.secondary),
             ),
-            Text("System"), // TODO: i18n
+            Text(SettingsLocalization("system").i18n),
             Spacer(),
             if (settings.theme == ThemeMode.system)
               Icon(
@@ -128,7 +131,7 @@ class SettingsHelper {
               padding: EdgeInsets.only(right: 16.0),
               child: Icon(FeatherIcons.sun, size: 20.0, color: Theme.of(context).colorScheme.secondary),
             ),
-            Text("Light"), // TODO: i18n
+            Text(SettingsLocalization("light").i18n),
             Spacer(),
             if (settings.theme == ThemeMode.light)
               Icon(
@@ -146,7 +149,7 @@ class SettingsHelper {
               padding: EdgeInsets.only(right: 16.0),
               child: Icon(FeatherIcons.moon, size: 20.0, color: Theme.of(context).colorScheme.secondary),
             ),
-            Text("Dark"), // TODO: i18n
+            Text(SettingsLocalization("dark").i18n),
             Spacer(),
             if (settings.theme == ThemeMode.dark)
               Icon(
@@ -284,7 +287,7 @@ class _RoundingSettingState extends State<RoundingSetting> {
       Padding(
         padding: EdgeInsets.only(bottom: 12.0, top: 6.0),
         child: MaterialActionButton(
-          child: Text("Done"), // TODO: i18n
+          child: Text(SettingsLocalization("done").i18n),
           onPressed: () {
             Provider.of<SettingsProvider>(context, listen: false).update(context, rounding: (r * 10).toInt());
             Navigator.of(context).maybePop();
@@ -352,7 +355,7 @@ class _GradeColorsSettingState extends State<GradeColorsSetting> {
                                   settings.update(context, gradeColors: colors);
                                   Navigator.of(context).maybePop();
                                 },
-                                child: Text("Reset"), // TODO: i18n
+                                child: Text(SettingsLocalization("reset").i18n),
                               ),
                               MaterialActionButton(
                                 onPressed: () {
@@ -361,7 +364,7 @@ class _GradeColorsSettingState extends State<GradeColorsSetting> {
                                   settings.update(context, gradeColors: settings.gradeColors);
                                   Navigator.of(context).maybePop();
                                 },
-                                child: Text("Done"), // TODO: i18n
+                                child: Text(SettingsLocalization("done").i18n),
                               ),
                             ],
                           ),

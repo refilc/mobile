@@ -16,7 +16,6 @@ class CertificationTile extends StatelessWidget {
     bool isSubjectView = SubjectGradesContainer.of(context) != null;
     String certificationName;
 
-    // TODO: i18n
     switch (grade.type) {
       case GradeType.endYear:
         certificationName = "final".i18n;

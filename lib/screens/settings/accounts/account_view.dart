@@ -6,8 +6,7 @@ import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/accounts/account_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
-// TODO: i18n
+import 'account_view.i18n.dart';
 
 class AccountView extends StatelessWidget {
   const AccountView(this.user, {Key? key}) : super(key: key);
@@ -36,11 +35,12 @@ class AccountView extends StatelessWidget {
           ),
 
           // User details
-          Detail(title: "Birth date", description: DateFormat("yyyy. MM. dd.").format(user.student.birth)),
-          Detail(title: "School", description: user.student.school.name),
-          if (user.student.className != null) Detail(title: "Class", description: user.student.className!),
-          if (user.student.address != null) Detail(title: "Address", description: user.student.address!),
-          if (user.student.parents.length > 0) Detail(title: "Parents", description: user.student.parents.join(", "))
+          Detail(title: "birthdate".i18n, description: DateFormat("yyyy. MM. dd.").format(user.student.birth)),
+          Detail(title: "school".i18n, description: user.student.school.name),
+          if (user.student.className != null) Detail(title: "class".i18n, description: user.student.className!),
+          if (user.student.address != null) Detail(title: "address".i18n, description: user.student.address!),
+          if (user.student.parents.length > 0)
+            Detail(title: "parents".plural(user.student.parents.length), description: user.student.parents.join(", "))
         ],
       ),
     );

@@ -2,6 +2,7 @@ import 'package:filcnaplo_kreta_api/models/note.dart';
 import 'package:filcnaplo/utils/format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'miss_tile.i18n.dart';
 
 class MissTile extends StatelessWidget {
   const MissTile(this.note, {Key? key}) : super(key: key);
@@ -38,12 +39,11 @@ class MissTile extends StatelessWidget {
     return FeatherIcons.slash;
   }
 
-  // TODO: i18n
   String _missName() {
     if (note.type?.name == "HaziFeladatHiany") {
-      return "Missing homework";
+      return "Missing homework".i18n;
     } else if (note.type?.name == "Felszereleshiany") {
-      return "Missing equipment";
+      return "Missing equipment".i18n;
     }
     return "?";
   }

@@ -19,10 +19,10 @@ import 'package:provider/provider.dart';
 import 'package:filcnaplo/utils/color.dart';
 import 'package:intl/intl.dart';
 import 'package:i18n_extension/i18n_widget.dart';
+import 'package:filcnaplo_mobile_ui/common/screens.i18n.dart';
 
-// TODO: fix overflow
-// TODO: fix week changing
-// TODO: add loading indicator
+// TODO: "fix" overflow
+// TODO: filter days because kreta returns additional days...
 
 class TimetablePage extends StatefulWidget {
   TimetablePage({Key? key}) : super(key: key);
@@ -109,7 +109,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                   title: (_controller.days?.length ?? 0) > 0
                       ? DayTitle(controller: _tabController, dayTitle: dayTitle)
                       : Text(
-                          "Timetable", // TODO: i18n
+                          "timetable".i18n,
                           style: TextStyle(
                             fontSize: 32.0,
                             fontWeight: FontWeight.bold,

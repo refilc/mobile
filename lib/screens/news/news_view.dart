@@ -9,6 +9,7 @@ import 'package:filcnaplo/utils/format.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:provider/provider.dart';
+import 'package:filcnaplo_mobile_ui/screens/settings/settings_screen.i18n.dart';
 
 class NewsView extends StatelessWidget {
   const NewsView(this.news, {Key? key}) : super(key: key);
@@ -58,14 +59,14 @@ class NewsView extends StatelessWidget {
                 children: [
                   if (news.link != "")
                     DialogButton(
-                      label: news.openLabel != "" ? news.openLabel : "OPEN", // TODO: i18n
+                      label: news.openLabel != "" ? news.openLabel : "open".i18n.toUpperCase(),
                       onTap: () => launch(
                         news.link,
                         customTabsOption: CustomTabsOption(showPageTitle: true, toolbarColor: AppColors.of(context).background),
                       ),
                     ),
                   DialogButton(
-                    label: "done", // TODO: i18n
+                    label: "done".i18n,
                     onTap: () => Navigator.of(context).maybePop(),
                   ),
                 ],

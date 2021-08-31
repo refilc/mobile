@@ -32,6 +32,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:filcnaplo/utils/color.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'settings_screen.i18n.dart';
 
 class SettingsScreen extends StatefulWidget {
   SettingsScreen({Key? key}) : super(key: key);
@@ -57,31 +58,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void _showBottomSheet(User u) {
     showBottomSheetMenu(context, items: [
-      // TODO: i18n
       BottomSheetMenuItem(
         onPressed: () => AccountView.show(u, context: context),
         icon: Icon(FeatherIcons.user),
-        title: Text("Personal details"),
+        title: Text("personal_details".i18n),
       ),
       BottomSheetMenuItem(
         onPressed: () => openDKT(u),
         icon: Icon(FeatherIcons.grid, color: AppColors.of(context).teal),
-        title: Text("Open DKT"), //TODO
+        title: Text("open_dkt".i18n),
       ),
       // BottomSheetMenuItem(
       //   onPressed: () {},
       //   icon: Icon(FeatherIcons.edit2),
-      //   title: Text("Edit nickname"),
+      //   title: Text("edit_nickname".i18n),
       // ),
       // BottomSheetMenuItem(
       //   onPressed: () {},
       //   icon: Icon(FeatherIcons.camera),
-      //   title: Text("Edit profile picture"),
+      //   title: Text("edit_profile_picture".i18n),
       // ),
       // BottomSheetMenuItem(
       //   onPressed: () {},
       //   icon: Icon(FeatherIcons.trash2, color: AppColors.of(context).red),
-      //   title: Text("Remove profile picture"),
+      //   title: Text("remove_profile_picture".i18n),
       // ),
     ]);
   }
@@ -129,9 +129,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     List<String> nameParts = user.name?.split(" ") ?? ["?"];
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
 
-    startPageTitle = SettingsHelper.pageTitle[settings.startPage] ?? "?";
-    themeModeText = {ThemeMode.light: "Light", ThemeMode.dark: "Dark", ThemeMode.system: "System"}[settings.theme] ?? "Unknown";
-    languageText = SettingsHelper.langMap[settings.language] ?? "Unknown";
+    startPageTitle = SettingsHelper.localizedPageTitles()[settings.startPage] ?? "?";
+    themeModeText = {ThemeMode.light: "light".i18n, ThemeMode.dark: "dark".i18n, ThemeMode.system: "system".i18n}[settings.theme] ?? "?";
+    languageText = SettingsHelper.langMap[settings.language] ?? "?";
 
     buildAccountTiles();
 
@@ -203,7 +203,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               setSystemChrome(context);
                             });
                           },
-                          title: Text("Add User"), // TODO: i18n
+                          title: Text("add_user".i18n),
                           leading: Icon(FeatherIcons.userPlus),
                         ),
                         PanelButton(
@@ -223,7 +223,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               Navigator.of(context).pushNamedAndRemoveUntil("login", (_) => false);
                             }
                           },
-                          title: Text("Log Out"), // TODO: i18n
+                          title: Text("log_out".i18n),
                           leading: Icon(FeatherIcons.logOut, color: AppColors.of(context).red),
                         ),
                       ],
@@ -238,7 +238,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     child: Panel(
                       child: PanelButton(
                         onPressed: () => openUpdates(context),
-                        title: Text("Update available"),
+                        title: Text("update_available".i18n),
                         leading: Icon(FeatherIcons.download),
                         trailing: Text(
                           updateProvider.releases.first.tag,
@@ -255,7 +255,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
                   child: Panel(
-                    title: Text("General"),
+                    title: Text("general".i18n),
                     child: Column(
                       children: [
                         PanelButton(
@@ -263,7 +263,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             SettingsHelper.language(context);
                             setState(() {});
                           },
-                          title: Text("Language"),
+                          title: Text("language".i18n),
                           leading: Icon(FeatherIcons.globe),
                           trailing: Text(languageText),
                         ),
@@ -272,7 +272,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             SettingsHelper.startPage(context);
                             setState(() {});
                           },
-                          title: Text("Startpage"),
+                          title: Text("startpage".i18n),
                           leading: Icon(FeatherIcons.play),
                           trailing: Text(startPageTitle.capital()),
                         ),
@@ -281,7 +281,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             SettingsHelper.rounding(context);
                             setState(() {});
                           },
-                          title: Text("Rounding"),
+                          title: Text("rounding".i18n),
                           leading: Icon(FeatherIcons.gitCommit),
                           trailing: Text((settings.rounding / 10).toStringAsFixed(1)),
                         ),
@@ -294,7 +294,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
                   child: Panel(
-                    title: Text("Appearance"),
+                    title: Text("appearance".i18n),
                     child: Column(
                       children: [
                         PanelButton(
@@ -302,7 +302,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             SettingsHelper.theme(context);
                             setState(() {});
                           },
-                          title: Text("Theme"),
+                          title: Text("theme".i18n),
                           leading: Icon(FeatherIcons.sun),
                           trailing: Text(themeModeText),
                         ),
@@ -311,7 +311,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             SettingsHelper.accentColor(context);
                             setState(() {});
                           },
-                          title: Text("Accent Color"),
+                          title: Text("color".i18n),
                           leading: Icon(FeatherIcons.droplet),
                           trailing: Container(
                             width: 12.0,
@@ -327,7 +327,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             SettingsHelper.gradeColors(context);
                             setState(() {});
                           },
-                          title: Text("Grade Colors"),
+                          title: Text("grade_colors".i18n),
                           leading: Icon(FeatherIcons.star),
                         ),
                       ],
@@ -339,9 +339,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
                   child: Panel(
-                    title: Text("Notifications"),
+                    title: Text("notifications".i18n),
                     child: SwitchListTile(
-                      title: Text("News", style: TextStyle(fontWeight: FontWeight.w500)),
+                      title: Text("news".i18n, style: TextStyle(fontWeight: FontWeight.w500)),
                       onChanged: (v) => settings.update(context, newsEnabled: v),
                       value: settings.newsEnabled,
                       activeColor: Theme.of(context).colorScheme.secondary,
@@ -353,7 +353,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
                   child: Panel(
-                    title: Text("About"),
+                    title: Text("about".i18n),
                     child: Column(children: [
                       PanelButton(
                         leading: Icon(FeatherIcons.atSign),
@@ -372,22 +372,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                       PanelButton(
                         leading: Icon(FeatherIcons.mail),
-                        title: Text("Hírek"),
-                        onPressed: () => openNews(context), // TODO
+                        title: Text("news".i18n),
+                        onPressed: () => openNews(context),
                       ),
                       PanelButton(
                         leading: Icon(FeatherIcons.dollarSign),
-                        title: Text("Támogatók"),
+                        title: Text("supporters".i18n),
                         // onPressed: () => openSupporters(context), // TODO
                       ),
                       PanelButton(
                         leading: Icon(FeatherIcons.lock),
-                        title: Text("Adatvédelmi irányelvek"),
+                        title: Text("privacy".i18n),
                         // onPressed: () => openPrivacy(context), // TODO
                       ),
                       PanelButton(
                         leading: Icon(FeatherIcons.award),
-                        title: Text("Licenszek"),
+                        title: Text("licenses".i18n),
                         onPressed: () => showLicensePage(context: context),
                       ),
                     ]),

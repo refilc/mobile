@@ -62,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
           content: Text("Failed to get schools", style: TextStyle(color: Colors.white)),
           backgroundColor: AppColors.of(context).red,
           context: context,
-        )); // TODO: i18n, design
+        )); // TODO: i18n
       }
     });
   }
@@ -219,18 +219,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     Padding(
                       padding: EdgeInsets.only(top: 8.0),
                       child: Text(
-                        "error", // TODO: i18n
-                        style: TextStyle(color: Colors.red),
+                        ["missing_fields", "invalid_grant", "error"][_loginState.index].i18n,
+                        style: TextStyle(color: Colors.red, fontWeight: FontWeight.w500),
                       ),
                     ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 8.0),
-                    child: Text(
-                      "DEV build • 3.0.0.dev-5\nClosed beta test",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white, fontFamily: "monospace"),
-                    ),
-                  ),
                   Spacer()
                 ],
               ),

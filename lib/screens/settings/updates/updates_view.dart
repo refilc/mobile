@@ -8,6 +8,7 @@ import 'package:filcnaplo/helpers/update_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'updates_view.i18n.dart';
 
 class UpdateView extends StatefulWidget {
   UpdateView(this.release, {Key? key}) : super(key: key);
@@ -40,7 +41,7 @@ class _UpdateViewState extends State<UpdateView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "New update",
+                      "new_update".i18n,
                       style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18.0),
                     ),
                     Text(
@@ -97,7 +98,7 @@ class _UpdateViewState extends State<UpdateView> {
                         color: ColorUtils.foregroundColor(AppColors.of(context).filc),
                       ),
                     ),
-                  Text(["DOWNLOAD", "DOWNLOADING", "INSTALLING"][state.index]),
+                  Text(["download".i18n, "downloading".i18n, "installing".i18n][state.index].toUpperCase()),
                 ],
               ),
               backgroundColor: AppColors.of(context).filc,

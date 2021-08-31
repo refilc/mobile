@@ -1,3 +1,5 @@
+// ignore_for_file: dead_code
+
 import 'dart:math';
 
 import 'package:filcnaplo/api/providers/update_provider.dart';

@@ -6,7 +6,6 @@ import 'package:filcnaplo_mobile_ui/common/detail.dart';
 import 'package:flutter/material.dart';
 import 'lesson_view.i18n.dart';
 
-// TODO: i18n
 class LessonView extends StatelessWidget {
   const LessonView(this.lesson, {Key? key}) : super(key: key);
 
