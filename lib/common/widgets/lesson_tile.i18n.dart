@@ -7,7 +7,7 @@ extension Localization on String {
           "empty": "Free period",
         },
         "hu_hu": {
-          "emtpy": "Lyukasóra",
+          "empty": "Lyukasóra",
         },
         "de_de": {
           "empty": "Springstunde",

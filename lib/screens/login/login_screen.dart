@@ -46,12 +46,14 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
     showBack = widget.back;
+
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.light,
       systemNavigationBarColor: Colors.white,
       systemNavigationBarIconBrightness: Brightness.dark,
     ));
+
     FilcAPI.getSchools().then((schools) {
       if (schools != null) {
         schoolController.update(() {

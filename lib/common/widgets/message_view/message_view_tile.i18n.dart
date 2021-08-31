@@ -5,15 +5,15 @@ extension Localization on String {
       {
         "en_en": {
           "me": "me",
-          "to": "to"
+          "to": "to",
         },
         "hu_hu": {
           "me": "én",
-          "to": "Címzett:"
+          "to": "Címzett:",
         },
         "de_de": {
           "me": "mich",
-          "to": "zu"
+          "to": "zu",
         }
       };
 

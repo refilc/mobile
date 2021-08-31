@@ -36,7 +36,7 @@ class SettingsHelper {
         return BottomSheetMenuItem(
           onPressed: () {
             Provider.of<SettingsProvider>(context, listen: false).update(context, language: lang);
-            I18n.of(context).locale = Locale(lang, lang);
+            I18n.of(context).locale = Locale(lang, lang.toUpperCase());
             Navigator.of(context).maybePop();
           },
           title: Row(
