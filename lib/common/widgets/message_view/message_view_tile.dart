@@ -8,7 +8,7 @@ import 'package:filcnaplo_mobile_ui/common/widgets/message_view/attachment_tile.
 import 'package:flutter/material.dart';
 import 'package:filcnaplo/utils/format.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+// import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:provider/provider.dart';
 import 'message_view_tile.i18n.dart';

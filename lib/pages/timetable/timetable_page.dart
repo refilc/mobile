@@ -21,7 +21,7 @@ import 'package:intl/intl.dart';
 import 'package:i18n_extension/i18n_widget.dart';
 import 'timetable_page.i18n.dart';
 
-// TODO: "fix" overflow
+// todo: "fix" overflow
 // TODO: filter days because kreta returns additional days...
 
 class TimetablePage extends StatefulWidget {
