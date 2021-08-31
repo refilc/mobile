@@ -1,6 +1,5 @@
 import 'package:filcnaplo/models/user.dart';
 import 'package:filcnaplo/utils/color.dart';
-import 'package:filcnaplo/utils/format.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_card.dart';
 import 'package:filcnaplo_mobile_ui/common/detail.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
