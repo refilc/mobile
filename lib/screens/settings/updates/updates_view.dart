@@ -125,7 +125,7 @@ class _UpdateViewState extends State<UpdateView> {
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(CustomSnackBar(
               context: context,
-              content: Text("error"), // TODO: i18n
+              content: Text("error".i18n),
               backgroundColor: AppColors.of(context).red,
             ));
           }

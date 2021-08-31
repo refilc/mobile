@@ -19,6 +19,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:provider/provider.dart';
+import 'grades_page.i18n.dart';
 
 class SubjectView extends StatefulWidget {
   const SubjectView(this.subject, {Key? key, this.classAverage = 0.0}) : super(key: key);
@@ -94,7 +95,7 @@ class _SubjectViewState extends State<SubjectView> {
           tiles.add(CertificationTile(grade));
         }
       });
-      tiles.insert(1, PanelTitle(title: Text("Grades")));
+      tiles.insert(1, PanelTitle(title: Text("Grades".i18n)));
       tiles.insert(2, PanelHeader(padding: EdgeInsets.only(top: 12.0)));
       tiles.add(PanelFooter(padding: EdgeInsets.only(bottom: 12.0)));
     } else if (subjectGrades.length > 0) {
@@ -102,7 +103,7 @@ class _SubjectViewState extends State<SubjectView> {
       subjectGrades.forEach((grade) {
         tiles.add(GradeTile(grade));
       });
-      tiles.insert(1, PanelTitle(title: Text("Ghost Grades")));
+      tiles.insert(1, PanelTitle(title: Text("Ghost Grades".i18n)));
       tiles.insert(2, PanelHeader(padding: EdgeInsets.only(top: 12.0)));
       tiles.add(PanelFooter(padding: EdgeInsets.only(bottom: 12.0)));
     }

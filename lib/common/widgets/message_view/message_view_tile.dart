@@ -11,6 +11,7 @@ import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:provider/provider.dart';
+import 'message_view_tile.i18n.dart';
 
 class MessageViewTile extends StatelessWidget {
   const MessageViewTile(this.message, {Key? key}) : super(key: key);
@@ -22,7 +23,7 @@ class MessageViewTile extends StatelessWidget {
     UserProvider user = Provider.of<UserProvider>(context, listen: false);
     String recipientLabel = "";
 
-    if (message.recipients.any((r) => r.name == user.student?.name)) recipientLabel = "me"; // TODO i18n
+    if (message.recipients.any((r) => r.name == user.student?.name)) recipientLabel = "me".i18n;
 
     if (recipientLabel != "" && message.recipients.length > 1) {
       recipientLabel += " +";
@@ -68,7 +69,7 @@ class MessageViewTile extends StatelessWidget {
               maxLines: 2,
             ),
             subtitle: Text(
-              "to " + recipientLabel,
+              "to".i18n + " " + recipientLabel,
               style: TextStyle(fontWeight: FontWeight.w500),
               overflow: TextOverflow.ellipsis,
               maxLines: 1,

@@ -9,8 +9,8 @@ import 'package:filcnaplo_mobile_ui/common/widgets/grade_tile.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/calculator/grade_calculator_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'grade_calculator.i18n.dart';
 
-// TODO: i18n
 class GradeCalculator extends StatefulWidget {
   GradeCalculator(this.subject, {Key? key}) : super(key: key);
 
@@ -38,7 +38,7 @@ class _GradeCalculatorState extends State<GradeCalculator> {
           Padding(
             padding: EdgeInsets.only(bottom: 8.0),
             child: Text(
-              "Grade Calculator", // TODO: i18n
+              "Grade Calculator".i18n,
               style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
             ),
           ),
@@ -93,11 +93,10 @@ class _GradeCalculatorState extends State<GradeCalculator> {
             width: 120.0,
             padding: EdgeInsets.symmetric(vertical: 12.0),
             child: MaterialActionButton(
-              child: Text("Add Grade"), // TODO: i18n
+              child: Text("Add Grade".i18n),
               onPressed: () {
                 if (calculatorProvider.ghosts.length >= 30) {
-                  // TODO: i18n
-                  ScaffoldMessenger.of(context).showSnackBar(CustomSnackBar(content: Text("You cannot add more Ghost Grades."), context: context));
+                  ScaffoldMessenger.of(context).showSnackBar(CustomSnackBar(content: Text("limit_reached".i18n), context: context));
                   return;
                 }
 
@@ -117,7 +116,7 @@ class _GradeCalculatorState extends State<GradeCalculator> {
                   id: randomId(),
                   date: date,
                   writeDate: date,
-                  description: "Ghost Grade",
+                  description: "Ghost Grade".i18n,
                   value: GradeValue(newValue.toInt(), "", "", newWeight.toInt()),
                   teacher: "Ghost",
                   type: GradeType.ghost,

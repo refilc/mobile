@@ -18,8 +18,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:filcnaplo/utils/color.dart';
 import 'package:filcnaplo/helpers/average_helper.dart';
+import 'grades_page.i18n.dart';
 
-// TODO: i18n
 // TODO: maybe? statistics to the bottom
 
 class GradesPage extends StatefulWidget {
@@ -56,7 +56,7 @@ class _GradesPageState extends State<GradesPage> {
 
     if (tiles.length > 0) {
       tiles.insert(0, yearlyGraph);
-      tiles.insert(1, PanelTitle(title: Text("Subjects")));
+      tiles.insert(1, PanelTitle(title: Text("Subjects".i18n)));
       tiles.insert(2, PanelHeader(padding: EdgeInsets.only(top: 12.0)));
       tiles.add(PanelFooter(padding: EdgeInsets.only(bottom: 12.0)));
       tiles.add(Padding(padding: EdgeInsets.only(bottom: 24.0)));
@@ -65,7 +65,7 @@ class _GradesPageState extends State<GradesPage> {
         0,
         Padding(
           padding: const EdgeInsets.only(top: 24.0),
-          child: Empty(subtitle: "You don't have any subjects."),
+          child: Empty(subtitle: "empty".i18n),
         ),
       );
     }
@@ -84,7 +84,7 @@ class _GradesPageState extends State<GradesPage> {
     yearlyGraph = Padding(
       padding: EdgeInsets.only(top: 12.0, bottom: 24.0),
       child: Panel(
-        title: Text("Yearly average"),
+        title: Text("annual_average".i18n),
         child: Container(
           height: 175.0,
           padding: EdgeInsets.only(top: 24.0, right: 12.0),
@@ -122,7 +122,7 @@ class _GradesPageState extends State<GradesPage> {
                 ],
                 automaticallyImplyLeading: false,
                 title: Text(
-                  "Grades", // TODO: i18n
+                  "Grades".i18n,
                   style: TextStyle(color: AppColors.of(context).text, fontSize: 32.0, fontWeight: FontWeight.bold),
                 ),
                 shadowColor: AppColors.of(context).shadow.withOpacity(0.5),

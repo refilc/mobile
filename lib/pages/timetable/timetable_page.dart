@@ -19,7 +19,7 @@ import 'package:provider/provider.dart';
 import 'package:filcnaplo/utils/color.dart';
 import 'package:intl/intl.dart';
 import 'package:i18n_extension/i18n_widget.dart';
-import 'package:filcnaplo_mobile_ui/common/screens.i18n.dart';
+import 'timetable_page.i18n.dart';
 
 // TODO: "fix" overflow
 // TODO: filter days because kreta returns additional days...
@@ -47,7 +47,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
     _controller = TimetableController(context: context);
     _tabController = TabController(length: 0, vsync: this, initialIndex: 0);
 
-    empty = Empty(subtitle: "No school this week!");
+    empty = Empty(subtitle: "empty".i18n);
 
     // Only update the TabController on week changes
     _controller.addListener(() {
@@ -57,7 +57,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
         _tabController.animateTo(0);
 
         // Empty is updated once every week change
-        empty = Empty(subtitle: "No school this week!");
+        empty = Empty(subtitle: "empty".i18n);
       });
     });
 
@@ -141,8 +141,9 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                             child: Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Text(
-                                "${_controller.currentWeekId + 1}. Week "
-                                        "(" +
+                                "${_controller.currentWeekId + 1}. " +
+                                    "week".i18n +
+                                    " (" +
                                     // Week start
                                     DateFormat((_controller.currentWeek.start.year != DateTime.now().year ? "yy. " : "") + "MMM d.",
                                             I18n.of(context).locale.languageCode)

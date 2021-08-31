@@ -8,18 +8,21 @@ extension Localization on String {
           "download": "download",
           "downloading": "downloading",
           "installing": "installing",
+          "error": "Failed to install update!"
         },
         "hu_hu": {
           "new_update": "Új frissítés",
           "download": "Letöltés",
           "downloading": "Letöltés",
           "installing": "Telepítés",
+          "error": "Nem sikerült telepíteni a frissítést!"
         },
         "de_de": {
           "new_update": "Neues Update",
           "download": "herunterladen",
           "downloading": "Herunterladen",
           "installing": "Installation",
+          "error": "Update konnte nicht installiert werden!"
         },
       };
 

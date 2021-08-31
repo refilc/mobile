@@ -18,10 +18,10 @@ import 'package:filcnaplo_mobile_ui/pages/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:filcnaplo/utils/color.dart';
+import 'absences_page.i18n.dart';
 
 enum AbsenceFilterItems { absences, delays, misses }
 
-// TODO: i18n
 class AbsencesPage extends StatefulWidget {
   AbsencesPage({Key? key}) : super(key: key);
 
@@ -80,13 +80,13 @@ class _AbsencesPageState extends State<AbsencesPage> {
                 automaticallyImplyLeading: false,
                 shadowColor: AppColors.of(context).shadow.withOpacity(0.5),
                 title: Text(
-                  "Absences", // TODO: i18n
+                  "Absences".i18n,
                   style: TextStyle(color: AppColors.of(context).text, fontSize: 32.0, fontWeight: FontWeight.bold),
                 ),
                 bottom: FilterBar(items: [
-                  FilterItem(label: "Hiányzások"),
-                  FilterItem(label: "Késések"),
-                  FilterItem(label: "Hiányok"),
+                  FilterItem(label: "Absences".i18n),
+                  FilterItem(label: "Delays".i18n),
+                  FilterItem(label: "Misses".i18n),
                 ], controller: filterController),
               ),
             ],
@@ -156,10 +156,10 @@ class _AbsencesPageState extends State<AbsencesPage> {
                   padding: EdgeInsets.symmetric(horizontal: 24.0),
                   child: filterWidgets[index],
                 )
-              : Empty(subtitle: "Nothing to see here"),
+              : Empty(subtitle: "empty".i18n),
           itemCount: max(filterWidgets.length, 1),
         ),
-      ), // TODO: i18n
+      ),
     );
   }
 }

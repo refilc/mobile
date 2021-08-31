@@ -54,7 +54,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late String startPageTitle;
   List<Widget> accountTiles = [];
 
-  void openDKT(User u) => tabs.launch("https://dkttanulo.e-kreta.hu/sso?accessToken=${kretaClient.accessToken}");
+  void openDKT(User u) => tabs.launch("https://dkttanulo.e-kreta.hu/sso?accessToken=${kretaClient.accessToken}",
+      customTabsOption: tabs.CustomTabsOption(
+        toolbarColor: AppColors.of(context).background,
+        showPageTitle: true,
+      ));
 
   void _showBottomSheet(User u) {
     showBottomSheetMenu(context, items: [

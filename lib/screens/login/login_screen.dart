@@ -59,10 +59,10 @@ class _LoginScreenState extends State<LoginScreen> {
         });
       } else {
         ScaffoldMessenger.of(context).showSnackBar(CustomSnackBar(
-          content: Text("Failed to get schools", style: TextStyle(color: Colors.white)),
+          content: Text("schools_error".i18n, style: TextStyle(color: Colors.white)),
           backgroundColor: AppColors.of(context).red,
           context: context,
-        )); // TODO: i18n
+        ));
       }
     });
   }

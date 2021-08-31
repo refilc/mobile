@@ -9,6 +9,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:i18n_extension/i18n_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/certification_tile.i18n.dart';
 
 class GradeGraph extends StatefulWidget {
   GradeGraph(this.data, {Key? key, this.dayThreshold = 7}) : super(key: key);
@@ -87,14 +88,13 @@ class _GradeGraphState extends State<GradeGraph> {
 
     Grade halfYearGrade = widget.data.lastWhere((e) => e.type == GradeType.halfYear, orElse: () => Grade.fromJson({}));
 
-    // TODO: i18n
     if (halfYearGrade.date.year != 0 && data.length > 0)
       extraLines.add(VerticalLine(
           x: halfYearGrade.date.month + (halfYearGrade.date.day / 31) + ((halfYearGrade.date.year - data.first.writeDate.year) * 12),
           strokeWidth: 3.0,
           color: AppColors.of(context).text.withOpacity(.75),
           label: VerticalLineLabel(
-              labelResolver: (_) => "Félév",
+              labelResolver: (_) => "mid".i18n,
               show: true,
               alignment: Alignment.topLeft,
               style: TextStyle(

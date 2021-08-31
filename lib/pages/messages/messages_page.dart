@@ -18,8 +18,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:filcnaplo/utils/color.dart';
+import 'messages_page.i18n.dart';
 
-// TODO: i18n
 class MessagesPage extends StatefulWidget {
   MessagesPage({Key? key}) : super(key: key);
 
@@ -76,14 +76,14 @@ class _MessagesPageState extends State<MessagesPage> {
                 automaticallyImplyLeading: false,
                 shadowColor: AppColors.of(context).shadow.withOpacity(0.5),
                 title: Text(
-                  "Messages", // TODO: i18n
+                  "Messages".i18n,
                   style: TextStyle(color: AppColors.of(context).text, fontSize: 32.0, fontWeight: FontWeight.bold),
                 ),
                 bottom: FilterBar(items: [
-                  FilterItem(label: "Beérkezett"),
-                  FilterItem(label: "Elküldött"),
-                  FilterItem(label: "Kuka"),
-                  FilterItem(label: "Piszkozat"),
+                  FilterItem(label: "Inbox".i18n),
+                  FilterItem(label: "Sent".i18n),
+                  FilterItem(label: "Trash".i18n),
+                  FilterItem(label: "Draft".i18n),
                 ], controller: filterController),
               ),
             ],
@@ -94,7 +94,6 @@ class _MessagesPageState extends State<MessagesPage> {
     );
   }
 
-  // TODO: group messages into conversations
   List<DateWidget> getFilterWidgets(MessageType activeData) {
     List<DateWidget> items = [];
     switch (activeData) {
@@ -161,10 +160,10 @@ class _MessagesPageState extends State<MessagesPage> {
                   padding: EdgeInsets.symmetric(horizontal: 24.0),
                   child: filterWidgets[index],
                 )
-              : Empty(subtitle: "Nothing to see here"),
+              : Empty(subtitle: "empty".i18n),
           itemCount: max(filterWidgets.length, 1),
         ),
-      ), // TODO: i18n
+      ),
     );
   }
 }

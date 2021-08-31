@@ -4,8 +4,8 @@ import 'package:filcnaplo_mobile_ui/common/detail.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/absence_tile.dart';
 import 'package:filcnaplo/utils/format.dart';
 import 'package:flutter/material.dart';
+import 'absence_view.i18n.dart';
 
-// TODO: i18n
 class AbsenceView extends StatelessWidget {
   const AbsenceView(this.absence, {Key? key}) : super(key: key);
 
@@ -61,18 +61,18 @@ class AbsenceView extends StatelessWidget {
           // Absence Details
           if (absence.lessonIndex != null)
             Detail(
-              title: "Lesson",
+              title: "Lesson".i18n,
               description: "${absence.lessonIndex}. (${absence.lessonStart.format(context, timeOnly: true)}"
                   " - "
                   "${absence.lessonEnd.format(context, timeOnly: true)})",
             ),
           if (absence.justification != null)
             Detail(
-              title: "Justification",
+              title: "Excuse".i18n,
               description: absence.justification?.description ?? "",
             ),
-          if (absence.mode != "") Detail(title: "Mode", description: absence.mode?.description ?? ""),
-          Detail(title: "Submit date", description: absence.submitDate.format(context))
+          if (absence.mode != "") Detail(title: "Mode".i18n, description: absence.mode?.description ?? ""),
+          Detail(title: "Submit date".i18n, description: absence.submitDate.format(context))
         ],
       ),
     );

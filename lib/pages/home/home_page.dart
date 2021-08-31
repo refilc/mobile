@@ -157,10 +157,10 @@ class _HomePageState extends State<HomePage> {
 
                 // Filter Bar
                 bottom: FilterBar(items: [
-                  FilterItem(label: "Összes"),
-                  FilterItem(label: "Jegyek"),
-                  FilterItem(label: "Üzenetek"),
-                  FilterItem(label: "Hiányok"),
+                  FilterItem(label: "All".i18n),
+                  FilterItem(label: "Grades".i18n),
+                  FilterItem(label: "Messages".i18n),
+                  FilterItem(label: "Absences".i18n),
                 ], controller: filterController),
                 pinned: true,
                 floating: false,
@@ -191,10 +191,10 @@ class _HomePageState extends State<HomePage> {
                   child: ListView(
                     physics: BouncingScrollPhysics(),
                     children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 12.0),
-                        child: Text("Upcoming lessons:"),
-                      ),
+                      // Padding(
+                      //   padding: EdgeInsets.only(left: 12.0),
+                      //   child: Text("Upcoming lessons:"),
+                      // ),
                     ],
                   ),
                 ),
@@ -243,7 +243,7 @@ class _HomePageState extends State<HomePage> {
               widget: AbsenceTile(
                 absence,
                 onTap: () => AbsenceView.show(absence, context: context),
-              ))); // TODO: group absences
+              )));
         });
         break;
     }
@@ -257,16 +257,17 @@ class _HomePageState extends State<HomePage> {
       padding: EdgeInsets.only(top: 12.0),
       child: RefreshIndicator(
         color: Theme.of(context).colorScheme.secondary,
-        onRefresh: () async {
-          // TODO: implement waitgroup
-          await Provider.of<GradeProvider>(context, listen: false).fetch();
-          await Provider.of<TimetableProvider>(context, listen: false).fetch(week: Week.current());
-          await Provider.of<ExamProvider>(context, listen: false).fetch();
-          await Provider.of<HomeworkProvider>(context, listen: false).fetch(from: DateTime.now().subtract(Duration(days: 30)));
-          await Provider.of<MessageProvider>(context, listen: false).fetch(type: MessageType.inbox);
-          await Provider.of<NoteProvider>(context, listen: false).fetch();
-          await Provider.of<EventProvider>(context, listen: false).fetch();
-          await Provider.of<AbsenceProvider>(context, listen: false).fetch();
+        onRefresh: () {
+          return Future.wait([
+            Provider.of<GradeProvider>(context, listen: false).fetch(),
+            Provider.of<TimetableProvider>(context, listen: false).fetch(week: Week.current()),
+            Provider.of<ExamProvider>(context, listen: false).fetch(),
+            Provider.of<HomeworkProvider>(context, listen: false).fetch(from: DateTime.now().subtract(Duration(days: 30))),
+            Provider.of<MessageProvider>(context, listen: false).fetch(type: MessageType.inbox),
+            Provider.of<NoteProvider>(context, listen: false).fetch(),
+            Provider.of<EventProvider>(context, listen: false).fetch(),
+            Provider.of<AbsenceProvider>(context, listen: false).fetch(),
+          ]);
         },
         child: ListView.builder(
           physics: BouncingScrollPhysics(),
@@ -277,7 +278,7 @@ class _HomePageState extends State<HomePage> {
                 child: filterWidgets[index],
               );
             else
-              return Empty(subtitle: "Nothing to see here"); // TODO: i18n
+              return Empty(subtitle: "empty".i18n);
           },
           itemCount: max(filterWidgets.length, 1),
         ),
