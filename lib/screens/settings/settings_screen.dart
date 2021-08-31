@@ -23,6 +23,7 @@ import 'package:filcnaplo_mobile_ui/common/system_chrome.dart';
 import 'package:filcnaplo_mobile_ui/screens/news/news_screen.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/accounts/account_tile.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/accounts/account_view.dart';
+import 'package:filcnaplo_mobile_ui/screens/settings/privacy_view.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/settings_helper.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/updates/updates_view.dart';
 import 'package:flutter/cupertino.dart';
@@ -379,15 +380,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         title: Text("news".i18n),
                         onPressed: () => openNews(context),
                       ),
-                      PanelButton(
-                        leading: Icon(FeatherIcons.dollarSign),
-                        title: Text("supporters".i18n),
-                        // onPressed: () => openSupporters(context), // TODO
-                      ),
+                      // PanelButton(
+                      //   leading: Icon(FeatherIcons.dollarSign),
+                      //   title: Text("supporters".i18n),
+                      // onPressed: () => openSupporters(context), // TODO
+                      // ),
                       PanelButton(
                         leading: Icon(FeatherIcons.lock),
                         title: Text("privacy".i18n),
-                        // onPressed: () => openPrivacy(context), // TODO
+                        onPressed: () => openPrivacy(context),
                       ),
                       PanelButton(
                         leading: Icon(FeatherIcons.award),
@@ -443,4 +444,5 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void openNews(BuildContext context) => Navigator.of(context, rootNavigator: true).push(CupertinoPageRoute(builder: (context) => NewsScreen()));
   void openUpdates(BuildContext context) => UpdateView.show(updateProvider.releases.first, context: context);
+  void openPrivacy(BuildContext context) => PrivacyView.show(context);
 }
