@@ -70,7 +70,7 @@ extension SettingsLocalization on String {
           "edit_profile_picture": "Profilbild bearbeiten",
           "remove_profile_picture": "Profilbild entfernen",
           "light": "Licht",
-          "dark": "Dunkelheit",
+          "dark": "Dunkel",
           "system": "System",
           "add_user": "Benutzer hinzufügen",
           "log_out": "Abmelden",
