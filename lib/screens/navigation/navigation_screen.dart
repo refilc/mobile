@@ -131,10 +131,11 @@ class NavigationState extends State<Navigation> with WidgetsBindingObserver {
                 currentIndex: selected.index,
                 onTap: (index) {
                   // Vibrate, then set the active screen
-                  // if (settings.vibration)
-                  Vibration.vibrate(duration: 40);
-                  setState(() => selected.index = index);
-                  _navigatorState.currentState?.pushReplacementNamed(selected.name);
+                  if (selected.index != index) {
+                    if (settings.vibrate.index > 0) Vibration.vibrate(duration: 20 * settings.vibrate.index);
+                    setState(() => selected.index = index);
+                    _navigatorState.currentState?.pushReplacementNamed(selected.name);
+                  }
                 },
                 elevation: 0,
                 showSelectedLabels: false,

@@ -26,7 +26,16 @@ class SettingsHelper {
     Pages.absences: "absences",
   };
 
+  static Map<VibrationStrength, String> vibrationTitle = {
+    VibrationStrength.off: "voff",
+    VibrationStrength.light: "vlight",
+    VibrationStrength.medium: "vmedium",
+    VibrationStrength.strong: "vstrong",
+  };
+
   static Map<Pages, String> localizedPageTitles() => pageTitle.map((key, value) => MapEntry(key, ScreensLocalization(value).i18n));
+  static Map<VibrationStrength, String> localizedVibrationTitles() =>
+      vibrationTitle.map((key, value) => MapEntry(key, SettingsLocalization(value).i18n));
 
   static void language(BuildContext context) {
     showBottomSheetMenu(
@@ -213,6 +222,42 @@ class SettingsHelper {
     showRoundedModalBottomSheet(
       context,
       child: GradeColorsSetting(),
+    );
+  }
+
+  static void vibrate(BuildContext context) {
+    showBottomSheetMenu(
+      context,
+      items: List.generate(VibrationStrength.values.length, (index) {
+        VibrationStrength value = VibrationStrength.values[index];
+
+        return BottomSheetMenuItem(
+          onPressed: () {
+            Provider.of<SettingsProvider>(context, listen: false).update(context, vibrate: value);
+            Navigator.of(context).maybePop();
+          },
+          title: Row(
+            children: [
+              Container(
+                width: 12.0,
+                height: 12.0,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.secondary.withOpacity((index + 1) / (vibrationTitle.length + 1)),
+                  shape: BoxShape.circle,
+                ),
+              ),
+              SizedBox(width: 16.0),
+              Text(localizedVibrationTitles()[value] ?? "?"),
+              Spacer(),
+              if (value == Provider.of<SettingsProvider>(context, listen: false).vibrate)
+                Icon(
+                  Icons.check_circle,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }

@@ -50,9 +50,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late SettingsProvider settings;
   late KretaClient kretaClient;
   late String firstName;
-  late String themeModeText;
-  late String languageText;
-  late String startPageTitle;
   List<Widget> accountTiles = [];
 
   void openDKT(User u) => tabs.launch("https://dkttanulo.e-kreta.hu/sso?accessToken=${kretaClient.accessToken}",
@@ -134,9 +131,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
     List<String> nameParts = user.name?.split(" ") ?? ["?"];
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
 
-    startPageTitle = SettingsHelper.localizedPageTitles()[settings.startPage] ?? "?";
-    themeModeText = {ThemeMode.light: "light".i18n, ThemeMode.dark: "dark".i18n, ThemeMode.system: "system".i18n}[settings.theme] ?? "?";
-    languageText = SettingsHelper.langMap[settings.language] ?? "?";
+    String startPageTitle = SettingsHelper.localizedPageTitles()[settings.startPage] ?? "?";
+    String themeModeText = {ThemeMode.light: "light".i18n, ThemeMode.dark: "dark".i18n, ThemeMode.system: "system".i18n}[settings.theme] ?? "?";
+    String languageText = SettingsHelper.langMap[settings.language] ?? "?";
+    String vibrateTitle = {
+          VibrationStrength.off: "voff".i18n,
+          VibrationStrength.light: "vlight".i18n,
+          VibrationStrength.medium: "vmedium".i18n,
+          VibrationStrength.strong: "vstrong".i18n,
+        }[settings.vibrate] ??
+        "?";
 
     buildAccountTiles();
 
@@ -289,6 +293,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           title: Text("rounding".i18n),
                           leading: Icon(FeatherIcons.gitCommit),
                           trailing: Text((settings.rounding / 10).toStringAsFixed(1)),
+                        ),
+                        PanelButton(
+                          onPressed: () {
+                            SettingsHelper.vibrate(context);
+                            setState(() {});
+                          },
+                          title: Text("vibrate".i18n),
+                          leading: Icon(FeatherIcons.radio),
+                          trailing: Text(vibrateTitle),
                         ),
                       ],
                     ),
