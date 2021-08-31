@@ -3,7 +3,7 @@ import 'package:filcnaplo_kreta_api/models/message.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/message_view/message_view_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+// import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 
 class MessageView extends StatefulWidget {
   MessageView(this.messages, {Key? key}) : super(key: key);
@@ -27,14 +27,14 @@ class _MessageViewState extends State<MessageView> {
           leading: BackButton(color: AppColors.of(context).text),
           shadowColor: Color(0),
           actions: [
-            Padding(
-              padding: EdgeInsets.only(right: 8.0),
-              child: IconButton(
-                onPressed: () {},
-                icon: Icon(FeatherIcons.archive, color: AppColors.of(context).text),
-                splashRadius: 32.0,
-              ),
-            ),
+            // Padding(
+            //   padding: EdgeInsets.only(right: 8.0),
+            //   child: IconButton(
+            //     onPressed: () {},
+            //     icon: Icon(FeatherIcons.archive, color: AppColors.of(context).text),
+            //     splashRadius: 32.0,
+            //   ),
+            // ),
           ],
         ),
         body: ListView.builder(

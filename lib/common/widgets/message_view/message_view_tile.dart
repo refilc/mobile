@@ -77,20 +77,20 @@ class MessageViewTile extends StatelessWidget {
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(FeatherIcons.cornerUpLeft, color: AppColors.of(context).text),
-                  splashRadius: 24.0,
-                  padding: EdgeInsets.zero,
-                  visualDensity: VisualDensity.compact,
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(FeatherIcons.share2, color: AppColors.of(context).text),
-                  splashRadius: 24.0,
-                  padding: EdgeInsets.zero,
-                  visualDensity: VisualDensity.compact,
-                ),
+                // IconButton(
+                //   onPressed: () {},
+                //   icon: Icon(FeatherIcons.cornerUpLeft, color: AppColors.of(context).text),
+                //   splashRadius: 24.0,
+                //   padding: EdgeInsets.zero,
+                //   visualDensity: VisualDensity.compact,
+                // ),
+                // IconButton(
+                //   onPressed: () {},
+                //   icon: Icon(FeatherIcons.share2, color: AppColors.of(context).text),
+                //   splashRadius: 24.0,
+                //   padding: EdgeInsets.zero,
+                //   visualDensity: VisualDensity.compact,
+                // ),
               ],
             ),
           ),
