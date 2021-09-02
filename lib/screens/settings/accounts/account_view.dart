@@ -30,7 +30,12 @@ class AccountView extends StatelessWidget {
               name: _firstName,
               backgroundColor: ColorUtils.stringToColor(_firstName),
             ),
-            name: Text(user.name, style: TextStyle(fontWeight: FontWeight.w500)),
+            name: Text(
+              user.name,
+              style: TextStyle(fontWeight: FontWeight.w500),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
             username: Text(user.username),
           ),
 
