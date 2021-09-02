@@ -102,7 +102,7 @@ class _UpdateViewState extends State<UpdateView> {
                 ],
               ),
               backgroundColor: AppColors.of(context).filc,
-              onPressed: () => download(),
+              onPressed: state == UpdateState.prepare ? () => download() : null,
             ),
           ),
         ],
