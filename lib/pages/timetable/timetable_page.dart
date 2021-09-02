@@ -39,6 +39,18 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
   late TabController _tabController;
   late Widget empty;
 
+  bool _sameDate(DateTime a, DateTime b) => (a.year == b.year && a.month == b.month && a.day == b.day);
+  int _getDayIndex(DateTime date) {
+    int index = 0;
+    if (_controller.days == null || _controller.days?.length == 0) return index;
+
+    // find the first day with the current date
+    index = _controller.days?.indexOf(_controller.days!.firstWhere((day) => _sameDate(day.first.date, date), orElse: () => [])) ?? 0;
+    if (index == -1) index = 0; // fallback
+
+    return index;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -52,9 +64,10 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
     // Only update the TabController on week changes
     _controller.addListener(() {
       setState(() {
-        _tabController =
-            TabController(length: _controller.days?.length ?? 0, vsync: this, initialIndex: min(_tabController.index, _controller.days?.length ?? 0));
-        _tabController.animateTo(0);
+        _tabController = TabController(
+            length: _controller.days?.length ?? 0, vsync: this, initialIndex: min(_tabController.index, (_controller.days?.length ?? 1) - 1));
+
+        _tabController.animateTo(_getDayIndex(DateTime.now()));
 
         // Empty is updated once every week change
         empty = Empty(subtitle: "empty".i18n);
