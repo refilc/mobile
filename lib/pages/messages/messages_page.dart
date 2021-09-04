@@ -147,11 +147,14 @@ class _MessagesPageState extends State<MessagesPage> {
       child: RefreshIndicator(
         color: Theme.of(context).colorScheme.secondary,
         onRefresh: () async {
-          await messageProvider.fetch(type: MessageType.inbox);
-          await messageProvider.fetch(type: MessageType.sent);
-          await messageProvider.fetch(type: MessageType.trash);
+          await Future.wait([
+            messageProvider.fetch(type: MessageType.inbox),
+            messageProvider.fetch(type: MessageType.sent),
+            messageProvider.fetch(type: MessageType.trash),
+          ]);
         },
         child: ListView.builder(
+          padding: EdgeInsets.zero,
           physics: BouncingScrollPhysics(),
           itemBuilder: (context, index) => filterWidgets.length > 0
               ? Padding(

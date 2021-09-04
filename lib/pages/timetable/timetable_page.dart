@@ -78,6 +78,13 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
     _controller.jump(_controller.currentWeek, context: context);
   }
 
+  @override
+  void dispose() {
+    _tabController.dispose();
+    _controller.dispose();
+    super.dispose();
+  }
+
   String dayTitle(int index) => DateFormat("EEEE", I18n.of(context).locale.languageCode).format(_controller.days![index].first.date);
 
   @override
@@ -206,6 +213,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                                     onRefresh: () => timetableProvider.fetch(week: _controller.currentWeek, db: false),
                                     color: Theme.of(context).colorScheme.secondary,
                                     child: ListView.builder(
+                                      padding: EdgeInsets.zero,
                                       physics: BouncingScrollPhysics(),
                                       itemCount: _controller.days![tab].length + 2,
                                       itemBuilder: (context, index) {

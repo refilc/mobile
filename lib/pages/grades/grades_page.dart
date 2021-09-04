@@ -131,6 +131,7 @@ class _GradesPageState extends State<GradesPage> {
             onRefresh: () => gradeProvider.fetch(),
             color: Theme.of(context).colorScheme.secondary,
             child: ListView.builder(
+              padding: EdgeInsets.zero,
               physics: BouncingScrollPhysics(),
               itemCount: max(subjectTiles.length, 1),
               itemBuilder: (context, index) {

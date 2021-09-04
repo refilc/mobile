@@ -148,6 +148,7 @@ class _AbsencesPageState extends State<AbsencesPage> {
           await noteProvider.fetch();
         },
         child: ListView.builder(
+          padding: EdgeInsets.zero,
           physics: BouncingScrollPhysics(),
           itemBuilder: (context, index) => filterWidgets.length > 0
               ? Padding(

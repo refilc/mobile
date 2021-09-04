@@ -64,9 +64,11 @@ class NavigationState extends State<Navigation> with WidgetsBindingObserver {
 
   @override
   void didChangePlatformBrightness() {
-    Brightness? brightness = WidgetsBinding.instance?.window.platformBrightness;
-    if (brightness != null)
-      Provider.of<ThemeModeObserver>(context, listen: false).changeTheme(brightness == Brightness.light ? ThemeMode.light : ThemeMode.dark);
+    if (settings.theme == ThemeMode.system) {
+      Brightness? brightness = WidgetsBinding.instance?.window.platformBrightness;
+      if (brightness != null)
+        Provider.of<ThemeModeObserver>(context, listen: false).changeTheme(brightness == Brightness.light ? ThemeMode.light : ThemeMode.dark);
+    }
     super.didChangePlatformBrightness();
   }
 

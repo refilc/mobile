@@ -15,13 +15,13 @@ class HeroDialogRoute<T> extends PageRoute<T> {
   String? get barrierLabel => "livecard";
 
   @override
-  Duration get transitionDuration => const Duration(milliseconds: 300);
+  Duration get transitionDuration => const Duration(milliseconds: 250);
 
   @override
   bool get maintainState => true;
 
   @override
-  Color get barrierColor => Colors.black26;
+  Color get barrierColor => Colors.black38;
 
   @override
   Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {

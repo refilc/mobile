@@ -21,7 +21,8 @@ class ProgressBar extends StatelessWidget {
         ),
 
         // Slider
-        Container(
+        AnimatedContainer(
+          duration: Duration(milliseconds: 500),
           width: double.infinity,
           child: CustomPaint(
             painter: ProgressPainter(

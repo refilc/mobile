@@ -31,6 +31,12 @@ class LessonTile extends StatelessWidget {
     // Only put a trailing . if its a digit
     if (RegExp(r'\d').hasMatch(lesson.lessonIndex)) lessonIndexTrailing = ".";
 
+    var now = DateTime.now();
+    if (lesson.start.isBefore(now) && lesson.end.isAfter(now)) {
+      fill = true;
+      accent = Theme.of(context).colorScheme.secondary;
+    }
+
     if (lesson.substituteTeacher != "") {
       fill = true;
       accent = AppColors.of(context).yellow;

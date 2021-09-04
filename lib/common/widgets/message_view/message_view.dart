@@ -10,9 +10,8 @@ class MessageView extends StatefulWidget {
 
   final List<Message> messages;
 
-  static show(List<Message> messages, {required BuildContext context}) {
-    Navigator.of(context).push(CupertinoPageRoute(builder: (context) => MessageView(messages)));
-  }
+  static show(List<Message> messages, {required BuildContext context}) =>
+      Navigator.of(context, rootNavigator: true).push(CupertinoPageRoute(builder: (context) => MessageView(messages)));
 
   @override
   _MessageViewState createState() => _MessageViewState();
@@ -38,6 +37,7 @@ class _MessageViewState extends State<MessageView> {
       ),
       body: SafeArea(
         child: ListView.builder(
+          padding: EdgeInsets.zero,
           physics: BouncingScrollPhysics(),
           itemCount: widget.messages.length,
           itemBuilder: (context, index) {

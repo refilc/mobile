@@ -31,6 +31,7 @@ import 'package:filcnaplo_mobile_ui/common/widgets/grade_view.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/message_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/message_view/message_view.dart';
 import 'package:filcnaplo_mobile_ui/pages/home/live_card/live_card.dart';
+import 'package:filcnaplo_kreta_api/controllers/live_card_controller.dart';
 import 'package:filcnaplo_mobile_ui/common/hero_dialog_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -46,8 +47,8 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  late FilterController filterController;
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  late FilterController _filterController;
   late UserProvider user;
   late UpdateProvider updateProvider;
   late GradeProvider gradeProvider;
@@ -55,11 +56,13 @@ class _HomePageState extends State<HomePage> {
   late AbsenceProvider absenceProvider;
   late String greeting;
   late String firstName;
+  late LiveCardController _liveController;
+  late bool showLiveCard;
 
   @override
   void initState() {
     super.initState();
-    filterController = FilterController(itemCount: 4);
+    _filterController = FilterController(itemCount: 4);
     DateTime now = DateTime.now();
     if (now.hour >= 18)
       greeting = "goodevening";
@@ -69,10 +72,13 @@ class _HomePageState extends State<HomePage> {
       greeting = "goodmorning";
     else
       greeting = "goodevening";
+
+    _liveController = LiveCardController(context: context, vsync: this);
   }
 
   @override
   void dispose() {
+    _liveController.dispose();
     super.dispose();
   }
 
@@ -87,87 +93,90 @@ class _HomePageState extends State<HomePage> {
     List<String> nameParts = user.name?.split(" ") ?? ["?"];
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
 
-    const bool showLiveCard = false;
-
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.only(top: 12.0),
         child: NestedScrollView(
           physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
           headerSliverBuilder: (context, _) => [
-            SliverAppBar(
-              automaticallyImplyLeading: false,
-              centerTitle: false,
-              titleSpacing: 0.0,
-              // Welcome text
-              title: Padding(
-                padding: EdgeInsets.only(left: 24.0),
-                child: Text(
-                  greeting.i18n.fill([firstName]),
-                  overflow: TextOverflow.fade,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18.0,
-                    color: Theme.of(context).textTheme.bodyText1?.color,
-                  ),
-                ),
-              ),
-              actions: [
-                // TODO: Search Button
-                // IconButton(
-                //   icon: Icon(FeatherIcons.search),
-                //   color: Theme.of(context).textTheme.bodyText1?.color,
-                //   splashRadius: 24.0,
-                //   onPressed: () {},
-                // ),
-
-                // Profile Icon
-                Padding(
-                  padding: EdgeInsets.only(right: 24.0),
-                  child: ProfileButton(
-                    child: ProfileImage(
-                      heroTag: "profile",
-                      name: firstName,
-                      backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
-                      newContent: updateProvider.available,
+            AnimatedBuilder(
+              animation: _liveController.animation,
+              builder: (context, child) {
+                return SliverAppBar(
+                  automaticallyImplyLeading: false,
+                  centerTitle: false,
+                  titleSpacing: 0.0,
+                  // Welcome text
+                  title: Padding(
+                    padding: EdgeInsets.only(left: 24.0),
+                    child: Text(
+                      greeting.i18n.fill([firstName]),
+                      overflow: TextOverflow.fade,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.0,
+                        color: Theme.of(context).textTheme.bodyText1?.color,
+                      ),
                     ),
                   ),
-                ),
-              ],
-              expandedHeight: showLiveCard ? 234.0 : 0,
+                  actions: [
+                    // TODO: Search Button
+                    // IconButton(
+                    //   icon: Icon(FeatherIcons.search),
+                    //   color: Theme.of(context).textTheme.bodyText1?.color,
+                    //   splashRadius: 24.0,
+                    //   onPressed: () {},
+                    // ),
 
-              // Live Card
-              flexibleSpace: showLiveCard
-                  ? FlexibleSpaceBar(
-                      background: Padding(
-                        padding: EdgeInsets.only(
-                          left: 24.0,
-                          right: 24.0,
-                          top: 64.0,
-                          bottom: 52.0,
-                        ),
-                        child: LiveCard(
-                          onTap: openLiveCard,
+                    // Profile Icon
+                    Padding(
+                      padding: EdgeInsets.only(right: 24.0),
+                      child: ProfileButton(
+                        child: ProfileImage(
+                          heroTag: "profile",
+                          name: firstName,
+                          backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
+                          newContent: updateProvider.available,
                         ),
                       ),
-                    )
-                  : null,
-              shadowColor: Color(0),
+                    ),
+                  ],
 
-              // Filter Bar
-              bottom: FilterBar(items: [
-                FilterItem(label: "All".i18n),
-                FilterItem(label: "Grades".i18n),
-                FilterItem(label: "Messages".i18n),
-                FilterItem(label: "Absences".i18n),
-              ], controller: filterController),
-              pinned: true,
-              floating: false,
-              snap: false,
+                  expandedHeight: _liveController.animation.value * 234.0,
+
+                  // Live Card
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: Padding(
+                      padding: EdgeInsets.only(
+                        left: 24.0,
+                        right: 24.0,
+                        top: 86.0,
+                        bottom: 52.0,
+                      ),
+                      child: LiveCard(
+                        onTap: openLiveCard,
+                        controller: _liveController,
+                      ),
+                    ),
+                  ),
+                  shadowColor: Color(0),
+
+                  // Filter Bar
+                  bottom: FilterBar(items: [
+                    FilterItem(label: "All".i18n),
+                    FilterItem(label: "Grades".i18n),
+                    FilterItem(label: "Messages".i18n),
+                    FilterItem(label: "Absences".i18n),
+                  ], controller: _filterController),
+                  pinned: true,
+                  floating: false,
+                  snap: false,
+                );
+              },
             ),
           ],
           body: FilterView(
-            controller: filterController,
+            controller: _filterController,
             builder: filterViewBuilder,
           ),
         ),
@@ -183,20 +192,7 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.symmetric(horizontal: 24.0),
             child: SizedBox(
               height: MediaQuery.of(context).size.height / 2,
-              child: LiveCard(
-                shadowColor: Color(0),
-                child: Expanded(
-                  child: ListView(
-                    physics: BouncingScrollPhysics(),
-                    children: [
-                      // Padding(
-                      //   padding: EdgeInsets.only(left: 12.0),
-                      //   child: Text("Upcoming lessons:"),
-                      // ),
-                    ],
-                  ),
-                ),
-              ),
+              child: LiveCard(expanded: true, controller: _liveController),
             ),
           ),
         ),
@@ -268,6 +264,7 @@ class _HomePageState extends State<HomePage> {
           ]);
         },
         child: ListView.builder(
+          padding: EdgeInsets.zero,
           physics: BouncingScrollPhysics(),
           itemBuilder: (context, index) {
             if (filterWidgets.length > 0)
