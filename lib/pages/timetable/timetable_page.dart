@@ -63,9 +63,10 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
 
     // Only update the TabController on week changes
     _controller.addListener(() {
+      if (_controller.days == null) return;
       setState(() {
         _tabController = TabController(
-            length: _controller.days?.length ?? 0, vsync: this, initialIndex: min(_tabController.index, (_controller.days?.length ?? 1) - 1));
+            length: _controller.days!.length, vsync: this, initialIndex: min(_tabController.index, max(_controller.days!.length - 1, 0)));
 
         _tabController.animateTo(_getDayIndex(DateTime.now()));
 
