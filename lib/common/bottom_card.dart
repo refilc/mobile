@@ -8,27 +8,29 @@ class BottomCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(12.0),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(14.0),
-          color: AppColors.of(context).highlight,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 42.0,
-              height: 4.0,
-              margin: EdgeInsets.only(top: 12.0, bottom: 4.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(45.0),
-                color: AppColors.of(context).text.withOpacity(0.10),
+    return SafeArea(
+      child: Padding(
+        padding: EdgeInsets.all(12.0),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(14.0),
+            color: AppColors.of(context).highlight,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 42.0,
+                height: 4.0,
+                margin: EdgeInsets.only(top: 12.0, bottom: 4.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(45.0),
+                  color: AppColors.of(context).text.withOpacity(0.10),
+                ),
               ),
-            ),
-            if (child != null) child!,
-          ],
+              if (child != null) child!,
+            ],
+          ),
         ),
       ),
     );

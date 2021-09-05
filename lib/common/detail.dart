@@ -12,7 +12,7 @@ class Detail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 18.0),
-      child: Text.rich(
+      child: SelectableText.rich(
         TextSpan(
           text: "$title: ",
           style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.of(context).text),
@@ -23,8 +23,8 @@ class Detail extends StatelessWidget {
             ),
           ],
         ),
+        minLines: 1,
         maxLines: maxLines,
-        overflow: TextOverflow.ellipsis,
       ),
     );
   }
