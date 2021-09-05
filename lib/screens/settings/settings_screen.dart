@@ -359,11 +359,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
                   child: Panel(
                     title: Text("notifications".i18n),
-                    child: SwitchListTile(
-                      title: Text("news".i18n, style: TextStyle(fontWeight: FontWeight.w500)),
-                      onChanged: (v) => settings.update(context, newsEnabled: v),
-                      value: settings.newsEnabled,
-                      activeColor: Theme.of(context).colorScheme.secondary,
+                    child: Material(
+                      type: MaterialType.transparency,
+                      child: SwitchListTile(
+                        contentPadding: EdgeInsets.only(left: 12.0),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+                        title: Text("news".i18n, style: TextStyle(fontWeight: FontWeight.w500)),
+                        onChanged: (v) => settings.update(context, newsEnabled: v),
+                        value: settings.newsEnabled,
+                        activeColor: Theme.of(context).colorScheme.secondary,
+                      ),
                     ),
                   ),
                 ),
@@ -417,11 +422,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
                     child: Panel(
                       title: Text("Developer Settings"),
-                      child: SwitchListTile(
-                        title: Text("Developer Mode", style: TextStyle(fontWeight: FontWeight.w500)),
-                        onChanged: (v) => settings.update(context, developerMode: false),
-                        value: settings.developerMode,
-                        activeColor: Theme.of(context).colorScheme.secondary,
+                      child: Material(
+                        type: MaterialType.transparency,
+                        child: SwitchListTile(
+                          contentPadding: EdgeInsets.only(left: 12.0),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+                          title: Text("Developer Mode", style: TextStyle(fontWeight: FontWeight.w500)),
+                          onChanged: (v) => settings.update(context, developerMode: false),
+                          value: settings.developerMode,
+                          activeColor: Theme.of(context).colorScheme.secondary,
+                        ),
                       ),
                     ),
                   ),
