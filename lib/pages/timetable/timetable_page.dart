@@ -75,7 +75,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
       });
     });
 
-    _controller.jump(_controller.currentWeek, context: context);
+    _controller.jump(_controller.currentWeek, context: context, initial: true);
   }
 
   @override
