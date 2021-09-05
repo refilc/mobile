@@ -4,6 +4,7 @@ import 'package:filcnaplo_mobile_ui/pages/home/home_page.dart';
 import 'package:filcnaplo_mobile_ui/pages/messages/messages_page.dart';
 import 'package:filcnaplo_mobile_ui/pages/timetable/timetable_page.dart';
 import 'package:flutter/material.dart';
+import 'package:animations/animations.dart';
 
 Route navigationRouteHandler(RouteSettings settings) {
   switch (settings.name) {
@@ -22,16 +23,14 @@ Route navigationRouteHandler(RouteSettings settings) {
   }
 }
 
-_pageRoute(Widget Function(BuildContext) builder) {
+Route _pageRoute(Widget Function(BuildContext) builder) {
   return PageRouteBuilder(
     pageBuilder: (context, _, __) => builder(context),
-    transitionDuration: Duration(milliseconds: 100),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      var tween = Tween(begin: 0.0, end: 1.0);
-      var offsetAnimation = animation.drive(tween);
-
-      return FadeTransition(
-        opacity: offsetAnimation,
+      return FadeThroughTransition(
+        fillColor: Theme.of(context).scaffoldBackgroundColor,
+        animation: animation,
+        secondaryAnimation: secondaryAnimation,
         child: child,
       );
     },
