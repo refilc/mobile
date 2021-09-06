@@ -150,7 +150,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       padding: EdgeInsets.only(
                         left: 24.0,
                         right: 24.0,
-                        top: 86.0,
+                        top: 58.0 + MediaQuery.of(context).padding.top,
                         bottom: 52.0,
                       ),
                       child: LiveCard(
