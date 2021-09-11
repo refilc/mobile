@@ -86,7 +86,7 @@ class _GradesPageState extends State<GradesPage> {
       child: Panel(
         title: Text("annual_average".i18n),
         child: Container(
-          height: 175.0,
+          height: 165.0,
           padding: EdgeInsets.only(top: 24.0, right: 12.0),
           child: GradeGraph(gradeProvider.grades.where((e) => e.type == GradeType.midYear).toList(), dayThreshold: 2),
         ),
