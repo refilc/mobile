@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 Route loginRoute(Widget widget) {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => widget,
-    transitionDuration: Duration(milliseconds: 500),
+    transitionDuration: Duration(milliseconds: 650),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      var curve = Curves.ease;
+      var curve = Curves.easeInOut;
       var curveTween = CurveTween(curve: curve);
       var begin = Offset(1.0, 0.0);
       var end = Offset.zero;
