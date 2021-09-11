@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:filcnaplo/models/user.dart';
 import 'package:filcnaplo/utils/color.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_card.dart';
@@ -45,7 +48,7 @@ class AccountView extends StatelessWidget {
           if (user.student.className != null) Detail(title: "class".i18n, description: user.student.className!),
           if (user.student.address != null) Detail(title: "address".i18n, description: user.student.address!),
           if (user.student.parents.length > 0)
-            Detail(title: "parents".plural(user.student.parents.length), description: user.student.parents.join(", "))
+            Detail(title: "parents".plural(user.student.parents.length), description: user.student.parents.join(", ")),
         ],
       ),
     );

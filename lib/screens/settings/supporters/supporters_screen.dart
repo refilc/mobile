@@ -106,7 +106,7 @@ class _SupportersScreenState extends State<SupportersScreen> {
           child: Column(
             children: [
               ListTile(
-                leading: BackButton(),
+                leading: BackButton(color: AppColors.of(context).text),
                 title: Text(
                   "supporters".i18n,
                   style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
