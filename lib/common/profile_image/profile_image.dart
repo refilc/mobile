@@ -43,10 +43,10 @@ class ProfileImage extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
           ),
-          child: name != null && (name?.length ?? 0) > 0
+          child: name != null && (name?.trim().length ?? 0) > 0
               ? Center(
                   child: Text(
-                    (name ?? "?")[0],
+                    (name ?? "?").trim()[0],
                     style: TextStyle(
                       color: ColorUtils.foregroundColor(backgroundColor ?? Colors.black),
                       fontWeight: FontWeight.w600,
@@ -64,7 +64,7 @@ class ProfileImage extends StatelessWidget {
     Widget child = FittedBox(
       fit: BoxFit.fitHeight,
       child: Text(
-        (name ?? "?")[0],
+        (name ?? "?").trim()[0],
         style: TextStyle(
           color: ColorUtils.foregroundColor(backgroundColor ?? Colors.black),
           fontWeight: FontWeight.w600,
@@ -79,7 +79,7 @@ class ProfileImage extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          if (name != null && (name?.length ?? 0) > 0)
+          if (name != null && (name?.trim().length ?? 0) > 0)
             Hero(
               tag: heroTag! + "background",
               transitionOnUserGestures: true,
