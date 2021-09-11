@@ -268,7 +268,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         Student student = Student.fromJson(studentJson);
 
         user.user?.name = student.name;
-        dev.log(Provider.of<KretaClient>(context, listen: false).accessToken ?? "");
 
         // Store user
         await Provider.of<DatabaseProvider>(context, listen: false).store.storeUser(user.user!);
