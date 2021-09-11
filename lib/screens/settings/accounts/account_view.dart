@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:filcnaplo/models/user.dart';
 import 'package:filcnaplo/utils/color.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_card.dart';
@@ -32,6 +29,7 @@ class AccountView extends StatelessWidget {
             profileImage: ProfileImage(
               name: _firstName,
               backgroundColor: ColorUtils.stringToColor(user.name),
+              role: user.role,
             ),
             name: SelectableText(
               user.name,

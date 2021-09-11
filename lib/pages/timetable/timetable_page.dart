@@ -119,6 +119,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                         heroTag: "profile",
                         name: firstName,
                         backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
+                        role: user.role,
                       ),
                     ),
                   ),

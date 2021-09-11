@@ -16,7 +16,8 @@ class ProfileButton extends StatelessWidget {
       key: child.key,
       name: child.name,
       radius: child.radius,
-      newContent: child.newContent,
+      badge: child.badge,
+      role: child.role,
       onTap: () {
         Navigator.of(context, rootNavigator: true).push(settingsRoute(SettingsScreen()));
       },

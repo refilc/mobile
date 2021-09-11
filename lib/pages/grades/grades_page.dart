@@ -115,6 +115,7 @@ class _GradesPageState extends State<GradesPage> {
                       heroTag: "profile",
                       name: firstName,
                       backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
+                      role: user.role,
                     ),
                   ),
                 ),

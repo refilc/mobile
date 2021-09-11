@@ -112,7 +112,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
       accountTiles.add(AccountTile(
         name: Text(account.name, style: TextStyle(fontWeight: FontWeight.w500)),
         username: Text(account.username),
-        profileImage: ProfileImage(name: _firstName, backgroundColor: ColorUtils.stringToColor(account.name)),
+        profileImage: ProfileImage(
+          name: _firstName,
+          backgroundColor: ColorUtils.stringToColor(account.name),
+          role: account.role,
+        ),
         onTap: () {
           user.setUser(account.id);
           restore();
@@ -180,7 +184,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 radius: 36.0,
                 onTap: () => _showBottomSheet(user.getUser(user.id ?? "")),
                 name: firstName,
-                newContent: updateProvider.available,
+                badge: updateProvider.available,
+                role: user.role,
                 backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
               ),
               centerTitle: true,

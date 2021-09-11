@@ -1,3 +1,4 @@
+import 'package:filcnaplo/models/user.dart';
 import 'package:filcnaplo_mobile_ui/common/new_content_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:filcnaplo/utils/color.dart';
@@ -10,7 +11,8 @@ class ProfileImage extends StatelessWidget {
     this.backgroundColor,
     this.radius = 20.0,
     this.heroTag,
-    this.newContent = false,
+    this.badge = false,
+    this.role = Role.student,
   }) : super(key: key);
 
   final void Function()? onTap;
@@ -18,7 +20,8 @@ class ProfileImage extends StatelessWidget {
   final Color? backgroundColor;
   final double radius;
   final String? heroTag;
-  final bool newContent;
+  final bool badge;
+  final Role? role;
 
   @override
   Widget build(BuildContext context) {
@@ -29,44 +32,75 @@ class ProfileImage extends StatelessWidget {
   }
 
   Widget buildWithoutHero(BuildContext context) {
-    return Material(
-      clipBehavior: Clip.hardEdge,
-      shape: CircleBorder(),
-      color: backgroundColor,
-      // color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        child: AnimatedContainer(
-          duration: Duration(milliseconds: 200),
-          height: radius * 2,
-          width: radius * 2,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
+    Color color = ColorUtils.foregroundColor(backgroundColor ?? Colors.black);
+    Color roleColor;
+
+    if (Theme.of(context).brightness == Brightness.light)
+      roleColor = Color(0xFF444444);
+    else
+      roleColor = Color(0xFF555555);
+
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Material(
+          clipBehavior: Clip.hardEdge,
+          shape: CircleBorder(),
+          color: backgroundColor,
+          child: InkWell(
+            onTap: onTap,
+            child: AnimatedContainer(
+              duration: Duration(milliseconds: 200),
+              height: radius * 2,
+              width: radius * 2,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+              ),
+              child: name != null && (name?.trim().length ?? 0) > 0
+                  ? Center(
+                      child: Text(
+                        (name ?? "?").trim()[0],
+                        style: TextStyle(
+                          color: color,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18.0 * (radius / 20.0),
+                        ),
+                      ),
+                    )
+                  : Container(),
+            ),
           ),
-          child: name != null && (name?.trim().length ?? 0) > 0
-              ? Center(
-                  child: Text(
-                    (name ?? "?").trim()[0],
-                    style: TextStyle(
-                      color: ColorUtils.foregroundColor(backgroundColor ?? Colors.black),
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18.0 * (radius / 20.0),
-                    ),
-                  ),
-                )
-              : Container(),
         ),
-      ),
+
+        // Role indicator
+        if (role == Role.parent)
+          Container(
+            height: radius * 2,
+            width: radius * 2,
+            child: Container(
+              alignment: Alignment.bottomRight,
+              child: Icon(Icons.shield, color: roleColor, size: radius / 1.3),
+            ),
+          ),
+      ],
     );
   }
 
   Widget buildWithHero(BuildContext context) {
+    Color color = ColorUtils.foregroundColor(backgroundColor ?? Colors.black);
+    Color roleColor;
+
+    if (Theme.of(context).brightness == Brightness.light)
+      roleColor = Color(0xFF444444);
+    else
+      roleColor = Color(0xFF555555);
+
     Widget child = FittedBox(
       fit: BoxFit.fitHeight,
       child: Text(
         (name ?? "?").trim()[0],
         style: TextStyle(
-          color: ColorUtils.foregroundColor(backgroundColor ?? Colors.black),
+          color: color,
           fontWeight: FontWeight.w600,
           fontSize: 18.0 * (radius / 20.0),
         ),
@@ -87,7 +121,6 @@ class ProfileImage extends StatelessWidget {
                 clipBehavior: Clip.hardEdge,
                 shape: CircleBorder(),
                 color: backgroundColor,
-                // color: Colors.transparent,
                 child: AnimatedContainer(
                   duration: Duration(milliseconds: 200),
                   height: radius * 2,
@@ -106,11 +139,31 @@ class ProfileImage extends StatelessWidget {
               type: MaterialType.transparency,
             ),
           ),
-          if (newContent)
+
+          // Badge
+          if (badge)
             Hero(
               tag: heroTag! + "new_content_indicator",
               child: NewContentIndicator(size: radius * 2),
             ),
+
+          // Role indicator
+          if (role == Role.parent)
+            Hero(
+              tag: heroTag! + "role_indicator",
+              child: FittedBox(
+                fit: BoxFit.fitHeight,
+                child: Container(
+                  height: radius * 2,
+                  width: radius * 2,
+                  child: Container(
+                    alignment: Alignment.bottomRight,
+                    child: Icon(Icons.shield, color: roleColor, size: radius / 1.3),
+                  ),
+                ),
+              ),
+            ),
+
           Material(
             color: Colors.transparent,
             clipBehavior: Clip.hardEdge,

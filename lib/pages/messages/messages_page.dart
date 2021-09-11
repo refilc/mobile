@@ -68,6 +68,7 @@ class _MessagesPageState extends State<MessagesPage> {
                       heroTag: "profile",
                       name: firstName,
                       backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
+                      role: user.role,
                     ),
                   ),
                 ),
