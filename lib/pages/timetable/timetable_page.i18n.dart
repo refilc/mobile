@@ -7,16 +7,19 @@ extension Localization on String {
           "timetable": "Timetable",
           "empty": "No school this week!",
           "week": "Week",
+          "error": "Failed to fetch timetable!",
         },
         "hu_hu": {
           "timetable": "Órarend",
           "empty": "Ezen a héten nincs iskola.",
           "week": "Hét",
+          "error": "Nem sikerült lekérni az órarendet!",
         },
         "de_de": {
           "timetable": "Zeitplan",
           "empty": "Keine Schule diese Woche.",
           "week": "Woche",
+          "error": "Der Fahrplan konnte nicht abgerufen werden!",
         },
       };
 
