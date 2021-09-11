@@ -75,6 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Container(
         decoration: BoxDecoration(gradient: _backgroundGradient),
         child: SingleChildScrollView(
+          physics: ClampingScrollPhysics(),
           controller: _scrollController,
           child: Container(
             decoration: BoxDecoration(gradient: _backgroundGradient),
