@@ -16,13 +16,17 @@ class _DayTitleState extends State<DayTitle> {
   @override
   void initState() {
     super.initState();
-    widget.controller.addListener(() => setState(() {}));
+    widget.controller.addListener(listener);
+  }
+
+  void listener() {
+    if (mounted) setState(() {});
   }
 
   @override
   void dispose() {
+    widget.controller.removeListener(listener);
     super.dispose();
-    widget.controller.removeListener(() {});
   }
 
   @override

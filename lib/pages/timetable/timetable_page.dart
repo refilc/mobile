@@ -21,7 +21,7 @@ import 'package:intl/intl.dart';
 import 'package:i18n_extension/i18n_widget.dart';
 import 'timetable_page.i18n.dart';
 
-// todo: "fix" overflow
+// todo: "fix" overflow (priority: -1)
 // TODO: filter days because kreta returns additional days...
 
 class TimetablePage extends StatefulWidget {
@@ -50,6 +50,9 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
     return index;
   }
 
+  // Update timetable on user change
+  void _userListener() => _controller.jump(_controller.currentWeek, context: context);
+
   @override
   void initState() {
     super.initState();
@@ -75,12 +78,17 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
     });
 
     _controller.jump(_controller.currentWeek, context: context, initial: true);
+
+    // Listen for user changes
+    user = Provider.of<UserProvider>(context, listen: false);
+    user.addListener(_userListener);
   }
 
   @override
   void dispose() {
     _tabController.dispose();
     _controller.dispose();
+    user.removeListener(_userListener);
     super.dispose();
   }
 
@@ -99,9 +107,9 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
       body: Padding(
         padding: EdgeInsets.only(top: 9.0),
         child: RefreshIndicator(
-          onRefresh: () => timetableProvider.fetch(week: _controller.currentWeek, db: false),
+          onRefresh: () => _controller.jump(_controller.currentWeek, context: context, loader: false),
           color: Theme.of(context).colorScheme.secondary,
-          edgeOffset: 100.0,
+          edgeOffset: 132.0,
           child: NestedScrollView(
             physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
             headerSliverBuilder: (context, _) => [
@@ -211,13 +219,15 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                                 children: List.generate(
                                   _controller.days!.length,
                                   (tab) => RefreshIndicator(
-                                    onRefresh: () => timetableProvider.fetch(week: _controller.currentWeek, db: false),
+                                    onRefresh: () => _controller.jump(_controller.currentWeek, context: context, loader: false),
                                     color: Theme.of(context).colorScheme.secondary,
                                     child: ListView.builder(
                                       padding: EdgeInsets.zero,
                                       physics: BouncingScrollPhysics(),
                                       itemCount: _controller.days![tab].length + 2,
                                       itemBuilder: (context, index) {
+                                        if (_controller.days == null) return Container();
+
                                         // Header
                                         if (index == 0)
                                           return Padding(
