@@ -1,8 +1,13 @@
 // ignore_for_file: dead_code
 
+import 'dart:developer' as dev;
 import 'dart:math';
 
+import 'package:filcnaplo/api/providers/database_provider.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
+import 'package:filcnaplo_kreta_api/client/api.dart';
+import 'package:filcnaplo_kreta_api/client/client.dart';
+import 'package:filcnaplo_kreta_api/models/student.dart';
 import 'package:filcnaplo_kreta_api/providers/absence_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/event_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/exam_provider.dart';
@@ -244,6 +249,32 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     return items;
   }
 
+  Future<void> _sync() {
+    return Future.wait([
+      Provider.of<GradeProvider>(context, listen: false).fetch(),
+      Provider.of<TimetableProvider>(context, listen: false).fetch(week: Week.current()),
+      Provider.of<ExamProvider>(context, listen: false).fetch(),
+      Provider.of<HomeworkProvider>(context, listen: false).fetch(from: DateTime.now().subtract(Duration(days: 30))),
+      Provider.of<MessageProvider>(context, listen: false).fetch(type: MessageType.inbox),
+      Provider.of<NoteProvider>(context, listen: false).fetch(),
+      Provider.of<EventProvider>(context, listen: false).fetch(),
+      Provider.of<AbsenceProvider>(context, listen: false).fetch(),
+      // Sync student
+      () async {
+        if (user.user == null) return;
+        Map? studentJson = await Provider.of<KretaClient>(context, listen: false).getAPI(KretaAPI.student(user.instituteCode!));
+        if (studentJson == null) return;
+        Student student = Student.fromJson(studentJson);
+
+        user.user?.name = student.name;
+        dev.log(Provider.of<KretaClient>(context, listen: false).accessToken ?? "");
+
+        // Store user
+        await Provider.of<DatabaseProvider>(context, listen: false).store.storeUser(user.user!);
+      }(),
+    ]);
+  }
+
   Widget filterViewBuilder(context, int activeData) {
     List<Widget> filterWidgets = sortDateWidgets(context, dateWidgets: getFilterWidgets(HomeFilterItems.values[activeData]));
 
@@ -251,18 +282,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       padding: EdgeInsets.only(top: 12.0),
       child: RefreshIndicator(
         color: Theme.of(context).colorScheme.secondary,
-        onRefresh: () {
-          return Future.wait([
-            Provider.of<GradeProvider>(context, listen: false).fetch(),
-            Provider.of<TimetableProvider>(context, listen: false).fetch(week: Week.current()),
-            Provider.of<ExamProvider>(context, listen: false).fetch(),
-            Provider.of<HomeworkProvider>(context, listen: false).fetch(from: DateTime.now().subtract(Duration(days: 30))),
-            Provider.of<MessageProvider>(context, listen: false).fetch(type: MessageType.inbox),
-            Provider.of<NoteProvider>(context, listen: false).fetch(),
-            Provider.of<EventProvider>(context, listen: false).fetch(),
-            Provider.of<AbsenceProvider>(context, listen: false).fetch(),
-          ]);
-        },
+        onRefresh: _sync,
         child: ListView.builder(
           padding: EdgeInsets.zero,
           physics: BouncingScrollPhysics(),
