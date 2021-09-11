@@ -43,6 +43,7 @@ class _LiveCardState extends State<LiveCard> {
     );
   }
 
+  // TODO: add title (e.g. "Upcoming lessons:"), bit more padding
   Widget _buildBody() {
     return Expanded(
       child: ListView.builder(
