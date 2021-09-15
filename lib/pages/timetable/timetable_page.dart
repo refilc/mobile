@@ -134,7 +134,21 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                 ],
                 automaticallyImplyLeading: false,
                 // Current day text
-                title: (_controller.days?.length ?? 0) > 0
+                title: PageTransitionSwitcher(
+                  // reverse: true, // uncomment to see transition in reverse
+                  transitionBuilder: (
+                    Widget child,
+                    Animation<double> primaryAnimation,
+                    Animation<double> secondaryAnimation,
+                  ) {
+                    return SharedAxisTransition(
+                      animation: primaryAnimation,
+                      secondaryAnimation: secondaryAnimation,
+                      transitionType: SharedAxisTransitionType.horizontal,
+                      child: child,
+                    );
+                  },
+                  child: (_controller.days?.length ?? 0) > 0
                     ? DayTitle(controller: _tabController, dayTitle: dayTitle)
                     : Text(
                         "timetable".i18n,
@@ -144,6 +158,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                           color: AppColors.of(context).text,
                         ),
                       ),
+                ),
                 shadowColor: AppColors.of(context).shadow.withOpacity(0.5),
                 bottom: PreferredSize(
                   child: Padding(
@@ -153,7 +168,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                       children: [
                         // Previous week
                         IconButton(
-                            onPressed: () => setState(() {
+                            onPressed:  _controller.currentWeekId == 0 ? null : () => setState(() {
                                   _controller.previous(context);
                                 }),
                             splashRadius: 24.0,
@@ -164,8 +179,9 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                         InkWell(
                           borderRadius: BorderRadius.circular(6.0),
                           onTap: () => setState(() {
+                            int previousWeekId = _controller.currentWeekId;
                             _controller.current(context);
-                            _controller.jump(_controller.currentWeek, context: context);
+                            _controller.jump(_controller.currentWeek, context: context, loader: previousWeekId ==  _controller.currentWeekId);
                           }),
                           child: Padding(
                             padding: EdgeInsets.all(8.0),
@@ -193,7 +209,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
 
                         // Next week
                         IconButton(
-                            onPressed: () => setState(() {
+                            onPressed: _controller.currentWeekId == 51 ? null : () => setState(() {
                                   _controller.next(context);
                                 }),
                             splashRadius: 24.0,
@@ -206,7 +222,19 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                 ),
               ),
             ],
-            body: _controller.days != null
+            body: PageTransitionSwitcher(
+             transitionBuilder: (
+               Widget child,
+               Animation<double> primaryAnimation,
+               Animation<double> secondaryAnimation,
+             ) {
+               return FadeThroughTransition(
+                 child: child,
+                 animation: primaryAnimation,
+                 secondaryAnimation: secondaryAnimation,
+               );
+             },
+             child:  _controller.days != null
                 ? Column(
                     children: [
                       // Week view
@@ -311,9 +339,12 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                     ],
                   )
                 : Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
                   ),
-          ),
+              ),
+           ),
         ),
       ),
     );
