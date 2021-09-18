@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:provider/provider.dart';
-import 'package:vibration/vibration.dart';
 import 'package:filcnaplo_mobile_ui/common/screens.i18n.dart';
 import 'package:filcnaplo/api/providers/news_provider.dart';
 
