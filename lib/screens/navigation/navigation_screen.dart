@@ -14,15 +14,6 @@ import 'package:provider/provider.dart';
 import 'package:filcnaplo_mobile_ui/common/screens.i18n.dart';
 import 'package:filcnaplo/api/providers/news_provider.dart';
 
-// FIXED todo: system chrome does not change after login
-// FIXED todo: user data doesn't get loaded from the database (or saved)
-// FIXED todo: fix Provider was used after being disposed.
-// FIXED todo: check filter for optimization issues (because it's laggy, ListBuilder maybe?)
-// FIXED todo: login current user on startup
-// FIXED todo: refresh login if `invalid_grant` (3 tries)
-// FIXED todo: fix multiple databases open at once
-// FIXED todo: fetch config from filc, set user-agent
-
 class Navigation extends StatefulWidget {
   Navigation({Key? key}) : super(key: key);
 
