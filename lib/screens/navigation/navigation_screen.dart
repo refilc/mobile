@@ -135,19 +135,17 @@ class NavigationState extends State<Navigation> with WidgetsBindingObserver {
                 onTap: (index) {
                   // Vibrate, then set the active screen
                   if (selected.index != index) {
-                    if (settings.vibrate.index > 0) {
-                      switch (settings.vibrate) {
-                        case VibrationStrength.light:
-                          HapticFeedback.lightImpact();
-                          break;
-                        case VibrationStrength.medium:
-                          HapticFeedback.mediumImpact();
-                          break;
-                        case VibrationStrength.strong:
-                          HapticFeedback.heavyImpact();
-                          break;
-                        default:
-                      }
+                    switch (settings.vibrate) {
+                      case VibrationStrength.light:
+                        HapticFeedback.lightImpact();
+                        break;
+                      case VibrationStrength.medium:
+                        HapticFeedback.mediumImpact();
+                        break;
+                      case VibrationStrength.strong:
+                        HapticFeedback.heavyImpact();
+                        break;
+                      default:
                     }
                     setState(() => selected.index = index);
                     _navigatorState.currentState?.pushReplacementNamed(selected.name);
