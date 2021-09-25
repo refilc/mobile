@@ -1,6 +1,5 @@
 // ignore_for_file: dead_code
 
-import 'dart:developer' as dev;
 import 'dart:math';
 
 import 'package:filcnaplo/api/providers/database_provider.dart';
