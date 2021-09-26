@@ -32,7 +32,7 @@ Tanulmányi adataid csak közvetlenül az alkalmazás és a Kréta-szerverek kö
 A Filc fejlesztői és üzemeltetői a tanulmányi adataidat semmilyen célból nem másolják, nem tárolják és harmadik félnek nem továbbítják. Ezeket így az e-Kréta Informatikai Zrt. kezeli, az ő tájékoztatójukat itt találod: https://tudasbazis.ekreta.hu/pages/viewpage.action?pageId=4065038.
 Azok törlésével vagy módosítával kapcsolatban keresd az osztályfőnöködet vagy az iskolád rendszergazdáját.
 
-Az alkalmazás névetelen használati statisztikákat gyűjt, ezek alapján tudjuk meghatározni a felhasználók és a telepítések számát. Ezt a beállításokban kikapcsolhatod.
+Az alkalmazás névtelen használati statisztikákat gyűjt, ezek alapján tudjuk meghatározni a felhasználók és a telepítések számát. Ezt a beállításokban kikapcsolhatod.
 Kérünk, hogy ha csak teheted, hagyd ezt a funkciót bekapcsolva.
 
 Amikor az alkalmazás hibába ütközik, lehetőség van hibajelentés küldésére.
