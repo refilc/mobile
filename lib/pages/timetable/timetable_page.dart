@@ -316,21 +316,6 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                                 ),
                               ),
 
-                        /*
-                       *  Please modify `flutter/lib/src/material/tabs.dart:1271` accordingly
-                       *  
-                       *  +  wrappedTabs[index] = Padding(
-                       *  +    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                       *       child: InkWell(
-                       *         ...
-                       *  +      borderRadius: BorderRadius.circular(8.0),
-                       *         ...
-                       *  +    ),
-                       *       ...
-                       *     );
-                       *  
-                       */
-
                         // Day selector
                         TabBar(
                           controller: _tabController,
