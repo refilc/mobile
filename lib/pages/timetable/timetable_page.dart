@@ -62,6 +62,8 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
     _tabController = TabController(length: 0, vsync: this, initialIndex: 0);
 
     empty = Empty(subtitle: "empty".i18n);
+    
+    bool initial = true;
 
     // Only update the TabController on week changes
     _controller.addListener(() {
@@ -70,8 +72,9 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
         _tabController = TabController(
             length: _controller.days!.length, vsync: this, initialIndex: min(_tabController.index, max(_controller.days!.length - 1, 0)));
 
-        if (_controller.previousWeekId != _controller.currentWeekId) _tabController.animateTo(_getDayIndex(DateTime.now()));
-
+        if (initial || _controller.previousWeekId != _controller.currentWeekId) _tabController.animateTo(_getDayIndex(DateTime.now()));
+        initial = false;
+        
         // Empty is updated once every week change
         empty = Empty(subtitle: "empty".i18n);
       });
