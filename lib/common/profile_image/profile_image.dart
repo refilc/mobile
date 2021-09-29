@@ -59,7 +59,7 @@ class ProfileImage extends StatelessWidget {
               child: name != null && (name?.trim().length ?? 0) > 0
                   ? Center(
                       child: Text(
-                        (name ?? "?").trim()[0],
+                        (name?.trim().length ?? 0) > 0 ? (name ?? "?").trim()[0] : "?",
                         style: TextStyle(
                           color: color,
                           fontWeight: FontWeight.w600,
@@ -98,7 +98,7 @@ class ProfileImage extends StatelessWidget {
     Widget child = FittedBox(
       fit: BoxFit.fitHeight,
       child: Text(
-        (name ?? "?").trim()[0],
+        (name?.trim().length ?? 0) > 0 ? (name ?? "?").trim()[0] : "?",
         style: TextStyle(
           color: color,
           fontWeight: FontWeight.w600,
