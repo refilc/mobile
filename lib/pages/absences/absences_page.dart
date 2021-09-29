@@ -5,10 +5,7 @@ import 'package:filcnaplo_kreta_api/providers/note_provider.dart';
 import 'package:filcnaplo/api/providers/user_provider.dart';
 import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_mobile_ui/common/empty.dart';
-import 'package:filcnaplo_mobile_ui/common/filter/filter_bar.dart';
-import 'package:filcnaplo_mobile_ui/common/filter/filter_controller.dart';
-import 'package:filcnaplo_mobile_ui/common/filter/filter_item.dart';
-import 'package:filcnaplo_mobile_ui/common/filter/filter_view.dart';
+import 'package:filcnaplo_mobile_ui/common/filter_bar.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_button.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/absence_tile.dart';
@@ -29,18 +26,18 @@ class AbsencesPage extends StatefulWidget {
   _AbsencesPageState createState() => _AbsencesPageState();
 }
 
-class _AbsencesPageState extends State<AbsencesPage> {
+class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMixin {
   late UserProvider user;
   late AbsenceProvider absenceProvider;
   late NoteProvider noteProvider;
   late String firstName;
-  late FilterController filterController;
+  late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
 
-    filterController = FilterController(itemCount: 3);
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -84,13 +81,14 @@ class _AbsencesPageState extends State<AbsencesPage> {
                 style: TextStyle(color: AppColors.of(context).text, fontSize: 32.0, fontWeight: FontWeight.bold),
               ),
               bottom: FilterBar(items: [
-                FilterItem(label: "Absences".i18n),
-                FilterItem(label: "Delays".i18n),
-                FilterItem(label: "Misses".i18n),
-              ], controller: filterController),
+                Tab(text: "Absences".i18n),
+                Tab(text: "Delays".i18n),
+                Tab(text: "Misses".i18n),
+              ], controller: _tabController),
             ),
           ],
-          body: FilterView(controller: filterController, builder: filterViewBuilder),
+          body: TabBarView(
+              physics: BouncingScrollPhysics(), controller: _tabController, children: List.generate(3, (index) => filterViewBuilder(context, index))),
         ),
       ),
     );

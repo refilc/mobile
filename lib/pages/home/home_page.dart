@@ -3,6 +3,8 @@
 import 'dart:developer' as dev;
 import 'dart:math';
 
+import 'package:implicitly_animated_reorderable_list/transitions.dart';
+import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:filcnaplo/api/providers/database_provider.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
 import 'package:filcnaplo_kreta_api/client/api.dart';
@@ -21,10 +23,7 @@ import 'package:filcnaplo_kreta_api/models/grade.dart';
 import 'package:filcnaplo_kreta_api/models/message.dart';
 import 'package:filcnaplo_kreta_api/models/week.dart';
 import 'package:filcnaplo_mobile_ui/common/empty.dart';
-import 'package:filcnaplo_mobile_ui/common/filter/filter_bar.dart';
-import 'package:filcnaplo_mobile_ui/common/filter/filter_controller.dart';
-import 'package:filcnaplo_mobile_ui/common/filter/filter_item.dart';
-import 'package:filcnaplo_mobile_ui/common/filter/filter_view.dart';
+import 'package:filcnaplo_mobile_ui/common/filter_bar.dart';
 import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_button.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
@@ -53,7 +52,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
-  late FilterController _filterController;
+  late TabController _tabController;
   late UserProvider user;
   late UpdateProvider updateProvider;
   late GradeProvider gradeProvider;
@@ -63,11 +62,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late String firstName;
   late LiveCardController _liveController;
   late bool showLiveCard;
+  List<Widget> filterWidgets = [];
 
   @override
   void initState() {
     super.initState();
-    _filterController = FilterController(itemCount: 4);
+    _tabController = TabController(length: 4, vsync: this);
+    _tabController.addListener(this.updateFilteredWidgets);
+
     DateTime now = DateTime.now();
     if (now.hour >= 18)
       greeting = "goodevening";
@@ -79,11 +81,30 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       greeting = "goodevening";
 
     _liveController = LiveCardController(context: context, vsync: this);
+
+    gradeProvider = Provider.of<GradeProvider>(context, listen: false);
+    messageProvider = Provider.of<MessageProvider>(context, listen: false);
+    absenceProvider = Provider.of<AbsenceProvider>(context, listen: false);
+    [gradeProvider, messageProvider, absenceProvider].forEach((p) => p.addListener(updateFilteredWidgets));
+
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      updateFilteredWidgets();
+    });
+  }
+
+  void updateFilteredWidgets() {
+    setState(() {
+      filterWidgets = sortDateWidgets(context, dateWidgets: getFilterWidgets(HomeFilterItems.values[_tabController.index]));
+    });
   }
 
   @override
   void dispose() {
+    [gradeProvider, messageProvider, absenceProvider].forEach((p) => p.removeListener(updateFilteredWidgets));
     _liveController.dispose();
+    _tabController.removeListener(this.updateFilteredWidgets);
+    _tabController.dispose();
+
     super.dispose();
   }
 
@@ -91,103 +112,125 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     user = Provider.of<UserProvider>(context);
     updateProvider = Provider.of<UpdateProvider>(context);
-    gradeProvider = Provider.of<GradeProvider>(context);
-    messageProvider = Provider.of<MessageProvider>(context);
-    absenceProvider = Provider.of<AbsenceProvider>(context);
-
     List<String> nameParts = user.name?.split(" ") ?? ["?"];
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
 
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.only(top: 12.0),
-        child: NestedScrollView(
-          physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-          headerSliverBuilder: (context, _) => [
-            AnimatedBuilder(
-              animation: _liveController.animation,
-              builder: (context, child) {
-                return SliverAppBar(
-                  automaticallyImplyLeading: false,
-                  centerTitle: false,
-                  titleSpacing: 0.0,
-                  // Welcome text
-                  title: Padding(
-                    padding: EdgeInsets.only(left: 24.0),
-                    child: Text(
-                      greeting.i18n.fill([firstName]),
-                      overflow: TextOverflow.fade,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
-                        color: Theme.of(context).textTheme.bodyText1?.color,
+        body: Padding(
+      padding: const EdgeInsets.only(top: 12.0),
+      child: NestedScrollView(
+        physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+        headerSliverBuilder: (context, _) => [
+          AnimatedBuilder(
+            animation: _liveController.animation,
+            builder: (context, child) {
+              return SliverAppBar(
+                automaticallyImplyLeading: false,
+                centerTitle: false,
+                titleSpacing: 0.0,
+                // Welcome text
+                title: Padding(
+                  padding: const EdgeInsets.only(left: 24.0),
+                  child: Text(
+                    greeting.i18n.fill([firstName]),
+                    overflow: TextOverflow.fade,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18.0,
+                      color: Theme.of(context).textTheme.bodyText1?.color,
+                    ),
+                  ),
+                ),
+                actions: [
+                  // TODO: Search Button
+                  // IconButton(
+                  //   icon: Icon(FeatherIcons.search),
+                  //   color: Theme.of(context).textTheme.bodyText1?.color,
+                  //   splashRadius: 24.0,
+                  //   onPressed: () {},
+                  // ),
+
+                  // Profile Icon
+                  Padding(
+                    padding: const EdgeInsets.only(right: 24.0),
+                    child: ProfileButton(
+                      child: ProfileImage(
+                        heroTag: "profile",
+                        name: firstName,
+                        backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
+                        badge: updateProvider.available,
+                        role: user.role,
                       ),
                     ),
                   ),
-                  actions: [
-                    // TODO: Search Button
-                    // IconButton(
-                    //   icon: Icon(FeatherIcons.search),
-                    //   color: Theme.of(context).textTheme.bodyText1?.color,
-                    //   splashRadius: 24.0,
-                    //   onPressed: () {},
-                    // ),
+                ],
 
-                    // Profile Icon
-                    Padding(
-                      padding: EdgeInsets.only(right: 24.0),
-                      child: ProfileButton(
-                        child: ProfileImage(
-                          heroTag: "profile",
-                          name: firstName,
-                          backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
-                          badge: updateProvider.available,
-                          role: user.role,
-                        ),
-                      ),
+                expandedHeight: _liveController.animation.value * 234.0,
+
+                // Live Card
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Padding(
+                    padding: EdgeInsets.only(
+                      left: 24.0,
+                      right: 24.0,
+                      top: 58.0 + MediaQuery.of(context).padding.top,
+                      bottom: 52.0,
                     ),
-                  ],
-
-                  expandedHeight: _liveController.animation.value * 234.0,
-
-                  // Live Card
-                  flexibleSpace: FlexibleSpaceBar(
-                    background: Padding(
-                      padding: EdgeInsets.only(
-                        left: 24.0,
-                        right: 24.0,
-                        top: 58.0 + MediaQuery.of(context).padding.top,
-                        bottom: 52.0,
-                      ),
-                      child: LiveCard(
-                        onTap: openLiveCard,
-                        controller: _liveController,
-                      ),
+                    child: LiveCard(
+                      onTap: openLiveCard,
+                      controller: _liveController,
                     ),
                   ),
-                  shadowColor: Color(0),
+                ),
+                shadowColor: Color(0),
 
-                  // Filter Bar
-                  bottom: FilterBar(items: [
-                    FilterItem(label: "All".i18n),
-                    FilterItem(label: "Grades".i18n),
-                    FilterItem(label: "Messages".i18n),
-                    FilterItem(label: "Absences".i18n),
-                  ], controller: _filterController),
-                  pinned: true,
-                  floating: false,
-                  snap: false,
-                );
-              },
-            ),
-          ],
-          body: FilterView(
-            controller: _filterController,
-            builder: filterViewBuilder,
+                // Filter Bar
+                bottom: FilterBar(items: [
+                  Tab(text: "All".i18n),
+                  Tab(text: "Grades".i18n),
+                  Tab(text: "Messages".i18n),
+                  Tab(text: "Absences".i18n),
+                ], controller: _tabController),
+                pinned: true,
+                floating: false,
+                snap: false,
+              );
+            },
           ),
-        ),
+        ],
+        body: Padding(
+            padding: const EdgeInsets.only(top: 12.0),
+            child: RefreshIndicator(
+                color: Theme.of(context).colorScheme.secondary,
+                onRefresh: _sync,
+                child: GestureDetector(
+                    child: ImplicitlyAnimatedList<Widget>(
+                      items: filterWidgets,
+                      spawnIsolate: false,
+                      padding: const EdgeInsets.symmetric(horizontal: 36.0),
+                      physics: const BouncingScrollPhysics(),
+                      areItemsTheSame: (a, b) => a.key == b.key,
+                      itemBuilder: (context, animation, item, index) {
+                        return SizeFadeTransition(
+                          sizeFraction: 0.7,
+                          curve: Curves.easeInOut,
+                          animation: animation,
+                          child: item,
+                        );
+                      },
+                    ),
+                    onHorizontalDragEnd: (DragEndDetails details) {
+                      double v = details.primaryVelocity ?? 0;
+                      if (v > 0 && _tabController.index > 0) {
+                        // User swiped Left
+                        _tabController.animateTo(_tabController.index - 1);
+                      } else if (v < 0 && _tabController.index < 3) {
+                        _tabController.animateTo(_tabController.index + 1);
+                        // User swiped Right
+                      }
+                    }))),
       ),
-    );
+    ));
   }
 
   void openLiveCard() {
@@ -198,7 +241,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             padding: EdgeInsets.symmetric(horizontal: 24.0),
             child: SizedBox(
               height: MediaQuery.of(context).size.height / 2,
-              child: LiveCard(expanded: true, controller: _liveController),
+              child: LiveCard(expanded: true, onTap: () => Navigator.pop(context), controller: _liveController),
             ),
           ),
         ),
@@ -218,6 +261,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         gradeProvider.grades.forEach((grade) {
           if (grade.type == GradeType.midYear) {
             items.add(DateWidget(
+              key: grade.id,
               date: grade.date,
               widget: GradeTile(grade, onTap: () => GradeView.show(grade, context: context)),
             ));
@@ -228,6 +272,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         messageProvider.messages.forEach((message) {
           if (message.type == MessageType.inbox) {
             items.add(DateWidget(
+                key: "${message.id}",
                 date: message.date,
                 widget: MessageTile(
                   message,
@@ -239,6 +284,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       case HomeFilterItems.absences:
         absenceProvider.absences.forEach((absence) {
           items.add(DateWidget(
+              key: absence.id,
               date: absence.date,
               widget: AbsenceTile(
                 absence,
@@ -272,33 +318,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         // Store user
         await Provider.of<DatabaseProvider>(context, listen: false).store.storeUser(user.user!);
       }(),
-    ]);
-  }
-
-  Widget filterViewBuilder(context, int activeData) {
-    List<Widget> filterWidgets = sortDateWidgets(context, dateWidgets: getFilterWidgets(HomeFilterItems.values[activeData]));
-
-    return Padding(
-      padding: EdgeInsets.only(top: 12.0),
-      child: RefreshIndicator(
-        color: Theme.of(context).colorScheme.secondary,
-        onRefresh: _sync,
-        child: ListView.builder(
-          padding: EdgeInsets.zero,
-          physics: BouncingScrollPhysics(),
-          itemBuilder: (context, index) {
-            if (filterWidgets.length > 0)
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.0),
-                child: filterWidgets[index],
-              );
-            else
-              return Empty(subtitle: "empty".i18n);
-          },
-          itemCount: max(filterWidgets.length, 1),
-        ),
-      ),
-    );
+    ]).then((_) {
+      updateFilteredWidgets();
+    });
   }
 }
 
@@ -306,7 +328,7 @@ List<Widget> sortDateWidgets(
   BuildContext context, {
   required List<DateWidget> dateWidgets,
   bool showTitle = true,
-  EdgeInsetsGeometry? padding,
+  EdgeInsetsGeometry padding = const EdgeInsets.symmetric(horizontal: 8.0),
 }) {
   dateWidgets.sort((a, b) => -a.date.compareTo(b.date));
 
@@ -342,6 +364,7 @@ List<Widget> sortDateWidgets(
     conv.sort();
 
     dateWidgets.add(DateWidget(
+      key: "${conv.newest.date.millisecondsSinceEpoch}-msg",
       date: conv.newest.date,
       widget: MessageTile(
         conv.newest,
@@ -375,31 +398,35 @@ List<Widget> sortDateWidgets(
       List<AbsenceTile> absenceTiles = absenceTileWidgets.map((e) => e.widget as AbsenceTile).toList();
       if (absenceTiles.length > 1) {
         elements.removeWhere((element) => element.widget.runtimeType == AbsenceTile && (element.widget as AbsenceTile).absence.delay == 0);
-
         if (elements.length == 0) {
           _showTitle = false;
         }
-
-        elements.add(DateWidget(widget: AbsenceGroupTile(absenceTiles, showDate: !_showTitle), date: absenceTileWidgets.first.date));
+        elements.add(DateWidget(
+            widget: AbsenceGroupTile(absenceTiles, showDate: !_showTitle),
+            date: absenceTileWidgets.first.date,
+            key: "${absenceTileWidgets.first.date.millisecondsSinceEpoch}-absence-group"));
       }
 
-      items.add(Padding(
-        padding: EdgeInsets.only(bottom: 12.0),
-        child: Panel(
-          padding: padding,
-          title: _showTitle ? Text((elements + absenceTileWidgets).first.date.format(context)) : null,
-          child: Column(children: elements.map((e) => e.widget).toList()),
-        ),
-      ));
+      final String date = (elements + absenceTileWidgets).first.date.format(context);
+      if (_showTitle) items.add(PanelTitle(title: Text(date), key: ValueKey(date)));
+      items.add(PanelHeader(padding: EdgeInsets.only(top: 12.0), key: ValueKey("$date-header")));
+      elements.forEach((element) {
+        items.add(PanelBody(padding: padding, child: element.widget, key: ValueKey(element.key)));
+      });
+      items.add(PanelFooter(padding: EdgeInsets.only(bottom: 12.0), key: ValueKey("$date-footer")));
+
+      items.add(Padding(padding: EdgeInsets.only(bottom: 12.0), key: ValueKey("$date-padding")));
     });
   }
+  if (items.isEmpty) items.add(Empty(subtitle: "empty".i18n, key: ValueKey("empty")));
   return items;
 }
 
 class DateWidget {
-  DateTime date;
-  Widget widget;
-  DateWidget({required this.date, required this.widget});
+  final DateTime date;
+  final Widget widget;
+  final String? key;
+  const DateWidget({required this.date, required this.widget, this.key});
 }
 
 enum HomeFilterItems { all, grades, messages, absences }
