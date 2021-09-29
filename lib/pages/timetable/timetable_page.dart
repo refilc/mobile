@@ -63,6 +63,8 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
 
     empty = Empty(subtitle: "empty".i18n);
 
+    bool initial = true;
+
     // Only update the TabController on week changes
     _controller.addListener(() {
       if (_controller.days == null) return;
@@ -70,7 +72,8 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
         _tabController = TabController(
             length: _controller.days!.length, vsync: this, initialIndex: min(_tabController.index, max(_controller.days!.length - 1, 0)));
 
-        if (_controller.previousWeekId != _controller.currentWeekId) _tabController.animateTo(_getDayIndex(DateTime.now()));
+        if (initial || _controller.previousWeekId != _controller.currentWeekId) _tabController.animateTo(_getDayIndex(DateTime.now()));
+        initial = false;
 
         // Empty is updated once every week change
         empty = Empty(subtitle: "empty".i18n);
@@ -314,21 +317,6 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                                   child: Center(child: empty),
                                 ),
                               ),
-
-                        /*
-                       *  Please modify `flutter/lib/src/material/tabs.dart:1271` accordingly
-                       *  
-                       *  +  wrappedTabs[index] = Padding(
-                       *  +    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                       *       child: InkWell(
-                       *         ...
-                       *  +      borderRadius: BorderRadius.circular(8.0),
-                       *         ...
-                       *  +    ),
-                       *       ...
-                       *     );
-                       *  
-                       */
 
                         // Day selector
                         TabBar(
