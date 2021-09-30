@@ -6,6 +6,7 @@ import 'package:filcnaplo/api/providers/database_provider.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
 import 'package:filcnaplo_kreta_api/client/api.dart';
 import 'package:filcnaplo_kreta_api/client/client.dart';
+import 'package:filcnaplo_kreta_api/models/absence.dart';
 import 'package:filcnaplo_kreta_api/models/student.dart';
 import 'package:filcnaplo_kreta_api/providers/absence_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/event_provider.dart';
@@ -205,13 +206,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 
-  List<DateWidget> getFilterWidgets(HomeFilterItems activeData) {
+  List<DateWidget> getFilterWidgets(HomeFilterItems activeData, {bool absencesNoExcused = false}) {
     List<DateWidget> items = [];
     switch (activeData) {
       case HomeFilterItems.all:
         items.addAll(getFilterWidgets(HomeFilterItems.grades));
         items.addAll(getFilterWidgets(HomeFilterItems.messages));
-        items.addAll(getFilterWidgets(HomeFilterItems.absences));
+        items.addAll(getFilterWidgets(HomeFilterItems.absences, absencesNoExcused: true));
         break;
       case HomeFilterItems.grades:
         gradeProvider.grades.forEach((grade) {
@@ -236,7 +237,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         });
         break;
       case HomeFilterItems.absences:
-        absenceProvider.absences.forEach((absence) {
+        absenceProvider.absences.where((a) => !absencesNoExcused || a.state != Justification.Excused).forEach((absence) {
           items.add(DateWidget(
               date: absence.date,
               widget: AbsenceTile(
