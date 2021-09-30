@@ -6,14 +6,17 @@ extension Localization on String {
         "en_en": {
           "next": "Next",
           "remaining": "%d mins".one("%d min"),
+          "upcoming": "Upcoming lessons:",
         },
         "hu_hu": {
           "next": "Következő",
           "remaining": "%d perc".one("%d perc"),
+          "upcoming": "Következő órák:",
         },
         "de_de": {
           "next": "Nächste",
           "remaining": "%d Minuten".one("%d Minute"),
+          "upcoming": "Nächste Stunde:",
         },
       };
 
