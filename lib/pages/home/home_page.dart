@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
-    _tabController.addListener(this.updateFilteredWidgets);
+    _tabController.addListener(this.onTabChange);
 
     DateTime now = DateTime.now();
     if (now.hour >= 18)
@@ -97,11 +97,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     });
   }
 
+  void onTabChange() {
+    // This will be called twice,
+    // & we only want to update the widgets once
+    // (to avoid Empty showing another face)
+    if (_tabController.indexIsChanging) this.updateFilteredWidgets();
+  }
+
   @override
   void dispose() {
     [gradeProvider, messageProvider, absenceProvider].forEach((p) => p.removeListener(updateFilteredWidgets));
     _liveController.dispose();
-    _tabController.removeListener(this.updateFilteredWidgets);
+    _tabController.removeListener(this.onTabChange);
     _tabController.dispose();
 
     super.dispose();
@@ -208,10 +215,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       spawnIsolate: false,
                       padding: const EdgeInsets.symmetric(horizontal: 36.0),
                       physics: const BouncingScrollPhysics(),
+                      removeDuration: kTabScrollDuration,
                       areItemsTheSame: (a, b) => a.key == b.key,
                       itemBuilder: (context, animation, item, index) {
                         return SizeFadeTransition(
-                          sizeFraction: 0.7,
                           curve: Curves.easeInOut,
                           animation: animation,
                           child: item,
@@ -407,7 +414,7 @@ List<Widget> sortDateWidgets(
       }
 
       final String date = (elements + absenceTileWidgets).first.date.format(context);
-      if (_showTitle) items.add(PanelTitle(title: Text(date), key: ValueKey(date)));
+      if (_showTitle) items.add(PanelTitle(title: Text(date), key: ValueKey("$date")));
       items.add(PanelHeader(padding: EdgeInsets.only(top: 12.0), key: ValueKey("$date-header")));
       elements.forEach((element) {
         items.add(PanelBody(padding: padding, child: element.widget, key: ValueKey(element.key)));
