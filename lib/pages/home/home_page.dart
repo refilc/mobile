@@ -219,9 +219,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       areItemsTheSame: (a, b) => a.key == b.key,
                       itemBuilder: (context, animation, item, index) {
                         return SizeFadeTransition(
-                          curve: Curves.easeInOut,
+                          curve: Curves.easeInOutCubic,
                           animation: animation,
                           child: item,
+                          sizeFraction: .3,
                         );
                       },
                     ),
