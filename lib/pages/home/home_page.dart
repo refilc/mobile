@@ -38,7 +38,6 @@ import 'package:filcnaplo_mobile_ui/common/widgets/grade_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/grade_view.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/homework_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/homework_view.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/lesson_view.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/message_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/message_view/message_view.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/note_tile.dart';
@@ -456,4 +455,4 @@ class DateWidget {
   DateWidget({required this.date, required this.widget});
 }
 
-enum HomeFilterItems { all, lessons, grades, messages, absences, homework, exams, notes, events }
+enum HomeFilterItems { all, grades, messages, absences, homework, exams, notes, events, lessons }
