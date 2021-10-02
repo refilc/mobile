@@ -2,13 +2,10 @@
 
 import 'dart:math';
 
-import 'package:filcnaplo/api/providers/database_provider.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
+import 'package:filcnaplo/api/providers/sync.dart';
 import 'package:filcnaplo/theme.dart';
-import 'package:filcnaplo_kreta_api/client/api.dart';
-import 'package:filcnaplo_kreta_api/client/client.dart';
 import 'package:filcnaplo_kreta_api/models/absence.dart';
-import 'package:filcnaplo_kreta_api/models/student.dart';
 import 'package:filcnaplo_kreta_api/providers/absence_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/event_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/exam_provider.dart';
@@ -16,11 +13,10 @@ import 'package:filcnaplo_kreta_api/providers/grade_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/homework_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/message_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/note_provider.dart';
-import 'package:filcnaplo_kreta_api/providers/timetable_provider.dart';
 import 'package:filcnaplo/api/providers/user_provider.dart';
+import 'package:filcnaplo/api/providers/status_provider.dart';
 import 'package:filcnaplo_kreta_api/models/grade.dart';
 import 'package:filcnaplo_kreta_api/models/message.dart';
-import 'package:filcnaplo_kreta_api/models/week.dart';
 import 'package:filcnaplo_mobile_ui/common/empty.dart';
 import 'package:filcnaplo_mobile_ui/common/filter/filter_bar.dart';
 import 'package:filcnaplo_mobile_ui/common/filter/filter_controller.dart';
@@ -65,6 +61,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late FilterController _filterController;
   late UserProvider user;
   late UpdateProvider updateProvider;
+  late StatusProvider statusProvider;
   late GradeProvider gradeProvider;
   late MessageProvider messageProvider;
   late AbsenceProvider absenceProvider;
@@ -104,6 +101,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     user = Provider.of<UserProvider>(context);
     updateProvider = Provider.of<UpdateProvider>(context);
+    statusProvider = Provider.of<StatusProvider>(context, listen: false);
     gradeProvider = Provider.of<GradeProvider>(context);
     messageProvider = Provider.of<MessageProvider>(context);
     absenceProvider = Provider.of<AbsenceProvider>(context);
@@ -311,31 +309,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     return items;
   }
 
-  Future<void> _sync() {
-    return Future.wait([
-      Provider.of<GradeProvider>(context, listen: false).fetch(),
-      Provider.of<TimetableProvider>(context, listen: false).fetch(week: Week.current()),
-      Provider.of<ExamProvider>(context, listen: false).fetch(),
-      Provider.of<HomeworkProvider>(context, listen: false).fetch(from: DateTime.now().subtract(Duration(days: 30))),
-      Provider.of<MessageProvider>(context, listen: false).fetch(type: MessageType.inbox),
-      Provider.of<NoteProvider>(context, listen: false).fetch(),
-      Provider.of<EventProvider>(context, listen: false).fetch(),
-      Provider.of<AbsenceProvider>(context, listen: false).fetch(),
-      // Sync student
-      () async {
-        if (user.user == null) return;
-        Map? studentJson = await Provider.of<KretaClient>(context, listen: false).getAPI(KretaAPI.student(user.instituteCode!));
-        if (studentJson == null) return;
-        Student student = Student.fromJson(studentJson);
-
-        user.user?.name = student.name;
-
-        // Store user
-        await Provider.of<DatabaseProvider>(context, listen: false).store.storeUser(user.user!);
-      }(),
-    ]);
-  }
-
   Widget filterViewBuilder(context, int activeData) {
     List<Widget> filterWidgets = sortDateWidgets(context, dateWidgets: getFilterWidgets(HomeFilterItems.values[activeData]));
 
@@ -343,7 +316,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       padding: EdgeInsets.only(top: 12.0),
       child: RefreshIndicator(
         color: Theme.of(context).colorScheme.secondary,
-        onRefresh: _sync,
+        onRefresh: () => syncAll(context),
         child: ListView.builder(
           padding: EdgeInsets.zero,
           physics: BouncingScrollPhysics(),
