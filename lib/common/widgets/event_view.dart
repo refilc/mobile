@@ -40,7 +40,6 @@ class EventView extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 12.0),
             child: SelectableLinkify(
               text: event.content.escapeHtml(),
-              maxLines: 16,
               onOpen: (link) {
                 launch(link.url,
                     customTabsOption: CustomTabsOption(

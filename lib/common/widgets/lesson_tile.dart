@@ -117,13 +117,15 @@ class LessonTile extends StatelessWidget {
                 leading: SizedBox(
                   width: 30.0,
                   child: Center(
-                    child: Text(lesson.lessonIndex + lessonIndexTrailing,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.w600,
-                          color: accent,
-                        )),
+                    child: Text(
+                      lesson.lessonIndex + lessonIndexTrailing,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.w600,
+                        color: accent,
+                      ),
+                    ),
                   ),
                 ),
                 trailing: !lesson.isEmpty

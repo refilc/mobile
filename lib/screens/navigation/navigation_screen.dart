@@ -16,16 +16,18 @@ import 'package:filcnaplo_mobile_ui/common/screens.i18n.dart';
 import 'package:filcnaplo/api/providers/news_provider.dart';
 import 'package:filcnaplo/api/providers/sync.dart';
 
-class Navigation extends StatefulWidget {
-  Navigation({Key? key}) : super(key: key);
+class NavigationScreen extends StatefulWidget {
+  NavigationScreen({Key? key}) : super(key: key);
+
+  static NavigationScreenState? of(BuildContext context) => context.findAncestorStateOfType<NavigationScreenState>();
 
   @override
-  NavigationState createState() => NavigationState();
+  NavigationScreenState createState() => NavigationScreenState();
 }
 
-class NavigationState extends State<Navigation> with WidgetsBindingObserver {
+class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingObserver {
   late NavigationRoute selected;
-  final GlobalKey<NavigatorState> _navigatorState = GlobalKey<NavigatorState>();
+  final _navigatorState = GlobalKey<NavigatorState>();
 
   @override
   void initState() {
@@ -71,6 +73,8 @@ class NavigationState extends State<Navigation> with WidgetsBindingObserver {
   late SettingsProvider settings;
   late NewsProvider newsProvider;
   late UpdateProvider updateProvider;
+
+  void setPage(String page) => setState(() => selected.name = page);
 
   @override
   Widget build(BuildContext context) {

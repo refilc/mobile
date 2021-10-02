@@ -17,6 +17,7 @@ import 'package:filcnaplo/api/providers/user_provider.dart';
 import 'package:filcnaplo/api/providers/status_provider.dart';
 import 'package:filcnaplo_kreta_api/models/grade.dart';
 import 'package:filcnaplo_kreta_api/models/message.dart';
+import 'package:filcnaplo_kreta_api/providers/timetable_provider.dart';
 import 'package:filcnaplo_mobile_ui/common/empty.dart';
 import 'package:filcnaplo_mobile_ui/common/filter/filter_bar.dart';
 import 'package:filcnaplo_mobile_ui/common/filter/filter_controller.dart';
@@ -28,6 +29,7 @@ import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/absence_group_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/absence_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/absence_view.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/changed_lesson_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/event_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/event_view.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/exam_tile.dart';
@@ -36,6 +38,7 @@ import 'package:filcnaplo_mobile_ui/common/widgets/grade_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/grade_view.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/homework_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/homework_view.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/lesson_view.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/message_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/message_view/message_view.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/note_tile.dart';
@@ -43,6 +46,7 @@ import 'package:filcnaplo_mobile_ui/common/widgets/note_view.dart';
 import 'package:filcnaplo_mobile_ui/pages/home/live_card/live_card.dart';
 import 'package:filcnaplo_kreta_api/controllers/live_card_controller.dart';
 import 'package:filcnaplo_mobile_ui/common/hero_dialog_route.dart';
+import 'package:filcnaplo_mobile_ui/pages/timetable/timetable_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -63,6 +67,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late UpdateProvider updateProvider;
   late StatusProvider statusProvider;
   late GradeProvider gradeProvider;
+  late TimetableProvider timetableProvider;
   late MessageProvider messageProvider;
   late AbsenceProvider absenceProvider;
   late HomeworkProvider homeworkProvider;
@@ -103,6 +108,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     updateProvider = Provider.of<UpdateProvider>(context);
     statusProvider = Provider.of<StatusProvider>(context, listen: false);
     gradeProvider = Provider.of<GradeProvider>(context);
+    timetableProvider = Provider.of<TimetableProvider>(context);
     messageProvider = Provider.of<MessageProvider>(context);
     absenceProvider = Provider.of<AbsenceProvider>(context);
     homeworkProvider = Provider.of<HomeworkProvider>(context);
@@ -226,6 +232,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     switch (activeData) {
       case HomeFilterItems.all:
         items.addAll(getFilterWidgets(HomeFilterItems.grades));
+        items.addAll(getFilterWidgets(HomeFilterItems.lessons));
         items.addAll(getFilterWidgets(HomeFilterItems.messages));
         items.addAll(getFilterWidgets(HomeFilterItems.absences, absencesNoExcused: true));
         items.addAll(getFilterWidgets(HomeFilterItems.homework));
@@ -302,6 +309,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               widget: EventTile(
                 event,
                 onTap: () => EventView.show(event, context: context),
+              )));
+        });
+        break;
+      case HomeFilterItems.lessons:
+        timetableProvider.lessons.where((l) => l.isChanged && l.start.isAfter(DateTime.now())).forEach((lesson) {
+          items.add(DateWidget(
+              date: lesson.date,
+              widget: ChangedLessonTile(
+                lesson,
+                onTap: () => TimetablePage.jump(context, lesson: lesson),
               )));
         });
         break;
@@ -439,4 +456,4 @@ class DateWidget {
   DateWidget({required this.date, required this.widget});
 }
 
-enum HomeFilterItems { all, grades, messages, absences, homework, exams, notes, events }
+enum HomeFilterItems { all, lessons, grades, messages, absences, homework, exams, notes, events }

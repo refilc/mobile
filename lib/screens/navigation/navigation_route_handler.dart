@@ -9,21 +9,21 @@ import 'package:animations/animations.dart';
 Route navigationRouteHandler(RouteSettings settings) {
   switch (settings.name) {
     case "home":
-      return _pageRoute((context) => HomePage());
+      return navigationPageRoute((context) => HomePage());
     case "grades":
-      return _pageRoute((context) => GradesPage());
+      return navigationPageRoute((context) => GradesPage());
     case "timetable":
-      return _pageRoute((context) => TimetablePage());
+      return navigationPageRoute((context) => TimetablePage());
     case "messages":
-      return _pageRoute((context) => MessagesPage());
+      return navigationPageRoute((context) => MessagesPage());
     case "absences":
-      return _pageRoute((context) => AbsencesPage());
+      return navigationPageRoute((context) => AbsencesPage());
     default:
-      return _pageRoute((context) => HomePage());
+      return navigationPageRoute((context) => HomePage());
   }
 }
 
-Route _pageRoute(Widget Function(BuildContext) builder) {
+Route navigationPageRoute(Widget Function(BuildContext) builder) {
   return PageRouteBuilder(
     pageBuilder: (context, _, __) => builder(context),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {

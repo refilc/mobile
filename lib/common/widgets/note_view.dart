@@ -53,7 +53,6 @@ class NoteView extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 12.0),
             child: SelectableLinkify(
               text: note.content.escapeHtml(),
-              maxLines: 15,
               onOpen: (link) {
                 launch(link.url,
                     customTabsOption: CustomTabsOption(

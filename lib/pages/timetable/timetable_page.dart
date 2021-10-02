@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:animations/animations.dart';
+import 'package:filcnaplo_kreta_api/models/week.dart';
 import 'package:filcnaplo_kreta_api/providers/timetable_provider.dart';
 import 'package:filcnaplo/api/providers/user_provider.dart';
 import 'package:filcnaplo/theme.dart';
@@ -12,6 +13,8 @@ import 'package:filcnaplo_mobile_ui/common/widgets/lesson_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/lesson_view.dart';
 import 'package:filcnaplo_kreta_api/controllers/timetable_controller.dart';
 import 'package:filcnaplo_mobile_ui/pages/timetable/day_title.dart';
+import 'package:filcnaplo_mobile_ui/screens/navigation/navigation_route_handler.dart';
+import 'package:filcnaplo_mobile_ui/screens/navigation/navigation_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -22,10 +25,20 @@ import 'package:i18n_extension/i18n_widget.dart';
 import 'timetable_page.i18n.dart';
 
 // todo: "fix" overflow (priority: -1)
-// TODO: filter days because kreta returns additional days...
 
 class TimetablePage extends StatefulWidget {
-  TimetablePage({Key? key}) : super(key: key);
+  TimetablePage({Key? key, this.initialDay}) : super(key: key);
+
+  final DateTime? initialDay;
+
+  static void jump(BuildContext context, {Week? week, DateTime? day, Lesson? lesson}) {
+    // Go to timetable page with arguments
+    Navigator.pushReplacement(context, navigationPageRoute((context) => TimetablePage(initialDay: lesson?.date)));
+    NavigationScreen.of(context)?.setPage("timetable");
+
+    // Show initial Lesson
+    if (lesson != null) LessonView.show(lesson, context: context);
+  }
 
   @override
   _TimetablePageState createState() => _TimetablePageState();
@@ -62,7 +75,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
     _tabController = TabController(length: 0, vsync: this, initialIndex: 0);
 
     empty = Empty(subtitle: "empty".i18n);
-    
+
     bool initial = true;
 
     // Only update the TabController on week changes
@@ -70,11 +83,16 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
       if (_controller.days == null) return;
       setState(() {
         _tabController = TabController(
-            length: _controller.days!.length, vsync: this, initialIndex: min(_tabController.index, max(_controller.days!.length - 1, 0)));
+          length: _controller.days!.length,
+          vsync: this,
+          initialIndex: min(_tabController.index, max(_controller.days!.length - 1, 0)),
+        );
 
-        if (initial || _controller.previousWeekId != _controller.currentWeekId) _tabController.animateTo(_getDayIndex(DateTime.now()));
+        if (initial || _controller.previousWeekId != _controller.currentWeekId) {
+          _tabController.animateTo(_getDayIndex(widget.initialDay ?? DateTime.now()));
+        }
         initial = false;
-        
+
         // Empty is updated once every week change
         empty = Empty(subtitle: "empty".i18n);
       });
