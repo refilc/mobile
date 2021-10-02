@@ -1,4 +1,5 @@
 import 'package:filcnaplo/models/user.dart';
+import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_mobile_ui/common/new_content_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:filcnaplo/utils/color.dart';
@@ -32,7 +33,7 @@ class ProfileImage extends StatelessWidget {
   }
 
   Widget buildWithoutHero(BuildContext context) {
-    Color color = ColorUtils.foregroundColor(backgroundColor ?? Colors.black);
+    Color color = ColorUtils.foregroundColor(backgroundColor ?? AppColors.of(context).background);
     Color roleColor;
 
     if (Theme.of(context).brightness == Brightness.light)
@@ -46,7 +47,7 @@ class ProfileImage extends StatelessWidget {
         Material(
           clipBehavior: Clip.hardEdge,
           shape: CircleBorder(),
-          color: backgroundColor,
+          color: backgroundColor ?? AppColors.of(context).text.withOpacity(.15),
           child: InkWell(
             onTap: onTap,
             child: AnimatedContainer(
@@ -87,7 +88,7 @@ class ProfileImage extends StatelessWidget {
   }
 
   Widget buildWithHero(BuildContext context) {
-    Color color = ColorUtils.foregroundColor(backgroundColor ?? Colors.black);
+    Color color = ColorUtils.foregroundColor(backgroundColor ?? AppColors.of(context).background);
     Color roleColor;
 
     if (Theme.of(context).brightness == Brightness.light)
@@ -120,7 +121,7 @@ class ProfileImage extends StatelessWidget {
               child: Material(
                 clipBehavior: Clip.hardEdge,
                 shape: CircleBorder(),
-                color: backgroundColor,
+                color: backgroundColor ?? AppColors.of(context).text.withOpacity(.15),
                 child: AnimatedContainer(
                   duration: Duration(milliseconds: 200),
                   height: radius * 2,

@@ -1,0 +1,53 @@
+import 'package:filcnaplo/helpers/subject_icon.dart';
+import 'package:filcnaplo/theme.dart';
+import 'package:filcnaplo_kreta_api/models/homework.dart';
+import 'package:filcnaplo_kreta_api/models/subject.dart';
+import 'package:filcnaplo/utils/format.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+
+class HomeworkTile extends StatelessWidget {
+  const HomeworkTile(this.homework, {Key? key, this.onTap}) : super(key: key);
+
+  final Homework homework;
+  final void Function()? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Theme.of(context).backgroundColor,
+      borderRadius: BorderRadius.circular(8.0),
+      child: ListTile(
+        visualDensity: VisualDensity.compact,
+        contentPadding: EdgeInsets.only(left: 8.0, right: 12.0),
+        onTap: onTap,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+        leading: Padding(
+          padding: EdgeInsets.only(top: 2.0),
+          child: Icon(
+            SubjectIcon.lookup(subject: Subject.fromString(homework.subjectName)),
+            size: 28.0,
+            color: AppColors.of(context).text.withOpacity(.75),
+          ),
+        ),
+        title: Text(
+          homework.subjectName.capital(),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(fontWeight: FontWeight.w600),
+        ),
+        subtitle: Text(
+          homework.content.escapeHtml().replaceAll('\n', ' '),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(fontWeight: FontWeight.w500),
+        ),
+        trailing: Icon(
+          FeatherIcons.home,
+          color: AppColors.of(context).text.withOpacity(.75),
+        ),
+        minLeadingWidth: 0,
+      ),
+    );
+  }
+}

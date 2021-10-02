@@ -101,7 +101,7 @@ class LessonTile extends StatelessWidget {
                     color: AppColors.of(context).text.withOpacity(!lesson.isEmpty ? 1.0 : 0.5),
                   ),
                 ),
-                subtitle: lesson.description != ""
+                subtitle: lesson.description.specialChars().toLowerCase().replaceAll(lesson.subject.name.specialChars().toLowerCase(), '') != ""
                     ? Text(
                         lesson.description,
                         style: TextStyle(
@@ -109,6 +109,7 @@ class LessonTile extends StatelessWidget {
                           fontSize: 14.0,
                         ),
                         maxLines: 1,
+                        softWrap: false,
                         overflow: TextOverflow.ellipsis,
                       )
                     : null,
@@ -136,7 +137,7 @@ class LessonTile extends StatelessWidget {
                               child: Text(
                                 lesson.room.replaceAll("_", " "),
                                 textAlign: TextAlign.center,
-                                overflow: TextOverflow.fade,
+                                overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
                                 style: TextStyle(fontWeight: FontWeight.w500, color: AppColors.of(context).text.withOpacity(.75)),
                               ),

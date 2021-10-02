@@ -1,4 +1,5 @@
 import 'package:filcnaplo/helpers/subject_icon.dart';
+import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_kreta_api/models/exam.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_card.dart';
 import 'package:filcnaplo/utils/format.dart';
@@ -11,9 +12,7 @@ class ExamView extends StatelessWidget {
 
   final Exam exam;
 
-  static show(Exam exam, {required BuildContext context}) {
-    showBottomCard(context: context, child: ExamView(exam));
-  }
+  static show(Exam exam, {required BuildContext context}) => showBottomCard(context: context, child: ExamView(exam));
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +27,7 @@ class ExamView extends StatelessWidget {
             leading: Icon(
               SubjectIcon.lookup(subjectName: exam.subjectName),
               size: 36.0,
+              color: AppColors.of(context).text.withOpacity(.75),
             ),
             title: Text(
               exam.subjectName.capital(),
@@ -48,14 +48,9 @@ class ExamView extends StatelessWidget {
           ),
 
           // Details
-          if (exam.writeDate.year != 0)
-            Detail(
-                title: "date".i18n,
-                description: exam.writeDate.format(context)),
-          if (exam.description != "")
-            Detail(title: "description".i18n, description: exam.description),
-          if (exam.mode != null)
-            Detail(title: "mode".i18n, description: exam.mode!.description),
+          if (exam.writeDate.year != 0) Detail(title: "date".i18n, description: exam.writeDate.format(context)),
+          if (exam.description != "") Detail(title: "description".i18n, description: exam.description),
+          if (exam.mode != null) Detail(title: "mode".i18n, description: exam.mode!.description),
         ],
       ),
     );
