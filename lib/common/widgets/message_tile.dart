@@ -21,7 +21,8 @@ class MessageTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(8.0),
         child: ListTile(
           onTap: onTap,
-          visualDensity: VisualDensity.compact,
+          visualDensity: VisualDensity(vertical: -4),
+          dense: true,
           contentPadding: EdgeInsets.only(left: 8.0, right: 4.0),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
           leading: ProfileImage(

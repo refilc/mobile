@@ -7,8 +7,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'absence_tile.i18n.dart';
 
 class AbsenceTile extends StatelessWidget {
-  const AbsenceTile(this.absence, {Key? key, this.onTap, this.elevation = 0.0})
-      : super(key: key);
+  const AbsenceTile(this.absence, {Key? key, this.onTap, this.elevation = 0.0}) : super(key: key);
 
   final Absence absence;
   final void Function()? onTap;
@@ -35,19 +34,17 @@ class AbsenceTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(14.0),
         child: ListTile(
           onTap: onTap,
-          visualDensity: VisualDensity.compact,
-          dense: group,
+          visualDensity: VisualDensity(vertical: -4),
+          dense: true,
           contentPadding: EdgeInsets.only(left: 8.0, right: 12.0),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(!group ? 14.0 : 12.0)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(!group ? 14.0 : 12.0)),
           leading: Container(
             width: 44.0,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: !group ? color.withOpacity(.25) : null,
             ),
-            child: Center(
-                child: Icon(justificationIcon(absence.state), color: color)),
+            child: Center(child: Icon(justificationIcon(absence.state), color: color)),
           ),
           title: !group
               ? Text.rich(TextSpan(
@@ -95,8 +92,7 @@ class AbsenceTile extends StatelessWidget {
     }
   }
 
-  static Color justificationColor(Justification state,
-      {required BuildContext context}) {
+  static Color justificationColor(Justification state, {required BuildContext context}) {
     switch (state) {
       case Justification.Excused:
         return AppColors.of(context).green;

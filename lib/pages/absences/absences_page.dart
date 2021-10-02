@@ -135,7 +135,7 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
     List<Widget> filterWidgets = sortDateWidgets(
       context,
       dateWidgets: getFilterWidgets(AbsenceFilterItems.values[activeData]),
-      padding: EdgeInsets.zero,
+      // padding: EdgeInsets.zero,
     );
 
     return Padding(

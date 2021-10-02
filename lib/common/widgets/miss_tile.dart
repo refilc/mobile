@@ -13,6 +13,8 @@ class MissTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: Icon(_missIcon(), color: Theme.of(context).colorScheme.secondary),
+      visualDensity: VisualDensity(vertical: -4),
+      dense: true,
       title: Text(
         _missName(),
         style: TextStyle(

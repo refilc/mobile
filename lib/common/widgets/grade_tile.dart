@@ -59,7 +59,10 @@ class GradeTile extends StatelessWidget {
       color: Theme.of(context).backgroundColor,
       borderRadius: BorderRadius.circular(8.0),
       child: ListTile(
-        visualDensity: VisualDensity.compact,
+        visualDensity: VisualDensity(
+          vertical: -4,
+        ),
+        dense: true,
         contentPadding: isSubjectView
             ? grade.type != GradeType.ghost
                 ? EdgeInsets.symmetric(horizontal: 12.0)
