@@ -82,10 +82,11 @@ class PanelHeader extends StatelessWidget {
 }
 
 class PanelBody extends StatelessWidget {
-  const PanelBody({Key? key, this.child, this.padding}) : super(key: key);
+  const PanelBody({Key? key, this.child, this.padding, this.singular = false}) : super(key: key);
 
   final Widget? child;
   final EdgeInsetsGeometry? padding;
+  final bool singular;
 
   @override
   Widget build(BuildContext context) {

@@ -4,13 +4,14 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 
 class FilterBar extends StatefulWidget implements PreferredSizeWidget {
-  FilterBar({Key? key, required this.items, required this.controller, this.padding = const EdgeInsets.symmetric(horizontal: 24.0)})
+  FilterBar({Key? key, required this.items, required this.controller, this.onTap, this.padding = const EdgeInsets.symmetric(horizontal: 24.0)})
       : assert(items.length == controller.length),
         super(key: key);
 
   final List<Widget> items;
   final TabController controller;
   final EdgeInsetsGeometry padding;
+  final Function(int)? onTap;
   final Size preferredSize = Size.fromHeight(42.0);
 
   @override
@@ -60,27 +61,29 @@ class _FilterBarState extends State<FilterBar> {
                 splashColor: Colors.transparent,
               ),
               child: TabBar(
-                  controller: widget.controller,
-                  isScrollable: true,
-                  physics: const BouncingScrollPhysics(),
-                  // Label
-                  labelStyle: Theme.of(context).textTheme.subtitle2!.copyWith(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 15.0,
-                      ),
-                  labelPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-                  labelColor: Theme.of(context).colorScheme.secondary,
-                  unselectedLabelColor: AppColors.of(context).text.withOpacity(0.65),
-                  // Indicator
-                  indicatorPadding: const EdgeInsets.symmetric(vertical: 8),
-                  indicator: BoxDecoration(
-                    color: Theme.of(context).colorScheme.secondary.withOpacity(0.25),
-                    borderRadius: BorderRadius.circular(6.0),
-                  ),
-                  overlayColor: MaterialStateProperty.all(Color(0)),
-                  // Tabs
-                  padding: EdgeInsets.zero,
-                  tabs: widget.items),
+                controller: widget.controller,
+                isScrollable: true,
+                physics: const BouncingScrollPhysics(),
+                // Label
+                labelStyle: Theme.of(context).textTheme.subtitle2!.copyWith(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15.0,
+                    ),
+                labelPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+                labelColor: Theme.of(context).colorScheme.secondary,
+                unselectedLabelColor: AppColors.of(context).text.withOpacity(0.65),
+                // Indicator
+                indicatorPadding: const EdgeInsets.symmetric(vertical: 8),
+                indicator: BoxDecoration(
+                  color: Theme.of(context).colorScheme.secondary.withOpacity(0.25),
+                  borderRadius: BorderRadius.circular(6.0),
+                ),
+                overlayColor: MaterialStateProperty.all(Color(0)),
+                // Tabs
+                padding: EdgeInsets.zero,
+                tabs: widget.items,
+                onTap: widget.onTap,
+              ),
             )));
   }
 }

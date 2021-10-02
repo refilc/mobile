@@ -61,13 +61,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late String firstName;
   late LiveCardController _liveController;
   late bool showLiveCard;
-  List<Widget> filterWidgets = [];
+  late PageController _pageController;
+  Future? transitionFuture;
+  int transitioningTo = -1;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
-    _tabController.addListener(this.onTabChange);
+    _pageController = PageController(initialPage: 0);
 
     DateTime now = DateTime.now();
     if (now.hour >= 18)
@@ -80,164 +82,185 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       greeting = "goodevening";
 
     _liveController = LiveCardController(context: context, vsync: this);
-
-    gradeProvider = Provider.of<GradeProvider>(context, listen: false);
-    messageProvider = Provider.of<MessageProvider>(context, listen: false);
-    absenceProvider = Provider.of<AbsenceProvider>(context, listen: false);
-    [gradeProvider, messageProvider, absenceProvider].forEach((p) => p.addListener(updateFilteredWidgets));
-
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      updateFilteredWidgets();
-    });
-  }
-
-  void updateFilteredWidgets() {
-    setState(() {
-      filterWidgets = sortDateWidgets(context, dateWidgets: getFilterWidgets(HomeFilterItems.values[_tabController.index]));
-    });
-  }
-
-  void onTabChange() {
-    // This will be called twice,
-    // & we only want to update the widgets once
-    // (to avoid Empty showing another face)
-    if (_tabController.indexIsChanging) this.updateFilteredWidgets();
   }
 
   @override
   void dispose() {
-    [gradeProvider, messageProvider, absenceProvider].forEach((p) => p.removeListener(updateFilteredWidgets));
     _liveController.dispose();
-    _tabController.removeListener(this.onTabChange);
+    _pageController.dispose();
     _tabController.dispose();
 
     super.dispose();
+  }
+
+  bool animateToPageIfScrolling(int i) {
+    if (_pageController.page?.roundToDouble() != _pageController.page) {
+      _pageController.animateToPage(i, curve: Curves.easeIn, duration: kTabScrollDuration);
+      return true;
+    }
+    return false;
   }
 
   @override
   Widget build(BuildContext context) {
     user = Provider.of<UserProvider>(context);
     updateProvider = Provider.of<UpdateProvider>(context);
+    gradeProvider = Provider.of<GradeProvider>(context);
+    messageProvider = Provider.of<MessageProvider>(context);
+    absenceProvider = Provider.of<AbsenceProvider>(context);
+
     List<String> nameParts = user.name?.split(" ") ?? ["?"];
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
 
     return Scaffold(
-        body: Padding(
-      padding: const EdgeInsets.only(top: 12.0),
-      child: NestedScrollView(
-        physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-        headerSliverBuilder: (context, _) => [
-          AnimatedBuilder(
-            animation: _liveController.animation,
-            builder: (context, child) {
-              return SliverAppBar(
-                automaticallyImplyLeading: false,
-                centerTitle: false,
-                titleSpacing: 0.0,
-                // Welcome text
-                title: Padding(
-                  padding: const EdgeInsets.only(left: 24.0),
-                  child: Text(
-                    greeting.i18n.fill([firstName]),
-                    overflow: TextOverflow.fade,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.0,
-                      color: Theme.of(context).textTheme.bodyText1?.color,
-                    ),
-                  ),
-                ),
-                actions: [
-                  // TODO: Search Button
-                  // IconButton(
-                  //   icon: Icon(FeatherIcons.search),
-                  //   color: Theme.of(context).textTheme.bodyText1?.color,
-                  //   splashRadius: 24.0,
-                  //   onPressed: () {},
-                  // ),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 12.0),
+        child: NestedScrollView(
+            physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+            headerSliverBuilder: (context, _) => [
+                  AnimatedBuilder(
+                    animation: _liveController.animation,
+                    builder: (context, child) {
+                      return SliverAppBar(
+                        automaticallyImplyLeading: false,
+                        centerTitle: false,
+                        titleSpacing: 0.0,
+                        // Welcome text
+                        title: Padding(
+                          padding: const EdgeInsets.only(left: 24.0),
+                          child: Text(
+                            greeting.i18n.fill([firstName]),
+                            overflow: TextOverflow.fade,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18.0,
+                              color: Theme.of(context).textTheme.bodyText1?.color,
+                            ),
+                          ),
+                        ),
+                        actions: [
+                          // TODO: Search Button
+                          // IconButton(
+                          //   icon: Icon(FeatherIcons.search),
+                          //   color: Theme.of(context).textTheme.bodyText1?.color,
+                          //   splashRadius: 24.0,
+                          //   onPressed: () {},
+                          // ),
 
-                  // Profile Icon
-                  Padding(
-                    padding: const EdgeInsets.only(right: 24.0),
-                    child: ProfileButton(
-                      child: ProfileImage(
-                        heroTag: "profile",
-                        name: firstName,
-                        backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
-                        badge: updateProvider.available,
-                        role: user.role,
-                      ),
-                    ),
+                          // Profile Icon
+                          Padding(
+                            padding: const EdgeInsets.only(right: 24.0),
+                            child: ProfileButton(
+                              child: ProfileImage(
+                                heroTag: "profile",
+                                name: firstName,
+                                backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
+                                badge: updateProvider.available,
+                                role: user.role,
+                              ),
+                            ),
+                          ),
+                        ],
+
+                        expandedHeight: _liveController.animation.value * 234.0,
+
+                        // Live Card
+                        flexibleSpace: FlexibleSpaceBar(
+                          background: Padding(
+                            padding: EdgeInsets.only(
+                              left: 24.0,
+                              right: 24.0,
+                              top: 58.0 + MediaQuery.of(context).padding.top,
+                              bottom: 52.0,
+                            ),
+                            child: LiveCard(
+                              onTap: openLiveCard,
+                              controller: _liveController,
+                            ),
+                          ),
+                        ),
+                        shadowColor: Color(0),
+
+                        // Filter Bar
+                        bottom: FilterBar(
+                          items: [
+                            Tab(text: "All".i18n),
+                            Tab(text: "Grades".i18n),
+                            Tab(text: "Messages".i18n),
+                            Tab(text: "Absences".i18n),
+                          ],
+                          controller: _tabController,
+                          onTap: (i) async {
+                            if (i == _pageController.page || animateToPageIfScrolling(i)) return;
+                            setState(() {
+                              transitioningTo = i;
+                            });
+                            transitionFuture?.ignore();
+                            transitionFuture = Future.delayed(Duration(milliseconds: 500))
+                              ..then((_) {
+                                setState(() {
+                                  if (!animateToPageIfScrolling(i)) _pageController.jumpToPage(i);
+                                  transitioningTo = -1;
+                                });
+                              });
+                          },
+                        ),
+                        pinned: true,
+                        floating: false,
+                        snap: false,
+                      );
+                    },
                   ),
                 ],
+            body: Padding(
+              padding: const EdgeInsets.only(top: 12.0),
+              child: NotificationListener<ScrollNotification>(
+                onNotification: (notification) {
+                  if (transitioningTo > -1) return false;
+                  // from flutter source
+                  if (notification is ScrollUpdateNotification && !_tabController.indexIsChanging) {
+                    if ((_pageController.page! - _tabController.index).abs() > 1.0) {
+                      _tabController.index = _pageController.page!.floor();
+                    }
+                    _tabController.offset = (_pageController.page! - _tabController.index).clamp(-1.0, 1.0);
+                  } else if (notification is ScrollEndNotification) {
+                    _tabController.index = _pageController.page!.round();
+                    if (!_tabController.indexIsChanging) _tabController.offset = (_pageController.page! - _tabController.index).clamp(-1.0, 1.0);
+                  }
+                  return false;
+                },
+                child: PageView(
+                  controller: _pageController,
+                  physics: const PageScrollPhysics().applyTo(const BouncingScrollPhysics()),
+                  children: List.generate(4, (i) {
+                    return RefreshIndicator(
+                        color: Theme.of(context).colorScheme.secondary,
+                        onRefresh: _sync,
+                        child: ImplicitlyAnimatedList<Widget>(
+                          items: sortDateWidgets(context,
+                              dateWidgets: getFilterWidgets(HomeFilterItems.values[transitioningTo > -1 ? transitioningTo : i])),
+                          spawnIsolate: false,
+                          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                          physics: const BouncingScrollPhysics(),
+                          removeDuration: kTabScrollDuration,
+                          areItemsTheSame: (a, b) => a.key == b.key,
+                          itemBuilder: (context, animation, item, index) {
+                            final wrap = (child) => SizeFadeTransition(
+                                  curve: Curves.easeInOutCubic,
+                                  animation: animation,
+                                  child: child,
+                                  sizeFraction: .3,
+                                );
 
-                expandedHeight: _liveController.animation.value * 234.0,
-
-                // Live Card
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Padding(
-                    padding: EdgeInsets.only(
-                      left: 24.0,
-                      right: 24.0,
-                      top: 58.0 + MediaQuery.of(context).padding.top,
-                      bottom: 52.0,
-                    ),
-                    child: LiveCard(
-                      onTap: openLiveCard,
-                      controller: _liveController,
-                    ),
-                  ),
+                            return item is PanelBody && !item.singular ? PanelBody(child: wrap(item.child), padding: item.padding) : wrap(item);
+                          },
+                        ));
+                  }),
                 ),
-                shadowColor: Color(0),
-
-                // Filter Bar
-                bottom: FilterBar(items: [
-                  Tab(text: "All".i18n),
-                  Tab(text: "Grades".i18n),
-                  Tab(text: "Messages".i18n),
-                  Tab(text: "Absences".i18n),
-                ], controller: _tabController),
-                pinned: true,
-                floating: false,
-                snap: false,
-              );
-            },
-          ),
-        ],
-        body: Padding(
-            padding: const EdgeInsets.only(top: 12.0),
-            child: RefreshIndicator(
-                color: Theme.of(context).colorScheme.secondary,
-                onRefresh: _sync,
-                child: GestureDetector(
-                    child: ImplicitlyAnimatedList<Widget>(
-                      items: filterWidgets,
-                      spawnIsolate: false,
-                      padding: const EdgeInsets.symmetric(horizontal: 36.0),
-                      physics: const BouncingScrollPhysics(),
-                      removeDuration: kTabScrollDuration,
-                      areItemsTheSame: (a, b) => a.key == b.key,
-                      itemBuilder: (context, animation, item, index) {
-                        return SizeFadeTransition(
-                          curve: Curves.easeInOutCubic,
-                          animation: animation,
-                          child: item,
-                          sizeFraction: .3,
-                        );
-                      },
-                    ),
-                    onHorizontalDragEnd: (DragEndDetails details) {
-                      double v = details.primaryVelocity ?? 0;
-                      if (v > 0 && _tabController.index > 0) {
-                        // User swiped Left
-                        _tabController.animateTo(_tabController.index - 1);
-                      } else if (v < 0 && _tabController.index < 3) {
-                        _tabController.animateTo(_tabController.index + 1);
-                        // User swiped Right
-                      }
-                    }))),
+              ),
+            )),
       ),
-    ));
+    );
   }
 
   void openLiveCard() {
@@ -325,9 +348,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         // Store user
         await Provider.of<DatabaseProvider>(context, listen: false).store.storeUser(user.user!);
       }(),
-    ]).then((_) {
-      updateFilteredWidgets();
-    });
+    ]);
   }
 }
 
@@ -418,7 +439,7 @@ List<Widget> sortDateWidgets(
       if (_showTitle) items.add(PanelTitle(title: Text(date), key: ValueKey("$date")));
       items.add(PanelHeader(padding: EdgeInsets.only(top: 12.0), key: ValueKey("$date-header")));
       elements.forEach((element) {
-        items.add(PanelBody(padding: padding, child: element.widget, key: ValueKey(element.key)));
+        items.add(PanelBody(padding: padding, child: element.widget, key: ValueKey(element.key), singular: elements.length < 2));
       });
       items.add(PanelFooter(padding: EdgeInsets.only(bottom: 12.0), key: ValueKey("$date-footer")));
 
