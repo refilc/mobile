@@ -210,7 +210,6 @@ class _GradeGraphState extends State<GradeGraph> {
                       fontWeight: FontWeight.bold,
                       fontSize: 14.0,
                     ),
-                    interval: null, // It automatically figures it out.
                     margin: 12.0,
                     getTitles: (value) {
                       var format = DateFormat("MMM", I18n.of(context).locale.toString());
