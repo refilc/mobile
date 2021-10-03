@@ -121,6 +121,8 @@ class LiveCardWidget extends StatelessWidget {
                         ),
                       ],
                     )),
+
+                // Progress Bar
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12.0),
                   child: ProgressBar(value: (length - progress) / length, backgroundColor: Theme.of(context).colorScheme.secondary),

@@ -105,8 +105,12 @@ class _GradeGraphState extends State<GradeGraph> {
 
     double titleInterval;
 
-    titleInterval = data.first.date.difference(data.last.date).inDays / 31 * 0.2;
-    if (titleInterval == 0) titleInterval = 1.0;
+    if (data.length > 0) {
+      titleInterval = data.first.date.difference(data.last.date).inDays / 31 * 0.2;
+      if (titleInterval == 0) titleInterval = 1.0;
+    } else {
+      titleInterval = 1.0;
+    }
 
     return Container(
       child: subjectSpots.length > 0

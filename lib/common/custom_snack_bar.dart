@@ -7,6 +7,7 @@ SnackBar CustomSnackBar({
   required BuildContext context,
   Brightness? brightness,
   Color? backgroundColor,
+  Duration? duration,
 }) {
   // backgroundColor > Brightness > Theme Background
   Color _backgroundColor = backgroundColor ??
@@ -15,6 +16,7 @@ SnackBar CustomSnackBar({
   Color textColor = ((brightness ?? Theme.of(context).brightness) == Brightness.light) ? LightAppColors().text : DarkAppColors().text;
 
   return SnackBar(
+    duration: duration ?? Duration(seconds: 4),
     content: Container(
       decoration: BoxDecoration(
         color: _backgroundColor,

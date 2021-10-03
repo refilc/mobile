@@ -6,6 +6,7 @@ import 'package:filcnaplo_mobile_ui/common/system_chrome.dart';
 import 'package:filcnaplo_mobile_ui/screens/navigation/navigation_route.dart';
 import 'package:filcnaplo_mobile_ui/screens/navigation/navigation_route_handler.dart';
 import 'package:filcnaplo/icons/filc_icons.dart';
+import 'package:filcnaplo_mobile_ui/screens/navigation/status_bar.dart';
 import 'package:filcnaplo_mobile_ui/screens/news/news_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,17 +14,20 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:filcnaplo_mobile_ui/common/screens.i18n.dart';
 import 'package:filcnaplo/api/providers/news_provider.dart';
+import 'package:filcnaplo/api/providers/sync.dart';
 
-class Navigation extends StatefulWidget {
-  Navigation({Key? key}) : super(key: key);
+class NavigationScreen extends StatefulWidget {
+  NavigationScreen({Key? key}) : super(key: key);
+
+  static NavigationScreenState? of(BuildContext context) => context.findAncestorStateOfType<NavigationScreenState>();
 
   @override
-  NavigationState createState() => NavigationState();
+  NavigationScreenState createState() => NavigationScreenState();
 }
 
-class NavigationState extends State<Navigation> with WidgetsBindingObserver {
+class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingObserver {
   late NavigationRoute selected;
-  final GlobalKey<NavigatorState> _navigatorState = GlobalKey<NavigatorState>();
+  final _navigatorState = GlobalKey<NavigatorState>();
 
   @override
   void initState() {
@@ -45,6 +49,9 @@ class NavigationState extends State<Navigation> with WidgetsBindingObserver {
     // Get releases
     updateProvider = Provider.of<UpdateProvider>(context, listen: false);
     updateProvider.fetch();
+
+    // Initial sync
+    syncAll(context);
   }
 
   @override
@@ -66,6 +73,8 @@ class NavigationState extends State<Navigation> with WidgetsBindingObserver {
   late SettingsProvider settings;
   late NewsProvider newsProvider;
   late UpdateProvider updateProvider;
+
+  void setPage(String page) => setState(() => selected.name = page);
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +105,11 @@ class NavigationState extends State<Navigation> with WidgetsBindingObserver {
                 onGenerateRoute: (settings) => navigationRouteHandler(settings),
               ),
             ),
+
+            // Status bar
+            StatusBar(),
+
+            // Bottom Navigaton Bar
             SafeArea(
               top: false,
               child: BottomNavigationBar(

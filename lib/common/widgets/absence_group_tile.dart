@@ -7,20 +7,17 @@ import 'package:flutter/material.dart';
 import 'absence_group_tile.i18n.dart';
 
 class AbsenceGroupTile extends StatelessWidget {
-  const AbsenceGroupTile(this.absences, {Key? key, this.showDate = false})
-      : super(key: key);
+  const AbsenceGroupTile(this.absences, {Key? key, this.showDate = false}) : super(key: key);
 
   final List<AbsenceTile> absences;
   final bool showDate;
 
   @override
   Widget build(BuildContext context) {
-    Justification state =
-        getState(absences.map((e) => e.absence.state).toList());
+    Justification state = getState(absences.map((e) => e.absence.state).toList());
     Color color = AbsenceTile.justificationColor(state, context: context);
 
-    absences.sort((a, b) =>
-        a.absence.lessonIndex?.compareTo(b.absence.lessonIndex ?? 0) ?? -1);
+    absences.sort((a, b) => a.absence.lessonIndex?.compareTo(b.absence.lessonIndex ?? 0) ?? -1);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(14.0),
@@ -37,31 +34,22 @@ class AbsenceGroupTile extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: color.withOpacity(.25),
               ),
-              child: Center(
-                  child:
-                      Icon(AbsenceTile.justificationIcon(state), color: color)),
+              child: Center(child: Icon(AbsenceTile.justificationIcon(state), color: color)),
             ),
             title: Text.rich(TextSpan(
-              text: "${absences.length} ",
-              style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.of(context).text),
+              text: "${absences.where((a) => a.absence.state == state).length} ",
+              style: TextStyle(fontWeight: FontWeight.w700, color: AppColors.of(context).text),
               children: [
                 TextSpan(
-                  text: AbsenceTile.justificationName(state)
-                      .fill(["absence".i18n]),
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.of(context).text),
+                  text: AbsenceTile.justificationName(state).fill(["absence".i18n]),
+                  style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.of(context).text),
                 ),
               ],
             )),
             subtitle: showDate
                 ? Text(
                     absences.first.absence.date.format(context, weekday: true),
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.of(context).text.withOpacity(0.8)),
+                    style: TextStyle(fontWeight: FontWeight.w500, color: AppColors.of(context).text.withOpacity(0.8)),
                   )
                 : null,
             children: absences,

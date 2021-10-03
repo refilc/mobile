@@ -6,9 +6,9 @@ import 'package:implicitly_animated_reorderable_list/transitions.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:filcnaplo/api/providers/database_provider.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
-import 'package:filcnaplo_kreta_api/client/api.dart';
-import 'package:filcnaplo_kreta_api/client/client.dart';
-import 'package:filcnaplo_kreta_api/models/student.dart';
+import 'package:filcnaplo/api/providers/sync.dart';
+import 'package:filcnaplo/theme.dart';
+import 'package:filcnaplo_kreta_api/models/absence.dart';
 import 'package:filcnaplo_kreta_api/providers/absence_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/event_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/exam_provider.dart';
@@ -16,11 +16,11 @@ import 'package:filcnaplo_kreta_api/providers/grade_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/homework_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/message_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/note_provider.dart';
-import 'package:filcnaplo_kreta_api/providers/timetable_provider.dart';
 import 'package:filcnaplo/api/providers/user_provider.dart';
+import 'package:filcnaplo/api/providers/status_provider.dart';
 import 'package:filcnaplo_kreta_api/models/grade.dart';
 import 'package:filcnaplo_kreta_api/models/message.dart';
-import 'package:filcnaplo_kreta_api/models/week.dart';
+import 'package:filcnaplo_kreta_api/providers/timetable_provider.dart';
 import 'package:filcnaplo_mobile_ui/common/empty.dart';
 import 'package:filcnaplo_mobile_ui/common/filter_bar.dart';
 import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
@@ -29,13 +29,23 @@ import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/absence_group_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/absence_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/absence_view.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/changed_lesson_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/event_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/event_view.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/exam_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/exam_view.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/grade_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/grade_view.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/homework_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/homework_view.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/message_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/message_view/message_view.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/note_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/note_view.dart';
 import 'package:filcnaplo_mobile_ui/pages/home/live_card/live_card.dart';
 import 'package:filcnaplo_kreta_api/controllers/live_card_controller.dart';
 import 'package:filcnaplo_mobile_ui/common/hero_dialog_route.dart';
+import 'package:filcnaplo_mobile_ui/pages/timetable/timetable_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -54,9 +64,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late TabController _tabController;
   late UserProvider user;
   late UpdateProvider updateProvider;
+  late StatusProvider statusProvider;
   late GradeProvider gradeProvider;
+  late TimetableProvider timetableProvider;
   late MessageProvider messageProvider;
   late AbsenceProvider absenceProvider;
+  late HomeworkProvider homeworkProvider;
+  late ExamProvider examProvider;
+  late NoteProvider noteProvider;
+  late EventProvider eventProvider;
   late String greeting;
   late String firstName;
   late LiveCardController _liveController;
@@ -105,9 +121,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     user = Provider.of<UserProvider>(context);
     updateProvider = Provider.of<UpdateProvider>(context);
+    statusProvider = Provider.of<StatusProvider>(context, listen: false);
     gradeProvider = Provider.of<GradeProvider>(context);
+    timetableProvider = Provider.of<TimetableProvider>(context);
     messageProvider = Provider.of<MessageProvider>(context);
     absenceProvider = Provider.of<AbsenceProvider>(context);
+    homeworkProvider = Provider.of<HomeworkProvider>(context);
+    examProvider = Provider.of<ExamProvider>(context);
+    noteProvider = Provider.of<NoteProvider>(context);
+    eventProvider = Provider.of<EventProvider>(context);
 
     List<String> nameParts = user.name?.split(" ") ?? ["?"];
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
@@ -279,13 +301,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 
-  List<DateWidget> getFilterWidgets(HomeFilterItems activeData) {
+  List<DateWidget> getFilterWidgets(HomeFilterItems activeData, {bool absencesNoExcused = false}) {
     List<DateWidget> items = [];
     switch (activeData) {
       case HomeFilterItems.all:
         items.addAll(getFilterWidgets(HomeFilterItems.grades));
+        items.addAll(getFilterWidgets(HomeFilterItems.lessons));
         items.addAll(getFilterWidgets(HomeFilterItems.messages));
-        items.addAll(getFilterWidgets(HomeFilterItems.absences));
+        items.addAll(getFilterWidgets(HomeFilterItems.absences, absencesNoExcused: true));
+        items.addAll(getFilterWidgets(HomeFilterItems.homework));
+        items.addAll(getFilterWidgets(HomeFilterItems.exams));
         break;
       case HomeFilterItems.grades:
         gradeProvider.grades.forEach((grade) {
@@ -310,15 +335,67 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 )));
           }
         });
+        items.addAll(getFilterWidgets(HomeFilterItems.notes));
+        items.addAll(getFilterWidgets(HomeFilterItems.events));
         break;
       case HomeFilterItems.absences:
-        absenceProvider.absences.forEach((absence) {
+        absenceProvider.absences.where((a) => !absencesNoExcused || a.state != Justification.Excused).forEach((absence) {
           items.add(DateWidget(
               key: absence.id,
               date: absence.date,
               widget: AbsenceTile(
                 absence,
                 onTap: () => AbsenceView.show(absence, context: context),
+              )));
+        });
+        break;
+      case HomeFilterItems.homework:
+        homeworkProvider.homework.forEach((homework) {
+          items.add(DateWidget(
+              date: homework.deadline.year != 0 ? homework.deadline : homework.date,
+              widget: HomeworkTile(
+                homework,
+                onTap: () => HomeworkView.show(homework, context: context),
+              )));
+        });
+        break;
+      case HomeFilterItems.exams:
+        examProvider.exams.forEach((exam) {
+          items.add(DateWidget(
+              date: exam.writeDate.year != 0 ? exam.writeDate : exam.date,
+              widget: ExamTile(
+                exam,
+                onTap: () => ExamView.show(exam, context: context),
+              )));
+        });
+        break;
+      case HomeFilterItems.notes:
+        noteProvider.notes.forEach((note) {
+          items.add(DateWidget(
+              date: note.date,
+              widget: NoteTile(
+                note,
+                onTap: () => NoteView.show(note, context: context),
+              )));
+        });
+        break;
+      case HomeFilterItems.events:
+        eventProvider.events.forEach((event) {
+          items.add(DateWidget(
+              date: event.start,
+              widget: EventTile(
+                event,
+                onTap: () => EventView.show(event, context: context),
+              )));
+        });
+        break;
+      case HomeFilterItems.lessons:
+        timetableProvider.lessons.where((l) => l.isChanged && l.start.isAfter(DateTime.now())).forEach((lesson) {
+          items.add(DateWidget(
+              date: lesson.date,
+              widget: ChangedLessonTile(
+                lesson,
+                onTap: () => TimetablePage.jump(context, lesson: lesson),
               )));
         });
         break;
@@ -351,6 +428,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     ]);
   }
 }
+
+// difference.inDays is not reliable
+bool _sameDate(DateTime a, DateTime b) => (a.year == b.year && a.month == b.month && a.day == b.day);
 
 List<Widget> sortDateWidgets(
   BuildContext context, {
@@ -407,7 +487,7 @@ List<Widget> sortDateWidgets(
   List<List<DateWidget>> groupedDateWidgets = [[]];
   dateWidgets.forEach((element) {
     if (groupedDateWidgets.last.length > 0) {
-      if (element.date.difference(groupedDateWidgets.last.last.date).inDays != 0) {
+      if (!_sameDate(element.date, groupedDateWidgets.last.last.date)) {
         groupedDateWidgets.add([element]);
         return;
       }
@@ -457,4 +537,4 @@ class DateWidget {
   const DateWidget({required this.date, required this.widget, this.key});
 }
 
-enum HomeFilterItems { all, grades, messages, absences }
+enum HomeFilterItems { all, grades, messages, absences, homework, exams, notes, events, lessons }

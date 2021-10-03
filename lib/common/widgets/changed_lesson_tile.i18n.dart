@@ -4,20 +4,17 @@ extension Localization on String {
   static final _t = Translations.byLocale("hu_hu") +
       {
         "en_en": {
-          "next": "Next",
-          "remaining": "%d mins".one("%d min"),
-          "upcoming": "Upcoming lessons:",
+          "cancelled": "Cancelled lesson",
+          "substituted": "Substituted lesson",
         },
         "hu_hu": {
-          "next": "Következő",
-          "remaining": "%d perc".one("%d perc"),
-          "upcoming": "Következő órák:",
+          "cancelled": "Elmaradt óra",
+          "substituted": "Helyettesített óra",
         },
         "de_de": {
-          "next": "Nächste",
-          "remaining": "%d Minuten".one("%d Minute"),
-          "upcoming": "Nächste Stunde:",
-        },
+          "cancelled": "Abgesagte Stunde",
+          "substituted": "Vertretene Stunden",
+        }
       };
 
   String get i18n => localize(this, _t);

@@ -4,19 +4,19 @@ extension Localization on String {
   static final _t = Translations.byLocale("hu_hu") +
       {
         "en_en": {
-          "next": "Next",
-          "remaining": "%d mins".one("%d min"),
-          "upcoming": "Upcoming lessons:",
+          "Syncing data": "Syncing data",
+          "KRETA Maintenance": "KRETA Maintenance",
+          "No connection": "No connection",
         },
         "hu_hu": {
-          "next": "Következő",
-          "remaining": "%d perc".one("%d perc"),
-          "upcoming": "Következő órák:",
+          "Syncing data": "Adatok frissítése",
+          "KRETA Maintenance": "KRÉTA Karbantartás",
+          "No connection": "Nincs kapcsolat",
         },
         "de_de": {
-          "next": "Nächste",
-          "remaining": "%d Minuten".one("%d Minute"),
-          "upcoming": "Nächste Stunde:",
+          "Syncing data": "Daten aktualisieren",
+          "KRETA Maintenance": "KRETA Wartung",
+          "No connection": "Keine Verbindung",
         },
       };
 
