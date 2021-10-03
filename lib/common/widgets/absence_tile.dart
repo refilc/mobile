@@ -34,8 +34,8 @@ class AbsenceTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(14.0),
         child: ListTile(
           onTap: onTap,
-          visualDensity: VisualDensity(vertical: -4),
-          dense: true,
+          visualDensity: VisualDensity.compact,
+          dense: group,
           contentPadding: EdgeInsets.only(left: 8.0, right: 12.0),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(!group ? 14.0 : 12.0)),
           leading: Container(

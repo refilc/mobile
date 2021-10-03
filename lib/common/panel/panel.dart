@@ -82,22 +82,28 @@ class PanelHeader extends StatelessWidget {
 }
 
 class PanelBody extends StatelessWidget {
-  const PanelBody({Key? key, this.child, this.padding, this.singular = false}) : super(key: key);
+  const PanelBody(
+      {Key? key, this.child, this.padding, this.singular = false, this.roundedTop = false, this.roundedBottom = false, this.shadowPct = 1})
+      : super(key: key);
 
   final Widget? child;
   final EdgeInsetsGeometry? padding;
   final bool singular;
+  final bool roundedTop;
+  final bool roundedBottom;
+  final double shadowPct;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(roundedTop ? 14.0 : 0), bottom: Radius.circular(roundedBottom ? 14.0 : 0)),
         color: Theme.of(context).backgroundColor,
         boxShadow: [
           BoxShadow(
-            offset: Offset(0, 21),
-            blurRadius: 23.0,
+            offset: Offset(0, shadowPct * 21),
+            blurRadius: shadowPct * 23.0,
             color: AppColors.of(context).shadow,
           )
         ],

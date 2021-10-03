@@ -1,13 +1,8 @@
 // ignore_for_file: dead_code
-
-import 'dart:math';
-
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
-import 'package:filcnaplo/api/providers/database_provider.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
 import 'package:filcnaplo/api/providers/sync.dart';
-import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_kreta_api/models/absence.dart';
 import 'package:filcnaplo_kreta_api/providers/absence_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/event_provider.dart';
@@ -78,6 +73,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late LiveCardController _liveController;
   late bool showLiveCard;
   late PageController _pageController;
+  List<List<Widget>> widgetsByTab = [[], [], [], []];
   Future? transitionFuture;
   int transitioningTo = -1;
 
@@ -133,6 +129,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
     List<String> nameParts = user.name?.split(" ") ?? ["?"];
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
+
+    Future.wait(
+            List.generate(4, (i) => getFilterWidgets(HomeFilterItems.values[i]).then((widgets) => sortDateWidgets(context, dateWidgets: widgets))))
+        .then((result) => widgetsByTab = result);
 
     return Scaffold(
       body: Padding(
@@ -257,31 +257,40 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   children: List.generate(4, (i) {
                     return RefreshIndicator(
                         color: Theme.of(context).colorScheme.secondary,
-                        onRefresh: _sync,
+                        onRefresh: () => syncAll(context),
                         child: ImplicitlyAnimatedList<Widget>(
-                          items: sortDateWidgets(context,
-                              dateWidgets: getFilterWidgets(HomeFilterItems.values[transitioningTo > -1 ? transitioningTo : i])),
+                          items: widgetsByTab[transitioningTo > -1 ? transitioningTo : i],
                           spawnIsolate: false,
                           padding: const EdgeInsets.symmetric(horizontal: 24.0),
                           physics: const BouncingScrollPhysics(),
                           removeDuration: kTabScrollDuration,
                           areItemsTheSame: (a, b) => a.key == b.key,
-                          itemBuilder: (context, animation, item, index) {
-                            final wrap = (child) => SizeFadeTransition(
-                                  curve: Curves.easeInOutCubic,
-                                  animation: animation,
-                                  child: child,
-                                  sizeFraction: .3,
-                                );
-
-                            return item is PanelBody && !item.singular ? PanelBody(child: wrap(item.child), padding: item.padding) : wrap(item);
-                          },
+                          itemBuilder: itemBuilder,
+                          updateItemBuilder: (context, _, item) => itemBuilder(context, kAlwaysCompleteAnimation, item, 0),
                         ));
                   }),
                 ),
               ),
             )),
       ),
+    );
+  }
+
+  Widget itemBuilder(BuildContext context, Animation<double> animation, Widget item, int index) {
+    final wrap = (child, {double sizeFraction = .3}) => SizeFadeTransition(
+          curve: Curves.easeInOutCubic,
+          animation: animation,
+          child: child,
+          sizeFraction: sizeFraction,
+        );
+
+    if (!(item is PanelBody && !item.singular)) return wrap(item);
+
+    return PanelBody(
+      child: wrap(item.child),
+      padding: item.padding,
+      roundedTop: item.roundedTop,
+      roundedBottom: item.roundedBottom,
     );
   }
 
@@ -423,31 +432,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     }
     return items;
   }
-
-  Future<void> _sync() {
-    return Future.wait([
-      Provider.of<GradeProvider>(context, listen: false).fetch(),
-      Provider.of<TimetableProvider>(context, listen: false).fetch(week: Week.current()),
-      Provider.of<ExamProvider>(context, listen: false).fetch(),
-      Provider.of<HomeworkProvider>(context, listen: false).fetch(from: DateTime.now().subtract(Duration(days: 30))),
-      Provider.of<MessageProvider>(context, listen: false).fetch(type: MessageType.inbox),
-      Provider.of<NoteProvider>(context, listen: false).fetch(),
-      Provider.of<EventProvider>(context, listen: false).fetch(),
-      Provider.of<AbsenceProvider>(context, listen: false).fetch(),
-      // Sync student
-      () async {
-        if (user.user == null) return;
-        Map? studentJson = await Provider.of<KretaClient>(context, listen: false).getAPI(KretaAPI.student(user.instituteCode!));
-        if (studentJson == null) return;
-        Student student = Student.fromJson(studentJson);
-
-        user.user?.name = student.name;
-
-        // Store user
-        await Provider.of<DatabaseProvider>(context, listen: false).store.storeUser(user.user!);
-      }(),
-    ]);
-  }
 }
 
 // difference.inDays is not reliable
@@ -538,16 +522,25 @@ List<Widget> sortDateWidgets(
 
       final String date = (elements + absenceTileWidgets).first.date.format(context);
       if (_showTitle) items.add(PanelTitle(title: Text(date), key: ValueKey("$date")));
-      items.add(PanelHeader(padding: EdgeInsets.only(top: 12.0), key: ValueKey("$date-header")));
+
+      int i = 0;
+      bool singular = elements.length == 1;
       elements.forEach((element) {
-        items.add(PanelBody(padding: padding, child: element.widget, key: ValueKey(element.key), singular: elements.length < 2));
+        items.add(PanelBody(
+          padding: padding,
+          child: element.widget,
+          key: ValueKey(element.key),
+          singular: singular,
+          roundedTop: i == 0,
+          roundedBottom: i == elements.length - 1,
+        ));
+        i++;
       });
-      items.add(PanelFooter(padding: EdgeInsets.only(bottom: 12.0), key: ValueKey("$date-footer")));
 
       items.add(Padding(padding: EdgeInsets.only(bottom: 12.0), key: ValueKey("$date-padding")));
     });
   }
-  if (items.isEmpty) items.add(Empty(subtitle: "empty".i18n, key: ValueKey("empty")));
+  if (items.isEmpty) items.addAll([Empty(subtitle: "empty".i18n, key: ValueKey("empty")), Container()]);
   return items;
 }
 

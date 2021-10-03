@@ -59,10 +59,7 @@ class GradeTile extends StatelessWidget {
       color: Theme.of(context).backgroundColor,
       borderRadius: BorderRadius.circular(8.0),
       child: ListTile(
-        visualDensity: VisualDensity(
-          vertical: -4,
-        ),
-        dense: true,
+        visualDensity: VisualDensity.compact,
         contentPadding: isSubjectView
             ? grade.type != GradeType.ghost
                 ? EdgeInsets.symmetric(horizontal: 12.0)
@@ -71,7 +68,11 @@ class GradeTile extends StatelessWidget {
         onTap: onTap,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         leading: isSubjectView
-            ? GradeValueWidget(grade.value)
+            ? SizedBox(
+                width: 44,
+                height: 44,
+                child: Center(child: GradeValueWidget(grade.value)),
+              )
             : Padding(
                 padding: leadingPadding,
                 child: Icon(SubjectIcon.lookup(subject: grade.subject), size: 28.0, color: AppColors.of(context).text.withOpacity(.75)),
