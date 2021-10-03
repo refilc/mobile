@@ -30,6 +30,7 @@ class _StatusBarState extends State<StatusBar> {
       width: double.infinity,
       child: Stack(
         children: [
+          // Background
           AnimatedContainer(
             margin: EdgeInsets.symmetric(horizontal: 8.0),
             duration: Duration(milliseconds: 250),
@@ -41,6 +42,8 @@ class _StatusBarState extends State<StatusBar> {
               borderRadius: BorderRadius.circular(4.0),
             ),
           ),
+
+          // Progress bar
           if (currentStatus == Status.syncing)
             Container(
               margin: EdgeInsets.symmetric(horizontal: 8.0),
@@ -49,7 +52,6 @@ class _StatusBarState extends State<StatusBar> {
                 height: currentStatus != null ? 28.0 : 0,
                 duration: Duration(milliseconds: 250),
                 curve: Curves.easeInOut,
-                // height: 2.0,
                 width: MediaQuery.of(context).size.width * statusProvider.progress - 16.0,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.secondary.withOpacity(0.5),
@@ -57,6 +59,8 @@ class _StatusBarState extends State<StatusBar> {
                 ),
               ),
             ),
+
+          // Text
           Center(
             child: Text(
               _statusString(currentStatus),

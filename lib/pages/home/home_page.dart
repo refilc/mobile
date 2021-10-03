@@ -301,17 +301,24 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 
-  List<DateWidget> getFilterWidgets(HomeFilterItems activeData, {bool absencesNoExcused = false}) {
+  Future<List<DateWidget>> getFilterWidgets(HomeFilterItems activeData, {bool absencesNoExcused = false}) async {
     List<DateWidget> items = [];
+
     switch (activeData) {
+      // All
       case HomeFilterItems.all:
-        items.addAll(getFilterWidgets(HomeFilterItems.grades));
-        items.addAll(getFilterWidgets(HomeFilterItems.lessons));
-        items.addAll(getFilterWidgets(HomeFilterItems.messages));
-        items.addAll(getFilterWidgets(HomeFilterItems.absences, absencesNoExcused: true));
-        items.addAll(getFilterWidgets(HomeFilterItems.homework));
-        items.addAll(getFilterWidgets(HomeFilterItems.exams));
+        final all = await Future.wait<List<DateWidget>>([
+          getFilterWidgets(HomeFilterItems.grades),
+          getFilterWidgets(HomeFilterItems.lessons),
+          getFilterWidgets(HomeFilterItems.messages),
+          getFilterWidgets(HomeFilterItems.absences, absencesNoExcused: true),
+          getFilterWidgets(HomeFilterItems.homework),
+          getFilterWidgets(HomeFilterItems.exams),
+        ]);
+        items.addAll(all.expand((x) => x));
         break;
+
+      // Grades
       case HomeFilterItems.grades:
         gradeProvider.grades.forEach((grade) {
           if (grade.type == GradeType.midYear) {
@@ -323,6 +330,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           }
         });
         break;
+
+      // Messages
       case HomeFilterItems.messages:
         messageProvider.messages.forEach((message) {
           if (message.type == MessageType.inbox) {
@@ -335,9 +344,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 )));
           }
         });
-        items.addAll(getFilterWidgets(HomeFilterItems.notes));
-        items.addAll(getFilterWidgets(HomeFilterItems.events));
+        items.addAll(await getFilterWidgets(HomeFilterItems.notes));
+        items.addAll(await getFilterWidgets(HomeFilterItems.events));
         break;
+
+      // Absences
       case HomeFilterItems.absences:
         absenceProvider.absences.where((a) => !absencesNoExcused || a.state != Justification.Excused).forEach((absence) {
           items.add(DateWidget(
@@ -349,8 +360,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               )));
         });
         break;
+
+      // Homework
       case HomeFilterItems.homework:
-        homeworkProvider.homework.forEach((homework) {
+        homeworkProvider.homework.where((h) => h.deadline.isAfter(DateTime.now())).forEach((homework) {
           items.add(DateWidget(
               date: homework.deadline.year != 0 ? homework.deadline : homework.date,
               widget: HomeworkTile(
@@ -359,6 +372,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               )));
         });
         break;
+
+      // Exams
       case HomeFilterItems.exams:
         examProvider.exams.forEach((exam) {
           items.add(DateWidget(
@@ -369,6 +384,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               )));
         });
         break;
+
+      // Notes
       case HomeFilterItems.notes:
         noteProvider.notes.forEach((note) {
           items.add(DateWidget(
@@ -379,6 +396,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               )));
         });
         break;
+
+      // Events
       case HomeFilterItems.events:
         eventProvider.events.forEach((event) {
           items.add(DateWidget(
@@ -389,6 +408,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               )));
         });
         break;
+
+      // Changed Lessons
       case HomeFilterItems.lessons:
         timetableProvider.lessons.where((l) => l.isChanged && l.start.isAfter(DateTime.now())).forEach((lesson) {
           items.add(DateWidget(
