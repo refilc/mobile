@@ -374,6 +374,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       case HomeFilterItems.homework:
         homeworkProvider.homework.where((h) => h.deadline.isAfter(DateTime.now())).forEach((homework) {
           items.add(DateWidget(
+              key: homework.id,
               date: homework.deadline.year != 0 ? homework.deadline : homework.date,
               widget: HomeworkTile(
                 homework,
@@ -386,6 +387,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       case HomeFilterItems.exams:
         examProvider.exams.forEach((exam) {
           items.add(DateWidget(
+              key: exam.id,
               date: exam.writeDate.year != 0 ? exam.writeDate : exam.date,
               widget: ExamTile(
                 exam,
@@ -398,6 +400,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       case HomeFilterItems.notes:
         noteProvider.notes.forEach((note) {
           items.add(DateWidget(
+              key: note.id,
               date: note.date,
               widget: NoteTile(
                 note,
@@ -410,6 +413,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       case HomeFilterItems.events:
         eventProvider.events.forEach((event) {
           items.add(DateWidget(
+              key: event.id,
               date: event.start,
               widget: EventTile(
                 event,
@@ -422,6 +426,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       case HomeFilterItems.lessons:
         timetableProvider.lessons.where((l) => l.isChanged && l.start.isAfter(DateTime.now())).forEach((lesson) {
           items.add(DateWidget(
+              key: lesson.id,
               date: lesson.date,
               widget: ChangedLessonTile(
                 lesson,
