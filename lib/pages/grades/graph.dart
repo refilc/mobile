@@ -103,15 +103,6 @@ class _GradeGraphState extends State<GradeGraph> {
                 fontWeight: FontWeight.w600,
               ))));
 
-    double titleInterval;
-
-    if (data.length > 0) {
-      titleInterval = data.first.date.difference(data.last.date).inDays / 31 * 0.2;
-      if (titleInterval == 0) titleInterval = 1.0;
-    } else {
-      titleInterval = 1.0;
-    }
-
     return Container(
       child: subjectSpots.length > 0
           ? LineChart(
@@ -219,7 +210,7 @@ class _GradeGraphState extends State<GradeGraph> {
                       fontWeight: FontWeight.bold,
                       fontSize: 14.0,
                     ),
-                    interval: titleInterval,
+                    interval: null, // It automatically figures it out.
                     margin: 12.0,
                     getTitles: (value) {
                       var format = DateFormat("MMM", I18n.of(context).locale.toString());
