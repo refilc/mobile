@@ -84,7 +84,7 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
                 Tab(text: "Absences".i18n),
                 Tab(text: "Delays".i18n),
                 Tab(text: "Misses".i18n),
-              ], controller: _tabController),
+              ], controller: _tabController, disableFading: true),
             ),
           ],
           body: TabBarView(
