@@ -2,7 +2,6 @@ import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_mobile_ui/common/filter/filter_controller.dart';
 import 'package:filcnaplo_mobile_ui/common/filter/filter_item.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 class FilterBar extends StatefulWidget implements PreferredSizeWidget {
   FilterBar({Key? key, required this.items, required this.controller, this.padding = const EdgeInsets.symmetric(horizontal: 24.0)})

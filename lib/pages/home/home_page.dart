@@ -46,7 +46,6 @@ import 'package:filcnaplo_mobile_ui/pages/home/live_card/live_card.dart';
 import 'package:filcnaplo_kreta_api/controllers/live_card_controller.dart';
 import 'package:filcnaplo_mobile_ui/common/hero_dialog_route.dart';
 import 'package:filcnaplo_mobile_ui/pages/timetable/timetable_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'home_page.i18n.dart';

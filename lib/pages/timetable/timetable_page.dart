@@ -15,7 +15,6 @@ import 'package:filcnaplo_kreta_api/controllers/timetable_controller.dart';
 import 'package:filcnaplo_mobile_ui/pages/timetable/day_title.dart';
 import 'package:filcnaplo_mobile_ui/screens/navigation/navigation_route_handler.dart';
 import 'package:filcnaplo_mobile_ui/screens/navigation/navigation_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:provider/provider.dart';

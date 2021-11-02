@@ -14,7 +14,6 @@ import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/message_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/message_view/message_view.dart';
 import 'package:filcnaplo_mobile_ui/pages/home/home_page.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:filcnaplo/utils/color.dart';
