@@ -1,4 +1,5 @@
 // ignore_for_file: dead_code
+import 'package:filcnaplo/theme.dart';
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
@@ -74,14 +75,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late bool showLiveCard;
   late PageController _pageController;
   List<List<Widget>> widgetsByTab = [[], [], [], []];
-  Future? transitionFuture;
-  int transitioningTo = -1;
+  List<String> listOrder = ['A', 'B', 'C', 'D'];
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
-    _pageController = PageController(initialPage: 0);
+    _pageController = PageController();
 
     DateTime now = DateTime.now();
     if (now.hour >= 18)
@@ -105,14 +105,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  bool animateToPageIfScrolling(int i) {
-    if (_pageController.page?.roundToDouble() != _pageController.page) {
-      _pageController.animateToPage(i, curve: Curves.easeIn, duration: kTabScrollDuration);
-      return true;
-    }
-    return false;
-  }
-
   @override
   Widget build(BuildContext context) {
     user = Provider.of<UserProvider>(context);
@@ -130,9 +122,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     List<String> nameParts = user.name?.split(" ") ?? ["?"];
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
 
-    Future.wait(
-            List.generate(4, (i) => getFilterWidgets(HomeFilterItems.values[i]).then((widgets) => sortDateWidgets(context, dateWidgets: widgets))))
-        .then((result) => widgetsByTab = result);
+    List.generate(
+        4, (i) => getFilterWidgets(HomeFilterItems.values[i]).then((widgets) => widgetsByTab[i] = sortDateWidgets(context, dateWidgets: widgets)));
 
     return Scaffold(
       body: Padding(
@@ -213,18 +204,21 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           ],
                           controller: _tabController,
                           onTap: (i) async {
-                            if (i == _pageController.page || animateToPageIfScrolling(i)) return;
+                            int selectedPage = _pageController.page!.round();
+
+                            if (i == selectedPage) return;
+                            if (_pageController.page?.roundToDouble() != _pageController.page) {
+                              _pageController.animateToPage(i, curve: Curves.easeIn, duration: kTabScrollDuration);
+                              return;
+                            }
+
+                            // swap current page with target page
                             setState(() {
-                              transitioningTo = i;
+                              _pageController.jumpToPage(i);
+                              String currentList = listOrder[selectedPage];
+                              listOrder[selectedPage] = listOrder[i];
+                              listOrder[i] = currentList;
                             });
-                            transitionFuture?.ignore();
-                            transitionFuture = Future.delayed(Duration(milliseconds: 500))
-                              ..then((_) {
-                                setState(() {
-                                  if (!animateToPageIfScrolling(i)) _pageController.jumpToPage(i);
-                                  transitioningTo = -1;
-                                });
-                              });
                           },
                         ),
                         pinned: true,
@@ -238,7 +232,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               padding: const EdgeInsets.only(top: 12.0),
               child: NotificationListener<ScrollNotification>(
                 onNotification: (notification) {
-                  if (transitioningTo > -1) return false;
                   // from flutter source
                   if (notification is ScrollUpdateNotification && !_tabController.indexIsChanging) {
                     if ((_pageController.page! - _tabController.index).abs() > 1.0) {
@@ -251,46 +244,34 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   }
                   return false;
                 },
-                child: PageView(
+                child: PageView.custom(
                   controller: _pageController,
+                  childrenDelegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                        return RefreshIndicator(
+                            key: ValueKey<String>(listOrder[index]),
+                            color: Theme.of(context).colorScheme.secondary,
+                            onRefresh: () => syncAll(context),
+                            child: ImplicitlyAnimatedList<Widget>(
+                              items: widgetsByTab[index],
+                              itemBuilder: _itemBuilder,
+                              spawnIsolate: false,
+                              areItemsTheSame: (a, b) => a.key == b.key,
+                              physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                            ));
+                      },
+                      childCount: 4,
+                      findChildIndexCallback: (Key key) {
+                        final ValueKey<String> valueKey = key as ValueKey<String>;
+                        final String data = valueKey.value;
+                        return listOrder.indexOf(data);
+                      }),
                   physics: const PageScrollPhysics().applyTo(const BouncingScrollPhysics()),
-                  children: List.generate(4, (i) {
-                    return RefreshIndicator(
-                        color: Theme.of(context).colorScheme.secondary,
-                        onRefresh: () => syncAll(context),
-                        child: ImplicitlyAnimatedList<Widget>(
-                          items: widgetsByTab[transitioningTo > -1 ? transitioningTo : i],
-                          spawnIsolate: false,
-                          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                          physics: const BouncingScrollPhysics(),
-                          removeDuration: kTabScrollDuration,
-                          areItemsTheSame: (a, b) => a.key == b.key,
-                          itemBuilder: itemBuilder,
-                          updateItemBuilder: (context, _, item) => itemBuilder(context, kAlwaysCompleteAnimation, item, 0),
-                        ));
-                  }),
                 ),
               ),
             )),
       ),
-    );
-  }
-
-  Widget itemBuilder(BuildContext context, Animation<double> animation, Widget item, int index) {
-    final wrap = (child, {double sizeFraction = .3}) => SizeFadeTransition(
-          curve: Curves.easeInOutCubic,
-          animation: animation,
-          child: child,
-          sizeFraction: sizeFraction,
-        );
-
-    if (!(item is PanelBody && !item.singular)) return wrap(item);
-
-    return PanelBody(
-      child: wrap(item.child),
-      padding: item.padding,
-      roundedTop: item.roundedTop,
-      roundedBottom: item.roundedBottom,
     );
   }
 
@@ -446,7 +427,7 @@ List<Widget> sortDateWidgets(
   BuildContext context, {
   required List<DateWidget> dateWidgets,
   bool showTitle = true,
-  EdgeInsetsGeometry padding = const EdgeInsets.symmetric(horizontal: 8.0),
+  EdgeInsetsGeometry? padding,
 }) {
   dateWidgets.sort((a, b) => -a.date.compareTo(b.date));
 
@@ -526,21 +507,19 @@ List<Widget> sortDateWidgets(
       }
 
       final String date = (elements + absenceTileWidgets).first.date.format(context);
-      if (_showTitle) items.add(PanelTitle(title: Text(date), key: ValueKey("$date")));
-
-      int i = 0;
-      bool singular = elements.length == 1;
-      elements.forEach((element) {
-        items.add(PanelBody(
-          padding: padding,
-          child: element.widget,
-          key: ValueKey(element.key),
-          singular: singular,
-          roundedTop: i == 0,
-          roundedBottom: i == elements.length - 1,
-        ));
-        i++;
-      });
+      if (_showTitle) items.add(PanelTitle(title: Text(date), key: ValueKey("$date-title")));
+      items.add(Panel(
+        key: ValueKey("$date"),
+        hasShadow: false,
+        child: ImplicitlyAnimatedList<DateWidget>(
+            areItemsTheSame: (a, b) => a.key == b.key,
+            spawnIsolate: false,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, animation, item, index) => _itemBuilder(context, animation, item.widget, index),
+            items: elements),
+        padding: padding,
+      ));
 
       items.add(Padding(padding: EdgeInsets.only(bottom: 12.0), key: ValueKey("$date-padding")));
     });
@@ -557,3 +536,32 @@ class DateWidget {
 }
 
 enum HomeFilterItems { all, grades, messages, absences, homework, exams, notes, events, lessons }
+
+Widget _itemBuilder(BuildContext context, Animation<double> animation, Widget item, int index) {
+  final wrappedItem = SizeFadeTransition(
+    curve: Curves.easeInOutCubic,
+    animation: animation,
+    child: item,
+  );
+  return item is Panel
+      // Re-add & animate shadow
+      ? AnimatedBuilder(
+          animation: animation,
+          child: wrappedItem,
+          builder: (context, child) {
+            return DecoratedBox(
+              child: child,
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                      offset: Offset(0, 21),
+                      blurRadius: 23.0,
+                      color: AppColors.of(context).shadow.withOpacity(
+                          CurvedAnimation(parent: CurvedAnimation(parent: animation, curve: Curves.easeInOutCubic), curve: Interval(2 / 3, 1.0))
+                              .value))
+                ],
+              ),
+            );
+          })
+      : wrappedItem;
+}
