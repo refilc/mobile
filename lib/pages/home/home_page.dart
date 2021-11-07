@@ -80,9 +80,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    user = Provider.of<UserProvider>(context, listen: false);
     _filterController = FilterController(itemCount: 4);
     DateTime now = DateTime.now();
-    if (now.hour >= 18)
+    if (now.month == user.student?.birth.month && now.day == user.student?.birth.day)
+      greeting = "happybirthday";
+    else if (now.month == DateTime.december && now.day >= 24 && now.day <= 26)
+      greeting = "merryxmas";
+    else if (now.month == DateTime.january && now.day == 1)
+      greeting = "happynewyear";
+    else if (now.hour >= 18)
       greeting = "goodevening";
     else if (now.hour >= 10)
       greeting = "goodafternoon";
@@ -136,6 +143,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     child: Text(
                       greeting.i18n.fill([firstName]),
                       overflow: TextOverflow.fade,
+                      maxLines: 2,
+                      softWrap: true,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18.0,
