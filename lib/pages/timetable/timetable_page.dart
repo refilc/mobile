@@ -312,14 +312,20 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
 
                                           // Body
                                           final Lesson lesson = _controller.days![tab][index - 1];
+                                          final bool swapDescDay = _controller.days![tab].map((l) => l.swapDesc ? 1 : 0).reduce((a, b) => a + b) >=
+                                              _controller.days![tab].length * .5;
 
                                           return Padding(
                                             padding: EdgeInsets.symmetric(horizontal: 24.0),
                                             child: PanelBody(
                                               padding: EdgeInsets.symmetric(horizontal: 10.0),
-                                              child: LessonTile(lesson, onTap: () {
-                                                if (!lesson.isEmpty) LessonView.show(lesson, context: context);
-                                              }),
+                                              child: LessonTile(
+                                                lesson,
+                                                swapDesc: swapDescDay,
+                                                onTap: () {
+                                                  if (!lesson.isEmpty) LessonView.show(lesson, context: context);
+                                                },
+                                              ),
                                             ),
                                           );
                                         },
