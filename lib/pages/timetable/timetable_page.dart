@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:animations/animations.dart';
+import 'package:filcnaplo/api/providers/update_provider.dart';
 import 'package:filcnaplo_kreta_api/models/week.dart';
 import 'package:filcnaplo_kreta_api/providers/timetable_provider.dart';
 import 'package:filcnaplo/api/providers/user_provider.dart';
@@ -46,6 +47,7 @@ class TimetablePage extends StatefulWidget {
 class _TimetablePageState extends State<TimetablePage> with TickerProviderStateMixin {
   late UserProvider user;
   late TimetableProvider timetableProvider;
+  late UpdateProvider updateProvider;
   late String firstName;
   late TimetableController _controller;
   late TabController _tabController;
@@ -126,6 +128,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
   Widget build(BuildContext context) {
     user = Provider.of<UserProvider>(context);
     timetableProvider = Provider.of<TimetableProvider>(context);
+    updateProvider = Provider.of<UpdateProvider>(context);
 
     // First name
     List<String> nameParts = user.name?.split(" ") ?? ["?"];
@@ -155,6 +158,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                         heroTag: "profile",
                         name: firstName,
                         backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
+                        badge: updateProvider.available,
                         role: user.role,
                       ),
                     ),

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:filcnaplo/api/providers/update_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/absence_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/note_provider.dart';
 import 'package:filcnaplo/api/providers/user_provider.dart';
@@ -33,6 +34,7 @@ class _AbsencesPageState extends State<AbsencesPage> {
   late UserProvider user;
   late AbsenceProvider absenceProvider;
   late NoteProvider noteProvider;
+  late UpdateProvider updateProvider;
   late String firstName;
   late FilterController filterController;
 
@@ -48,6 +50,7 @@ class _AbsencesPageState extends State<AbsencesPage> {
     user = Provider.of<UserProvider>(context);
     absenceProvider = Provider.of<AbsenceProvider>(context);
     noteProvider = Provider.of<NoteProvider>(context);
+    updateProvider = Provider.of<UpdateProvider>(context);
 
     List<String> nameParts = user.name?.split(" ") ?? ["?"];
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
@@ -72,6 +75,7 @@ class _AbsencesPageState extends State<AbsencesPage> {
                       heroTag: "profile",
                       name: firstName,
                       backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
+                      badge: updateProvider.available,
                       role: user.role,
                     ),
                   ),
