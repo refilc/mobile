@@ -82,6 +82,16 @@ class LessonTile extends StatelessWidget {
       if (lesson.description.specialChars().toLowerCase().replaceAll(lesson.subject.name.specialChars().toLowerCase(), '') != "") {
         description = lesson.description;
       }
+
+      // Changed lesson Description
+      if (lesson.isChanged) {
+        if (lesson.status?.name == "Elmaradt") {
+          description = 'cancelled'.i18n;
+        } else if (lesson.substituteTeacher != "") {
+          description = 'substitution'.i18n;
+        }
+      }
+
       room = lesson.room.replaceAll("_", " ");
     } else {
       description = lesson.room.replaceAll("_", " ");

@@ -5,12 +5,18 @@ extension Localization on String {
       {
         "en_en": {
           "empty": "Free period",
+          "cancelled": "Cancelled",
+          "substitution": "Substituted",
         },
         "hu_hu": {
           "empty": "Lyukasóra",
+          "cancelled": "Elmarad",
+          "substitution": "Helyettesítés",
         },
         "de_de": {
           "empty": "Springstunde",
+          "cancelled": "Abgesagte",
+          "substitution": "Vertretene",
         }
       };
 
