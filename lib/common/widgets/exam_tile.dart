@@ -31,7 +31,7 @@ class ExamTile extends StatelessWidget {
           ),
         ),
         title: Text(
-          exam.description,
+          exam.description != "" ? exam.description : (exam.mode?.description ?? "Számonkérés"),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(fontWeight: FontWeight.w600),
