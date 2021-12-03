@@ -24,6 +24,7 @@ import 'package:filcnaplo_mobile_ui/common/filter/filter_controller.dart';
 import 'package:filcnaplo_mobile_ui/common/filter/filter_item.dart';
 import 'package:filcnaplo_mobile_ui/common/filter/filter_view.dart';
 import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
+import 'package:filcnaplo_mobile_ui/common/panel/panel_button.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_button.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/absence_group_tile.dart';
@@ -46,7 +47,9 @@ import 'package:filcnaplo_mobile_ui/pages/home/live_card/live_card.dart';
 import 'package:filcnaplo_kreta_api/controllers/live_card_controller.dart';
 import 'package:filcnaplo_mobile_ui/common/hero_dialog_route.dart';
 import 'package:filcnaplo_mobile_ui/pages/timetable/timetable_page.dart';
+import 'package:filcnaplo_mobile_ui/screens/settings/updates/updates_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:provider/provider.dart';
 import 'home_page.i18n.dart';
 import 'package:filcnaplo/utils/color.dart';
@@ -250,6 +253,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           getFilterWidgets(HomeFilterItems.absences, absencesNoExcused: true),
           getFilterWidgets(HomeFilterItems.homework),
           getFilterWidgets(HomeFilterItems.exams),
+          getFilterWidgets(HomeFilterItems.updates),
         ]);
         items.addAll(all.expand((x) => x));
         break;
@@ -353,9 +357,31 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               )));
         });
         break;
+
+      // Updates
+      case HomeFilterItems.updates:
+        if (updateProvider.available)
+          items.add(DateWidget(
+            date: DateTime.now(),
+            widget: PanelButton(
+              onPressed: () => openUpdates(context),
+              title: Text("update_available".i18n),
+              leading: Icon(FeatherIcons.download),
+              trailing: Text(
+                updateProvider.releases.first.tag,
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
+            ),
+          ));
+        break;
     }
     return items;
   }
+
+  void openUpdates(BuildContext context) => UpdateView.show(updateProvider.releases.first, context: context);
 
   Future<Widget> filterViewBuilder(context, int activeData) async {
     List<Widget> filterWidgets = sortDateWidgets(context, dateWidgets: await getFilterWidgets(HomeFilterItems.values[activeData]));
@@ -472,7 +498,7 @@ List<Widget> sortDateWidgets(
         padding: EdgeInsets.only(bottom: 12.0),
         child: Panel(
           padding: padding,
-          title: _showTitle ? Text((elements + absenceTileWidgets).first.date.format(context)) : null,
+          title: _showTitle ? Text((elements + absenceTileWidgets).first.date.format(context, forceToday: true)) : null,
           child: Column(children: elements.map((e) => e.widget).toList()),
         ),
       ));
@@ -487,4 +513,4 @@ class DateWidget {
   DateWidget({required this.date, required this.widget});
 }
 
-enum HomeFilterItems { all, grades, messages, absences, homework, exams, notes, events, lessons }
+enum HomeFilterItems { all, grades, messages, absences, homework, exams, notes, events, lessons, updates }

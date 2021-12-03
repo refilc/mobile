@@ -15,6 +15,7 @@ extension Localization on String {
           "Grades": "Grades",
           "Messages": "Messages",
           "Absences": "Absences",
+          "update_available": "Update Available",
         },
         "hu_hu": {
           "goodmorning": "Jó reggelt, %s!",
@@ -28,6 +29,7 @@ extension Localization on String {
           "Grades": "Jegyek",
           "Messages": "Üzenetek",
           "Absences": "Hiányok",
+          "update_available": "Frissítés elérhető",
         },
         "de_de": {
           "goodmorning": "Guten morgen, %s!",
@@ -41,6 +43,7 @@ extension Localization on String {
           "Grades": "Noten",
           "Messages": "Nachrichten",
           "Absences": "Abwesenheiten",
+          "update_available": "Update verfügbar",
         },
       };
 
