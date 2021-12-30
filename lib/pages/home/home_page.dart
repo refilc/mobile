@@ -86,6 +86,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
     _pageController = PageController();
+    user = Provider.of<UserProvider>(context, listen: false);
 
     DateTime now = DateTime.now();
     if (now.month == user.student?.birth.month && now.day == user.student?.birth.day)
@@ -189,17 +190,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
                         // Live Card
                         flexibleSpace: FlexibleSpaceBar(
-                          background: Padding(
-                            padding: EdgeInsets.only(
-                              left: 24.0,
-                              right: 24.0,
-                              top: 58.0 + MediaQuery.of(context).padding.top,
-                              bottom: 52.0,
-                            ),
-                            child: LiveCard(
+                          background: LiveCard(
                               onTap: openLiveCard,
                               controller: _liveController,
-                            ),
                           ),
                         ),
                         shadowColor: Color(0),

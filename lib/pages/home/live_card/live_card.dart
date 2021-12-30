@@ -1,3 +1,4 @@
+import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_kreta_api/controllers/live_card_controller.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/lesson_tile.dart';
 import 'package:filcnaplo_mobile_ui/pages/home/live_card/live_card_widget.dart';
@@ -33,15 +34,27 @@ class _LiveCardState extends State<LiveCard> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.controller.currentLesson == null) return Container();
+    if (widget.controller.currentLesson == null)
+      return Container(
+        color: AppColors.of(context).background,
+        width: MediaQuery.of(context).size.width,
+        height: 200,
+      );
 
-    return LiveCardWidget(
-      onTap: widget.controller.nextLessons?.length != 0 ? widget.onTap : null,
-      lesson: widget.controller.currentLesson!,
-      next: widget.controller.nextLesson?.subject,
-      shadowColor: widget.expanded ? Color(0) : null,
-      child: widget.expanded ? _buildBody() : null,
-    );
+    return Padding(
+        padding: EdgeInsets.only(
+          left: 24.0,
+          right: 24.0,
+          top: 58.0 + MediaQuery.of(context).padding.top,
+          bottom: 52.0,
+        ),
+        child: LiveCardWidget(
+          onTap: widget.controller.nextLessons?.length != 0 ? widget.onTap : null,
+          lesson: widget.controller.currentLesson!,
+          next: widget.controller.nextLesson?.subject,
+          shadowColor: widget.expanded ? Color(0) : null,
+          child: widget.expanded ? _buildBody() : null,
+        ));
   }
 
   Widget _buildBody() {
