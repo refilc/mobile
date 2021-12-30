@@ -15,9 +15,10 @@ import 'package:provider/provider.dart';
 import 'lesson_tile.i18n.dart';
 
 class LessonTile extends StatelessWidget {
-  const LessonTile(this.lesson, {Key? key, this.onTap}) : super(key: key);
+  const LessonTile(this.lesson, {Key? key, this.onTap, this.swapDesc = false}) : super(key: key);
 
   final Lesson lesson;
+  final bool swapDesc;
   final void Function()? onTap;
 
   @override
@@ -74,6 +75,28 @@ class LessonTile extends StatelessWidget {
         ));
     });
 
+    String description = '';
+    String room = '';
+
+    if (!swapDesc) {
+      if (lesson.description.specialChars().toLowerCase().replaceAll(lesson.subject.name.specialChars().toLowerCase(), '') != "") {
+        description = lesson.description;
+      }
+
+      // Changed lesson Description
+      if (lesson.isChanged) {
+        if (lesson.status?.name == "Elmaradt") {
+          description = 'cancelled'.i18n;
+        } else if (lesson.substituteTeacher != "") {
+          description = 'substitution'.i18n;
+        }
+      }
+
+      room = lesson.room.replaceAll("_", " ");
+    } else {
+      description = lesson.room.replaceAll("_", " ");
+    }
+
     return Material(
       type: MaterialType.transparency,
       child: Visibility(
@@ -101,9 +124,9 @@ class LessonTile extends StatelessWidget {
                     color: AppColors.of(context).text.withOpacity(!lesson.isEmpty ? 1.0 : 0.5),
                   ),
                 ),
-                subtitle: lesson.description.specialChars().toLowerCase().replaceAll(lesson.subject.name.specialChars().toLowerCase(), '') != ""
+                subtitle: description != ""
                     ? Text(
-                        lesson.description,
+                        description,
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 14.0,
@@ -137,7 +160,7 @@ class LessonTile extends StatelessWidget {
                             child: Padding(
                               padding: EdgeInsets.only(right: 6.0),
                               child: Text(
-                                lesson.room.replaceAll("_", " "),
+                                room,
                                 textAlign: TextAlign.center,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,

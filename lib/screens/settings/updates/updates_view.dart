@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:filcnaplo/helpers/storage_helper.dart';
 import 'package:filcnaplo/models/release.dart';
 import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo/utils/color.dart';
@@ -23,7 +26,7 @@ class UpdateView extends StatefulWidget {
 
 class _UpdateViewState extends State<UpdateView> {
   double progress = 0.0;
-  UpdateState state = UpdateState.prepare;
+  UpdateState state = UpdateState.none;
 
   @override
   Widget build(BuildContext context) {
@@ -88,21 +91,21 @@ class _UpdateViewState extends State<UpdateView> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (state == UpdateState.downloading && progress > 0.0)
+                  if (state == UpdateState.downloading || state == UpdateState.preparing)
                     Container(
                       height: 18.0,
                       width: 18.0,
                       margin: EdgeInsets.only(right: 8.0),
                       child: CircularProgressIndicator(
-                        value: progress,
+                        value: progress > 0.05 ? progress : null,
                         color: ColorUtils.foregroundColor(AppColors.of(context).filc),
                       ),
                     ),
-                  Text(["download".i18n, "downloading".i18n, "installing".i18n][state.index].toUpperCase()),
+                  Text(["download".i18n, "downloading".i18n, "downloading".i18n, "installing".i18n][state.index].toUpperCase()),
                 ],
               ),
               backgroundColor: AppColors.of(context).filc,
-              onPressed: state == UpdateState.prepare ? () => download() : null,
+              onPressed: state == UpdateState.none ? () => download() : null,
             ),
           ),
         ],
@@ -128,6 +131,7 @@ class _UpdateViewState extends State<UpdateView> {
               content: Text("error".i18n),
               backgroundColor: AppColors.of(context).red,
             ));
+            setState(() => state = UpdateState.none);
           }
         });
   }

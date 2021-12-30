@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:filcnaplo/api/providers/update_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/message_provider.dart';
 import 'package:filcnaplo/api/providers/user_provider.dart';
 import 'package:filcnaplo/theme.dart';
@@ -26,6 +27,7 @@ class MessagesPage extends StatefulWidget {
 class _MessagesPageState extends State<MessagesPage> with TickerProviderStateMixin {
   late UserProvider user;
   late MessageProvider messageProvider;
+  late UpdateProvider updateProvider;
   late String firstName;
   late TabController tabController;
 
@@ -40,6 +42,7 @@ class _MessagesPageState extends State<MessagesPage> with TickerProviderStateMix
   Widget build(BuildContext context) {
     user = Provider.of<UserProvider>(context);
     messageProvider = Provider.of<MessageProvider>(context);
+    updateProvider = Provider.of<UpdateProvider>(context);
 
     List<String> nameParts = user.name?.split(" ") ?? ["?"];
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
@@ -64,6 +67,7 @@ class _MessagesPageState extends State<MessagesPage> with TickerProviderStateMix
                       heroTag: "profile",
                       name: firstName,
                       backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
+                      badge: updateProvider.available,
                       role: user.role,
                     ),
                   ),

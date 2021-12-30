@@ -8,7 +8,7 @@ extension Localization on String {
           "substituted": "Substituted lesson",
         },
         "hu_hu": {
-          "cancelled": "Elmaradt óra",
+          "cancelled": "Elmaradó óra",
           "substituted": "Helyettesített óra",
         },
         "de_de": {

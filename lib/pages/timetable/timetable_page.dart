@@ -1,10 +1,12 @@
 import 'dart:math';
 import 'package:animations/animations.dart';
+import 'package:filcnaplo/api/providers/update_provider.dart';
 import 'package:filcnaplo_kreta_api/models/week.dart';
 import 'package:filcnaplo_kreta_api/providers/timetable_provider.dart';
 import 'package:filcnaplo/api/providers/user_provider.dart';
 import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_kreta_api/models/lesson.dart';
+import 'package:filcnaplo_mobile_ui/common/dot.dart';
 import 'package:filcnaplo_mobile_ui/common/empty.dart';
 import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_button.dart';
@@ -46,6 +48,7 @@ class TimetablePage extends StatefulWidget {
 class _TimetablePageState extends State<TimetablePage> with TickerProviderStateMixin {
   late UserProvider user;
   late TimetableProvider timetableProvider;
+  late UpdateProvider updateProvider;
   late String firstName;
   late TimetableController _controller;
   late TabController _tabController;
@@ -126,6 +129,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
   Widget build(BuildContext context) {
     user = Provider.of<UserProvider>(context);
     timetableProvider = Provider.of<TimetableProvider>(context);
+    updateProvider = Provider.of<UpdateProvider>(context);
 
     // First name
     List<String> nameParts = user.name?.split(" ") ?? ["?"];
@@ -155,6 +159,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                         heroTag: "profile",
                         name: firstName,
                         backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
+                        badge: updateProvider.available,
                         role: user.role,
                       ),
                     ),
@@ -311,14 +316,20 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
 
                                           // Body
                                           final Lesson lesson = _controller.days![tab][index - 1];
+                                          final bool swapDescDay = _controller.days![tab].map((l) => l.swapDesc ? 1 : 0).reduce((a, b) => a + b) >=
+                                              _controller.days![tab].length * .5;
 
                                           return Padding(
                                             padding: EdgeInsets.symmetric(horizontal: 24.0),
                                             child: PanelBody(
                                               padding: EdgeInsets.symmetric(horizontal: 10.0),
-                                              child: LessonTile(lesson, onTap: () {
-                                                if (!lesson.isEmpty) LessonView.show(lesson, context: context);
-                                              }),
+                                              child: LessonTile(
+                                                lesson,
+                                                swapDesc: swapDescDay,
+                                                onTap: () {
+                                                  if (!lesson.isEmpty) LessonView.show(lesson, context: context);
+                                                },
+                                              ),
                                             ),
                                           );
                                         },
@@ -339,7 +350,6 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                         TabBar(
                           controller: _tabController,
                           // Label
-                          labelStyle: TextStyle(fontSize: 26.0, fontWeight: FontWeight.w600),
                           labelPadding: EdgeInsets.zero,
                           labelColor: Theme.of(context).colorScheme.secondary,
                           unselectedLabelColor: AppColors.of(context).text.withOpacity(0.9),
@@ -355,8 +365,21 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                           tabs: List.generate(_tabController.length, (index) {
                             String label = DateFormat("E", I18n.of(context).locale.languageCode).format(_controller.days![index].first.date);
                             return Tab(
-                              height: 36,
-                              text: label.substring(0, min(2, label.length)),
+                              height: 42.0,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  if (_sameDate(_controller.days![index].first.date, DateTime.now()))
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 4.0),
+                                      child: Dot(size: 4.0, color: Theme.of(context).colorScheme.secondary),
+                                    ),
+                                  Text(
+                                    label.substring(0, min(2, label.length)),
+                                    style: TextStyle(fontSize: 26.0, fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
                             );
                           }),
                         ),
@@ -374,3 +397,6 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
     );
   }
 }
+
+// difference.inDays is not reliable
+bool _sameDate(DateTime a, DateTime b) => (a.year == b.year && a.month == b.month && a.day == b.day);

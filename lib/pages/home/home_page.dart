@@ -1,4 +1,6 @@
 // ignore_for_file: dead_code
+import 'dart:math';
+
 import 'package:filcnaplo/theme.dart';
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
@@ -20,6 +22,7 @@ import 'package:filcnaplo_kreta_api/providers/timetable_provider.dart';
 import 'package:filcnaplo_mobile_ui/common/empty.dart';
 import 'package:filcnaplo_mobile_ui/common/filter_bar.dart';
 import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
+import 'package:filcnaplo_mobile_ui/common/panel/panel_button.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_button.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/absence_group_tile.dart';
@@ -42,7 +45,9 @@ import 'package:filcnaplo_mobile_ui/pages/home/live_card/live_card.dart';
 import 'package:filcnaplo_kreta_api/controllers/live_card_controller.dart';
 import 'package:filcnaplo_mobile_ui/common/hero_dialog_route.dart';
 import 'package:filcnaplo_mobile_ui/pages/timetable/timetable_page.dart';
+import 'package:filcnaplo_mobile_ui/screens/settings/updates/updates_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:provider/provider.dart';
 import 'home_page.i18n.dart';
 import 'package:filcnaplo/utils/color.dart';
@@ -83,7 +88,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     _pageController = PageController();
 
     DateTime now = DateTime.now();
-    if (now.hour >= 18)
+    if (now.month == user.student?.birth.month && now.day == user.student?.birth.day)
+      greeting = "happybirthday";
+    else if (now.month == DateTime.december && now.day >= 24 && now.day <= 26)
+      greeting = "merryxmas";
+    else if (now.month == DateTime.january && now.day == 1)
+      greeting = "happynewyear";
+    else if (now.hour >= 18)
       greeting = "goodevening";
     else if (now.hour >= 10)
       greeting = "goodafternoon";
@@ -303,6 +314,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           getFilterWidgets(HomeFilterItems.absences, absencesNoExcused: true),
           getFilterWidgets(HomeFilterItems.homework),
           getFilterWidgets(HomeFilterItems.exams),
+          getFilterWidgets(HomeFilterItems.updates),
         ]);
         items.addAll(all.expand((x) => x));
         break;
@@ -414,8 +426,56 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               )));
         });
         break;
+
+      // Updates
+      case HomeFilterItems.updates:
+        if (updateProvider.available)
+          items.add(DateWidget(
+            date: DateTime.now(),
+            widget: PanelButton(
+              onPressed: () => openUpdates(context),
+              title: Text("update_available".i18n),
+              leading: Icon(FeatherIcons.download),
+              trailing: Text(
+                updateProvider.releases.first.tag,
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
+            ),
+          ));
+        break;
     }
     return items;
+  }
+
+  void openUpdates(BuildContext context) => UpdateView.show(updateProvider.releases.first, context: context);
+
+  Future<Widget> filterViewBuilder(context, int activeData) async {
+    List<Widget> filterWidgets = sortDateWidgets(context, dateWidgets: await getFilterWidgets(HomeFilterItems.values[activeData]));
+
+    return Padding(
+      padding: EdgeInsets.only(top: 12.0),
+      child: RefreshIndicator(
+        color: Theme.of(context).colorScheme.secondary,
+        onRefresh: () => syncAll(context),
+        child: ListView.builder(
+          padding: EdgeInsets.zero,
+          physics: BouncingScrollPhysics(),
+          itemBuilder: (context, index) {
+            if (filterWidgets.length > 0)
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.0),
+                child: filterWidgets[index],
+              );
+            else
+              return Empty(subtitle: "empty".i18n);
+          },
+          itemCount: max(filterWidgets.length, 1),
+        ),
+      ),
+    );
   }
 }
 
@@ -534,7 +594,7 @@ class DateWidget {
   const DateWidget({required this.date, required this.widget, this.key});
 }
 
-enum HomeFilterItems { all, grades, messages, absences, homework, exams, notes, events, lessons }
+enum HomeFilterItems { all, grades, messages, absences, homework, exams, notes, events, lessons, updates }
 
 Widget _itemBuilder(BuildContext context, Animation<double> animation, Widget item, int index) {
   final wrappedItem = SizeFadeTransition(

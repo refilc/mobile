@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:filcnaplo/api/providers/update_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/grade_provider.dart';
 import 'package:filcnaplo/api/providers/user_provider.dart';
 import 'package:filcnaplo/theme.dart';
@@ -31,6 +32,7 @@ class GradesPage extends StatefulWidget {
 class _GradesPageState extends State<GradesPage> {
   late UserProvider user;
   late GradeProvider gradeProvider;
+  late UpdateProvider updateProvider;
   late String firstName;
   late Widget yearlyGraph;
   List<Widget> subjectTiles = [];
@@ -76,6 +78,7 @@ class _GradesPageState extends State<GradesPage> {
   Widget build(BuildContext context) {
     user = Provider.of<UserProvider>(context);
     gradeProvider = Provider.of<GradeProvider>(context);
+    updateProvider = Provider.of<UpdateProvider>(context);
 
     List<String> nameParts = user.name?.split(" ") ?? ["?"];
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
@@ -114,6 +117,7 @@ class _GradesPageState extends State<GradesPage> {
                       heroTag: "profile",
                       name: firstName,
                       backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
+                      badge: updateProvider.available,
                       role: user.role,
                     ),
                   ),
