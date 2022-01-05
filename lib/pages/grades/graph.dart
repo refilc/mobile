@@ -85,24 +85,30 @@ class _GradeGraphState extends State<GradeGraph> {
 
     subjectSpots = getSpots(data);
     ghostSpots = getSpots(data + ghostData);
-    ghostSpots = ghostSpots.where((e) => e.x >= subjectSpots.map((f) => f.x).reduce(max)).toList();
+    ghostSpots = ghostSpots.where((e) => e.x + 1 >= subjectSpots.map((f) => f.x).reduce(max)).toList();
+    ghostSpots = ghostSpots.map((e) => FlSpot(e.x + 0.1, e.y)).toList();
+    ghostSpots.add(subjectSpots.firstWhere((e) => e.x >= subjectSpots.map((f) => f.x).reduce(max)));
 
     Grade halfYearGrade = widget.data.lastWhere((e) => e.type == GradeType.halfYear, orElse: () => Grade.fromJson({}));
 
     if (halfYearGrade.date.year != 0 && data.isNotEmpty) {
-      extraLines.add(VerticalLine(
+      extraLines.add(
+        VerticalLine(
           x: halfYearGrade.date.month + (halfYearGrade.date.day / 31) + ((halfYearGrade.date.year - data.first.writeDate.year) * 12),
           strokeWidth: 3.0,
           color: AppColors.of(context).text.withOpacity(.75),
           label: VerticalLineLabel(
-              labelResolver: (_) => "mid".i18n,
-              show: true,
-              alignment: Alignment.topLeft,
-              style: TextStyle(
-                color: AppColors.of(context).text,
-                fontSize: 16.0,
-                fontWeight: FontWeight.w600,
-              ))));
+            labelResolver: (_) => "mid".i18n,
+            show: true,
+            alignment: Alignment.topLeft,
+            style: TextStyle(
+              color: AppColors.of(context).text,
+              fontSize: 16.0,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      );
     }
 
     return SizedBox(
@@ -112,9 +118,9 @@ class _GradeGraphState extends State<GradeGraph> {
                 extraLinesData: ExtraLinesData(verticalLines: extraLines),
                 lineBarsData: [
                   LineChartBarData(
+                    preventCurveOverShooting: true,
                     spots: subjectSpots,
                     isCurved: true,
-                    curveSmoothness: 0.3,
                     colors: [averageColor],
                     barWidth: 8,
                     isStrokeCapRound: true,
@@ -134,9 +140,9 @@ class _GradeGraphState extends State<GradeGraph> {
                   ),
                   if (ghostData.isNotEmpty && ghostSpots.isNotEmpty)
                     LineChartBarData(
+                      preventCurveOverShooting: true,
                       spots: ghostSpots,
                       isCurved: true,
-                      curveSmoothness: 0.3,
                       colors: [AppColors.of(context).text],
                       barWidth: 8,
                       isStrokeCapRound: true,
@@ -159,10 +165,12 @@ class _GradeGraphState extends State<GradeGraph> {
                 maxY: 5,
                 gridData: FlGridData(
                   show: true,
-                  getDrawingHorizontalLine: (_) => FlLine(
-                    color: AppColors.of(context).text.withOpacity(.15),
-                    strokeWidth: 2,
-                  ),
+                  horizontalInterval: 1,
+                  // checkToShowVerticalLine: (_) => false,
+                  // getDrawingHorizontalLine: (_) => FlLine(
+                  //   color: AppColors.of(context).text.withOpacity(.15),
+                  //   strokeWidth: 2,
+                  // ),
                   // getDrawingVerticalLine: (_) => FlLine(
                   //   color: AppColors.of(context).text.withOpacity(.25),
                   //   strokeWidth: 2,
@@ -223,6 +231,7 @@ class _GradeGraphState extends State<GradeGraph> {
                   ),
                   leftTitles: SideTitles(
                     showTitles: true,
+                    interval: 1.0,
                     getTextStyles: (context, value) => TextStyle(
                       color: AppColors.of(context).text,
                       fontWeight: FontWeight.bold,
@@ -230,6 +239,8 @@ class _GradeGraphState extends State<GradeGraph> {
                     ),
                     margin: 16,
                   ),
+                  rightTitles: SideTitles(showTitles: false),
+                  topTitles: SideTitles(showTitles: false),
                 ),
               ),
             )
