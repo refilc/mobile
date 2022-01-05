@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:filcnaplo/helpers/storage_helper.dart';
 import 'package:filcnaplo/models/release.dart';
 import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo/utils/color.dart';

@@ -172,7 +172,6 @@ class _GradeGraphState extends State<GradeGraph> {
                     fitInsideVertically: true,
                     fitInsideHorizontally: true,
                   ),
-                  touchCallback: (LineTouchResponse touchResponse) {},
                   handleBuiltInTouches: true,
                   touchSpotThreshold: 20.0,
                   getTouchedSpotIndicator: (_, spots) {

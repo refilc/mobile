@@ -28,13 +28,23 @@ import 'timetable_page.i18n.dart';
 // todo: "fix" overflow (priority: -1)
 
 class TimetablePage extends StatefulWidget {
-  TimetablePage({Key? key, this.initialDay}) : super(key: key);
+  TimetablePage({Key? key, this.initialDay, this.initialWeek}) : super(key: key);
 
   final DateTime? initialDay;
+  final Week? initialWeek;
 
   static void jump(BuildContext context, {Week? week, DateTime? day, Lesson? lesson}) {
     // Go to timetable page with arguments
-    Navigator.pushReplacement(context, navigationPageRoute((context) => TimetablePage(initialDay: lesson?.date)));
+    Navigator.pushReplacement(
+        context,
+        navigationPageRoute((context) => TimetablePage(
+              initialDay: lesson?.date ?? day,
+              initialWeek: lesson?.date != null
+                  ? Week.fromDate(lesson!.date)
+                  : day != null
+                      ? Week.fromDate(day)
+                      : week,
+            )));
     NavigationScreen.of(context)?.setPage("timetable");
 
     // Show initial Lesson
@@ -100,7 +110,10 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
       });
     });
 
-    _controller.jump(_controller.currentWeek, context: context, initial: true);
+    if (widget.initialWeek == null)
+      _controller.jump(_controller.currentWeek, context: context, initial: true, skip: true);
+    else
+      _controller.jump(_controller.currentWeek, context: context, initial: true);
 
     // Listen for user changes
     user = Provider.of<UserProvider>(context, listen: false);
