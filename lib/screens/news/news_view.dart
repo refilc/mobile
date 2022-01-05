@@ -19,24 +19,24 @@ class NewsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 100.0, horizontal: 32.0),
+      padding: const EdgeInsets.symmetric(vertical: 100.0, horizontal: 32.0),
       child: Material(
         borderRadius: BorderRadius.circular(12.0),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
           child: Column(
             children: [
               // Content
               Expanded(
                 child: ListView(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(left: 8.0, right: 6.0, top: 14.0, bottom: 8.0),
+                      padding: const EdgeInsets.only(left: 8.0, right: 6.0, top: 14.0, bottom: 8.0),
                       child: Text(
                         news.title,
                         maxLines: 3,
-                        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18.0),
+                        style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18.0),
                       ),
                     ),
                     SelectableLinkify(
@@ -48,7 +48,7 @@ class NewsView extends StatelessWidget {
                           customTabsOption: CustomTabsOption(showPageTitle: true, toolbarColor: AppColors.of(context).background),
                         );
                       },
-                      style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0),
+                      style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0),
                     ),
                   ],
                 ),

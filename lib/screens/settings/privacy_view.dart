@@ -7,21 +7,21 @@ import 'settings_screen.i18n.dart';
 class PrivacyView extends StatelessWidget {
   const PrivacyView({Key? key}) : super(key: key);
 
-  static void show(BuildContext context) => showDialog(context: context, builder: (context) => PrivacyView(), barrierDismissible: true);
+  static void show(BuildContext context) => showDialog(context: context, builder: (context) => const PrivacyView(), barrierDismissible: true);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 100.0, horizontal: 32.0),
+      padding: const EdgeInsets.symmetric(vertical: 100.0, horizontal: 32.0),
       child: Material(
         borderRadius: BorderRadius.circular(12.0),
         child: Padding(
-          padding: EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(12.0),
           child: ListView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             children: [
               Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Text("privacy".i18n),
               ),
               SelectableLinkify(

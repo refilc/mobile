@@ -11,7 +11,8 @@ class FilterBar extends StatefulWidget implements PreferredSizeWidget {
   final List<FilterItem> items;
   final FilterController controller;
   final EdgeInsetsGeometry padding;
-  final Size preferredSize = Size.fromHeight(42.0);
+  @override
+  final Size preferredSize = const Size.fromHeight(42.0);
 
   @override
   _FilterBarState createState() => _FilterBarState();
@@ -39,7 +40,7 @@ class _FilterBarState extends State<FilterBar> {
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomLeft,
-            stops: [0, .7, 1]),
+            stops: const [0, .7, 1]),
       ),
       child: ShaderMask(
         shaderCallback: (Rect bounds) {
@@ -47,13 +48,13 @@ class _FilterBarState extends State<FilterBar> {
             begin: Alignment.topLeft,
             end: Alignment.topRight,
             colors: [Colors.transparent, Colors.transparent, AppColors.of(context).background],
-            stops: [0, 0.9, 1],
+            stops: const [0, 0.9, 1],
           ).createShader(bounds);
         },
         blendMode: BlendMode.dstOut,
         child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             itemCount: widget.items.length,
             itemBuilder: (context, index) {
               var itemWidget = FilterItemWidget(

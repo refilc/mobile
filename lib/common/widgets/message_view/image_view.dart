@@ -18,7 +18,7 @@ class ImageView extends StatelessWidget {
         leading: BackButton(color: AppColors.of(context).text),
         actions: [
           Padding(
-            padding: EdgeInsets.only(right: 8.0),
+            padding: const EdgeInsets.only(right: 8.0),
             child: IconButton(
               onPressed: () => ShareHelper.shareFile(path),
               icon: Icon(FeatherIcons.share2, color: AppColors.of(context).text),

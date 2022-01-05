@@ -18,21 +18,21 @@ class FilterItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 6.0, bottom: 6.0, right: 3.0),
+      padding: const EdgeInsets.only(top: 6.0, bottom: 6.0, right: 3.0),
       child: Material(
         type: MaterialType.transparency,
         child: InkWell(
           onTap: onTap,
           borderRadius: BorderRadius.circular(6.0),
           child: AnimatedContainer(
-            duration: Duration(milliseconds: 200),
+            duration: const Duration(milliseconds: 200),
             curve: Curves.easeInOut,
             height: 32.0,
             decoration: BoxDecoration(
               color: item.active ? (activeColor ?? AppColors.of(context).filc).withOpacity(0.25) : null,
               borderRadius: BorderRadius.circular(6.0),
             ),
-            padding: item.active ? EdgeInsets.symmetric(vertical: 6.0, horizontal: 12.0) : EdgeInsets.symmetric(horizontal: 6.0),
+            padding: item.active ? const EdgeInsets.symmetric(vertical: 6.0, horizontal: 12.0) : const EdgeInsets.symmetric(horizontal: 6.0),
             child: Center(
                 child: Text(item.label,
                     maxLines: 1,

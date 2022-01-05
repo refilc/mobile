@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 import 'grade_calculator.i18n.dart';
 
 class GradeCalculator extends StatefulWidget {
-  GradeCalculator(this.subject, {Key? key}) : super(key: key);
+  const GradeCalculator(this.subject, {Key? key}) : super(key: key);
 
   final Subject subject;
 
@@ -32,14 +32,14 @@ class _GradeCalculatorState extends State<GradeCalculator> {
 
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(6.0),
+      padding: const EdgeInsets.all(6.0),
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(bottom: 8.0),
+            padding: const EdgeInsets.only(bottom: 8.0),
             child: Text(
               "Grade Calculator".i18n,
-              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
+              style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
             ),
           ),
 
@@ -59,7 +59,7 @@ class _GradeCalculatorState extends State<GradeCalculator> {
             ),
             Container(
               width: 70.0,
-              padding: EdgeInsets.only(right: 12.0),
+              padding: const EdgeInsets.only(right: 12.0),
               child: Center(child: GradeValueWidget(GradeValue(newValue.toInt(), "", "", 0))),
             ),
           ]),
@@ -80,18 +80,18 @@ class _GradeCalculatorState extends State<GradeCalculator> {
             ),
             Container(
               width: 70.0,
-              padding: EdgeInsets.only(right: 12.0),
+              padding: const EdgeInsets.only(right: 12.0),
               child: Center(
                 child: Text(
                   "${newWeight.toInt()}%",
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18.0),
+                  style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18.0),
                 ),
               ),
             ),
           ]),
           Container(
             width: 120.0,
-            padding: EdgeInsets.symmetric(vertical: 12.0),
+            padding: const EdgeInsets.symmetric(vertical: 12.0),
             child: MaterialActionButton(
               child: Text("Add Grade".i18n),
               onPressed: () {
@@ -102,10 +102,10 @@ class _GradeCalculatorState extends State<GradeCalculator> {
 
                 DateTime date;
 
-                if (calculatorProvider.ghosts.length > 0) {
+                if (calculatorProvider.ghosts.isNotEmpty) {
                   List<Grade> grades = calculatorProvider.ghosts;
                   grades.sort((a, b) => -a.writeDate.compareTo(b.writeDate));
-                  date = grades.first.date.add(Duration(days: 7));
+                  date = grades.first.date.add(const Duration(days: 7));
                 } else {
                   List<Grade> grades = calculatorProvider.grades.where((e) => e.type == GradeType.midYear && e.subject == widget.subject).toList();
                   grades.sort((a, b) => -a.writeDate.compareTo(b.writeDate));

@@ -27,7 +27,7 @@ class Empty extends StatelessWidget {
 
     return Center(
       child: Padding(
-        padding: EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(12.0),
         child: Text.rich(
           TextSpan(
             text: faces[index],

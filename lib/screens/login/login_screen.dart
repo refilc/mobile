@@ -13,7 +13,7 @@ import 'package:flutter/services.dart';
 import 'login_screen.i18n.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({Key? key, this.back = false}) : super(key: key);
+  const LoginScreen({Key? key, this.back = false}) : super(key: key);
 
   final bool back;
 
@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool showBack = false;
 
   // Scaffold Gradient background
-  final LinearGradient _backgroundGradient = LinearGradient(
+  final LinearGradient _backgroundGradient = const LinearGradient(
     colors: [
       Color(0xff20AC9B),
       Color(0xff20AC9B),
@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
     showBack = widget.back;
 
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.light,
       systemNavigationBarColor: Colors.white,
@@ -61,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
         });
       } else {
         ScaffoldMessenger.of(context).showSnackBar(CustomSnackBar(
-          content: Text("schools_error".i18n, style: TextStyle(color: Colors.white)),
+          content: Text("schools_error".i18n, style: const TextStyle(color: Colors.white)),
           backgroundColor: AppColors.of(context).red,
           context: context,
         ));
@@ -75,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Container(
         decoration: BoxDecoration(gradient: _backgroundGradient),
         child: SingleChildScrollView(
-          physics: ClampingScrollPhysics(),
+          physics: const ClampingScrollPhysics(),
           controller: _scrollController,
           child: Container(
             decoration: BoxDecoration(gradient: _backgroundGradient),
@@ -88,8 +88,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (showBack)
                     Container(
                       alignment: Alignment.topLeft,
-                      padding: EdgeInsets.only(left: 16.0, top: 12.0),
-                      child: ClipOval(
+                      padding: const EdgeInsets.only(left: 16.0, top: 12.0),
+                      child: const ClipOval(
                         child: Material(
                           type: MaterialType.transparency,
                           child: BackButton(color: Colors.white),
@@ -97,18 +97,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
 
-                  Spacer(),
+                  const Spacer(),
 
                   // App logo
                   Padding(
-                    padding: EdgeInsets.only(bottom: 24.0),
+                    padding: const EdgeInsets.only(bottom: 24.0),
                     child: ClipRect(
                       child: Container(
                         // Png shadow *hack*
                         child: Stack(
                           children: [
                             Padding(
-                              padding: EdgeInsets.only(top: 8.0),
+                              padding: const EdgeInsets.only(top: 8.0),
                               child: Opacity(child: Image.asset("assets/icons/ic_splash.png", color: Colors.black), opacity: 0.3),
                             ),
                             BackdropFilter(
@@ -118,38 +118,38 @@ class _LoginScreenState extends State<LoginScreen> {
                           ],
                         ),
                         width: MediaQuery.of(context).size.width / 4,
-                        margin: EdgeInsets.only(left: 12.0, right: 12.0, bottom: 12.0),
+                        margin: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 12.0),
                       ),
                     ),
                   ),
 
                   // Inputs
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 32.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Username
                         Padding(
-                          padding: EdgeInsets.only(bottom: 6.0),
+                          padding: const EdgeInsets.only(bottom: 6.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Expanded(
                                 child: Text("username".i18n,
-                                    maxLines: 1, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14.0)),
+                                    maxLines: 1, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14.0)),
                               ),
                               Expanded(
                                 child: Text("usernameHint".i18n,
                                     maxLines: 1,
                                     textAlign: TextAlign.right,
-                                    style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w500, fontSize: 12.0)),
+                                    style: const TextStyle(color: Colors.white54, fontWeight: FontWeight.w500, fontSize: 12.0)),
                               ),
                             ],
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(bottom: 12.0),
+                          padding: const EdgeInsets.only(bottom: 12.0),
                           child: LoginInput(
                             style: LoginInputStyle.username,
                             controller: usernameController,
@@ -158,25 +158,25 @@ class _LoginScreenState extends State<LoginScreen> {
 
                         // Password
                         Padding(
-                          padding: EdgeInsets.only(bottom: 6.0),
+                          padding: const EdgeInsets.only(bottom: 6.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Expanded(
                                 child: Text("password".i18n,
-                                    maxLines: 1, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14.0)),
+                                    maxLines: 1, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14.0)),
                               ),
                               Expanded(
                                 child: Text("passwordHint".i18n,
                                     maxLines: 1,
                                     textAlign: TextAlign.right,
-                                    style: TextStyle(color: Colors.white54, fontWeight: FontWeight.w500, fontSize: 12.0)),
+                                    style: const TextStyle(color: Colors.white54, fontWeight: FontWeight.w500, fontSize: 12.0)),
                               ),
                             ],
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(bottom: 12.0),
+                          padding: const EdgeInsets.only(bottom: 12.0),
                           child: LoginInput(
                             style: LoginInputStyle.password,
                             controller: passwordController,
@@ -185,8 +185,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
                         // School
                         Padding(
-                          padding: EdgeInsets.only(bottom: 6.0),
-                          child: Text("school".i18n, maxLines: 1, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14.0)),
+                          padding: const EdgeInsets.only(bottom: 6.0),
+                          child: Text("school".i18n, maxLines: 1, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14.0)),
                         ),
                         SchoolInput(
                           scroll: _scrollController,
@@ -198,19 +198,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   // Log in button
                   Padding(
-                    padding: EdgeInsets.only(top: 42.0),
+                    padding: const EdgeInsets.only(top: 42.0),
                     child: Visibility(
                       child: LoginButton(
                         child: Text("login".i18n,
                             maxLines: 1,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 15.0,
                             )),
                         onPressed: () => _loginApi(context: context),
                       ),
                       visible: _loginState != LoginState.inProgress,
-                      replacement: Padding(
+                      replacement: const Padding(
                         padding: EdgeInsets.symmetric(vertical: 6.0),
                         child: CircularProgressIndicator(
                           valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
@@ -220,13 +220,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   if (_loginState == LoginState.missingFields || _loginState == LoginState.invalidGrant || _loginState == LoginState.failed)
                     Padding(
-                      padding: EdgeInsets.only(top: 8.0),
+                      padding: const EdgeInsets.only(top: 8.0),
                       child: Text(
                         ["missing_fields", "invalid_grant", "error"][_loginState.index].i18n,
-                        style: TextStyle(color: Colors.red, fontWeight: FontWeight.w500),
+                        style: const TextStyle(color: Colors.red, fontWeight: FontWeight.w500),
                       ),
                     ),
-                  Spacer()
+                  const Spacer()
                 ],
               ),
             ),

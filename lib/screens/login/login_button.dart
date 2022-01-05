@@ -10,7 +10,7 @@ class LoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialButton(
       child: Padding(
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           vertical: 15.0,
         ),
         child: child,

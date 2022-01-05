@@ -21,7 +21,7 @@ import 'package:filcnaplo/utils/color.dart';
 import 'messages_page.i18n.dart';
 
 class MessagesPage extends StatefulWidget {
-  MessagesPage({Key? key}) : super(key: key);
+  const MessagesPage({Key? key}) : super(key: key);
 
   @override
   _MessagesPageState createState() => _MessagesPageState();
@@ -52,9 +52,9 @@ class _MessagesPageState extends State<MessagesPage> {
 
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.only(top: 12.0),
+        padding: const EdgeInsets.only(top: 12.0),
         child: NestedScrollView(
-          physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+          physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
           headerSliverBuilder: (context, _) => [
             SliverAppBar(
               pinned: true,
@@ -64,7 +64,7 @@ class _MessagesPageState extends State<MessagesPage> {
               actions: [
                 // Profile Icon
                 Padding(
-                  padding: EdgeInsets.only(right: 24.0),
+                  padding: const EdgeInsets.only(right: 24.0),
                   child: ProfileButton(
                     child: ProfileImage(
                       heroTag: "profile",
@@ -100,44 +100,44 @@ class _MessagesPageState extends State<MessagesPage> {
     List<DateWidget> items = [];
     switch (activeData) {
       case MessageType.inbox:
-        messageProvider.messages.forEach((message) {
+        for (var message in messageProvider.messages) {
           if (message.type == MessageType.inbox) {
             items.add(DateWidget(
               date: message.date,
               widget: MessageTile(message, onTap: () => MessageView.show([message], context: context)),
             ));
           }
-        });
+        }
         break;
       case MessageType.sent:
-        messageProvider.messages.forEach((message) {
+        for (var message in messageProvider.messages) {
           if (message.type == MessageType.sent && !messageProvider.messages.any((m) => message.id == m.id)) {
             items.add(DateWidget(
               date: message.date,
               widget: MessageTile(message, onTap: () => MessageView.show([message], context: context)),
             ));
           }
-        });
+        }
         break;
       case MessageType.trash:
-        messageProvider.messages.forEach((message) {
+        for (var message in messageProvider.messages) {
           if (message.type == MessageType.trash) {
             items.add(DateWidget(
               date: message.date,
               widget: MessageTile(message, onTap: () => MessageView.show([message], context: context)),
             ));
           }
-        });
+        }
         break;
       case MessageType.draft:
-        messageProvider.messages.forEach((message) {
+        for (var message in messageProvider.messages) {
           if (message.type == MessageType.draft) {
             items.add(DateWidget(
               date: message.date,
               widget: MessageTile(message, onTap: () => MessageView.show([message], context: context)),
             ));
           }
-        });
+        }
         break;
     }
     return items;
@@ -147,7 +147,7 @@ class _MessagesPageState extends State<MessagesPage> {
     List<Widget> filterWidgets = sortDateWidgets(context, dateWidgets: getFilterWidgets(MessageType.values[activeData]));
 
     return Padding(
-      padding: EdgeInsets.only(top: 12.0),
+      padding: const EdgeInsets.only(top: 12.0),
       child: RefreshIndicator(
         color: Theme.of(context).colorScheme.secondary,
         onRefresh: () async {
@@ -159,10 +159,10 @@ class _MessagesPageState extends State<MessagesPage> {
         },
         child: ListView.builder(
           padding: EdgeInsets.zero,
-          physics: BouncingScrollPhysics(),
-          itemBuilder: (context, index) => filterWidgets.length > 0
+          physics: const BouncingScrollPhysics(),
+          itemBuilder: (context, index) => filterWidgets.isNotEmpty
               ? Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
                   child: filterWidgets[index],
                 )
               : Empty(subtitle: "empty".i18n),

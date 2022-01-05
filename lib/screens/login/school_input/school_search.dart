@@ -7,7 +7,7 @@ List<School> searchSchools(List<School> all, String pattern) {
 
   List<School> results = [];
 
-  all.forEach((item) {
+  for (var item in all) {
     int contains = 0;
 
     pattern.split(" ").forEach((variation) {
@@ -17,7 +17,7 @@ List<School> searchSchools(List<School> all, String pattern) {
     });
 
     if (contains == pattern.split(" ").length) results.add(item);
-  });
+  }
 
   results.sort((a, b) => a.name.compareTo(b.name));
 

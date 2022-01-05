@@ -27,7 +27,7 @@ class HomeworkView extends StatelessWidget {
     // TODO: implement attachment tiles
 
     return Padding(
-      padding: EdgeInsets.only(bottom: 12.0),
+      padding: const EdgeInsets.only(bottom: 12.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -42,17 +42,17 @@ class HomeworkView extends StatelessWidget {
               homework.subjectName.capital(),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontWeight: FontWeight.w600),
+              style: const TextStyle(fontWeight: FontWeight.w600),
             ),
             subtitle: Text(
               homework.teacher,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontWeight: FontWeight.w500),
+              style: const TextStyle(fontWeight: FontWeight.w500),
             ),
             trailing: Text(
               homework.date.format(context),
-              style: TextStyle(fontWeight: FontWeight.w500),
+              style: const TextStyle(fontWeight: FontWeight.w500),
             ),
           ),
 
@@ -62,7 +62,7 @@ class HomeworkView extends StatelessWidget {
                 title: "deadline".i18n,
                 description: homework.deadline.format(context)),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 6.0),
+            padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 6.0),
             child: SelectableLinkify(
               text: homework.content.escapeHtml(),
               options: const LinkifyOptions(looseUrl: true, removeWww: true),
@@ -73,7 +73,7 @@ class HomeworkView extends StatelessWidget {
                       showPageTitle: true,
                     ));
               },
-              style: TextStyle(fontWeight: FontWeight.w400),
+              style: const TextStyle(fontWeight: FontWeight.w400),
             ),
           ),
 

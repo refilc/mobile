@@ -17,7 +17,7 @@ class AccountTile extends StatelessWidget {
       color: Colors.transparent,
       child: ListTile(
         visualDensity: VisualDensity.compact,
-        contentPadding: EdgeInsets.only(left: 12.0),
+        contentPadding: const EdgeInsets.only(left: 12.0),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         onTap: onTap,
         onLongPress: onTapMenu,

@@ -56,7 +56,7 @@ import 'package:filcnaplo/utils/color.dart';
 import 'package:filcnaplo/utils/format.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -86,20 +86,21 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     user = Provider.of<UserProvider>(context, listen: false);
     _filterController = FilterController(itemCount: 4);
     DateTime now = DateTime.now();
-    if (now.month == user.student?.birth.month && now.day == user.student?.birth.day)
+    if (now.month == user.student?.birth.month && now.day == user.student?.birth.day) {
       greeting = "happybirthday";
-    else if (now.month == DateTime.december && now.day >= 24 && now.day <= 26)
+    } else if (now.month == DateTime.december && now.day >= 24 && now.day <= 26) {
       greeting = "merryxmas";
-    else if (now.month == DateTime.january && now.day == 1)
+    } else if (now.month == DateTime.january && now.day == 1) {
       greeting = "happynewyear";
-    else if (now.hour >= 18)
+    } else if (now.hour >= 18) {
       greeting = "goodevening";
-    else if (now.hour >= 10)
+    } else if (now.hour >= 10) {
       greeting = "goodafternoon";
-    else if (now.hour >= 4)
+    } else if (now.hour >= 4) {
       greeting = "goodmorning";
-    else
+    } else {
       greeting = "goodevening";
+    }
 
     _liveController = LiveCardController(context: context, vsync: this);
   }
@@ -129,9 +130,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.only(top: 12.0),
+        padding: const EdgeInsets.only(top: 12.0),
         child: NestedScrollView(
-          physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+          physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
           headerSliverBuilder: (context, _) => [
             AnimatedBuilder(
               animation: _liveController.animation,
@@ -142,7 +143,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   titleSpacing: 0.0,
                   // Welcome text
                   title: Padding(
-                    padding: EdgeInsets.only(left: 24.0),
+                    padding: const EdgeInsets.only(left: 24.0),
                     child: Text(
                       greeting.i18n.fill([firstName]),
                       overflow: TextOverflow.fade,
@@ -166,7 +167,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
                     // Profile Icon
                     Padding(
-                      padding: EdgeInsets.only(right: 24.0),
+                      padding: const EdgeInsets.only(right: 24.0),
                       child: ProfileButton(
                         child: ProfileImage(
                           heroTag: "profile",
@@ -229,7 +230,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       HeroDialogRoute(
         builder: (context) => Center(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.0),
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
             child: SizedBox(
               height: MediaQuery.of(context).size.height / 2,
               child: LiveCard(expanded: true, controller: _liveController),
@@ -260,19 +261,19 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
       // Grades
       case HomeFilterItems.grades:
-        gradeProvider.grades.forEach((grade) {
+        for (var grade in gradeProvider.grades) {
           if (grade.type == GradeType.midYear) {
             items.add(DateWidget(
               date: grade.date,
               widget: GradeTile(grade, onTap: () => GradeView.show(grade, context: context)),
             ));
           }
-        });
+        }
         break;
 
       // Messages
       case HomeFilterItems.messages:
-        messageProvider.messages.forEach((message) {
+        for (var message in messageProvider.messages) {
           if (message.type == MessageType.inbox) {
             items.add(DateWidget(
                 date: message.date,
@@ -281,14 +282,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   onTap: () => MessageView.show([message], context: context),
                 )));
           }
-        });
+        }
         items.addAll(await getFilterWidgets(HomeFilterItems.notes));
         items.addAll(await getFilterWidgets(HomeFilterItems.events));
         break;
 
       // Absences
       case HomeFilterItems.absences:
-        absenceProvider.absences.where((a) => !absencesNoExcused || a.state != Justification.Excused).forEach((absence) {
+        absenceProvider.absences.where((a) => !absencesNoExcused || a.state != Justification.excused).forEach((absence) {
           items.add(DateWidget(
               date: absence.date,
               widget: AbsenceTile(
@@ -312,38 +313,38 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
       // Exams
       case HomeFilterItems.exams:
-        examProvider.exams.forEach((exam) {
+        for (var exam in examProvider.exams) {
           items.add(DateWidget(
               date: exam.writeDate.year != 0 ? exam.writeDate : exam.date,
               widget: ExamTile(
                 exam,
                 onTap: () => ExamView.show(exam, context: context),
               )));
-        });
+        }
         break;
 
       // Notes
       case HomeFilterItems.notes:
-        noteProvider.notes.forEach((note) {
+        for (var note in noteProvider.notes) {
           items.add(DateWidget(
               date: note.date,
               widget: NoteTile(
                 note,
                 onTap: () => NoteView.show(note, context: context),
               )));
-        });
+        }
         break;
 
       // Events
       case HomeFilterItems.events:
-        eventProvider.events.forEach((event) {
+        for (var event in eventProvider.events) {
           items.add(DateWidget(
               date: event.start,
               widget: EventTile(
                 event,
                 onTap: () => EventView.show(event, context: context),
               )));
-        });
+        }
         break;
 
       // Changed Lessons
@@ -360,13 +361,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
       // Updates
       case HomeFilterItems.updates:
-        if (updateProvider.available)
+        if (updateProvider.available) {
           items.add(DateWidget(
             date: DateTime.now(),
             widget: PanelButton(
               onPressed: () => openUpdates(context),
               title: Text("update_available".i18n),
-              leading: Icon(FeatherIcons.download),
+              leading: const Icon(FeatherIcons.download),
               trailing: Text(
                 updateProvider.releases.first.tag,
                 style: TextStyle(
@@ -376,6 +377,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ),
             ),
           ));
+        }
         break;
     }
     return items;
@@ -387,21 +389,22 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     List<Widget> filterWidgets = sortDateWidgets(context, dateWidgets: await getFilterWidgets(HomeFilterItems.values[activeData]));
 
     return Padding(
-      padding: EdgeInsets.only(top: 12.0),
+      padding: const EdgeInsets.only(top: 12.0),
       child: RefreshIndicator(
         color: Theme.of(context).colorScheme.secondary,
         onRefresh: () => syncAll(context),
         child: ListView.builder(
           padding: EdgeInsets.zero,
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           itemBuilder: (context, index) {
-            if (filterWidgets.length > 0)
+            if (filterWidgets.isNotEmpty) {
               return Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.0),
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: filterWidgets[index],
               );
-            else
+            } else {
               return Empty(subtitle: "empty".i18n);
+            }
           },
           itemCount: max(filterWidgets.length, 1),
         ),
@@ -425,7 +428,7 @@ List<Widget> sortDateWidgets(
   List<DateWidget> convMessages = [];
 
   // Group messages into conversations
-  dateWidgets.forEach((w) {
+  for (var w in dateWidgets) {
     if (w.widget.runtimeType == MessageTile) {
       Message message = (w.widget as MessageTile).message;
 
@@ -443,13 +446,15 @@ List<Widget> sortDateWidgets(
         conv.add(message);
       }
     }
-  });
+  }
 
   // remove individual messages
-  convMessages.forEach((e) => dateWidgets.remove(e));
+  for (var e in convMessages) {
+    dateWidgets.remove(e);
+  }
 
   // Add conversations
-  conversations.forEach((conv) {
+  for (var conv in conversations) {
     conv.sort();
 
     dateWidgets.add(DateWidget(
@@ -459,24 +464,24 @@ List<Widget> sortDateWidgets(
         onTap: () => MessageView.show(conv.messages, context: context),
       ),
     ));
-  });
+  }
 
   List<Widget> items = [];
   dateWidgets.sort((a, b) => -a.date.compareTo(b.date));
 
   List<List<DateWidget>> groupedDateWidgets = [[]];
-  dateWidgets.forEach((element) {
-    if (groupedDateWidgets.last.length > 0) {
+  for (var element in dateWidgets) {
+    if (groupedDateWidgets.last.isNotEmpty) {
       if (!_sameDate(element.date, groupedDateWidgets.last.last.date)) {
         groupedDateWidgets.add([element]);
-        return;
+        continue;
       }
     }
     groupedDateWidgets.last.add(element);
-  });
+  }
 
-  if (groupedDateWidgets.first.length > 0) {
-    groupedDateWidgets.forEach((elements) {
+  if (groupedDateWidgets.first.isNotEmpty) {
+    for (var elements in groupedDateWidgets) {
       bool _showTitle = showTitle;
 
       // Group Absence Tiles
@@ -487,7 +492,7 @@ List<Widget> sortDateWidgets(
       if (absenceTiles.length > 1) {
         elements.removeWhere((element) => element.widget.runtimeType == AbsenceTile && (element.widget as AbsenceTile).absence.delay == 0);
 
-        if (elements.length == 0) {
+        if (elements.isEmpty) {
           _showTitle = false;
         }
 
@@ -495,14 +500,14 @@ List<Widget> sortDateWidgets(
       }
 
       items.add(Padding(
-        padding: EdgeInsets.only(bottom: 12.0),
+        padding: const EdgeInsets.only(bottom: 12.0),
         child: Panel(
           padding: padding,
           title: _showTitle ? Text((elements + absenceTileWidgets).first.date.format(context, forceToday: true)) : null,
           child: Column(children: elements.map((e) => e.widget).toList()),
         ),
       ));
-    });
+    }
   }
   return items;
 }

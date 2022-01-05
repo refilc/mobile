@@ -10,23 +10,23 @@ class SchoolInputTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(4.0),
+      padding: const EdgeInsets.all(4.0),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(6.0),
         child: Padding(
-          padding: EdgeInsets.all(6.0),
+          padding: const EdgeInsets.all(6.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // School name
               Padding(
-                padding: EdgeInsets.only(bottom: 4.0),
+                padding: const EdgeInsets.only(bottom: 4.0),
                 child: Text(
                   school.name,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                  style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
               ),
               Row(

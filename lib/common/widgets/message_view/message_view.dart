@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 // import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 
 class MessageView extends StatefulWidget {
-  MessageView(this.messages, {Key? key}) : super(key: key);
+  const MessageView(this.messages, {Key? key}) : super(key: key);
 
   final List<Message> messages;
 
@@ -23,8 +23,8 @@ class _MessageViewState extends State<MessageView> {
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(color: AppColors.of(context).text),
-        shadowColor: Color(0),
-        actions: [
+        shadowColor: const Color(0x00000000),
+        actions: const [
           // Padding(
           //   padding: EdgeInsets.only(right: 8.0),
           //   child: IconButton(
@@ -38,11 +38,11 @@ class _MessageViewState extends State<MessageView> {
       body: SafeArea(
         child: ListView.builder(
           padding: EdgeInsets.zero,
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           itemCount: widget.messages.length,
           itemBuilder: (context, index) {
             return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.0),
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: MessageViewTile(widget.messages[index]),
             );
           },

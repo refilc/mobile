@@ -24,7 +24,7 @@ import 'absences_page.i18n.dart';
 enum AbsenceFilterItems { absences, delays, misses }
 
 class AbsencesPage extends StatefulWidget {
-  AbsencesPage({Key? key}) : super(key: key);
+  const AbsencesPage({Key? key}) : super(key: key);
 
   @override
   _AbsencesPageState createState() => _AbsencesPageState();
@@ -57,9 +57,9 @@ class _AbsencesPageState extends State<AbsencesPage> {
 
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.only(top: 12.0),
+        padding: const EdgeInsets.only(top: 12.0),
         child: NestedScrollView(
-          physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+          physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
           headerSliverBuilder: (context, _) => [
             SliverAppBar(
               pinned: true,
@@ -69,7 +69,7 @@ class _AbsencesPageState extends State<AbsencesPage> {
               actions: [
                 // Profile Icon
                 Padding(
-                  padding: EdgeInsets.only(right: 24.0),
+                  padding: const EdgeInsets.only(right: 24.0),
                   child: ProfileButton(
                     child: ProfileImage(
                       heroTag: "profile",
@@ -104,34 +104,34 @@ class _AbsencesPageState extends State<AbsencesPage> {
     List<DateWidget> items = [];
     switch (activeData) {
       case AbsenceFilterItems.absences:
-        absenceProvider.absences.forEach((absence) {
+        for (var absence in absenceProvider.absences) {
           if (absence.delay == 0) {
             items.add(DateWidget(
               date: absence.date,
               widget: AbsenceTile(absence, onTap: () => AbsenceView.show(absence, context: context)),
             ));
           }
-        });
+        }
         break;
       case AbsenceFilterItems.delays:
-        absenceProvider.absences.forEach((absence) {
+        for (var absence in absenceProvider.absences) {
           if (absence.delay != 0) {
             items.add(DateWidget(
               date: absence.date,
               widget: AbsenceTile(absence, onTap: () => AbsenceView.show(absence, context: context)),
             ));
           }
-        });
+        }
         break;
       case AbsenceFilterItems.misses:
-        noteProvider.notes.forEach((note) {
+        for (var note in noteProvider.notes) {
           if (note.type?.name == "HaziFeladatHiany" || note.type?.name == "Felszereleshiany") {
             items.add(DateWidget(
               date: note.date,
               widget: MissTile(note),
             ));
           }
-        });
+        }
         break;
     }
     return items;
@@ -145,7 +145,7 @@ class _AbsencesPageState extends State<AbsencesPage> {
     );
 
     return Padding(
-      padding: EdgeInsets.only(top: 12.0),
+      padding: const EdgeInsets.only(top: 12.0),
       child: RefreshIndicator(
         color: Theme.of(context).colorScheme.secondary,
         onRefresh: () async {
@@ -154,10 +154,10 @@ class _AbsencesPageState extends State<AbsencesPage> {
         },
         child: ListView.builder(
           padding: EdgeInsets.zero,
-          physics: BouncingScrollPhysics(),
-          itemBuilder: (context, index) => filterWidgets.length > 0
+          physics: const BouncingScrollPhysics(),
+          itemBuilder: (context, index) => filterWidgets.isNotEmpty
               ? Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
                   child: filterWidgets[index],
                 )
               : Empty(subtitle: "empty".i18n),

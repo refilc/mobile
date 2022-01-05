@@ -17,8 +17,8 @@ class MaterialActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RawMaterialButton(
-      padding: EdgeInsets.symmetric(horizontal: 16.0),
-      shape: StadiumBorder(),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      shape: const StadiumBorder(),
       child: DefaultTextStyle(
         child: child,
         style: Theme.of(context).textTheme.bodyText2!.copyWith(

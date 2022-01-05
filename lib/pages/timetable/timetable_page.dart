@@ -28,7 +28,7 @@ import 'timetable_page.i18n.dart';
 // todo: "fix" overflow (priority: -1)
 
 class TimetablePage extends StatefulWidget {
-  TimetablePage({Key? key, this.initialDay, this.initialWeek}) : super(key: key);
+  const TimetablePage({Key? key, this.initialDay, this.initialWeek}) : super(key: key);
 
   final DateTime? initialDay;
   final Week? initialWeek;
@@ -66,7 +66,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
 
   int _getDayIndex(DateTime date) {
     int index = 0;
-    if (_controller.days == null || _controller.days?.length == 0) return index;
+    if (_controller.days == null || (_controller.days?.isEmpty ?? true)) return index;
 
     // find the first day with upcoming lessons
     index = _controller.days!.indexWhere((day) => day.last.end.isAfter(date));
@@ -110,10 +110,11 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
       });
     });
 
-    if (widget.initialWeek == null)
+    if (widget.initialWeek == null) {
       _controller.jump(_controller.currentWeek, context: context, initial: true, skip: true);
-    else
+    } else {
       _controller.jump(_controller.currentWeek, context: context, initial: true);
+    }
 
     // Listen for user changes
     user = Provider.of<UserProvider>(context, listen: false);
@@ -150,13 +151,13 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
 
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.only(top: 9.0),
+        padding: const EdgeInsets.only(top: 9.0),
         child: RefreshIndicator(
           onRefresh: () => _controller.jump(_controller.currentWeek, context: context, loader: false),
           color: Theme.of(context).colorScheme.secondary,
           edgeOffset: 132.0,
           child: NestedScrollView(
-            physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+            physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
             headerSliverBuilder: (context, _) => [
               SliverAppBar(
                 centerTitle: false,
@@ -166,7 +167,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                 actions: [
                   // Profile Icon
                   Padding(
-                    padding: EdgeInsets.only(right: 24.0),
+                    padding: const EdgeInsets.only(right: 24.0),
                     child: ProfileButton(
                       child: ProfileImage(
                         heroTag: "profile",
@@ -214,7 +215,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                 shadowColor: AppColors.of(context).shadow.withOpacity(0.5),
                 bottom: PreferredSize(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -226,7 +227,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                                       _controller.previous(context);
                                     }),
                             splashRadius: 24.0,
-                            icon: Icon(FeatherIcons.chevronLeft),
+                            icon: const Icon(FeatherIcons.chevronLeft),
                             color: Theme.of(context).colorScheme.secondary),
 
                         // Week selector
@@ -239,7 +240,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                                 context: context, loader: _controller.currentWeekId != _controller.previousWeekId);
                           }),
                           child: Padding(
-                            padding: EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(8.0),
                             child: Text(
                               "${_controller.currentWeekId + 1}. " +
                                   "week".i18n +
@@ -254,7 +255,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                                           I18n.of(context).locale.languageCode)
                                       .format(_controller.currentWeek.end) +
                                   ")",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14.0,
                               ),
@@ -270,12 +271,12 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                                       _controller.next(context);
                                     }),
                             splashRadius: 24.0,
-                            icon: Icon(FeatherIcons.chevronRight),
+                            icon: const Icon(FeatherIcons.chevronRight),
                             color: Theme.of(context).colorScheme.secondary),
                       ],
                     ),
                   ),
-                  preferredSize: Size.fromHeight(50.0),
+                  preferredSize: const Size.fromHeight(50.0),
                 ),
               ),
             ],
@@ -299,7 +300,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                         _tabController.length > 0
                             ? Expanded(
                                 child: TabBarView(
-                                  physics: BouncingScrollPhysics(),
+                                  physics: const BouncingScrollPhysics(),
                                   controller: _tabController,
                                   // days
                                   children: List.generate(
@@ -309,24 +310,26 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                                       color: Theme.of(context).colorScheme.secondary,
                                       child: ListView.builder(
                                         padding: EdgeInsets.zero,
-                                        physics: BouncingScrollPhysics(),
+                                        physics: const BouncingScrollPhysics(),
                                         itemCount: _controller.days![tab].length + 2,
                                         itemBuilder: (context, index) {
                                           if (_controller.days == null) return Container();
 
                                           // Header
-                                          if (index == 0)
-                                            return Padding(
+                                          if (index == 0) {
+                                            return const Padding(
                                               padding: EdgeInsets.only(top: 8.0, left: 24.0, right: 24.0),
                                               child: PanelHeader(padding: EdgeInsets.only(top: 12.0)),
                                             );
+                                          }
 
                                           // Footer
-                                          if (index == _controller.days![tab].length + 1)
-                                            return Padding(
+                                          if (index == _controller.days![tab].length + 1) {
+                                            return const Padding(
                                               padding: EdgeInsets.only(bottom: 8.0, left: 24.0, right: 24.0),
                                               child: PanelFooter(padding: EdgeInsets.only(top: 12.0)),
                                             );
+                                          }
 
                                           // Body
                                           final Lesson lesson = _controller.days![tab][index - 1];
@@ -334,9 +337,9 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                                               _controller.days![tab].length * .5;
 
                                           return Padding(
-                                            padding: EdgeInsets.symmetric(horizontal: 24.0),
+                                            padding: const EdgeInsets.symmetric(horizontal: 24.0),
                                             child: PanelBody(
-                                              padding: EdgeInsets.symmetric(horizontal: 10.0),
+                                              padding: const EdgeInsets.symmetric(horizontal: 10.0),
                                               child: LessonTile(
                                                 lesson,
                                                 swapDesc: swapDescDay,
@@ -355,9 +358,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
 
                             // Empty week
                             : Expanded(
-                                child: Container(
-                                  child: Center(child: empty),
-                                ),
+                                child: Center(child: empty),
                               ),
 
                         // Day selector
@@ -368,14 +369,14 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                           labelColor: Theme.of(context).colorScheme.secondary,
                           unselectedLabelColor: AppColors.of(context).text.withOpacity(0.9),
                           // Indicator
-                          indicatorPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                          indicatorPadding: const EdgeInsets.symmetric(horizontal: 8.0),
                           indicator: BoxDecoration(
                             color: Theme.of(context).colorScheme.secondary.withOpacity(0.25),
                             borderRadius: BorderRadius.circular(8.0),
                           ),
-                          overlayColor: MaterialStateProperty.all(Color(0)),
+                          overlayColor: MaterialStateProperty.all(const Color(0x00000000)),
                           // Tabs
-                          padding: EdgeInsets.symmetric(vertical: 6.0),
+                          padding: const EdgeInsets.symmetric(vertical: 6.0),
                           tabs: List.generate(_tabController.length, (index) {
                             String label = DateFormat("E", I18n.of(context).locale.languageCode).format(_controller.days![index].first.date);
                             return Tab(
@@ -385,12 +386,12 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                                 children: [
                                   if (_sameDate(_controller.days![index].first.date, DateTime.now()))
                                     Padding(
-                                      padding: EdgeInsets.only(top: 4.0),
+                                      padding: const EdgeInsets.only(top: 4.0),
                                       child: Dot(size: 4.0, color: Theme.of(context).colorScheme.secondary),
                                     ),
                                   Text(
                                     label.substring(0, min(2, label.length)),
-                                    style: TextStyle(fontSize: 26.0, fontWeight: FontWeight.w600),
+                                    style: const TextStyle(fontSize: 26.0, fontWeight: FontWeight.w600),
                                   ),
                                 ],
                               ),

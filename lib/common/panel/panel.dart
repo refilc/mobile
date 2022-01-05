@@ -25,13 +25,13 @@ class Panel extends StatelessWidget {
               color: Theme.of(context).backgroundColor,
               boxShadow: [
                 BoxShadow(
-                  offset: Offset(0, 21),
+                  offset: const Offset(0, 21),
                   blurRadius: 23.0,
                   color: AppColors.of(context).shadow,
                 )
               ],
             ),
-            padding: padding ?? EdgeInsets.all(8.0),
+            padding: padding ?? const EdgeInsets.all(8.0),
             child: child,
           ),
       ],
@@ -47,7 +47,7 @@ class PanelTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 14.0, right: 14.0, bottom: 8.0),
+      padding: const EdgeInsets.only(left: 14.0, right: 14.0, bottom: 8.0),
       child: DefaultTextStyle(
         style: Theme.of(context).textTheme.subtitle2!.copyWith(fontWeight: FontWeight.w600, color: AppColors.of(context).text.withOpacity(0.65)),
         child: title,
@@ -67,11 +67,11 @@ class PanelHeader extends StatelessWidget {
       width: double.infinity,
       padding: padding,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(14.0), topRight: Radius.circular(14.0)),
+        borderRadius: const BorderRadius.only(topLeft: Radius.circular(14.0), topRight: Radius.circular(14.0)),
         color: Theme.of(context).backgroundColor,
         boxShadow: [
           BoxShadow(
-            offset: Offset(0, 21),
+            offset: const Offset(0, 21),
             blurRadius: 23.0,
             color: AppColors.of(context).shadow,
           )
@@ -95,7 +95,7 @@ class PanelBody extends StatelessWidget {
         color: Theme.of(context).backgroundColor,
         boxShadow: [
           BoxShadow(
-            offset: Offset(0, 21),
+            offset: const Offset(0, 21),
             blurRadius: 23.0,
             color: AppColors.of(context).shadow,
           )
@@ -118,11 +118,11 @@ class PanelFooter extends StatelessWidget {
       width: double.infinity,
       padding: padding,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(14.0), bottomRight: Radius.circular(14.0)),
+        borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(14.0), bottomRight: Radius.circular(14.0)),
         color: Theme.of(context).backgroundColor,
         boxShadow: [
           BoxShadow(
-            offset: Offset(0, 21),
+            offset: const Offset(0, 21),
             blurRadius: 23.0,
             color: AppColors.of(context).shadow,
           )

@@ -6,5 +6,5 @@ class SubjectGradesContainer extends InheritedWidget {
   static SubjectGradesContainer? of(BuildContext context) => context.dependOnInheritedWidgetOfExactType<SubjectGradesContainer>();
 
   @override
-  bool updateShouldNotify(SubjectGradesContainer old) => false;
+  bool updateShouldNotify(SubjectGradesContainer oldWidget) => false;
 }

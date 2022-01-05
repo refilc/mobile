@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/certification_tile.i18n.dart';
 
 class GradeGraph extends StatefulWidget {
-  GradeGraph(this.data, {Key? key, this.dayThreshold = 7}) : super(key: key);
+  const GradeGraph(this.data, {Key? key, this.dayThreshold = 7}) : super(key: key);
 
   final List<Grade> data;
   final int dayThreshold;
@@ -32,25 +32,26 @@ class _GradeGraphState extends State<GradeGraph> {
     data.sort((a, b) => -a.writeDate.compareTo(b.writeDate));
 
     // Sort data to points by treshold
-    data.forEach((element) {
-      if (sortedData.last.length != 0 && sortedData.last.last.writeDate.difference(element.writeDate).inDays > widget.dayThreshold)
+    for (var element in data) {
+      if (sortedData.last.isNotEmpty && sortedData.last.last.writeDate.difference(element.writeDate).inDays > widget.dayThreshold) {
         sortedData.add([]);
-      sortedData.forEach((dataList) {
+      }
+      for (var dataList in sortedData) {
         dataList.add(element);
-      });
-    });
+      }
+    }
 
     // Create FlSpots from points
-    sortedData.forEach((dataList) {
+    for (var dataList in sortedData) {
       double average = AverageHelper.averageEvals(dataList);
 
-      if (dataList.length > 0) {
+      if (dataList.isNotEmpty) {
         subjectData.add(FlSpot(
           dataList[0].writeDate.month + (dataList[0].writeDate.day / 31) + ((dataList[0].writeDate.year - data.first.writeDate.year) * 12),
           double.parse(average.toStringAsFixed(2)),
         ));
       }
-    });
+    }
 
     return subjectData;
   }
@@ -88,7 +89,7 @@ class _GradeGraphState extends State<GradeGraph> {
 
     Grade halfYearGrade = widget.data.lastWhere((e) => e.type == GradeType.halfYear, orElse: () => Grade.fromJson({}));
 
-    if (halfYearGrade.date.year != 0 && data.length > 0)
+    if (halfYearGrade.date.year != 0 && data.isNotEmpty) {
       extraLines.add(VerticalLine(
           x: halfYearGrade.date.month + (halfYearGrade.date.day / 31) + ((halfYearGrade.date.year - data.first.writeDate.year) * 12),
           strokeWidth: 3.0,
@@ -102,9 +103,10 @@ class _GradeGraphState extends State<GradeGraph> {
                 fontSize: 16.0,
                 fontWeight: FontWeight.w600,
               ))));
+    }
 
-    return Container(
-      child: subjectSpots.length > 0
+    return SizedBox(
+      child: subjectSpots.isNotEmpty
           ? LineChart(
               LineChartData(
                 extraLinesData: ExtraLinesData(verticalLines: extraLines),
@@ -126,11 +128,11 @@ class _GradeGraphState extends State<GradeGraph> {
                         averageColor.withOpacity(0.1),
                       ],
                       gradientColorStops: [0.1, 0.6, 0.8, 1],
-                      gradientFrom: Offset(0, 0),
-                      gradientTo: Offset(0, 1),
+                      gradientFrom: const Offset(0, 0),
+                      gradientTo: const Offset(0, 1),
                     ),
                   ),
-                  if (ghostData.length > 0 && ghostSpots.length > 0)
+                  if (ghostData.isNotEmpty && ghostSpots.isNotEmpty)
                     LineChartBarData(
                       spots: ghostSpots,
                       isCurved: true,
@@ -148,8 +150,8 @@ class _GradeGraphState extends State<GradeGraph> {
                           AppColors.of(context).text.withOpacity(0.1),
                         ],
                         gradientColorStops: [0.1, 0.6, 0.8, 1],
-                        gradientFrom: Offset(0, 0),
-                        gradientTo: Offset(0, 1),
+                        gradientFrom: const Offset(0, 0),
+                        gradientTo: const Offset(0, 1),
                       ),
                     ),
                 ],

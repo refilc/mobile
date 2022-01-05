@@ -29,12 +29,12 @@ class NewsScreen extends StatelessWidget {
         child: RefreshIndicator(
           onRefresh: () => newsProvider.fetch(),
           child: ListView.builder(
-            physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+            physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
             itemCount: max(news.length, 1),
             itemBuilder: (context, index) {
-              if (news.length > 0) {
+              if (news.isNotEmpty) {
                 return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
                   child: Panel(
                     child: Material(
                       type: MaterialType.transparency,
@@ -46,7 +46,7 @@ class NewsScreen extends StatelessWidget {
                   ),
                 );
               } else {
-                return Padding(
+                return const Padding(
                   padding: EdgeInsets.only(top: 24.0),
                   child: Empty(subtitle: "Nothing to see here"),
                 );

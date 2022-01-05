@@ -29,14 +29,14 @@ class LiveCardWidget extends StatelessWidget {
     return Hero(
       tag: "livecard",
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.fastOutSlowIn,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14.0),
           color: Theme.of(context).backgroundColor,
           boxShadow: [
             BoxShadow(
-              offset: Offset(0, 21),
+              offset: const Offset(0, 21),
               blurRadius: 23.0,
               color: shadowColor ?? AppColors.of(context).shadow,
             )
@@ -55,7 +55,7 @@ class LiveCardWidget extends StatelessWidget {
                   dense: true,
                   minLeadingWidth: 0.0,
                   leading: Padding(
-                    padding: EdgeInsets.only(top: 6.0),
+                    padding: const EdgeInsets.only(top: 6.0),
                     child: Icon(
                       SubjectIcon.lookup(subject: lesson.subject),
                       color: Theme.of(context).colorScheme.secondary,
@@ -64,12 +64,12 @@ class LiveCardWidget extends StatelessWidget {
                   ),
                   title: Text.rich(
                     TextSpan(children: [
-                      TextSpan(text: "${lesson.lessonIndex}$lessonIndexTrailing ", style: TextStyle(fontWeight: FontWeight.w700)),
+                      TextSpan(text: "${lesson.lessonIndex}$lessonIndexTrailing ", style: const TextStyle(fontWeight: FontWeight.w700)),
                       TextSpan(
                           text: lesson.subject.name.capital(),
                           style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.of(context).text.withOpacity(0.8)))
                     ]),
-                    style: TextStyle(fontSize: 16.0),
+                    style: const TextStyle(fontSize: 16.0),
                     softWrap: false,
                     maxLines: 1,
                     overflow: TextOverflow.fade,
@@ -79,7 +79,7 @@ class LiveCardWidget extends StatelessWidget {
                           lesson.description,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0),
+                          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0),
                         )
                       : null,
                   trailing: Text(
@@ -90,7 +90,7 @@ class LiveCardWidget extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
                     child: Row(
                       children: [
                         if (next != null)
@@ -124,7 +124,7 @@ class LiveCardWidget extends StatelessWidget {
 
                 // Progress Bar
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: ProgressBar(value: (length - progress) / length, backgroundColor: Theme.of(context).colorScheme.secondary),
                 ),
 

@@ -27,7 +27,7 @@ class LessonView extends StatelessWidget {
     }
 
     return Padding(
-      padding: EdgeInsets.only(bottom: 12.0),
+      padding: const EdgeInsets.only(bottom: 12.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -35,7 +35,7 @@ class LessonView extends StatelessWidget {
           // Header
           ListTile(
             leading: Padding(
-              padding: EdgeInsets.only(left: 8.0),
+              padding: const EdgeInsets.only(left: 8.0),
               child: Text(
                 lesson.lessonIndex + lessonIndexTrailing,
                 textAlign: TextAlign.center,
@@ -50,17 +50,17 @@ class LessonView extends StatelessWidget {
               lesson.subject.name.capital(),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontWeight: FontWeight.w600),
+              style: const TextStyle(fontWeight: FontWeight.w600),
             ),
             subtitle: Text(
               lesson.substituteTeacher == "" ? lesson.teacher : lesson.substituteTeacher,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontWeight: FontWeight.w500),
+              style: const TextStyle(fontWeight: FontWeight.w500),
             ),
             trailing: Text(
               lesson.date.format(context),
-              style: TextStyle(fontWeight: FontWeight.w500),
+              style: const TextStyle(fontWeight: FontWeight.w500),
             ),
           ),
 

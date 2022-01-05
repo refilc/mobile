@@ -49,17 +49,17 @@ class CertificationTile extends StatelessWidget {
       child: ListTile(
         visualDensity: VisualDensity.compact,
         contentPadding: isSubjectView
-            ? EdgeInsets.only(left: 12.0, right: 12.0, top: 2.0, bottom: 8.0)
-            : EdgeInsets.only(left: 8.0, right: 12.0),
+            ? const EdgeInsets.only(left: 12.0, right: 12.0, top: 2.0, bottom: 8.0)
+            : const EdgeInsets.only(left: 8.0, right: 12.0),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         onTap: onTap,
         leading: GradeValueWidget(grade.value),
         minLeadingWidth: 32.0,
-        trailing: Icon(FeatherIcons.award),
+        trailing: const Icon(FeatherIcons.award),
         title: Text(certificationName,
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18.0)),
+            style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18.0)),
         subtitle: Text(grade.value.valueName,
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16.0)),
+            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16.0)),
       ),
     );
   }

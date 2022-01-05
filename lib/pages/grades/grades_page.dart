@@ -23,7 +23,7 @@ import 'grades_page.i18n.dart';
 // TODO: maybe? statistics to the bottom
 
 class GradesPage extends StatefulWidget {
-  GradesPage({Key? key}) : super(key: key);
+  const GradesPage({Key? key}) : super(key: key);
 
   @override
   _GradesPageState createState() => _GradesPageState();
@@ -55,12 +55,12 @@ class _GradesPageState extends State<GradesPage> {
       });
     }));
 
-    if (tiles.length > 0) {
+    if (tiles.isNotEmpty) {
       tiles.insert(0, yearlyGraph);
       tiles.insert(1, PanelTitle(title: Text("Subjects".i18n)));
-      tiles.insert(2, PanelHeader(padding: EdgeInsets.only(top: 12.0)));
-      tiles.add(PanelFooter(padding: EdgeInsets.only(bottom: 12.0)));
-      tiles.add(Padding(padding: EdgeInsets.only(bottom: 24.0)));
+      tiles.insert(2, const PanelHeader(padding: EdgeInsets.only(top: 12.0)));
+      tiles.add(const PanelFooter(padding: EdgeInsets.only(bottom: 12.0)));
+      tiles.add(const Padding(padding: EdgeInsets.only(bottom: 24.0)));
     } else {
       tiles.insert(
         0,
@@ -84,12 +84,12 @@ class _GradesPageState extends State<GradesPage> {
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
 
     yearlyGraph = Padding(
-      padding: EdgeInsets.only(top: 12.0, bottom: 24.0),
+      padding: const EdgeInsets.only(top: 12.0, bottom: 24.0),
       child: Panel(
         title: Text("annual_average".i18n),
         child: Container(
           height: 165.0,
-          padding: EdgeInsets.only(top: 24.0, right: 12.0),
+          padding: const EdgeInsets.only(top: 24.0, right: 12.0),
           child: GradeGraph(gradeProvider.grades.where((e) => e.type == GradeType.midYear).toList(), dayThreshold: 2),
         ),
       ),
@@ -99,9 +99,9 @@ class _GradesPageState extends State<GradesPage> {
 
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.only(top: 9.0),
+        padding: const EdgeInsets.only(top: 9.0),
         child: NestedScrollView(
-          physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+          physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
           headerSliverBuilder: (context, _) => [
             SliverAppBar(
               centerTitle: false,
@@ -111,7 +111,7 @@ class _GradesPageState extends State<GradesPage> {
               actions: [
                 // Profile Icon
                 Padding(
-                  padding: EdgeInsets.only(right: 24.0),
+                  padding: const EdgeInsets.only(right: 24.0),
                   child: ProfileButton(
                     child: ProfileImage(
                       heroTag: "profile",
@@ -136,21 +136,22 @@ class _GradesPageState extends State<GradesPage> {
             color: Theme.of(context).colorScheme.secondary,
             child: ListView.builder(
               padding: EdgeInsets.zero,
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               itemCount: max(subjectTiles.length, 1),
               itemBuilder: (context, index) {
-                if (subjectTiles.length > 0) {
-                  EdgeInsetsGeometry panelPadding = EdgeInsets.symmetric(horizontal: 24.0);
+                if (subjectTiles.isNotEmpty) {
+                  EdgeInsetsGeometry panelPadding = const EdgeInsets.symmetric(horizontal: 24.0);
 
-                  if (subjectTiles[index].runtimeType == SubjectTile)
+                  if (subjectTiles[index].runtimeType == SubjectTile) {
                     return Padding(
                         padding: panelPadding,
                         child: PanelBody(
                           child: subjectTiles[index],
-                          padding: EdgeInsets.symmetric(horizontal: 8.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         ));
-                  else
+                  } else {
                     return Padding(padding: panelPadding, child: subjectTiles[index]);
+                  }
                 } else {
                   return Container();
                 }

@@ -36,10 +36,12 @@ class MessageViewTile extends StatelessWidget {
     }
 
     List<Widget> attachments = [];
-    message.attachments.forEach((a) => attachments.add(AttachmentTile(a)));
+    for (var a in message.attachments) {
+      attachments.add(AttachmentTile(a));
+    }
 
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 12.0),
+      padding: const EdgeInsets.symmetric(vertical: 12.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -48,7 +50,7 @@ class MessageViewTile extends StatelessWidget {
             message.subject,
             softWrap: true,
             maxLines: 10,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 24.0,
             ),
@@ -64,19 +66,19 @@ class MessageViewTile extends StatelessWidget {
             ),
             title: Text(
               message.author,
-              style: TextStyle(fontWeight: FontWeight.w600),
+              style: const TextStyle(fontWeight: FontWeight.w600),
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
             ),
             subtitle: Text(
               "to".i18n + " " + recipientLabel,
-              style: TextStyle(fontWeight: FontWeight.w500),
+              style: const TextStyle(fontWeight: FontWeight.w500),
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
             ),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
-              children: [
+              children: const [
                 // IconButton(
                 //   onPressed: () {},
                 //   icon: Icon(FeatherIcons.cornerUpLeft, color: AppColors.of(context).text),
@@ -97,7 +99,7 @@ class MessageViewTile extends StatelessWidget {
 
           // Content
           Panel(
-            padding: EdgeInsets.all(12.0),
+            padding: const EdgeInsets.all(12.0),
             child: SelectableLinkify(
               text: message.content.escapeHtml(),
               options: const LinkifyOptions(looseUrl: true, removeWww: true),
@@ -108,7 +110,7 @@ class MessageViewTile extends StatelessWidget {
                       showPageTitle: true,
                     ));
               },
-              style: TextStyle(fontWeight: FontWeight.w400),
+              style: const TextStyle(fontWeight: FontWeight.w400),
             ),
           ),
 

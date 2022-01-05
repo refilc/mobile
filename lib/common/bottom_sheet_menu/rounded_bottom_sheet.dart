@@ -12,7 +12,7 @@ class RoundedBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       decoration: BoxDecoration(
           color: Theme.of(context).backgroundColor,
           borderRadius: BorderRadius.only(topLeft: Radius.circular(borderRadius), topRight: Radius.circular(borderRadius))),
@@ -24,7 +24,7 @@ class RoundedBottomSheet extends StatelessWidget {
               Container(
                 width: 42.0,
                 height: 4.0,
-                margin: EdgeInsets.only(top: 12.0, bottom: 4.0),
+                margin: const EdgeInsets.only(top: 12.0, bottom: 4.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(45.0),
                   color: AppColors.of(context).text.withOpacity(0.10),
@@ -45,7 +45,7 @@ Future<T?> showRoundedModalBottomSheet<T>(
 }) async {
   return await showModalBottomSheet<T>(
       context: context,
-      backgroundColor: Color(0),
+      backgroundColor: const Color(0x00000000),
       elevation: 0,
       isDismissible: true,
       useRootNavigator: rootNavigator,
@@ -58,7 +58,7 @@ PersistentBottomSheetController<T> showRoundedBottomSheet<T>(
 }) {
   return showBottomSheet<T>(
     context: context,
-    backgroundColor: Color(0),
+    backgroundColor: const Color(0x00000000),
     elevation: 12.0,
     builder: (context) => RoundedBottomSheet(child: child),
   );

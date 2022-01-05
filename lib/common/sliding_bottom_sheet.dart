@@ -9,7 +9,7 @@ void showSlidingBottomSheet({required Widget child, required BuildContext contex
           cornerRadiusOnFullscreen: 0,
           avoidStatusBar: true,
           color: AppColors.of(context).background,
-          duration: Duration(milliseconds: 400),
+          duration: const Duration(milliseconds: 400),
           snapSpec: const ss.SnapSpec(
             snap: true,
             snappings: [0.5, 1.0],
@@ -28,7 +28,7 @@ void showSlidingBottomSheet({required Widget child, required BuildContext contex
                     ),
                     height: 4.0,
                     width: 60.0,
-                    margin: EdgeInsets.all(12.0),
+                    margin: const EdgeInsets.all(12.0),
                   ),
                 ],
               ),
@@ -37,7 +37,7 @@ void showSlidingBottomSheet({required Widget child, required BuildContext contex
           builder: (context, state) {
             return Material(
               color: AppColors.of(context).background,
-              child: Padding(padding: EdgeInsets.fromLTRB(12.0, 0, 12.0, 8.0), child: child),
+              child: Padding(padding: const EdgeInsets.fromLTRB(12.0, 0, 12.0, 8.0), child: child),
             );
           },
         ));

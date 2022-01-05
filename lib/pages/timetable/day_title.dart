@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:filcnaplo/utils/format.dart';
 
 class DayTitle extends StatefulWidget {
-  DayTitle({Key? key, required this.dayTitle, required this.controller}) : super(key: key);
+  const DayTitle({Key? key, required this.dayTitle, required this.controller}) : super(key: key);
 
   final String Function(int) dayTitle;
   final TabController controller;

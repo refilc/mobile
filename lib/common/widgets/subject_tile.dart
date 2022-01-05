@@ -20,7 +20,7 @@ class SubjectTile extends StatelessWidget {
       child: ListTile(
         minLeadingWidth: 32.0,
         dense: true,
-        contentPadding: EdgeInsets.only(left: 8.0, right: 6.0),
+        contentPadding: const EdgeInsets.only(left: 8.0, right: 6.0),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         visualDensity: VisualDensity.compact,
         onTap: onTap,
@@ -29,13 +29,13 @@ class SubjectTile extends StatelessWidget {
           subject.name.capital(),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14.0),
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14.0),
         ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             if (groupAverage != 0) AverageDisplay(average: groupAverage, border: true),
-            SizedBox(width: 6.0),
+            const SizedBox(width: 6.0),
             if (average != 0) AverageDisplay(average: average)
           ],
         ),

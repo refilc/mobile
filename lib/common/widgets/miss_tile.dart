@@ -15,7 +15,7 @@ class MissTile extends StatelessWidget {
       leading: Icon(_missIcon(), color: Theme.of(context).colorScheme.secondary),
       title: Text(
         _missName(),
-        style: TextStyle(
+        style: const TextStyle(
           fontWeight: FontWeight.w600,
         ),
       ),
@@ -23,7 +23,7 @@ class MissTile extends StatelessWidget {
         note.content.split("órán nem volt")[0].capital(),
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
-        style: TextStyle(
+        style: const TextStyle(
           fontWeight: FontWeight.w500,
         ),
       ),

@@ -22,7 +22,7 @@ class ProgressBar extends StatelessWidget {
 
         // Slider
         AnimatedContainer(
-          duration: Duration(milliseconds: 500),
+          duration: const Duration(milliseconds: 500),
           width: double.infinity,
           child: CustomPaint(
             painter: ProgressPainter(
@@ -53,7 +53,7 @@ class ProgressPainter extends CustomPainter {
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         Rect.fromLTWH(0, 0, width, height),
-        Radius.circular(45.0),
+        const Radius.circular(45.0),
       ),
       Paint()
         ..color = backgroundColor
@@ -62,7 +62,7 @@ class ProgressPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(ProgressPainter old) {
-    return value != old.value || height != old.height || backgroundColor != old.backgroundColor;
+  bool shouldRepaint(ProgressPainter oldDelegate) {
+    return value != oldDelegate.value || height != oldDelegate.height || backgroundColor != oldDelegate.backgroundColor;
   }
 }

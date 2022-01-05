@@ -9,6 +9,8 @@ import 'package:filcnaplo/models/supporter.dart';
 import 'supporters.i18n.dart';
 
 class SupportersScreen extends StatefulWidget {
+  const SupportersScreen({Key? key}) : super(key: key);
+
   @override
   _SupportersScreenState createState() => _SupportersScreenState();
 }
@@ -22,35 +24,35 @@ class _SupportersScreenState extends State<SupportersScreen> {
     List<Widget> tiles = [];
 
     tiles.add(Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
         child: Row(
           children: [
-            Spacer(),
-            Dot(color: Color(0xFFE7513B)),
-            SizedBox(width: 6.0),
-            Text(
+            const Spacer(),
+            const Dot(color: Color(0xFFE7513B)),
+            const SizedBox(width: 6.0),
+            const Text(
               "Patreon",
               style: TextStyle(fontWeight: FontWeight.w500),
             ),
-            Spacer(),
+            const Spacer(),
             Dot(color: Colors.yellow.shade600),
-            SizedBox(width: 6.0),
-            Text(
+            const SizedBox(width: 6.0),
+            const Text(
               "Donate",
               style: TextStyle(fontWeight: FontWeight.w500),
             ),
-            Spacer(),
+            const Spacer(),
           ],
         )));
 
     tiles.add(Padding(
-      padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 32.0),
+      padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 32.0),
       child: Row(
         children: [
           Text("\$ ${supporters.progress}"),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 18.0),
+              padding: const EdgeInsets.symmetric(horizontal: 18.0),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12.0),
                 child: LinearProgressIndicator(
@@ -68,10 +70,10 @@ class _SupportersScreenState extends State<SupportersScreen> {
     ));
 
     // Top supporters
-    if (supporters.top.length > 0) {
+    if (supporters.top.isNotEmpty) {
       tiles.add(
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
           child: Panel(
             title: Text("top".i18n),
             child: Column(children: supporters.top.map((supporter) => SupporterTile(supporter)).toList()),
@@ -81,10 +83,10 @@ class _SupportersScreenState extends State<SupportersScreen> {
     }
 
     // All supporters
-    if (supporters.top.length > 0) {
+    if (supporters.top.isNotEmpty) {
       tiles.add(
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
           child: Panel(
             title: Text("all".i18n),
             child: Column(children: supporters.all.map((supporter) => SupporterTile(supporter)).toList()),
@@ -102,14 +104,14 @@ class _SupportersScreenState extends State<SupportersScreen> {
       body: FutureBuilder(
         future: _buildTiles(),
         builder: (BuildContext context, AsyncSnapshot<List<Widget>> snapshot) => Container(
-          padding: EdgeInsets.only(top: 28.0),
+          padding: const EdgeInsets.only(top: 28.0),
           child: Column(
             children: [
               ListTile(
                 leading: BackButton(color: AppColors.of(context).text),
                 title: Text(
                   "supporters".i18n,
-                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
+                  style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
                 ),
               ),
               Expanded(
@@ -121,10 +123,10 @@ class _SupportersScreenState extends State<SupportersScreen> {
                   child: CupertinoScrollbar(
                     child: ListView(
                       padding: EdgeInsets.zero,
-                      physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                      physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                       children: snapshot.data ??
                           [
-                            Container(
+                            const SizedBox(
                               height: 200.0,
                               child: Center(
                                 child: CircularProgressIndicator(),
