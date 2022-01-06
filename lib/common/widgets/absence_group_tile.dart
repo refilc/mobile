@@ -25,7 +25,7 @@ class AbsenceGroupTile extends StatelessWidget {
         type: MaterialType.transparency,
         child: AbsenceGroupContainer(
           child: ExpansionTile(
-            tilePadding: EdgeInsets.symmetric(horizontal: 8.0),
+            tilePadding: const EdgeInsets.symmetric(horizontal: 8.0),
             backgroundColor: Colors.transparent,
             leading: Container(
               width: 44.0,
@@ -62,12 +62,12 @@ class AbsenceGroupTile extends StatelessWidget {
   static Justification getState(List<Justification> states) {
     Justification state;
 
-    if (states.any((element) => element == Justification.Unexcused)) {
-      state = Justification.Unexcused;
-    } else if (states.any((element) => element == Justification.Pending)) {
-      state = Justification.Pending;
+    if (states.any((element) => element == Justification.unexcused)) {
+      state = Justification.unexcused;
+    } else if (states.any((element) => element == Justification.pending)) {
+      state = Justification.pending;
     } else {
-      state = Justification.Excused;
+      state = Justification.excused;
     }
 
     return state;

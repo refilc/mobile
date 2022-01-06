@@ -17,7 +17,7 @@ class AttachmentTile extends StatelessWidget {
       builder: (context, snapshot) {
         return snapshot.hasData
             ? Padding(
-                padding: EdgeInsets.symmetric(vertical: 4.0),
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12.0),
                   child: Material(
@@ -40,7 +40,7 @@ class AttachmentTile extends StatelessWidget {
               )
             : Center(
                 child: Padding(
-                padding: EdgeInsets.all(12.0),
+                padding: const EdgeInsets.all(12.0),
                 child: CircularProgressIndicator(color: Theme.of(context).colorScheme.secondary),
               ));
       },
@@ -52,19 +52,19 @@ class AttachmentTile extends StatelessWidget {
     if (attachment.isImage) return buildImage(context);
 
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 4.0),
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: InkWell(
         borderRadius: BorderRadius.circular(12.0),
         onTap: () {
           attachment.open(context);
         },
         child: Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           child: Row(children: [
-            Icon(FeatherIcons.paperclip),
+            const Icon(FeatherIcons.paperclip),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: Text(attachment.name, maxLines: 2, overflow: TextOverflow.ellipsis),
               ),
             ),

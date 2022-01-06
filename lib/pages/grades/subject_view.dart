@@ -36,7 +36,7 @@ class SubjectView extends StatefulWidget {
 }
 
 class _SubjectViewState extends State<SubjectView> {
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   // Controllers
   late ScrollController _scrollController;
@@ -81,31 +81,32 @@ class _SubjectViewState extends State<SubjectView> {
   void buildTiles(List<Grade> subjectGrades) {
     List<Widget> tiles = [];
 
-    if (subjectGrades.where((e) => e.type == GradeType.midYear).length > 0 || gradeCalcMode)
+    if (subjectGrades.where((e) => e.type == GradeType.midYear).isNotEmpty || gradeCalcMode) {
       tiles.insert(0, gradeGraph);
-    else
+    } else {
       tiles.insert(0, Container(height: 24.0));
+    }
 
     if (!gradeCalcMode) {
       subjectGrades.sort((a, b) => -a.date.compareTo(b.date));
-      subjectGrades.forEach((grade) {
+      for (var grade in subjectGrades) {
         if (grade.type == GradeType.midYear) {
           tiles.add(GradeTile(grade, onTap: () => GradeView.show(grade, context: context)));
         } else {
           tiles.add(CertificationTile(grade));
         }
-      });
+      }
       tiles.insert(1, PanelTitle(title: Text("Grades".i18n)));
-      tiles.insert(2, PanelHeader(padding: EdgeInsets.only(top: 12.0)));
-      tiles.add(PanelFooter(padding: EdgeInsets.only(bottom: 12.0)));
-    } else if (subjectGrades.length > 0) {
+      tiles.insert(2, const PanelHeader(padding: EdgeInsets.only(top: 12.0)));
+      tiles.add(const PanelFooter(padding: EdgeInsets.only(bottom: 12.0)));
+    } else if (subjectGrades.isNotEmpty) {
       subjectGrades.sort((a, b) => -a.date.compareTo(b.date));
-      subjectGrades.forEach((grade) {
+      for (var grade in subjectGrades) {
         tiles.add(GradeTile(grade));
-      });
+      }
       tiles.insert(1, PanelTitle(title: Text("Ghost Grades".i18n)));
-      tiles.insert(2, PanelHeader(padding: EdgeInsets.only(top: 12.0)));
-      tiles.add(PanelFooter(padding: EdgeInsets.only(bottom: 12.0)));
+      tiles.insert(2, const PanelHeader(padding: EdgeInsets.only(top: 12.0)));
+      tiles.add(const PanelFooter(padding: EdgeInsets.only(bottom: 12.0)));
     }
 
     tiles.add(Padding(padding: EdgeInsets.only(bottom: !gradeCalcMode ? 24.0 : 250.0)));
@@ -121,11 +122,11 @@ class _SubjectViewState extends State<SubjectView> {
     List<Grade> subjectGrades = getSubjectGrades(widget.subject).toList();
 
     gradeGraph = Padding(
-      padding: EdgeInsets.only(top: 12.0, bottom: 24.0),
+      padding: const EdgeInsets.only(top: 12.0, bottom: 24.0),
       child: Panel(
         child: Container(
           height: 175.0,
-          padding: EdgeInsets.only(top: 18.0, right: 16.0, bottom: 4.0),
+          padding: const EdgeInsets.only(top: 18.0, right: 16.0, bottom: 4.0),
           child: GradeGraph(subjectGrades, dayThreshold: 5),
         ),
       ),
@@ -140,9 +141,9 @@ class _SubjectViewState extends State<SubjectView> {
 
     return Scaffold(
       key: _scaffoldKey,
-      floatingActionButton: !gradeCalcMode && subjectGrades.where((e) => e.type == GradeType.midYear).length > 0
+      floatingActionButton: !gradeCalcMode && subjectGrades.where((e) => e.type == GradeType.midYear).isNotEmpty
           ? FloatingActionButton(
-              child: Icon(FeatherIcons.plus),
+              child: const Icon(FeatherIcons.plus),
               onPressed: () => gradeCalc(context),
               backgroundColor: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.grey[900],
               foregroundColor: Theme.of(context).colorScheme.secondary,
@@ -154,7 +155,7 @@ class _SubjectViewState extends State<SubjectView> {
           color: Theme.of(context).colorScheme.secondary,
           child: NestedScrollView(
             controller: _scrollController,
-            physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+            physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
             headerSliverBuilder: (context, _) => [
               SliverAppBar(
                 pinned: true,
@@ -170,7 +171,7 @@ class _SubjectViewState extends State<SubjectView> {
                       maxLines: 2,
                       style: TextStyle(color: AppColors.of(context).text, fontWeight: FontWeight.w500),
                     ),
-                    duration: Duration(milliseconds: 200)),
+                    duration: const Duration(milliseconds: 200)),
                 leading: BackButton(
                     color: AppColors.of(context).text,
                     onPressed: () {
@@ -178,11 +179,11 @@ class _SubjectViewState extends State<SubjectView> {
                       Navigator.of(context).pop();
                     }),
                 actions: [
-                  SizedBox(width: 6.0),
+                  const SizedBox(width: 6.0),
                   if (widget.classAverage != 0) Center(child: AverageDisplay(average: widget.classAverage, border: true)),
-                  SizedBox(width: 6.0),
+                  const SizedBox(width: 6.0),
                   if (average != 0) Center(child: AverageDisplay(average: average)),
-                  SizedBox(width: 12.0),
+                  const SizedBox(width: 12.0),
                 ],
                 expandedHeight: 124.0,
                 stretch: true,
@@ -198,7 +199,7 @@ class _SubjectViewState extends State<SubjectView> {
                       ),
                       Container(
                         alignment: Alignment.bottomCenter,
-                        padding: EdgeInsets.symmetric(horizontal: 12.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
                         child: Text(
                           widget.subject.name.capital(),
                           maxLines: 2,
@@ -215,20 +216,21 @@ class _SubjectViewState extends State<SubjectView> {
             body: SubjectGradesContainer(
               child: CupertinoScrollbar(
                 child: ListView.builder(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    EdgeInsetsGeometry panelPadding = EdgeInsets.symmetric(horizontal: 24.0);
+                    EdgeInsetsGeometry panelPadding = const EdgeInsets.symmetric(horizontal: 24.0);
 
-                    if ([GradeTile, CertificationTile].contains(gradeTiles[index].runtimeType))
+                    if ([GradeTile, CertificationTile].contains(gradeTiles[index].runtimeType)) {
                       return Padding(
                           padding: panelPadding,
                           child: PanelBody(
                             child: gradeTiles[index],
-                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           ));
-                    else
+                    } else {
                       return Padding(padding: panelPadding, child: gradeTiles[index]);
+                    }
                   },
                   itemCount: gradeTiles.length,
                 ),
@@ -242,14 +244,14 @@ class _SubjectViewState extends State<SubjectView> {
 
   void gradeCalc(BuildContext context) {
     // Scroll to the top of the page
-    _scrollController.animateTo(0, duration: Duration(milliseconds: 500), curve: Curves.ease);
+    _scrollController.animateTo(0, duration: const Duration(milliseconds: 500), curve: Curves.ease);
 
     calculatorProvider.clear();
     calculatorProvider.addAllGrades(gradeProvider.grades);
 
     _sheetController = _scaffoldKey.currentState?.showBottomSheet(
       (context) => RoundedBottomSheet(child: GradeCalculator(widget.subject), borderRadius: 14.0),
-      backgroundColor: Color(0),
+      backgroundColor: const Color(0x00000000),
       elevation: 12.0,
     );
 

@@ -26,35 +26,37 @@ class ProfileImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (heroTag == null)
+    if (heroTag == null) {
       return buildWithoutHero(context);
-    else
+    } else {
       return buildWithHero(context);
+    }
   }
 
   Widget buildWithoutHero(BuildContext context) {
     Color color = ColorUtils.foregroundColor(backgroundColor ?? AppColors.of(context).background);
     Color roleColor;
 
-    if (Theme.of(context).brightness == Brightness.light)
-      roleColor = Color(0xFF444444);
-    else
-      roleColor = Color(0xFF555555);
+    if (Theme.of(context).brightness == Brightness.light) {
+      roleColor = const Color(0xFF444444);
+    } else {
+      roleColor = const Color(0xFF555555);
+    }
 
     return Stack(
       alignment: Alignment.center,
       children: [
         Material(
           clipBehavior: Clip.hardEdge,
-          shape: CircleBorder(),
+          shape: const CircleBorder(),
           color: backgroundColor ?? AppColors.of(context).text.withOpacity(.15),
           child: InkWell(
             onTap: onTap,
             child: AnimatedContainer(
-              duration: Duration(milliseconds: 200),
+              duration: const Duration(milliseconds: 200),
               height: radius * 2,
               width: radius * 2,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
               ),
               child: name != null && (name?.trim().length ?? 0) > 0
@@ -75,7 +77,7 @@ class ProfileImage extends StatelessWidget {
 
         // Role indicator
         if (role == Role.parent)
-          Container(
+          SizedBox(
             height: radius * 2,
             width: radius * 2,
             child: Container(
@@ -91,10 +93,11 @@ class ProfileImage extends StatelessWidget {
     Color color = ColorUtils.foregroundColor(backgroundColor ?? AppColors.of(context).background);
     Color roleColor;
 
-    if (Theme.of(context).brightness == Brightness.light)
-      roleColor = Color(0xFF444444);
-    else
-      roleColor = Color(0xFF555555);
+    if (Theme.of(context).brightness == Brightness.light) {
+      roleColor = const Color(0xFF444444);
+    } else {
+      roleColor = const Color(0xFF555555);
+    }
 
     Widget child = FittedBox(
       fit: BoxFit.fitHeight,
@@ -120,13 +123,13 @@ class ProfileImage extends StatelessWidget {
               transitionOnUserGestures: true,
               child: Material(
                 clipBehavior: Clip.hardEdge,
-                shape: CircleBorder(),
+                shape: const CircleBorder(),
                 color: backgroundColor ?? AppColors.of(context).text.withOpacity(.15),
                 child: AnimatedContainer(
-                  duration: Duration(milliseconds: 200),
+                  duration: const Duration(milliseconds: 200),
                   height: radius * 2,
                   width: radius * 2,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -154,7 +157,7 @@ class ProfileImage extends StatelessWidget {
               tag: heroTag! + "role_indicator",
               child: FittedBox(
                 fit: BoxFit.fitHeight,
-                child: Container(
+                child: SizedBox(
                   height: radius * 2,
                   width: radius * 2,
                   child: Container(
@@ -168,7 +171,7 @@ class ProfileImage extends StatelessWidget {
           Material(
             color: Colors.transparent,
             clipBehavior: Clip.hardEdge,
-            shape: CircleBorder(),
+            shape: const CircleBorder(),
             child: InkWell(
               onTap: onTap,
               child: SizedBox(

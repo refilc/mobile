@@ -32,10 +32,11 @@ class GradeTile extends StatelessWidget {
     // mode
     // value name
     if (grade.type == GradeType.midYear || grade.type == GradeType.ghost) {
-      if (grade.description != "")
+      if (grade.description != "") {
         title = description;
-      else
+      } else {
         title = modeDescription != "" ? modeDescription : grade.value.valueName.split("(")[0];
+      }
     } else {
       title = subjectName;
     }
@@ -53,7 +54,7 @@ class GradeTile extends StatelessWidget {
       subtitle = grade.value.valueName.split("(")[0];
     }
 
-    if (subtitle != "") leadingPadding = EdgeInsets.only(top: 2.0);
+    if (subtitle != "") leadingPadding = const EdgeInsets.only(top: 2.0);
 
     return Material(
       color: Theme.of(context).backgroundColor,
@@ -62,9 +63,9 @@ class GradeTile extends StatelessWidget {
         visualDensity: VisualDensity.compact,
         contentPadding: isSubjectView
             ? grade.type != GradeType.ghost
-                ? EdgeInsets.symmetric(horizontal: 12.0)
-                : EdgeInsets.only(left: 12.0, right: 4.0)
-            : EdgeInsets.only(left: 8.0, right: 12.0),
+                ? const EdgeInsets.symmetric(horizontal: 12.0)
+                : const EdgeInsets.only(left: 12.0, right: 4.0)
+            : const EdgeInsets.only(left: 8.0, right: 12.0),
         onTap: onTap,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         leading: isSubjectView
@@ -83,19 +84,19 @@ class GradeTile extends StatelessWidget {
           title,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(fontWeight: FontWeight.w600),
+          style: const TextStyle(fontWeight: FontWeight.w600),
         ),
         subtitle: subtitle != ""
             ? Text(
                 subtitle,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontWeight: FontWeight.w500),
+                style: const TextStyle(fontWeight: FontWeight.w500),
               )
             : null,
         trailing: isSubjectView
             ? grade.type != GradeType.ghost
-                ? Text(grade.date.format(context), style: TextStyle(fontWeight: FontWeight.w500))
+                ? Text(grade.date.format(context), style: const TextStyle(fontWeight: FontWeight.w500))
                 : IconButton(
                     splashRadius: 24.0,
                     icon: Icon(FeatherIcons.trash2, color: AppColors.of(context).red),
@@ -128,16 +129,16 @@ class GradeValueWidget extends StatelessWidget {
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: size, color: color),
       );
     } else if (value.valueName.toLowerCase().specialChars() == 'nem irt') {
-      valueText = Icon(FeatherIcons.slash);
+      valueText = const Icon(FeatherIcons.slash);
     } else {
-      valueText = Icon(FeatherIcons.type);
+      valueText = const Icon(FeatherIcons.type);
     }
     return fill
         ? Container(
             width: size * (fill ? 1.4 : 1.0),
             height: size * (fill ? 1.4 : 1.0),
             decoration: BoxDecoration(
-              color: fill ? color.withOpacity(.25) : Color(0),
+              color: fill ? color.withOpacity(.25) : const Color(0x00000000),
               shape: BoxShape.circle,
             ),
             child: Center(child: valueText),

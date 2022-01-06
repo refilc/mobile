@@ -2,7 +2,7 @@ name: filcnaplo_mobile_ui
 publish_to: "none"
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.16.0-80.1.beta <3.0.0"
 
 dependencies:
   flutter:
@@ -17,16 +17,21 @@ dependencies:
 
   flutter_feather_icons: ^2.0.0+1
   provider: ^5.0.0
-  fl_chart: ^0.36.4
+  fl_chart: ^0.40.6
   url_launcher: ^6.0.9
   flutter_material_color_picker: ^1.1.0+2
-  photo_view: ^0.12.0
+  photo_view: ^0.13.0
   flutter_linkify: ^5.0.2
   flutter_custom_tabs: ^1.0.3
   flutter_markdown: ^0.6.5
   animations: ^2.0.1
   implicitly_animated_reorderable_list: ^0.4.1
   sliding_sheet: ^0.5.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^1.0.0
 
 flutter:
   uses-material-design: true

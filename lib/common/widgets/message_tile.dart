@@ -22,7 +22,7 @@ class MessageTile extends StatelessWidget {
         child: ListTile(
           onTap: onTap,
           visualDensity: VisualDensity.compact,
-          contentPadding: EdgeInsets.only(left: 8.0, right: 4.0),
+          contentPadding: const EdgeInsets.only(left: 8.0, right: 4.0),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
           leading: ProfileImage(
             name: message.author,
@@ -36,17 +36,17 @@ class MessageTile extends StatelessWidget {
                   message.author,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15.5),
+                  style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15.5),
                 ),
               ),
-              if (message.attachments.length > 0) Icon(FeatherIcons.paperclip, size: 16.0)
+              if (message.attachments.isNotEmpty) const Icon(FeatherIcons.paperclip, size: 16.0)
             ],
           ),
           subtitle: Text(
             message.subject,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0),
+            style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0),
           ),
           trailing: Text(
             message.date.format(context),

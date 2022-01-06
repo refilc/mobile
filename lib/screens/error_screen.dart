@@ -13,14 +13,14 @@ class ErrorScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
+          padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
           child: Column(
             children: [
               Padding(
-                padding: EdgeInsets.all(12.0),
+                padding: const EdgeInsets.all(12.0),
                 child: Icon(FeatherIcons.alertTriangle, size: 48.0, color: AppColors.of(context).red),
               ),
-              Padding(
+              const Padding(
                 padding: EdgeInsets.all(12.0),
                 child: Text(
                   "An error occurred...",
@@ -29,7 +29,7 @@ class ErrorScreen extends StatelessWidget {
               ),
               Expanded(
                 child: Container(
-                  padding: EdgeInsets.all(12.0),
+                  padding: const EdgeInsets.all(12.0),
                   width: double.infinity,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(14.0),
@@ -37,13 +37,13 @@ class ErrorScreen extends StatelessWidget {
                   ),
                   child: CupertinoScrollbar(
                     child: SingleChildScrollView(
-                      physics: BouncingScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       child: SingleChildScrollView(
-                        physics: BouncingScrollPhysics(),
+                        physics: const BouncingScrollPhysics(),
                         scrollDirection: Axis.horizontal,
                         child: SelectableText(
                           (details.exceptionAsString() + '\n'),
-                          style: TextStyle(fontFamily: "monospace"),
+                          style: const TextStyle(fontFamily: "monospace"),
                         ),
                       ),
                     ),

@@ -19,7 +19,7 @@ class ProfileButton extends StatelessWidget {
       badge: child.badge,
       role: child.role,
       onTap: () {
-        Navigator.of(context, rootNavigator: true).push(settingsRoute(SettingsScreen()));
+        Navigator.of(context, rootNavigator: true).push(settingsRoute(const SettingsScreen()));
       },
     );
   }

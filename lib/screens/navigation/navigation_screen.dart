@@ -17,7 +17,7 @@ import 'package:filcnaplo/api/providers/news_provider.dart';
 import 'package:filcnaplo/api/providers/sync.dart';
 
 class NavigationScreen extends StatefulWidget {
-  NavigationScreen({Key? key}) : super(key: key);
+  const NavigationScreen({Key? key}) : super(key: key);
 
   static NavigationScreenState? of(BuildContext context) => context.findAncestorStateOfType<NavigationScreenState>();
 
@@ -64,8 +64,9 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
   void didChangePlatformBrightness() {
     if (settings.theme == ThemeMode.system) {
       Brightness? brightness = WidgetsBinding.instance?.window.platformBrightness;
-      if (brightness != null)
+      if (brightness != null) {
         Provider.of<ThemeModeObserver>(context, listen: false).changeTheme(brightness == Brightness.light ? ThemeMode.light : ThemeMode.dark);
+      }
     }
     super.didChangePlatformBrightness();
   }
@@ -107,7 +108,7 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
             ),
 
             // Status bar
-            StatusBar(),
+            const StatusBar(),
 
             // Bottom Navigaton Bar
             SafeArea(
@@ -116,23 +117,23 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
                 items: [
                   BottomNavigationBarItem(
                     label: "home".i18n,
-                    icon: Icon(FilcIcons.home),
+                    icon: const Icon(FilcIcons.home),
                   ),
                   BottomNavigationBarItem(
                     label: "grades".i18n,
-                    icon: Icon(FeatherIcons.bookmark),
+                    icon: const Icon(FeatherIcons.bookmark),
                   ),
                   BottomNavigationBarItem(
                     label: "timetable".i18n,
-                    icon: Icon(FeatherIcons.calendar),
+                    icon: const Icon(FeatherIcons.calendar),
                   ),
                   BottomNavigationBarItem(
                     label: "messages".i18n,
-                    icon: Icon(FeatherIcons.messageSquare),
+                    icon: const Icon(FeatherIcons.messageSquare),
                   ),
                   BottomNavigationBarItem(
                     label: "absences".i18n,
-                    icon: Icon(FeatherIcons.clock),
+                    icon: const Icon(FeatherIcons.clock),
                   ),
                 ],
                 currentIndex: selected.index,

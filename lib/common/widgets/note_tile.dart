@@ -16,7 +16,7 @@ class NoteTile extends StatelessWidget {
       borderRadius: BorderRadius.circular(8.0),
       child: ListTile(
         visualDensity: VisualDensity.compact,
-        contentPadding: EdgeInsets.only(left: 8.0, right: 12.0),
+        contentPadding: const EdgeInsets.only(left: 8.0, right: 12.0),
         onTap: onTap,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         leading: ProfileImage(
@@ -28,13 +28,13 @@ class NoteTile extends StatelessWidget {
           note.title,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(fontWeight: FontWeight.w600),
+          style: const TextStyle(fontWeight: FontWeight.w600),
         ),
         subtitle: Text(
           note.content.replaceAll('\n', ' '),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(fontWeight: FontWeight.w500),
+          style: const TextStyle(fontWeight: FontWeight.w500),
         ),
         minLeadingWidth: 0,
       ),

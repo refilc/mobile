@@ -1,18 +1,30 @@
+// ignore_for_file: empty_catches
+
+import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_kreta_api/models/absence.dart';
+import 'package:filcnaplo_kreta_api/models/lesson.dart';
+import 'package:filcnaplo_kreta_api/models/week.dart';
+import 'package:filcnaplo_kreta_api/providers/timetable_provider.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_card.dart';
+import 'package:filcnaplo_mobile_ui/common/custom_snack_bar.dart';
 import 'package:filcnaplo_mobile_ui/common/detail.dart';
+import 'package:filcnaplo_mobile_ui/common/panel/panel_action_button.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/absence_tile.dart';
 import 'package:filcnaplo/utils/format.dart';
+import 'package:filcnaplo_mobile_ui/pages/timetable/timetable_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:provider/provider.dart';
 import 'absence_view.i18n.dart';
 
 class AbsenceView extends StatelessWidget {
-  const AbsenceView(this.absence, {Key? key}) : super(key: key);
+  const AbsenceView(this.absence, {Key? key, this.outsideContext}) : super(key: key);
 
   final Absence absence;
+  final BuildContext? outsideContext;
 
   static show(Absence absence, {required BuildContext context}) {
-    showBottomCard(context: context, child: AbsenceView(absence));
+    showBottomCard(context: context, child: AbsenceView(absence, outsideContext: context));
   }
 
   @override
@@ -20,14 +32,14 @@ class AbsenceView extends StatelessWidget {
     Color color = AbsenceTile.justificationColor(absence.state, context: context);
 
     return Padding(
-      padding: EdgeInsets.only(bottom: 12.0),
+      padding: const EdgeInsets.only(bottom: 12.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
             visualDensity: VisualDensity.compact,
-            contentPadding: EdgeInsets.only(left: 16.0, right: 12.0),
+            contentPadding: const EdgeInsets.only(left: 16.0, right: 12.0),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
             leading: Container(
               width: 44.0,
@@ -45,16 +57,16 @@ class AbsenceView extends StatelessWidget {
             ),
             title: Text(
               absence.subject.name.capital(),
-              style: TextStyle(fontWeight: FontWeight.w700),
+              style: const TextStyle(fontWeight: FontWeight.w700),
             ),
             subtitle: Text(
               absence.teacher,
               // DateFormat("MM. dd. (EEEEE)", I18n.of(context).locale.toString()).format(absence.date),
-              style: TextStyle(fontWeight: FontWeight.w500),
+              style: const TextStyle(fontWeight: FontWeight.w500),
             ),
             trailing: Text(
               absence.date.format(context),
-              style: TextStyle(fontWeight: FontWeight.w500),
+              style: const TextStyle(fontWeight: FontWeight.w500),
             ),
           ),
 
@@ -71,10 +83,65 @@ class AbsenceView extends StatelessWidget {
               title: "Excuse".i18n,
               description: absence.justification?.description ?? "",
             ),
-          if (absence.mode != "") Detail(title: "Mode".i18n, description: absence.mode?.description ?? ""),
-          Detail(title: "Submit date".i18n, description: absence.submitDate.format(context))
+          if (absence.mode != null) Detail(title: "Mode".i18n, description: absence.mode?.description ?? ""),
+          Detail(title: "Submit date".i18n, description: absence.submitDate.format(context)),
+
+          // Show in timetable
+          Padding(
+            padding: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 4.0, top: 8.0),
+            child: PanelActionButton(
+              leading: const Icon(FeatherIcons.calendar),
+              title: Text(
+                "show in timetable".i18n,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+
+                if (outsideContext != null) {
+                  getLessonByAbsence(context).then((lesson) {
+                    if (lesson != null) {
+                      TimetablePage.jump(outsideContext!, lesson: lesson);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(CustomSnackBar(
+                        content: Text("Cannot find lesson".i18n, style: const TextStyle(color: Colors.white)),
+                        backgroundColor: AppColors.of(context).red,
+                        context: context,
+                      ));
+                    }
+                  });
+                }
+              },
+            ),
+          ),
         ],
       ),
     );
   }
+
+  Future<Lesson?> getLessonByAbsence(BuildContext context) async {
+    final timetableProvider = Provider.of<TimetableProvider>(context, listen: false);
+
+    List<Lesson> lessons = [];
+    try {
+      await timetableProvider.fetch(week: Week.fromDate(absence.date), db: false);
+    } catch (e) {}
+    lessons = timetableProvider.lessons;
+
+    // Find absence lesson in timetable
+    Lesson _lesson = lessons.firstWhere(
+      (l) => _sameDate(l.date, absence.date) && l.subject.id == absence.subject.id && l.lessonIndex == absence.lessonIndex.toString(),
+      orElse: () => Lesson.fromJson({'isEmpty': true}),
+    );
+
+    if (_lesson.isEmpty) {
+      return null;
+    } else {
+      return _lesson;
+    }
+  }
 }
+
+// difference.inDays is not reliable
+bool _sameDate(DateTime a, DateTime b) => (a.year == b.year && a.month == b.month && a.day == b.day);

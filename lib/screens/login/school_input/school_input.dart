@@ -34,8 +34,8 @@ class _SchoolInputState extends State<SchoolInput> {
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
         overlay.createOverlayEntry(context);
-        Future.delayed(Duration(milliseconds: 100)).then((value) {
-          widget.scroll.animateTo(widget.scroll.offset + 500, duration: Duration(milliseconds: 500), curve: Curves.ease);
+        Future.delayed(const Duration(milliseconds: 100)).then((value) {
+          widget.scroll.animateTo(widget.scroll.offset + 500, duration: const Duration(milliseconds: 500), curve: Curves.ease);
         });
       } else {
         overlay.entry?.remove();
@@ -45,7 +45,7 @@ class _SchoolInputState extends State<SchoolInput> {
     // LoginInput TextField listener
     widget.controller.textController.addListener(() {
       String text = widget.controller.textController.text;
-      if (text.length == 0) {
+      if (text.isEmpty) {
         overlay.children = null;
         return;
       }
@@ -74,37 +74,35 @@ class _SchoolInputState extends State<SchoolInput> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: CompositedTransformTarget(
-        link: _layerLink,
-        child: widget.controller.schools == null
-            ? Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 10.0),
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                child: Center(
-                  child: SizedBox(
-                    height: 28.0,
-                    width: 28.0,
-                    child: CircularProgressIndicator(
-                      color: Colors.white,
-                    ),
+    return CompositedTransformTarget(
+      link: _layerLink,
+      child: widget.controller.schools == null
+          ? Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              child: const Center(
+                child: SizedBox(
+                  height: 28.0,
+                  width: 28.0,
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
                   ),
                 ),
-              )
-            : LoginInput(
-                style: LoginInputStyle.school,
-                focusNode: _focusNode,
-                onClear: () {
-                  widget.controller.selectedSchool = null;
-                  FocusScope.of(context).requestFocus(_focusNode);
-                },
-                controller: widget.controller.textController,
               ),
-      ),
+            )
+          : LoginInput(
+              style: LoginInputStyle.school,
+              focusNode: _focusNode,
+              onClear: () {
+                widget.controller.selectedSchool = null;
+                FocusScope.of(context).requestFocus(_focusNode);
+              },
+              controller: widget.controller.textController,
+            ),
     );
   }
 }

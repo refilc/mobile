@@ -40,59 +40,57 @@ class _LoginInputState extends State<LoginInput> {
         break;
     }
 
-    return Container(
-      child: TextField(
-        focusNode: widget.focusNode,
-        controller: widget.controller,
-        cursorColor: Color(0xff20AC9B),
-        textInputAction: TextInputAction.next,
-        autofillHints: [autofill],
-        obscureText: obscure,
-        scrollPhysics: BouncingScrollPhysics(),
-        decoration: InputDecoration(
-          fillColor: Colors.black.withOpacity(0.15),
-          filled: true,
-          enabledBorder: UnderlineInputBorder(
-            borderRadius: BorderRadius.circular(12.0),
-            borderSide: BorderSide(width: 0, color: Colors.transparent),
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderRadius: BorderRadius.circular(12.0),
-            borderSide: BorderSide(width: 0, color: Colors.transparent),
-          ),
-          suffixIconConstraints: BoxConstraints(maxHeight: 42.0, maxWidth: 48.0),
-          suffixIcon: widget.style == LoginInputStyle.password || widget.style == LoginInputStyle.school
-              ? ClipOval(
-                  child: Material(
-                    type: MaterialType.transparency,
-                    child: IconButton(
-                      splashRadius: 20.0,
-                      padding: EdgeInsets.zero,
-                      onPressed: () {
-                        if (widget.style == LoginInputStyle.password) {
-                          setState(() => obscure = !obscure);
-                        } else {
-                          widget.controller?.clear();
-                          if (widget.onClear != null) widget.onClear!();
-                        }
-                      },
-                      icon: Icon(
-                          widget.style == LoginInputStyle.password
-                              ? obscure
-                                  ? FeatherIcons.eye
-                                  : FeatherIcons.eyeOff
-                              : FeatherIcons.x,
-                          color: Colors.white),
-                    ),
+    return TextField(
+      focusNode: widget.focusNode,
+      controller: widget.controller,
+      cursorColor: const Color(0xff20AC9B),
+      textInputAction: TextInputAction.next,
+      autofillHints: [autofill],
+      obscureText: obscure,
+      scrollPhysics: const BouncingScrollPhysics(),
+      decoration: InputDecoration(
+        fillColor: Colors.black.withOpacity(0.15),
+        filled: true,
+        enabledBorder: UnderlineInputBorder(
+          borderRadius: BorderRadius.circular(12.0),
+          borderSide: const BorderSide(width: 0, color: Colors.transparent),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderRadius: BorderRadius.circular(12.0),
+          borderSide: const BorderSide(width: 0, color: Colors.transparent),
+        ),
+        suffixIconConstraints: const BoxConstraints(maxHeight: 42.0, maxWidth: 48.0),
+        suffixIcon: widget.style == LoginInputStyle.password || widget.style == LoginInputStyle.school
+            ? ClipOval(
+                child: Material(
+                  type: MaterialType.transparency,
+                  child: IconButton(
+                    splashRadius: 20.0,
+                    padding: EdgeInsets.zero,
+                    onPressed: () {
+                      if (widget.style == LoginInputStyle.password) {
+                        setState(() => obscure = !obscure);
+                      } else {
+                        widget.controller?.clear();
+                        if (widget.onClear != null) widget.onClear!();
+                      }
+                    },
+                    icon: Icon(
+                        widget.style == LoginInputStyle.password
+                            ? obscure
+                                ? FeatherIcons.eye
+                                : FeatherIcons.eyeOff
+                            : FeatherIcons.x,
+                        color: Colors.white),
                   ),
-                )
-              : null,
-        ),
-        style: TextStyle(
-          fontSize: 14.0,
-          fontWeight: FontWeight.w500,
-          color: Colors.white,
-        ),
+                ),
+              )
+            : null,
+      ),
+      style: const TextStyle(
+        fontSize: 14.0,
+        fontWeight: FontWeight.w500,
+        color: Colors.white,
       ),
     );
   }

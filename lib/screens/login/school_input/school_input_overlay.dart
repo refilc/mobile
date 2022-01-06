@@ -53,7 +53,7 @@ class SchoolInputOverlayWidget extends StatelessWidget {
                 shadowColor: Colors.black,
                 child: (children?.length ?? 0) > 0
                     ? ListView.builder(
-                        physics: BouncingScrollPhysics(),
+                        physics: const BouncingScrollPhysics(),
                         padding: EdgeInsets.zero,
                         shrinkWrap: true,
                         itemCount: children?.length ?? 0,

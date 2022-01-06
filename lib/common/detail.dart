@@ -2,7 +2,7 @@ import 'package:filcnaplo/theme.dart';
 import 'package:flutter/material.dart';
 
 class Detail extends StatelessWidget {
-  Detail({Key? key, required this.title, required this.description, this.maxLines = 3}) : super(key: key);
+  const Detail({Key? key, required this.title, required this.description, this.maxLines = 3}) : super(key: key);
 
   final String title;
   final String description;
@@ -11,7 +11,7 @@ class Detail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 18.0),
+      padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 18.0),
       child: SelectableText.rich(
         TextSpan(
           text: "$title: ",

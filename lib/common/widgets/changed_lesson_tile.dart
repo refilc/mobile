@@ -33,7 +33,7 @@ class ChangedLessonTile extends StatelessWidget {
       borderRadius: BorderRadius.circular(8.0),
       child: ListTile(
         visualDensity: VisualDensity.compact,
-        contentPadding: EdgeInsets.only(left: 8.0, right: 12.0),
+        contentPadding: const EdgeInsets.only(left: 8.0, right: 12.0),
         onTap: onTap,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         leading: SizedBox(
@@ -54,15 +54,15 @@ class ChangedLessonTile extends StatelessWidget {
           lesson.substituteTeacher != "" ? "substituted".i18n : "cancelled".i18n,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(fontWeight: FontWeight.w600),
+          style: const TextStyle(fontWeight: FontWeight.w600),
         ),
         subtitle: Text(
           lesson.subject.name.capital(),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(fontWeight: FontWeight.w500),
+          style: const TextStyle(fontWeight: FontWeight.w500),
         ),
-        trailing: Icon(FeatherIcons.arrowRight),
+        trailing: const Icon(FeatherIcons.arrowRight),
         minLeadingWidth: 0,
       ),
     );

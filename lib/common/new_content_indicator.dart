@@ -9,12 +9,12 @@ class NewContentIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 200),
       alignment: Alignment.topRight,
       width: size,
       height: size,
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 200),
+        duration: const Duration(milliseconds: 200),
         height: size / 3.0,
         width: size / 3.0,
         decoration: BoxDecoration(
@@ -22,7 +22,7 @@ class NewContentIndicator extends StatelessWidget {
           border: Border.all(color: AppColors.of(context).background, width: size / 20.0),
         ),
         child: AnimatedContainer(
-          duration: Duration(milliseconds: 200),
+          duration: const Duration(milliseconds: 200),
           decoration: BoxDecoration(
             color: AppColors.of(context).red,
             shape: BoxShape.circle,

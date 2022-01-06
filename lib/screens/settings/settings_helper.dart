@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_function_declarations_over_variables
+
 import 'package:filcnaplo/icons/filc_icons.dart';
 import 'package:filcnaplo/models/settings.dart';
 import 'package:filcnaplo/theme.dart';
@@ -84,9 +86,9 @@ class SettingsHelper {
           title: Row(
             children: [
               Icon(pageIcons[Pages.values[index]], size: 20.0, color: Theme.of(context).colorScheme.secondary),
-              SizedBox(width: 16.0),
+              const SizedBox(width: 16.0),
               Text(localizedPageTitles()[Pages.values[index]] ?? ""),
-              Spacer(),
+              const Spacer(),
               if (Pages.values[index] == Provider.of<SettingsProvider>(context, listen: false).startPage)
                 Icon(
                   Icons.check_circle,
@@ -102,7 +104,7 @@ class SettingsHelper {
   static void rounding(BuildContext context) {
     showRoundedModalBottomSheet(
       context,
-      child: RoundingSetting(),
+      child: const RoundingSetting(),
     );
   }
 
@@ -113,17 +115,18 @@ class SettingsHelper {
       Provider.of<ThemeModeObserver>(context, listen: false).changeTheme(mode);
       Navigator.of(context).maybePop();
     };
+    
     showBottomSheetMenu(context, items: [
       BottomSheetMenuItem(
         onPressed: () => setTheme(ThemeMode.system),
         title: Row(
           children: [
             Padding(
-              padding: EdgeInsets.only(right: 16.0),
+              padding: const EdgeInsets.only(right: 16.0),
               child: Icon(FeatherIcons.smartphone, size: 20.0, color: Theme.of(context).colorScheme.secondary),
             ),
             Text(SettingsLocalization("system").i18n),
-            Spacer(),
+            const Spacer(),
             if (settings.theme == ThemeMode.system)
               Icon(
                 Icons.check_circle,
@@ -137,11 +140,11 @@ class SettingsHelper {
         title: Row(
           children: [
             Padding(
-              padding: EdgeInsets.only(right: 16.0),
+              padding: const EdgeInsets.only(right: 16.0),
               child: Icon(FeatherIcons.sun, size: 20.0, color: Theme.of(context).colorScheme.secondary),
             ),
             Text(SettingsLocalization("light").i18n),
-            Spacer(),
+            const Spacer(),
             if (settings.theme == ThemeMode.light)
               Icon(
                 Icons.check_circle,
@@ -155,11 +158,11 @@ class SettingsHelper {
         title: Row(
           children: [
             Padding(
-              padding: EdgeInsets.only(right: 16.0),
+              padding: const EdgeInsets.only(right: 16.0),
               child: Icon(FeatherIcons.moon, size: 20.0, color: Theme.of(context).colorScheme.secondary),
             ),
             Text(SettingsLocalization("dark").i18n),
-            Spacer(),
+            const Spacer(),
             if (settings.theme == ThemeMode.dark)
               Icon(
                 Icons.check_circle,
@@ -181,13 +184,13 @@ class SettingsHelper {
     showRoundedModalBottomSheet(
       context,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 24.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 24.0),
         child: Center(
           child: Wrap(
             alignment: WrapAlignment.start,
             children: List.generate(AccentColor.values.length, (index) {
               return Padding(
-                padding: EdgeInsets.all(4.0),
+                padding: const EdgeInsets.all(4.0),
                 child: ClipOval(
                   child: Material(
                     color: accentColorMap[AccentColor.values[index]],
@@ -200,7 +203,7 @@ class SettingsHelper {
                       child: Container(
                         width: 54.0,
                         height: 54.0,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                         ),
                         child: Provider.of<SettingsProvider>(context, listen: false).accentColor == AccentColor.values[index]
@@ -221,7 +224,7 @@ class SettingsHelper {
   static void gradeColors(BuildContext context) {
     showRoundedModalBottomSheet(
       context,
-      child: GradeColorsSetting(),
+      child: const GradeColorsSetting(),
     );
   }
 
@@ -246,9 +249,9 @@ class SettingsHelper {
                   shape: BoxShape.circle,
                 ),
               ),
-              SizedBox(width: 16.0),
+              const SizedBox(width: 16.0),
               Text(localizedVibrationTitles()[value] ?? "?"),
-              Spacer(),
+              const Spacer(),
               if (value == Provider.of<SettingsProvider>(context, listen: false).vibrate)
                 Icon(
                   Icons.check_circle,
@@ -264,7 +267,7 @@ class SettingsHelper {
 
 // Rounding modal
 class RoundingSetting extends StatefulWidget {
-  RoundingSetting({Key? key}) : super(key: key);
+  const RoundingSetting({Key? key}) : super(key: key);
 
   @override
   _RoundingSettingState createState() => _RoundingSettingState();
@@ -299,7 +302,7 @@ class _RoundingSettingState extends State<RoundingSetting> {
               min: 0.1,
               max: 0.9,
               divisions: 8,
-              label: "${r.toStringAsFixed(1)}",
+              label: r.toStringAsFixed(1),
               activeColor: Theme.of(context).colorScheme.secondary,
               thumbColor: Theme.of(context).colorScheme.secondary,
               onChanged: (v) => setState(() => r = v),
@@ -307,10 +310,10 @@ class _RoundingSettingState extends State<RoundingSetting> {
           ),
           Container(
             width: 50.0,
-            padding: EdgeInsets.only(right: 16.0),
+            padding: const EdgeInsets.only(right: 16.0),
             child: Center(
-              child: Text("${r.toStringAsFixed(1)}",
-                  style: TextStyle(
+              child: Text(r.toStringAsFixed(1),
+                  style: const TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 18.0,
                   )),
@@ -321,8 +324,8 @@ class _RoundingSettingState extends State<RoundingSetting> {
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text("4.5", style: TextStyle(fontSize: 26.0, fontWeight: FontWeight.w500)),
-          Padding(
+          const Text("4.5", style: TextStyle(fontSize: 26.0, fontWeight: FontWeight.w500)),
+          const Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.0),
             child: Icon(FeatherIcons.arrowRight, color: Colors.grey),
           ),
@@ -330,7 +333,7 @@ class _RoundingSettingState extends State<RoundingSetting> {
         ],
       ),
       Padding(
-        padding: EdgeInsets.only(bottom: 12.0, top: 6.0),
+        padding: const EdgeInsets.only(bottom: 12.0, top: 6.0),
         child: MaterialActionButton(
           child: Text(SettingsLocalization("done").i18n),
           onPressed: () {
@@ -344,14 +347,14 @@ class _RoundingSettingState extends State<RoundingSetting> {
 }
 
 class GradeColorsSetting extends StatefulWidget {
-  GradeColorsSetting({Key? key}) : super(key: key);
+  const GradeColorsSetting({Key? key}) : super(key: key);
 
   @override
   _GradeColorsSettingState createState() => _GradeColorsSettingState();
 }
 
 class _GradeColorsSettingState extends State<GradeColorsSetting> {
-  Color currentColor = Color(0);
+  Color currentColor = const Color(0x00000000);
   late SettingsProvider settings;
 
   @override
@@ -364,7 +367,7 @@ class _GradeColorsSettingState extends State<GradeColorsSetting> {
   Widget build(BuildContext context) {
     return Column(children: [
       Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: List.generate(5, (index) {
@@ -385,10 +388,10 @@ class _GradeColorsSettingState extends State<GradeColorsSetting> {
                           },
                           allowShades: true,
                           elevation: 0,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(bottom: 8.0),
+                          padding: const EdgeInsets.only(bottom: 8.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [

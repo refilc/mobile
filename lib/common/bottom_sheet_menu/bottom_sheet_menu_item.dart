@@ -10,12 +10,10 @@ class BottomSheetMenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: PanelButton(
-        onPressed: onPressed,
-        leading: icon,
-        title: title,
-      ),
+    return PanelButton(
+      onPressed: onPressed,
+      leading: icon,
+      title: title,
     );
   }
 }

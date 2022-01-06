@@ -8,18 +8,21 @@ extension Localization on String {
           "Excuse": "Excuse",
           "Mode": "Mode",
           "Submit date": "Submit Date",
+          "show in timetable": "Show in timetable",
         },
         "hu_hu": {
           "Lesson": "Óra",
           "Excuse": "Igazolás",
           "Mode": "Típus",
           "Submit date": "Rögzítés dátuma",
+          "show in timetable": "Megtekintés az órarendben",
         },
         "de_de": {
           "Lesson": "Stunde",
           "Excuse": "Anerkannt",
           "Mode": "Typ",
           "Submit date": "Datum einreichen",
+          "show in timetable": "im Stundenplan anzeigen",
         }
       };
 

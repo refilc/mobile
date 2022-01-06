@@ -7,6 +7,7 @@ class GradeCalculatorProvider extends GradeProvider {
 
   List<Grade> _grades = [];
   List<Grade> _ghosts = [];
+  @override
   List<Grade> get grades => _grades + _ghosts;
   List<Grade> get ghosts => _ghosts;
 

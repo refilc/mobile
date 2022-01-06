@@ -5,7 +5,7 @@ import 'supporters.i18n.dart';
 class SupporterTile extends StatelessWidget {
   final Supporter supporter;
 
-  SupporterTile(this.supporter);
+  const SupporterTile(this.supporter, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class SupporterTile extends StatelessWidget {
 
     switch (supporter.platform) {
       case "patreon":
-        color = Color(0xFFE7513B);
+        color = const Color(0xFFE7513B);
         suffix = "/ " + "month".i18n.substring(0, 2);
         break;
       // case "twitch":
@@ -26,27 +26,25 @@ class SupporterTile extends StatelessWidget {
         break;
     }
 
-    return Container(
-      child: ListTile(
-        leading: Container(
-          width: 16.0,
-          alignment: Alignment.centerLeft,
-          child: Container(
-            decoration: BoxDecoration(
-              color: color,
-              shape: BoxShape.circle,
-            ),
-            width: 16.0,
-            height: 16.0,
+    return ListTile(
+      leading: Container(
+        width: 16.0,
+        alignment: Alignment.centerLeft,
+        child: Container(
+          decoration: BoxDecoration(
+            color: color,
+            shape: BoxShape.circle,
           ),
+          width: 16.0,
+          height: 16.0,
         ),
-        title: Text(
-          supporter.name,
-          softWrap: false,
-          overflow: TextOverflow.fade,
-        ),
-        trailing: Text(supporter.amount + " " + suffix),
       ),
+      title: Text(
+        supporter.name,
+        softWrap: false,
+        overflow: TextOverflow.fade,
+      ),
+      trailing: Text(supporter.amount + " " + suffix),
     );
   }
 }

@@ -57,23 +57,25 @@ class LessonTile extends StatelessWidget {
           .homework
           .firstWhere((h) => h.id == lesson.homeworkId, orElse: () => Homework.fromJson({}));
 
-      if (homework.id != "")
+      if (homework.id != "") {
         subtiles.add(LessonSubtile(
           type: LessonSubtileType.homework,
           title: homework.content,
           onPressed: () => HomeworkView.show(homework, context: context),
         ));
+      }
     }
 
-    lesson.exams.forEach((e) {
+    for (var e in lesson.exams) {
       Exam exam = Provider.of<ExamProvider>(context, listen: false).exams.firstWhere((t) => t.id == e, orElse: () => Exam.fromJson({}));
-      if (exam.id != "")
+      if (exam.id != "") {
         subtiles.add(LessonSubtile(
           type: LessonSubtileType.exam,
           title: exam.description,
           onPressed: () => ExamView.show(exam, context: context),
         ));
-    });
+      }
+    }
 
     String description = '';
     String room = '';
@@ -102,17 +104,17 @@ class LessonTile extends StatelessWidget {
       child: Visibility(
         visible: lesson.subject.id != '' || lesson.isEmpty,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 2.0),
+          padding: const EdgeInsets.symmetric(vertical: 2.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                tileColor: fill ? accent.withOpacity(0.25) : Color(0),
+                tileColor: fill ? accent.withOpacity(0.25) : const Color(0x00000000),
                 minVerticalPadding: 12.0,
                 dense: true,
                 onTap: onTap,
                 visualDensity: VisualDensity.compact,
-                contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
                 title: Text(
                   !lesson.isEmpty ? lesson.subject.name.capital() : "empty".i18n,
@@ -127,7 +129,7 @@ class LessonTile extends StatelessWidget {
                 subtitle: description != ""
                     ? Text(
                         description,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 14.0,
                         ),
@@ -158,7 +160,7 @@ class LessonTile extends StatelessWidget {
                           SizedBox(
                             width: 52.0,
                             child: Padding(
-                              padding: EdgeInsets.only(right: 6.0),
+                              padding: const EdgeInsets.only(right: 6.0),
                               child: Text(
                                 room,
                                 textAlign: TextAlign.center,
@@ -172,7 +174,7 @@ class LessonTile extends StatelessWidget {
                             alignment: Alignment.center,
                             children: [
                               // Fix alignment hack
-                              Opacity(child: Text("EE:EE"), opacity: 0),
+                              const Opacity(child: Text("EE:EE"), opacity: 0),
                               Text(
                                 DateFormat("H:mm").format(lesson.start) + "\n" + DateFormat("H:mm").format(lesson.end),
                                 textAlign: TextAlign.center,
@@ -194,7 +196,7 @@ class LessonTile extends StatelessWidget {
           ),
         ),
         replacement: Padding(
-          padding: EdgeInsets.only(top: 6.0),
+          padding: const EdgeInsets.only(top: 6.0),
           child: PanelTitle(title: Text(lesson.name)),
         ),
       ),
@@ -214,12 +216,12 @@ class LessonSubtile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
       child: InkWell(
         onTap: onPressed,
         borderRadius: BorderRadius.circular(6.0),
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 4.0),
+          padding: const EdgeInsets.symmetric(vertical: 4.0),
           child: Row(
             children: [
               Center(
@@ -230,12 +232,12 @@ class LessonSubtile extends StatelessWidget {
               ),
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.only(left: 20.0),
+                  padding: const EdgeInsets.only(left: 20.0),
                   child: Text(
                     title.escapeHtml(),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontWeight: FontWeight.w500),
+                    style: const TextStyle(fontWeight: FontWeight.w500),
                   ),
                 ),
               ),

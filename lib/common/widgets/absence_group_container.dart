@@ -6,5 +6,5 @@ class AbsenceGroupContainer extends InheritedWidget {
   static AbsenceGroupContainer? of(BuildContext context) => context.dependOnInheritedWidgetOfExactType<AbsenceGroupContainer>();
 
   @override
-  bool updateShouldNotify(AbsenceGroupContainer old) => false;
+  bool updateShouldNotify(AbsenceGroupContainer oldWidget) => false;
 }

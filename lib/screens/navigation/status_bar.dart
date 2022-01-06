@@ -6,7 +6,7 @@ import 'package:filcnaplo/api/providers/status_provider.dart';
 import 'status_bar.i18n.dart';
 
 class StatusBar extends StatefulWidget {
-  StatusBar({Key? key}) : super(key: key);
+  const StatusBar({Key? key}) : super(key: key);
 
   @override
   _StatusBarState createState() => _StatusBarState();
@@ -24,7 +24,7 @@ class _StatusBarState extends State<StatusBar> {
     Color color = ColorUtils.foregroundColor(backgroundColor);
 
     return AnimatedContainer(
-      duration: Duration(milliseconds: 250),
+      duration: const Duration(milliseconds: 250),
       curve: Curves.easeInOut,
       height: currentStatus != null ? 28.0 : 0,
       width: double.infinity,
@@ -32,8 +32,8 @@ class _StatusBarState extends State<StatusBar> {
         children: [
           // Background
           AnimatedContainer(
-            margin: EdgeInsets.symmetric(horizontal: 8.0),
-            duration: Duration(milliseconds: 250),
+            margin: const EdgeInsets.symmetric(horizontal: 8.0),
+            duration: const Duration(milliseconds: 250),
             curve: Curves.easeInOut,
             height: currentStatus != null ? 28.0 : 0,
             decoration: BoxDecoration(
@@ -46,11 +46,11 @@ class _StatusBarState extends State<StatusBar> {
           // Progress bar
           if (currentStatus == Status.syncing)
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 8.0),
+              margin: const EdgeInsets.symmetric(horizontal: 8.0),
               alignment: Alignment.bottomLeft,
               child: AnimatedContainer(
                 height: currentStatus != null ? 28.0 : 0,
-                duration: Duration(milliseconds: 250),
+                duration: const Duration(milliseconds: 250),
                 curve: Curves.easeInOut,
                 width: MediaQuery.of(context).size.width * statusProvider.progress - 16.0,
                 decoration: BoxDecoration(

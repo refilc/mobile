@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:filcnaplo/helpers/storage_helper.dart';
 import 'package:filcnaplo/models/release.dart';
 import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo/utils/color.dart';
@@ -14,7 +11,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'updates_view.i18n.dart';
 
 class UpdateView extends StatefulWidget {
-  UpdateView(this.release, {Key? key}) : super(key: key);
+  const UpdateView(this.release, {Key? key}) : super(key: key);
 
   final Release release;
 
@@ -36,7 +33,7 @@ class _UpdateViewState extends State<UpdateView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.0),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -45,7 +42,7 @@ class _UpdateViewState extends State<UpdateView> {
                   children: [
                     Text(
                       "new_update".i18n,
-                      style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18.0),
+                      style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18.0),
                     ),
                     Text(
                       "${widget.release.version}",
@@ -70,15 +67,15 @@ class _UpdateViewState extends State<UpdateView> {
 
           // Description
           Container(
-            margin: EdgeInsets.only(top: 8.0),
+            margin: const EdgeInsets.only(top: 8.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12.0),
             ),
             child: SizedBox(
               height: 125.0,
               child: Markdown(
-                padding: EdgeInsets.symmetric(horizontal: 12.0),
-                physics: BouncingScrollPhysics(),
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                physics: const BouncingScrollPhysics(),
                 data: widget.release.body,
                 onTapLink: (text, href, title) => launch(href ?? ""),
               ),
@@ -95,7 +92,7 @@ class _UpdateViewState extends State<UpdateView> {
                     Container(
                       height: 18.0,
                       width: 18.0,
-                      margin: EdgeInsets.only(right: 8.0),
+                      margin: const EdgeInsets.only(right: 8.0),
                       child: CircularProgressIndicator(
                         value: progress > 0.05 ? progress : null,
                         color: ColorUtils.foregroundColor(AppColors.of(context).filc),
