@@ -28,7 +28,7 @@ class _GradeGraphState extends State<GradeGraph> {
     List<FlSpot> subjectData = [];
     List<List<Grade>> sortedData = [[]];
 
-    // Sort by date
+    // Sort by date descending
     data.sort((a, b) => -a.writeDate.compareTo(b.writeDate));
 
     // Sort data to points by treshold
@@ -47,7 +47,7 @@ class _GradeGraphState extends State<GradeGraph> {
 
       if (dataList.isNotEmpty) {
         subjectData.add(FlSpot(
-          dataList[0].writeDate.month + (dataList[0].writeDate.day / 31) + ((dataList[0].writeDate.year - data.first.writeDate.year) * 12),
+          dataList[0].writeDate.month + (dataList[0].writeDate.day / 31) + ((dataList[0].writeDate.year - data.last.writeDate.year) * 12),
           double.parse(average.toStringAsFixed(2)),
         ));
       }
@@ -230,6 +230,7 @@ class _GradeGraphState extends State<GradeGraph> {
 
                       return title.toUpperCase();
                     },
+                    interval: ghostSpots.length > 13 ? 2 : 1,
                   ),
                   leftTitles: SideTitles(
                     showTitles: true,
