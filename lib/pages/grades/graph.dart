@@ -114,7 +114,7 @@ class _GradeGraphState extends State<GradeGraph> {
     }
 
     return SizedBox(
-      child: subjectSpots.isNotEmpty
+      child: subjectSpots.length > 1
           ? LineChart(
               LineChartData(
                 extraLinesData: ExtraLinesData(verticalLines: extraLines),

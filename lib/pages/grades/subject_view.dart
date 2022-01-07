@@ -81,7 +81,7 @@ class _SubjectViewState extends State<SubjectView> {
   void buildTiles(List<Grade> subjectGrades) {
     List<Widget> tiles = [];
 
-    if (subjectGrades.where((e) => e.type == GradeType.midYear).isNotEmpty || gradeCalcMode) {
+    if (subjectGrades.where((e) => e.type == GradeType.midYear).length > 1 || gradeCalcMode) {
       tiles.insert(0, gradeGraph);
     } else {
       tiles.insert(0, Container(height: 24.0));
