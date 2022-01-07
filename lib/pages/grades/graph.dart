@@ -87,7 +87,7 @@ class _GradeGraphState extends State<GradeGraph> {
     ghostSpots = getSpots(data + ghostData);
 
     // hax
-    ghostSpots = ghostSpots.where((e) => e.x + 1 >= subjectSpots.map((f) => f.x).reduce(max)).toList();
+    ghostSpots = ghostSpots.where((e) => e.x >= subjectSpots.map((f) => f.x).reduce(max)).toList();
     ghostSpots = ghostSpots.map((e) => FlSpot(e.x + 0.1, e.y)).toList();
     ghostSpots.add(subjectSpots.firstWhere((e) => e.x >= subjectSpots.map((f) => f.x).reduce(max)));
 
