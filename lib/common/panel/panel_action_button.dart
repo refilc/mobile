@@ -2,9 +2,14 @@ import 'package:filcnaplo/theme.dart';
 import 'package:flutter/material.dart';
 
 class PanelActionButton extends StatelessWidget {
-  const PanelActionButton(
-      {Key? key, this.onPressed, this.padding = const EdgeInsets.symmetric(horizontal: 14.0), this.leading, this.title, this.trailing})
-      : super(key: key);
+  const PanelActionButton({
+    Key? key,
+    this.onPressed,
+    this.padding = const EdgeInsets.symmetric(horizontal: 14.0),
+    this.leading,
+    this.title,
+    this.trailing,
+  }) : super(key: key);
 
   final void Function()? onPressed;
   final EdgeInsetsGeometry padding;
@@ -19,7 +24,7 @@ class PanelActionButton extends StatelessWidget {
       padding: padding,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8.0),
-        side: BorderSide(color: AppColors.of(context).text.withOpacity(.25), width: 1.5),
+        side: BorderSide(color: Theme.of(context).colorScheme.secondary.withOpacity(.6), width: 2),
       ),
       child: ListTile(
         leading: leading != null
