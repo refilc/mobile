@@ -84,12 +84,17 @@ class _GradeGraphState extends State<GradeGraph> {
         : Theme.of(context).colorScheme.secondary;
 
     subjectSpots = getSpots(data);
-    ghostSpots = getSpots(data + ghostData);
 
-    // hax
-    ghostSpots = ghostSpots.where((e) => e.x >= subjectSpots.map((f) => f.x).reduce(max)).toList();
-    ghostSpots = ghostSpots.map((e) => FlSpot(e.x + 0.1, e.y)).toList();
-    ghostSpots.add(subjectSpots.firstWhere((e) => e.x >= subjectSpots.map((f) => f.x).reduce(max)));
+    // naplo/#73
+    if (subjectSpots.isNotEmpty) {
+      ghostSpots = getSpots(data + ghostData);
+
+      // hax
+      ghostSpots = ghostSpots.where((e) => e.x >= subjectSpots.map((f) => f.x).reduce(max)).toList();
+      ghostSpots = ghostSpots.map((e) => FlSpot(e.x + 0.1, e.y)).toList();
+      ghostSpots.add(subjectSpots.firstWhere((e) => e.x >= subjectSpots.map((f) => f.x).reduce(max), orElse: () => const FlSpot(-1, -1)));
+      ghostSpots.removeWhere((element) => element.x == -1 && element.y == -1); // naplo/#74
+    }
 
     Grade halfYearGrade = widget.data.lastWhere((e) => e.type == GradeType.halfYear, orElse: () => Grade.fromJson({}));
 
