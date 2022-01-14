@@ -84,7 +84,7 @@ class _SubjectViewState extends State<SubjectView> {
     final gradeDates = subjectGrades.map((e) => e.date.millisecondsSinceEpoch);
     final maxGradeDate = gradeDates.reduce(max);
     final minGradeDate = gradeDates.reduce(min);
-    if (maxGradeDate - minGradeDate > const Duration(days: 5).inMilliseconds) return false; // naplo/#78
+    if (maxGradeDate - minGradeDate < const Duration(days: 5).inMilliseconds) return false; // naplo/#78
 
     return subjectGrades.where((e) => e.type == GradeType.midYear).length > 1 || gradeCalcMode;
   }
