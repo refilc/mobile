@@ -27,6 +27,7 @@ class LessonTile extends StatelessWidget {
 
     Color accent = Theme.of(context).colorScheme.secondary;
     bool fill = false;
+    bool fillLeading = false;
     String lessonIndexTrailing = "";
 
     // Only put a trailing . if its a digit
@@ -34,7 +35,7 @@ class LessonTile extends StatelessWidget {
 
     var now = DateTime.now();
     if (lesson.start.isBefore(now) && lesson.end.isAfter(now)) {
-      fill = true;
+      fillLeading = true;
       accent = Theme.of(context).colorScheme.secondary;
     }
 
@@ -109,12 +110,12 @@ class LessonTile extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                tileColor: fill ? accent.withOpacity(0.25) : const Color(0x00000000),
+                tileColor: fill ? accent.withOpacity(.25) : const Color(0x00000000),
                 minVerticalPadding: 12.0,
                 dense: true,
                 onTap: onTap,
                 visualDensity: VisualDensity.compact,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
                 title: Text(
                   !lesson.isEmpty ? lesson.subject.name.capital() : "empty".i18n,
@@ -139,16 +140,22 @@ class LessonTile extends StatelessWidget {
                       )
                     : null,
                 minLeadingWidth: 34.0,
-                leading: SizedBox(
-                  width: 30.0,
-                  child: Center(
-                    child: Text(
-                      lesson.lessonIndex + lessonIndexTrailing,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 30.0,
-                        fontWeight: FontWeight.w600,
-                        color: accent,
+                leading: AspectRatio(
+                  aspectRatio: 1,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: fillLeading ? accent.withOpacity(.25) : const Color(0x00000000),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Center(
+                      child: Text(
+                        lesson.lessonIndex + lessonIndexTrailing,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 30.0,
+                          fontWeight: FontWeight.w600,
+                          color: accent,
+                        ),
                       ),
                     ),
                   ),

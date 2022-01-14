@@ -1,4 +1,3 @@
-import 'package:filcnaplo/theme.dart';
 import 'package:flutter/material.dart';
 
 class PanelActionButton extends StatelessWidget {
