@@ -17,9 +17,9 @@ extension Localization on String {
           "final": "Év vége",
           "mid": "Félév",
           "1q": "1. Negyedév",
-          "2q": "1. Negyedév",
-          "3q": "1. Negyedév",
-          "4q": "1. Negyedév",
+          "2q": "2. Negyedév",
+          "3q": "3. Negyedév",
+          "4q": "4. Negyedév",
           "equivalency": "Osztályozó",
           "unknown": "Ismeretlen"
         },

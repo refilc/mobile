@@ -23,7 +23,7 @@ class _MessageViewState extends State<MessageView> {
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(color: AppColors.of(context).text),
-        shadowColor: const Color(0x00000000),
+        elevation: 0,
         actions: const [
           // Padding(
           //   padding: EdgeInsets.only(right: 8.0),

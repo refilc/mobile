@@ -1,8 +1,11 @@
+import 'package:filcnaplo/helpers/subject_icon.dart';
+import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_kreta_api/models/grade.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/grade_tile.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/subject_grades_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:filcnaplo/utils/format.dart';
 import 'certification_tile.i18n.dart';
 
 class CertificationTile extends StatelessWidget {
@@ -48,18 +51,21 @@ class CertificationTile extends StatelessWidget {
       borderRadius: BorderRadius.circular(8.0),
       child: ListTile(
         visualDensity: VisualDensity.compact,
-        contentPadding: isSubjectView
-            ? const EdgeInsets.only(left: 12.0, right: 12.0, top: 2.0, bottom: 8.0)
-            : const EdgeInsets.only(left: 8.0, right: 12.0),
+        contentPadding:
+            isSubjectView ? const EdgeInsets.only(left: 12.0, right: 12.0, top: 2.0, bottom: 8.0) : const EdgeInsets.only(left: 8.0, right: 12.0),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         onTap: onTap,
-        leading: GradeValueWidget(grade.value),
-        minLeadingWidth: 32.0,
-        trailing: const Icon(FeatherIcons.award),
-        title: Text(certificationName,
+        leading: isSubjectView
+            ? GradeValueWidget(grade.value)
+            : Padding(
+                padding: const EdgeInsets.only(left: 2.0),
+                child: Icon(SubjectIcon.lookup(subject: grade.subject), size: 28.0, color: AppColors.of(context).text.withOpacity(.75)),
+              ),
+        minLeadingWidth: isSubjectView ? 32.0 : 42.0,
+        trailing: isSubjectView ? const Icon(FeatherIcons.award) : GradeValueWidget(grade.value),
+        title: Text(isSubjectView ? certificationName : grade.subject.name.capital(),
             style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18.0)),
-        subtitle: Text(grade.value.valueName,
-            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16.0)),
+        subtitle: Text(grade.value.valueName, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16.0)),
       ),
     );
   }
