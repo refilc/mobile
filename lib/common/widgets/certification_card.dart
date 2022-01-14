@@ -81,7 +81,7 @@ class CertificationCard extends StatelessWidget {
                 TextSpan(
                   text: " • ${grades.length}",
                   style: TextStyle(
-                    color: AppColors.of(context).text.withOpacity(.75),
+                    color: textColor.withOpacity(.75),
                     fontWeight: FontWeight.w600,
                     fontSize: 16.0,
                   ),
