@@ -37,7 +37,7 @@ class _FilterBarState extends State<FilterBar> {
       // a selected tabs shape & it just looks bad
       data: Theme.of(context).copyWith(
         highlightColor: Colors.transparent,
-        splashColor: Colors.transparent,
+        splashFactory: NoSplash.splashFactory,
       ),
       child: TabBar(
         controller: widget.controller,
