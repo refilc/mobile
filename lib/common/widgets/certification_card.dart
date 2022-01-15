@@ -1,5 +1,5 @@
 import 'package:filcnaplo/helpers/average_helper.dart';
-import 'package:filcnaplo/theme.dart';
+import 'package:i18n_extension/i18n_widget.dart';
 import 'package:filcnaplo_kreta_api/models/grade.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/certification_view.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/grade_tile.dart';
@@ -42,8 +42,10 @@ class CertificationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String title = getGradeTypeTitle();
-    double avg = AverageHelper.averageEvals(grades, finalAvg: true);
-    Color color = gradeColor(context: context, value: avg);
+    double average = AverageHelper.averageEvals(grades, finalAvg: true);
+    String averageText = average.toStringAsFixed(1);
+    if (I18n.of(context).locale.languageCode != "en") averageText = averageText.replaceAll(".", ",");
+    Color color = gradeColor(context: context, value: average);
     Color textColor;
 
     if (color.computeLuminance() >= .5) {
@@ -67,7 +69,7 @@ class CertificationCard extends StatelessWidget {
           contentPadding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
           leading: Text(
-            avg.toStringAsFixed(1),
+            averageText,
             style: TextStyle(
               color: textColor,
               fontWeight: FontWeight.bold,

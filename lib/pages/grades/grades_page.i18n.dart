@@ -8,21 +8,27 @@ extension Localization on String {
           "Ghost Grades": "Grades",
           "Subjects": "Subjects",
           "empty": "You don't have any subjects.",
-          "annual_average": "Annual average"
+          "annual_average": "Annual average",
+          "studentavg": "Student Average",
+          "classavg": "Class Average",
         },
         "hu_hu": {
           "Grades": "Jegyek",
           "Ghost Grades": "Szellem jegyek",
           "Subjects": "Tantárgyak",
           "empty": "Még nincs egy tárgyad sem.",
-          "annual_average": "Éves átlag"
+          "annual_average": "Éves átlag",
+          "studentavg": "Tanulói átlag",
+          "classavg": "Osztályátlag",
         },
         "de_de": {
           "Grades": "Noten",
           "Ghost Grades": "Geist Noten",
           "Subjects": "Fächer",
           "empty": "Sie haben keine Fächer.",
-          "annual_average": "Jahresdurchschnitt"
+          "annual_average": "Jahresdurchschnitt",
+          "studentavg": "Studentischer Durchschnitt",
+          "classavg": "Klassendurchschnitt",
         },
       };
 
