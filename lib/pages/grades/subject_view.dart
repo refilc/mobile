@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:filcnaplo_kreta_api/providers/grade_provider.dart';
 import 'package:filcnaplo/helpers/average_helper.dart';
 import 'package:filcnaplo/helpers/subject_icon.dart';
@@ -78,10 +80,19 @@ class _SubjectViewState extends State<SubjectView> {
       ? gradeProvider.grades.where((e) => e.subject == subject).toList()
       : calculatorProvider.grades.where((e) => e.subject == subject).toList();
 
+  bool showGraph(List<Grade> subjectGrades) {
+    final gradeDates = subjectGrades.map((e) => e.date.millisecondsSinceEpoch);
+    final maxGradeDate = gradeDates.reduce(max);
+    final minGradeDate = gradeDates.reduce(min);
+    if (maxGradeDate - minGradeDate < const Duration(days: 5).inMilliseconds) return false; // naplo/#78
+
+    return subjectGrades.where((e) => e.type == GradeType.midYear).length > 1 || gradeCalcMode;
+  }
+
   void buildTiles(List<Grade> subjectGrades) {
     List<Widget> tiles = [];
 
-    if (subjectGrades.where((e) => e.type == GradeType.midYear).isNotEmpty || gradeCalcMode) {
+    if (showGraph(subjectGrades)) {
       tiles.insert(0, gradeGraph);
     } else {
       tiles.insert(0, Container(height: 24.0));

@@ -28,7 +28,7 @@ class _GradeGraphState extends State<GradeGraph> {
     List<FlSpot> subjectData = [];
     List<List<Grade>> sortedData = [[]];
 
-    // Sort by date
+    // Sort by date descending
     data.sort((a, b) => -a.writeDate.compareTo(b.writeDate));
 
     // Sort data to points by treshold
@@ -47,7 +47,7 @@ class _GradeGraphState extends State<GradeGraph> {
 
       if (dataList.isNotEmpty) {
         subjectData.add(FlSpot(
-          dataList[0].writeDate.month + (dataList[0].writeDate.day / 31) + ((dataList[0].writeDate.year - data.first.writeDate.year) * 12),
+          dataList[0].writeDate.month + (dataList[0].writeDate.day / 31) + ((dataList[0].writeDate.year - data.last.writeDate.year) * 12),
           double.parse(average.toStringAsFixed(2)),
         ));
       }
@@ -84,12 +84,17 @@ class _GradeGraphState extends State<GradeGraph> {
         : Theme.of(context).colorScheme.secondary;
 
     subjectSpots = getSpots(data);
-    ghostSpots = getSpots(data + ghostData);
 
-    // hax
-    ghostSpots = ghostSpots.where((e) => e.x + 1 >= subjectSpots.map((f) => f.x).reduce(max)).toList();
-    ghostSpots = ghostSpots.map((e) => FlSpot(e.x + 0.1, e.y)).toList();
-    ghostSpots.add(subjectSpots.firstWhere((e) => e.x >= subjectSpots.map((f) => f.x).reduce(max)));
+    // naplo/#73
+    if (subjectSpots.isNotEmpty) {
+      ghostSpots = getSpots(data + ghostData);
+
+      // hax
+      ghostSpots = ghostSpots.where((e) => e.x >= subjectSpots.map((f) => f.x).reduce(max)).toList();
+      ghostSpots = ghostSpots.map((e) => FlSpot(e.x + 0.1, e.y)).toList();
+      ghostSpots.add(subjectSpots.firstWhere((e) => e.x >= subjectSpots.map((f) => f.x).reduce(max), orElse: () => const FlSpot(-1, -1)));
+      ghostSpots.removeWhere((element) => element.x == -1 && element.y == -1); // naplo/#74
+    }
 
     Grade halfYearGrade = widget.data.lastWhere((e) => e.type == GradeType.halfYear, orElse: () => Grade.fromJson({}));
 
@@ -114,7 +119,7 @@ class _GradeGraphState extends State<GradeGraph> {
     }
 
     return SizedBox(
-      child: subjectSpots.isNotEmpty
+      child: subjectSpots.length > 1
           ? LineChart(
               LineChartData(
                 extraLinesData: ExtraLinesData(verticalLines: extraLines),
@@ -230,6 +235,7 @@ class _GradeGraphState extends State<GradeGraph> {
 
                       return title.toUpperCase();
                     },
+                    interval: ghostSpots.length > 13 ? 2 : 1,
                   ),
                   leftTitles: SideTitles(
                     showTitles: true,

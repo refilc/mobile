@@ -11,6 +11,7 @@ import 'package:filcnaplo_mobile_ui/common/empty.dart';
 import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_button.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/statistics_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/subject_tile.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/graph.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/subject_view.dart';
@@ -19,8 +20,6 @@ import 'package:provider/provider.dart';
 import 'package:filcnaplo/utils/color.dart';
 import 'package:filcnaplo/helpers/average_helper.dart';
 import 'grades_page.i18n.dart';
-
-// TODO: maybe? statistics to the bottom
 
 class GradesPage extends StatefulWidget {
   const GradesPage({Key? key}) : super(key: key);
@@ -70,6 +69,42 @@ class _GradesPageState extends State<GradesPage> {
         ),
       );
     }
+
+    double studentAvg = AverageHelper.averageEvals(gradeProvider.grades.where((e) => e.type == GradeType.midYear).toList());
+    double classAvg = gradeProvider.classAverages.map((e) => e.average).reduce((a, b) => a + b) / gradeProvider.classAverages.length;
+
+    if (studentAvg > 0) {
+      tiles.add(Row(
+        children: [
+          Expanded(
+            child: StatisticsTile(
+              title: Text(
+                "studentavg".i18n,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              value: studentAvg,
+            ),
+          ),
+          const SizedBox(width: 24.0),
+          Expanded(
+            child: StatisticsTile(
+              title: Text(
+                "classavg".i18n,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              value: classAvg,
+            ),
+          ),
+        ],
+      ));
+    }
+
+    // padding
+    tiles.add(const SizedBox(height: 32.0));
 
     subjectTiles = List.castFrom(tiles);
   }

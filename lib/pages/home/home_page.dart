@@ -28,6 +28,7 @@ import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/absence_group_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/absence_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/absence_view.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/certification_card.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/changed_lesson_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/event_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/event_view.dart';
@@ -135,7 +136,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
 
     List.generate(
-        4, (i) => getFilterWidgets(HomeFilterItems.values[i]).then((widgets) => widgetsByTab[i] = sortDateWidgets(context, dateWidgets: widgets)));
+        4, (i) => getFilterWidgets(HomeFilter.values[i]).then((widgets) => widgetsByTab[i] = sortDateWidgets(context, dateWidgets: widgets)));
 
     return Scaffold(
       body: Padding(
@@ -295,26 +296,28 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 
-  Future<List<DateWidget>> getFilterWidgets(HomeFilterItems activeData, {bool absencesNoExcused = false}) async {
+  Future<List<DateWidget>> getFilterWidgets(HomeFilter activeData, {bool absencesNoExcused = false}) async {
     List<DateWidget> items = [];
 
     switch (activeData) {
       // All
-      case HomeFilterItems.all:
+      case HomeFilter.all:
         final all = await Future.wait<List<DateWidget>>([
-          getFilterWidgets(HomeFilterItems.grades),
-          getFilterWidgets(HomeFilterItems.lessons),
-          getFilterWidgets(HomeFilterItems.messages),
-          getFilterWidgets(HomeFilterItems.absences, absencesNoExcused: true),
-          getFilterWidgets(HomeFilterItems.homework),
-          getFilterWidgets(HomeFilterItems.exams),
-          getFilterWidgets(HomeFilterItems.updates),
+          getFilterWidgets(HomeFilter.grades),
+          getFilterWidgets(HomeFilter.lessons),
+          getFilterWidgets(HomeFilter.messages),
+          getFilterWidgets(HomeFilter.absences, absencesNoExcused: true),
+          getFilterWidgets(HomeFilter.homework),
+          getFilterWidgets(HomeFilter.exams),
+          getFilterWidgets(HomeFilter.updates),
+          getFilterWidgets(HomeFilter.certifications),
         ]);
         items.addAll(all.expand((x) => x));
+
         break;
 
       // Grades
-      case HomeFilterItems.grades:
+      case HomeFilter.grades:
         for (var grade in gradeProvider.grades) {
           if (grade.type == GradeType.midYear) {
             items.add(DateWidget(
@@ -326,8 +329,28 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         }
         break;
 
+      // Grades
+      case HomeFilter.certifications:
+        for (var gradeType in GradeType.values) {
+          if (gradeType == GradeType.midYear || gradeType == GradeType.unknown || gradeType == GradeType.levelExam) continue;
+
+          List<Grade> grades = gradeProvider.grades.where((grade) => grade.type == gradeType).toList();
+          if (grades.isNotEmpty) {
+            grades.sort((a, b) => -a.date.compareTo(b.date));
+
+            items.add(DateWidget(
+              date: grades.first.date,
+              widget: CertificationCard(
+                grades,
+                gradeType: gradeType,
+              ),
+            ));
+          }
+        }
+        break;
+
       // Messages
-      case HomeFilterItems.messages:
+      case HomeFilter.messages:
         for (var message in messageProvider.messages) {
           if (message.type == MessageType.inbox) {
             items.add(DateWidget(
@@ -339,12 +362,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 )));
           }
         }
-        items.addAll(await getFilterWidgets(HomeFilterItems.notes));
-        items.addAll(await getFilterWidgets(HomeFilterItems.events));
+        items.addAll(await getFilterWidgets(HomeFilter.notes));
+        items.addAll(await getFilterWidgets(HomeFilter.events));
         break;
 
       // Absences
-      case HomeFilterItems.absences:
+      case HomeFilter.absences:
         absenceProvider.absences.where((a) => !absencesNoExcused || a.state != Justification.excused).forEach((absence) {
           items.add(DateWidget(
               key: absence.id,
@@ -357,7 +380,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         break;
 
       // Homework
-      case HomeFilterItems.homework:
+      case HomeFilter.homework:
         homeworkProvider.homework.where((h) => h.deadline.isAfter(DateTime.now())).forEach((homework) {
           items.add(DateWidget(
               key: homework.id,
@@ -370,7 +393,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         break;
 
       // Exams
-      case HomeFilterItems.exams:
+      case HomeFilter.exams:
         for (var exam in examProvider.exams) {
           items.add(DateWidget(
               key: exam.id,
@@ -383,7 +406,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         break;
 
       // Notes
-      case HomeFilterItems.notes:
+      case HomeFilter.notes:
         for (var note in noteProvider.notes) {
           items.add(DateWidget(
               key: note.id,
@@ -396,7 +419,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         break;
 
       // Events
-      case HomeFilterItems.events:
+      case HomeFilter.events:
         for (var event in eventProvider.events) {
           items.add(DateWidget(
               key: event.id,
@@ -409,7 +432,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         break;
 
       // Changed Lessons
-      case HomeFilterItems.lessons:
+      case HomeFilter.lessons:
         timetableProvider.lessons.where((l) => l.isChanged && l.start.isAfter(DateTime.now())).forEach((lesson) {
           items.add(DateWidget(
               key: lesson.id,
@@ -422,7 +445,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         break;
 
       // Updates
-      case HomeFilterItems.updates:
+      case HomeFilter.updates:
         if (updateProvider.available) {
           items.add(DateWidget(
             date: DateTime.now(),
@@ -448,7 +471,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   void openUpdates(BuildContext context) => UpdateView.show(updateProvider.releases.first, context: context);
 
   Future<Widget> filterViewBuilder(context, int activeData) async {
-    List<Widget> filterWidgets = sortDateWidgets(context, dateWidgets: await getFilterWidgets(HomeFilterItems.values[activeData]));
+    HomeFilter activeFilter = HomeFilter.values[activeData];
+
+    List<Widget> filterWidgets = sortDateWidgets(context, dateWidgets: await getFilterWidgets(activeFilter));
 
     return Padding(
       padding: const EdgeInsets.only(top: 12.0),
@@ -529,7 +554,6 @@ List<Widget> sortDateWidgets(
     ));
   }
 
-  List<Widget> items = [];
   dateWidgets.sort((a, b) => -a.date.compareTo(b.date));
 
   List<List<DateWidget>> groupedDateWidgets = [[]];
@@ -542,6 +566,8 @@ List<Widget> sortDateWidgets(
     }
     groupedDateWidgets.last.add(element);
   }
+
+  List<DateWidget> items = [];
 
   if (groupedDateWidgets.first.isNotEmpty) {
     for (var elements in groupedDateWidgets) {
@@ -563,26 +589,54 @@ List<Widget> sortDateWidgets(
             key: "${absenceTileWidgets.first.date.millisecondsSinceEpoch}-absence-group"));
       }
 
-      final String date = (elements + absenceTileWidgets).first.date.format(context);
-      if (_showTitle) items.add(PanelTitle(title: Text(date), key: ValueKey("$date-title")));
-      items.add(Panel(
-        key: ValueKey(date),
-        hasShadow: false,
-        child: ImplicitlyAnimatedList<DateWidget>(
-            areItemsTheSame: (a, b) => a.key == b.key,
-            spawnIsolate: false,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, animation, item, index) => _itemBuilder(context, animation, item.widget, index),
-            items: elements),
-        padding: padding,
+      final date = (elements + absenceTileWidgets).first.date;
+      items.add(DateWidget(
+        date: date,
+        widget: Padding(
+          key: ValueKey(date),
+          padding: const EdgeInsets.only(bottom: 12.0),
+          child: Panel(
+            padding: padding,
+            title: _showTitle ? Text(date.format(context, forceToday: true)) : null,
+            hasShadow: false,
+            child: ImplicitlyAnimatedList<DateWidget>(
+                areItemsTheSame: (a, b) => a.key == b.key,
+                spawnIsolate: false,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, animation, item, index) => _itemBuilder(context, animation, item.widget, index),
+                items: elements),
+          ),
+        ),
       ));
-
-      items.add(Padding(padding: const EdgeInsets.only(bottom: 12.0), key: ValueKey("$date-padding")));
     }
   }
-  if (items.isEmpty) items.addAll([Empty(subtitle: "empty".i18n, key: const ValueKey("empty")), Container()]);
-  return items;
+
+  final _now = DateTime.now();
+  final now = DateTime(_now.year, _now.month, _now.day).subtract(const Duration(seconds: 1));
+
+  if (items.any((i) => i.date.isBefore(now)) && items.any((i) => i.date.isAfter(now))) {
+    items.add(
+      DateWidget(
+        date: now,
+        widget: Center(
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 12.0),
+            height: 3.0,
+            width: 150.0,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12.0),
+              color: AppColors.of(context).text.withOpacity(.25),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  items.sort((a, b) => -a.date.compareTo(b.date));
+
+  return items.map((e) => e.widget).toList();
 }
 
 class DateWidget {
@@ -592,7 +646,7 @@ class DateWidget {
   const DateWidget({required this.date, required this.widget, this.key});
 }
 
-enum HomeFilterItems { all, grades, messages, absences, homework, exams, notes, events, lessons, updates }
+enum HomeFilter { all, grades, messages, absences, homework, exams, notes, events, lessons, updates, certifications }
 
 Widget _itemBuilder(BuildContext context, Animation<double> animation, Widget item, int index) {
   final wrappedItem = SizeFadeTransition(

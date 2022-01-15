@@ -88,7 +88,9 @@ class _MessagesPageState extends State<MessagesPage> with TickerProviderStateMix
             ),
           ],
           body: TabBarView(
-              physics: BouncingScrollPhysics(), controller: tabController, children: List.generate(4, (index) => filterViewBuilder(context, index))),
+              physics: const BouncingScrollPhysics(),
+              controller: tabController,
+              children: List.generate(4, (index) => filterViewBuilder(context, index))),
         ),
       ),
     );
@@ -148,8 +150,8 @@ class _MessagesPageState extends State<MessagesPage> with TickerProviderStateMix
       padding: const EdgeInsets.only(top: 12.0),
       child: RefreshIndicator(
         color: Theme.of(context).colorScheme.secondary,
-        onRefresh: () async {
-          await Future.wait([
+        onRefresh: () {
+          return Future.wait([
             messageProvider.fetch(type: MessageType.inbox),
             messageProvider.fetch(type: MessageType.sent),
             messageProvider.fetch(type: MessageType.trash),

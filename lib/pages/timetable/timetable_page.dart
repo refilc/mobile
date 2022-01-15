@@ -110,10 +110,10 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
       });
     });
 
-    if (widget.initialWeek == null) {
-      _controller.jump(_controller.currentWeek, context: context, initial: true, skip: true);
+    if (widget.initialWeek != null) {
+      _controller.jump(widget.initialWeek!, context: context, initial: true);
     } else {
-      _controller.jump(_controller.currentWeek, context: context, initial: true);
+      _controller.jump(_controller.currentWeek, context: context, initial: true, skip: true);
     }
 
     // Listen for user changes

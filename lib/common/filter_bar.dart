@@ -2,7 +2,7 @@ import 'package:filcnaplo/theme.dart';
 import 'package:flutter/material.dart';
 
 class FilterBar extends StatefulWidget implements PreferredSizeWidget {
-  FilterBar(
+  const FilterBar(
       {Key? key,
       required this.items,
       required this.controller,
@@ -16,7 +16,8 @@ class FilterBar extends StatefulWidget implements PreferredSizeWidget {
   final TabController controller;
   final EdgeInsetsGeometry padding;
   final Function(int)? onTap;
-  final Size preferredSize = Size.fromHeight(42.0);
+  @override
+  final Size preferredSize = const Size.fromHeight(42.0);
   final bool disableFading;
 
   @override
@@ -56,7 +57,7 @@ class _FilterBarState extends State<FilterBar> {
           color: Theme.of(context).colorScheme.secondary.withOpacity(0.25),
           borderRadius: BorderRadius.circular(6.0),
         ),
-        overlayColor: MaterialStateProperty.all(Color(0)),
+        overlayColor: MaterialStateProperty.all(const Color(0xFFFFFFFF)),
         // Tabs
         padding: EdgeInsets.zero,
         tabs: widget.items,
