@@ -9,7 +9,7 @@ extension Localization on String {
           "Subjects": "Subjects",
           "empty": "You don't have any subjects.",
           "annual_average": "Annual average",
-          "studentavg": "Student Average",
+          "subjectavg": "Subject Average",
           "classavg": "Class Average",
         },
         "hu_hu": {
@@ -18,7 +18,7 @@ extension Localization on String {
           "Subjects": "Tantárgyak",
           "empty": "Még nincs egy tárgyad sem.",
           "annual_average": "Éves átlag",
-          "studentavg": "Tanulói átlag",
+          "subjectavg": "Tantárgyi átlag",
           "classavg": "Osztályátlag",
         },
         "de_de": {
@@ -27,7 +27,7 @@ extension Localization on String {
           "Subjects": "Fächer",
           "empty": "Sie haben keine Fächer.",
           "annual_average": "Jahresdurchschnitt",
-          "studentavg": "Studentischer Durchschnitt",
+          "subjectavg": "Fächer Durchschnitt",
           "classavg": "Klassendurchschnitt",
         },
       };
