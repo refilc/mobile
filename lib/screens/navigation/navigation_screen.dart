@@ -1,4 +1,5 @@
 import 'package:filcnaplo/api/providers/update_provider.dart';
+import 'package:filcnaplo/helpers/quick_actions.dart';
 import 'package:filcnaplo/models/settings.dart';
 import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_kreta_api/client/client.dart';
@@ -52,6 +53,7 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
 
     // Initial sync
     syncAll(context);
+    setupQuickActions();
   }
 
   @override
@@ -89,6 +91,11 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
         newsProvider.lock();
         NewsView.show(newsProvider.news[newsProvider.state], context: context).then((value) => newsProvider.release());
       }
+    });
+
+    handleQuickActions(context, (page) {
+      setPage(page);
+      _navigatorState.currentState?.pushReplacementNamed(page);
     });
 
     return WillPopScope(
