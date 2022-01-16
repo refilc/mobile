@@ -70,38 +70,38 @@ class _GradesPageState extends State<GradesPage> {
       );
     }
 
-    // double studentAvg = AverageHelper.averageEvals(gradeProvider.grades.where((e) => e.type == GradeType.midYear).toList());
-    // double classAvg = gradeProvider.classAverages.map((e) => e.average).fold(0.0, (double a, double b) => a + b) / gradeProvider.classAverages.length;
+    double studentAvg = AverageHelper.averageEvals(gradeProvider.grades.where((e) => e.type == GradeType.midYear).toList());
+    double classAvg = gradeProvider.classAverages.map((e) => e.average).fold(0.0, (double a, double b) => a + b) / gradeProvider.classAverages.length;
 
-    // if (studentAvg > 0) {
-    //   tiles.add(Row(
-    //     children: [
-    //       Expanded(
-    //         child: StatisticsTile(
-    //           title: Text(
-    //             "studentavg".i18n,
-    //             textAlign: TextAlign.center,
-    //             maxLines: 2,
-    //             overflow: TextOverflow.ellipsis,
-    //           ),
-    //           value: studentAvg,
-    //         ),
-    //       ),
-    //       const SizedBox(width: 24.0),
-    //       Expanded(
-    //         child: StatisticsTile(
-    //           title: Text(
-    //             "classavg".i18n,
-    //             textAlign: TextAlign.center,
-    //             maxLines: 2,
-    //             overflow: TextOverflow.ellipsis,
-    //           ),
-    //           value: classAvg,
-    //         ),
-    //       ),
-    //     ],
-    //   ));
-    // }
+    if (studentAvg > 0) {
+      tiles.add(Row(
+        children: [
+          Expanded(
+            child: StatisticsTile(
+              title: Text(
+                "studentavg".i18n,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              value: studentAvg,
+            ),
+          ),
+          const SizedBox(width: 24.0),
+          Expanded(
+            child: StatisticsTile(
+              title: Text(
+                "classavg".i18n,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              value: classAvg,
+            ),
+          ),
+        ],
+      ));
+    }
 
     // padding
     tiles.add(const SizedBox(height: 32.0));

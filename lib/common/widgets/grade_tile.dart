@@ -123,9 +123,31 @@ class GradeValueWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isSubjectView = SubjectGradesContainer.of(context) != null;
+
     Color color = gradeColor(context: context, value: value.value);
     Widget valueText;
-    if (value.value != 0) {
+    final percentage = value.percentage;
+
+    if (percentage) {
+      double multiplier = 1.0;
+
+      if (isSubjectView) multiplier = 0.75;
+
+      valueText = Text.rich(
+        TextSpan(
+          text: value.value.toString(),
+          children: [
+            TextSpan(
+              text: "\n%",
+              style: TextStyle(fontWeight: FontWeight.w700, fontSize: size / 2.5 * multiplier, height: 0.7),
+            ),
+          ],
+          style: TextStyle(fontWeight: FontWeight.w700, fontSize: size / 1 * multiplier, height: 1),
+        ),
+        textAlign: TextAlign.center,
+      );
+    } else if (value.value != 0) {
       valueText = Text(
         value.value.toString(),
         textAlign: TextAlign.center,
@@ -136,6 +158,7 @@ class GradeValueWidget extends StatelessWidget {
     } else {
       valueText = const Icon(FeatherIcons.type);
     }
+
     return fill
         ? Container(
             width: size * (fill ? 1.4 : 1.0),
