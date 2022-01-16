@@ -151,7 +151,7 @@ class GradeValueWidget extends StatelessWidget {
       valueText = Text(
         value.value.toString(),
         textAlign: TextAlign.center,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: size, color: color, shadows: [
+        style: TextStyle(fontWeight: value.weight == 50 ? FontWeight.w600 : FontWeight.bold, fontSize: size, color: color, shadows: [
           if (value.weight == 200)
             Shadow(
               color: color.withOpacity(.4),
@@ -167,10 +167,10 @@ class GradeValueWidget extends StatelessWidget {
 
     return fill
         ? Container(
-            width: size * (fill ? 1.4 : 1.0),
-            height: size * (fill ? 1.4 : 1.0),
+            width: size * 1.4,
+            height: size * 1.4,
             decoration: BoxDecoration(
-              color: fill ? color.withOpacity(.25) : const Color(0x00000000),
+              color: color.withOpacity(.25),
               shape: BoxShape.circle,
             ),
             child: Center(child: valueText),

@@ -120,6 +120,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         onTap: () {
           user.setUser(account.id);
           restore();
+          Navigator.of(context).pop();
         },
         onTapMenu: () => _showBottomSheet(account),
       ));
@@ -502,7 +503,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void openSupporters(BuildContext context) =>
       Navigator.of(context, rootNavigator: true).push(CupertinoPageRoute(builder: (context) => const SupportersScreen()));
-  void openNews(BuildContext context) => Navigator.of(context, rootNavigator: true).push(CupertinoPageRoute(builder: (context) => const NewsScreen()));
+  void openNews(BuildContext context) =>
+      Navigator.of(context, rootNavigator: true).push(CupertinoPageRoute(builder: (context) => const NewsScreen()));
   void openUpdates(BuildContext context) => UpdateView.show(updateProvider.releases.first, context: context);
   void openPrivacy(BuildContext context) => PrivacyView.show(context);
 }
