@@ -142,13 +142,17 @@ class GradeValueWidget extends StatelessWidget {
 }
 
 Color gradeColor({required BuildContext context, required num value}) {
-  int valueInt;
+  int valueInt = 0;
+
   var settings = Provider.of<SettingsProvider>(context, listen: false);
-  if (value > value.floor() + settings.rounding / 10) {
-    valueInt = value.ceil();
-  } else {
-    valueInt = value.floor();
-  }
+
+  try {
+    if (value > value.floor() + settings.rounding / 10) {
+      valueInt = value.ceil();
+    } else {
+      valueInt = value.floor();
+    }
+  } catch (_) {}
 
   switch (valueInt) {
     case 5:

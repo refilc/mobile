@@ -13,6 +13,7 @@ extension ScreensLocalization on String {
           "stat_3": "Excused Delay",
           "stat_4": "Unexcused Delay",
           "min": "min",
+          "hr": "hrs",
         },
         "hu_hu": {
           "Absences": "Hiányzások",
@@ -24,6 +25,7 @@ extension ScreensLocalization on String {
           "stat_3": "Igazolt Késés",
           "stat_4": "Igazolatlan Késés",
           "min": "perc",
+          "hr": "óra",
         },
         "de_de": {
           "Absences": "Abwesenheiten",
@@ -35,6 +37,7 @@ extension ScreensLocalization on String {
           "stat_3": "Entschuldigte Verspätung",
           "stat_4": "Unentschuldigte Verspätung",
           "min": "min",
+          "hr": "hrs",
         },
       };
 

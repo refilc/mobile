@@ -81,12 +81,14 @@ class _SubjectViewState extends State<SubjectView> {
       : calculatorProvider.grades.where((e) => e.subject == subject).toList();
 
   bool showGraph(List<Grade> subjectGrades) {
+    if (gradeCalcMode) return true;
+
     final gradeDates = subjectGrades.map((e) => e.date.millisecondsSinceEpoch);
-    final maxGradeDate = gradeDates.reduce(max);
-    final minGradeDate = gradeDates.reduce(min);
+    final maxGradeDate = gradeDates.fold(0, max);
+    final minGradeDate = gradeDates.fold(0, min);
     if (maxGradeDate - minGradeDate < const Duration(days: 5).inMilliseconds) return false; // naplo/#78
 
-    return subjectGrades.where((e) => e.type == GradeType.midYear).length > 1 || gradeCalcMode;
+    return subjectGrades.where((e) => e.type == GradeType.midYear).length > 1;
   }
 
   void buildTiles(List<Grade> subjectGrades) {

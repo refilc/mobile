@@ -172,6 +172,7 @@ class _AbsencesPageState extends State<AbsencesPage> {
                   value2 = absenceProvider.absences.where((e) => e.delay == 0 && e.state == Justification.unexcused).length;
                   title1 = "stat_1".i18n;
                   title2 = "stat_2".i18n;
+                  suffix = " " + "hr".i18n;
                 } else if (activeData == AbsenceFilter.delays.index) {
                   value1 = absenceProvider.absences
                       .where((e) => e.delay != 0 && e.state == Justification.excused)

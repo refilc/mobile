@@ -22,6 +22,10 @@ class StatisticsTile extends StatelessWidget {
     }
     if (I18n.of(context).locale.languageCode != "en") valueText = valueText.replaceAll(".", ",");
 
+    if (value.isNaN) {
+      valueText = "?";
+    }
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(18.0),
