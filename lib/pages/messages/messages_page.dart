@@ -103,6 +103,7 @@ class _MessagesPageState extends State<MessagesPage> {
         for (var message in messageProvider.messages) {
           if (message.type == MessageType.inbox) {
             items.add(DateWidget(
+              id: message.id.toString(),
               date: message.date,
               widget: MessageTile(message, onTap: () => MessageView.show([message], context: context)),
             ));
@@ -113,6 +114,7 @@ class _MessagesPageState extends State<MessagesPage> {
         for (var message in messageProvider.messages) {
           if (message.type == MessageType.sent && !messageProvider.messages.any((m) => message.id == m.id)) {
             items.add(DateWidget(
+              id: message.id.toString(),
               date: message.date,
               widget: MessageTile(message, onTap: () => MessageView.show([message], context: context)),
             ));
@@ -123,6 +125,7 @@ class _MessagesPageState extends State<MessagesPage> {
         for (var message in messageProvider.messages) {
           if (message.type == MessageType.trash) {
             items.add(DateWidget(
+              id: message.id.toString(),
               date: message.date,
               widget: MessageTile(message, onTap: () => MessageView.show([message], context: context)),
             ));
@@ -133,6 +136,7 @@ class _MessagesPageState extends State<MessagesPage> {
         for (var message in messageProvider.messages) {
           if (message.type == MessageType.draft) {
             items.add(DateWidget(
+              id: message.id.toString(),
               date: message.date,
               widget: MessageTile(message, onTap: () => MessageView.show([message], context: context)),
             ));

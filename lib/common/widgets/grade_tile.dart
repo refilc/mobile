@@ -71,11 +71,11 @@ class GradeTile extends StatelessWidget {
                 : const EdgeInsets.only(left: 12.0, right: 4.0)
             : const EdgeInsets.only(left: 8.0, right: 12.0),
         onTap: onTap,
-        onLongPress: () {
-          if (kDebugMode) {
-            log(jsonEncode(grade.json));
-          }
-        },
+        // onLongPress: () {
+        //   if (kDebugMode) {
+        //     log(jsonEncode(grade.json));
+        //   }
+        // },
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         leading: isSubjectView
             ? GradeValueWidget(grade.value)

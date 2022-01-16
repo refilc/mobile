@@ -110,6 +110,7 @@ class _AbsencesPageState extends State<AbsencesPage> {
         for (var absence in absenceProvider.absences) {
           if (absence.delay == 0) {
             items.add(DateWidget(
+              id: absence.id,
               date: absence.date,
               widget: AbsenceTile(absence, onTap: () => AbsenceView.show(absence, context: context)),
             ));
@@ -120,6 +121,7 @@ class _AbsencesPageState extends State<AbsencesPage> {
         for (var absence in absenceProvider.absences) {
           if (absence.delay != 0) {
             items.add(DateWidget(
+              id: absence.id,
               date: absence.date,
               widget: AbsenceTile(absence, onTap: () => AbsenceView.show(absence, context: context)),
             ));
@@ -130,6 +132,7 @@ class _AbsencesPageState extends State<AbsencesPage> {
         for (var note in noteProvider.notes) {
           if (note.type?.name == "HaziFeladatHiany" || note.type?.name == "Felszereleshiany") {
             items.add(DateWidget(
+              id: note.id,
               date: note.date,
               widget: MissTile(note),
             ));
