@@ -177,11 +177,11 @@ class _AbsencesPageState extends State<AbsencesPage> {
                   value1 = absenceProvider.absences
                       .where((e) => e.delay != 0 && e.state == Justification.excused)
                       .map((e) => e.delay)
-                      .reduce((a, b) => a + b);
+                      .fold(0, (a, b) => a + b);
                   value2 = absenceProvider.absences
                       .where((e) => e.delay != 0 && e.state == Justification.unexcused)
                       .map((e) => e.delay)
-                      .reduce((a, b) => a + b);
+                      .fold(0, (a, b) => a + b);
                   title1 = "stat_3".i18n;
                   title2 = "stat_4".i18n;
                   suffix = " " + "min".i18n;
