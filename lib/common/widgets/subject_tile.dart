@@ -15,6 +15,13 @@ class SubjectTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color textColor = AppColors.of(context).text;
+
+    // Failing indicator
+    if (average < 2.0 && average >= 1.0) {
+      textColor = AppColors.of(context).red;
+    }
+
     return Material(
       type: MaterialType.transparency,
       child: ListTile(
@@ -24,12 +31,12 @@ class SubjectTile extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         visualDensity: VisualDensity.compact,
         onTap: onTap,
-        leading: Icon(SubjectIcon.lookup(subject: subject), color: AppColors.of(context).text.withOpacity(.75)),
+        leading: Icon(SubjectIcon.lookup(subject: subject), color: textColor.withOpacity(.75)),
         title: Text(
           subject.name.capital(),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
-          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14.0),
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14.0, color: textColor),
         ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,

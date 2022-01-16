@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:filcnaplo/models/settings.dart';
 import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_kreta_api/models/grade.dart';
@@ -5,6 +8,7 @@ import 'package:filcnaplo/helpers/subject_icon.dart';
 import 'package:filcnaplo/utils/format.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/calculator/grade_calculator_provider.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/subject_grades_container.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:provider/provider.dart';
@@ -67,6 +71,11 @@ class GradeTile extends StatelessWidget {
                 : const EdgeInsets.only(left: 12.0, right: 4.0)
             : const EdgeInsets.only(left: 8.0, right: 12.0),
         onTap: onTap,
+        onLongPress: () {
+          if (kDebugMode) {
+            log(jsonEncode(grade.json));
+          }
+        },
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         leading: isSubjectView
             ? GradeValueWidget(grade.value)
@@ -120,25 +129,54 @@ class GradeValueWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isSubjectView = SubjectGradesContainer.of(context) != null;
+
     Color color = gradeColor(context: context, value: value.value);
     Widget valueText;
-    if (value.value != 0) {
+    final percentage = value.percentage;
+
+    if (percentage) {
+      double multiplier = 1.0;
+
+      if (isSubjectView) multiplier = 0.75;
+
+      valueText = Text.rich(
+        TextSpan(
+          text: value.value.toString(),
+          children: [
+            TextSpan(
+              text: "\n%",
+              style: TextStyle(fontWeight: FontWeight.w700, fontSize: size / 2.5 * multiplier, height: 0.7),
+            ),
+          ],
+          style: TextStyle(fontWeight: FontWeight.w700, fontSize: size / 1 * multiplier, height: 1),
+        ),
+        textAlign: TextAlign.center,
+      );
+    } else if (value.value != 0) {
       valueText = Text(
         value.value.toString(),
         textAlign: TextAlign.center,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: size, color: color),
+        style: TextStyle(fontWeight: value.weight == 50 ? FontWeight.w600 : FontWeight.bold, fontSize: size, color: color, shadows: [
+          if (value.weight == 200)
+            Shadow(
+              color: color.withOpacity(.4),
+              offset: const Offset(-4, -3),
+            )
+        ]),
       );
     } else if (value.valueName.toLowerCase().specialChars() == 'nem irt') {
       valueText = const Icon(FeatherIcons.slash);
     } else {
       valueText = const Icon(FeatherIcons.type);
     }
+
     return fill
         ? Container(
-            width: size * (fill ? 1.4 : 1.0),
-            height: size * (fill ? 1.4 : 1.0),
+            width: size * 1.4,
+            height: size * 1.4,
             decoration: BoxDecoration(
-              color: fill ? color.withOpacity(.25) : const Color(0x00000000),
+              color: color.withOpacity(.25),
               shape: BoxShape.circle,
             ),
             child: Center(child: valueText),
@@ -148,13 +186,17 @@ class GradeValueWidget extends StatelessWidget {
 }
 
 Color gradeColor({required BuildContext context, required num value}) {
-  int valueInt;
+  int valueInt = 0;
+
   var settings = Provider.of<SettingsProvider>(context, listen: false);
-  if (value > value.floor() + settings.rounding / 10) {
-    valueInt = value.ceil();
-  } else {
-    valueInt = value.floor();
-  }
+
+  try {
+    if (value > value.floor() + settings.rounding / 10) {
+      valueInt = value.ceil();
+    } else {
+      valueInt = value.floor();
+    }
+  } catch (_) {}
 
   switch (valueInt) {
     case 5:
