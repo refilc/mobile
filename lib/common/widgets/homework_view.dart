@@ -4,12 +4,11 @@ import 'package:filcnaplo_kreta_api/models/homework.dart';
 import 'package:filcnaplo/utils/format.dart';
 import 'package:filcnaplo_mobile_ui/common/detail.dart';
 import 'package:filcnaplo_mobile_ui/common/sliding_bottom_sheet.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/homework_attachment_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'homework_view.i18n.dart';
-
-// TODO: attachments
 
 class HomeworkView extends StatelessWidget {
   const HomeworkView(this.homework, {Key? key}) : super(key: key);
@@ -24,7 +23,14 @@ class HomeworkView extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> attachmentTiles = [];
 
-    // TODO: implement attachment tiles
+    for (var attachment in homework.attachments) {
+      attachmentTiles.add(Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
+        child: HomeworkAttachmentTile(
+          attachment,
+        ),
+      ));
+    }
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
@@ -57,10 +63,7 @@ class HomeworkView extends StatelessWidget {
           ),
 
           // Details
-          if (homework.deadline.year != 0)
-            Detail(
-                title: "deadline".i18n,
-                description: homework.deadline.format(context)),
+          if (homework.deadline.year != 0) Detail(title: "deadline".i18n, description: homework.deadline.format(context)),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 6.0),
             child: SelectableLinkify(
