@@ -164,19 +164,20 @@ class LessonTile extends StatelessWidget {
                     ? Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          SizedBox(
-                            width: 52.0,
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 6.0),
-                              child: Text(
-                                room,
-                                textAlign: TextAlign.center,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                                style: TextStyle(fontWeight: FontWeight.w500, color: AppColors.of(context).text.withOpacity(.75)),
+                          if (!swapDesc)
+                            SizedBox(
+                              width: 52.0,
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 6.0),
+                                child: Text(
+                                  room,
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  style: TextStyle(fontWeight: FontWeight.w500, color: AppColors.of(context).text.withOpacity(.75)),
+                                ),
                               ),
                             ),
-                          ),
                           Stack(
                             alignment: Alignment.center,
                             children: [
