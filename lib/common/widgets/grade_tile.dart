@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:filcnaplo/models/settings.dart';
 import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_kreta_api/models/grade.dart';
@@ -5,6 +8,7 @@ import 'package:filcnaplo/helpers/subject_icon.dart';
 import 'package:filcnaplo/utils/format.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/calculator/grade_calculator_provider.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/subject_grades_container.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:provider/provider.dart';
@@ -67,6 +71,11 @@ class GradeTile extends StatelessWidget {
                 : const EdgeInsets.only(left: 12.0, right: 4.0)
             : const EdgeInsets.only(left: 8.0, right: 12.0),
         onTap: onTap,
+        onLongPress: () {
+          if (kDebugMode) {
+            log(jsonEncode(grade.json));
+          }
+        },
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         leading: isSubjectView
             ? GradeValueWidget(grade.value)
