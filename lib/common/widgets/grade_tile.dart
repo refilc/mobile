@@ -151,7 +151,13 @@ class GradeValueWidget extends StatelessWidget {
       valueText = Text(
         value.value.toString(),
         textAlign: TextAlign.center,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: size, color: color),
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: size, color: color, shadows: [
+          if (value.weight == 200)
+            Shadow(
+              color: color.withOpacity(.4),
+              offset: const Offset(-4, -3),
+            )
+        ]),
       );
     } else if (value.valueName.toLowerCase().specialChars() == 'nem irt') {
       valueText = const Icon(FeatherIcons.slash);
