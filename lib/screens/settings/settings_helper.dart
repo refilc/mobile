@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_function_declarations_over_variables
 
+import 'package:filcnaplo/helpers/quick_actions.dart';
 import 'package:filcnaplo/icons/filc_icons.dart';
 import 'package:filcnaplo/models/settings.dart';
 import 'package:filcnaplo/theme.dart';
@@ -49,6 +50,7 @@ class SettingsHelper {
             Provider.of<SettingsProvider>(context, listen: false).update(context, language: lang);
             I18n.of(context).locale = Locale(lang, lang.toUpperCase());
             Navigator.of(context).maybePop();
+            setupQuickActions();
           },
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -115,7 +117,7 @@ class SettingsHelper {
       Provider.of<ThemeModeObserver>(context, listen: false).changeTheme(mode);
       Navigator.of(context).maybePop();
     };
-    
+
     showBottomSheetMenu(context, items: [
       BottomSheetMenuItem(
         onPressed: () => setTheme(ThemeMode.system),
