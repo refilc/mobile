@@ -42,12 +42,16 @@ class _GradesPageState extends State<GradesPage> {
     List<Subject> subjects = gradeProvider.grades.map((e) => e.subject).toSet().toList()..sort((a, b) => a.name.compareTo(b.name));
     List<Widget> tiles = [];
 
+    List<double> subjectAvgs = [];
+
     tiles.addAll(subjects.map((subject) {
       List<Grade> subjectGrades = getSubjectGrades(subject);
 
       double avg = AverageHelper.averageEvals(subjectGrades);
       var nullavg = ClassAverage(average: 0.0, subject: subject, uid: "0");
       double classAverage = gradeProvider.classAverages.firstWhere((e) => e.subject == subject, orElse: () => nullavg).average;
+
+      subjectAvgs.add(avg);
 
       return SubjectTile(subject, average: avg, groupAverage: classAverage, onTap: () {
         SubjectView(subject, classAverage: classAverage).push(context, root: true);
@@ -70,21 +74,21 @@ class _GradesPageState extends State<GradesPage> {
       );
     }
 
-    double studentAvg = AverageHelper.averageEvals(gradeProvider.grades.where((e) => e.type == GradeType.midYear).toList());
+    double subjectAvg = subjectAvgs.fold(0.0, (double a, double b) => a + b) / subjectAvgs.length;
     double classAvg = gradeProvider.classAverages.map((e) => e.average).fold(0.0, (double a, double b) => a + b) / gradeProvider.classAverages.length;
 
-    if (studentAvg > 0) {
+    if (subjectAvg > 0) {
       tiles.add(Row(
         children: [
           Expanded(
             child: StatisticsTile(
               title: Text(
-                "studentavg".i18n,
+                "subjectavg".i18n,
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              value: studentAvg,
+              value: subjectAvg,
             ),
           ),
           const SizedBox(width: 24.0),
