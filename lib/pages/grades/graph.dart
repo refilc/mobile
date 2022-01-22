@@ -101,7 +101,7 @@ class _GradeGraphState extends State<GradeGraph> {
     if (halfYearGrade.date.year != 0 && data.isNotEmpty) {
       extraLines.add(
         VerticalLine(
-          x: halfYearGrade.date.month + (halfYearGrade.date.day / 31) + ((halfYearGrade.date.year - data.first.writeDate.year) * 12),
+          x: halfYearGrade.date.month + (halfYearGrade.date.day / 31) + ((halfYearGrade.date.year - data.last.writeDate.year) * 12),
           strokeWidth: 3.0,
           color: AppColors.of(context).text.withOpacity(.75),
           label: VerticalLineLabel(
