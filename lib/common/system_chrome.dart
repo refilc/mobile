@@ -8,5 +8,6 @@ void setSystemChrome(BuildContext context) {
     statusBarIconBrightness: Theme.of(context).brightness == Brightness.light ? Brightness.dark : Brightness.light,
     systemNavigationBarColor: AppColors.of(context).background,
     systemNavigationBarIconBrightness: Theme.of(context).brightness == Brightness.light ? Brightness.dark : Brightness.light,
+    statusBarBrightness: Theme.of(context).brightness,
   ));
 }
