@@ -104,7 +104,7 @@ class _MessagesPageState extends State<MessagesPage> {
           if (message.type == MessageType.inbox) {
             items.add(DateWidget(
               date: message.date,
-              widget: MessageTile(message, onTap: () => MessageView.show([message], context: context)),
+              widget: MessageTile(message),
             ));
           }
         }
@@ -114,7 +114,7 @@ class _MessagesPageState extends State<MessagesPage> {
           if (message.type == MessageType.sent && !messageProvider.messages.any((m) => message.id == m.id)) {
             items.add(DateWidget(
               date: message.date,
-              widget: MessageTile(message, onTap: () => MessageView.show([message], context: context)),
+              widget: MessageTile(message),
             ));
           }
         }
@@ -124,7 +124,7 @@ class _MessagesPageState extends State<MessagesPage> {
           if (message.type == MessageType.trash) {
             items.add(DateWidget(
               date: message.date,
-              widget: MessageTile(message, onTap: () => MessageView.show([message], context: context)),
+              widget: MessageTile(message),
             ));
           }
         }
@@ -134,7 +134,7 @@ class _MessagesPageState extends State<MessagesPage> {
           if (message.type == MessageType.draft) {
             items.add(DateWidget(
               date: message.date,
-              widget: MessageTile(message, onTap: () => MessageView.show([message], context: context)),
+              widget: MessageTile(message),
             ));
           }
         }
