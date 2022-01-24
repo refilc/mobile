@@ -13,7 +13,6 @@ import 'package:filcnaplo_mobile_ui/common/filter/filter_view.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_button.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/message_tile.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/message_view/message_view.dart';
 import 'package:filcnaplo_mobile_ui/pages/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -104,7 +103,7 @@ class _MessagesPageState extends State<MessagesPage> {
           if (message.type == MessageType.inbox) {
             items.add(DateWidget(
               date: message.date,
-              widget: MessageTile(message, onTap: () => MessageView.show([message], context: context)),
+              widget: MessageTile(message),
             ));
           }
         }
@@ -114,7 +113,7 @@ class _MessagesPageState extends State<MessagesPage> {
           if (message.type == MessageType.sent && !messageProvider.messages.any((m) => message.id == m.id)) {
             items.add(DateWidget(
               date: message.date,
-              widget: MessageTile(message, onTap: () => MessageView.show([message], context: context)),
+              widget: MessageTile(message),
             ));
           }
         }
@@ -124,7 +123,7 @@ class _MessagesPageState extends State<MessagesPage> {
           if (message.type == MessageType.trash) {
             items.add(DateWidget(
               date: message.date,
-              widget: MessageTile(message, onTap: () => MessageView.show([message], context: context)),
+              widget: MessageTile(message),
             ));
           }
         }
@@ -134,7 +133,7 @@ class _MessagesPageState extends State<MessagesPage> {
           if (message.type == MessageType.draft) {
             items.add(DateWidget(
               date: message.date,
-              widget: MessageTile(message, onTap: () => MessageView.show([message], context: context)),
+              widget: MessageTile(message),
             ));
           }
         }

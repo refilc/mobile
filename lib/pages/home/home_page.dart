@@ -41,7 +41,6 @@ import 'package:filcnaplo_mobile_ui/common/widgets/grade_view.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/homework_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/homework_view.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/message_tile.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/message_view/message_view.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/note_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/note_view.dart';
 import 'package:filcnaplo_mobile_ui/pages/home/live_card/live_card.dart';
@@ -302,7 +301,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 date: message.date,
                 widget: MessageTile(
                   message,
-                  onTap: () => MessageView.show([message], context: context),
                 )));
           }
         }
@@ -486,7 +484,6 @@ List<Widget> sortDateWidgets(
       date: conv.newest.date,
       widget: MessageTile(
         conv.newest,
-        onTap: () => MessageView.show(conv.messages, context: context),
       ),
     ));
   }
