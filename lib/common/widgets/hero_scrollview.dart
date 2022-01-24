@@ -4,7 +4,14 @@ import 'package:filcnaplo/utils/format.dart';
 
 class HeroScrollView extends StatefulWidget {
   const HeroScrollView(
-      {Key? key, required this.child, required this.title, required this.icon, this.navBarItems = const [], this.onClose, this.iconSize = 100.0})
+      {Key? key,
+      required this.child,
+      required this.title,
+      required this.icon,
+      this.navBarItems = const [],
+      this.onClose,
+      this.iconSize = 100.0,
+      this.scrollController})
       : super(key: key);
 
   final Widget child;
@@ -13,6 +20,7 @@ class HeroScrollView extends StatefulWidget {
   final List<Widget> navBarItems;
   final VoidCallback? onClose;
   final double iconSize;
+  final ScrollController? scrollController;
 
   @override
   _HeroScrollViewState createState() => _HeroScrollViewState();
@@ -26,7 +34,7 @@ class _HeroScrollViewState extends State<HeroScrollView> {
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
+    _scrollController = widget.scrollController ?? ScrollController();
 
     _scrollController.addListener(() {
       if (_scrollController.offset > 42.0) {

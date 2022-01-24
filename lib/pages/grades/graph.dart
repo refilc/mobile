@@ -99,23 +99,27 @@ class _GradeGraphState extends State<GradeGraph> {
     Grade halfYearGrade = widget.data.lastWhere((e) => e.type == GradeType.halfYear, orElse: () => Grade.fromJson({}));
 
     if (halfYearGrade.date.year != 0 && data.isNotEmpty) {
-      extraLines.add(
-        VerticalLine(
-          x: halfYearGrade.date.month + (halfYearGrade.date.day / 31) + ((halfYearGrade.date.year - data.last.writeDate.year) * 12),
-          strokeWidth: 3.0,
-          color: AppColors.of(context).text.withOpacity(.75),
-          label: VerticalLineLabel(
-            labelResolver: (_) => "mid".i18n,
-            show: true,
-            alignment: Alignment.topLeft,
-            style: TextStyle(
-              color: AppColors.of(context).text,
-              fontSize: 16.0,
-              fontWeight: FontWeight.w600,
+      final maxX = ghostSpots.isNotEmpty ? ghostSpots.first.x : 0;
+      final x = halfYearGrade.date.month + (halfYearGrade.date.day / 31) + ((halfYearGrade.date.year - data.last.writeDate.year) * 12);
+      if (x <= maxX) {
+        extraLines.add(
+          VerticalLine(
+            x: x,
+            strokeWidth: 3.0,
+            color: AppColors.of(context).text.withOpacity(.75),
+            label: VerticalLineLabel(
+              labelResolver: (_) => "mid".i18n,
+              show: true,
+              alignment: Alignment.topLeft,
+              style: TextStyle(
+                color: AppColors.of(context).text,
+                fontSize: 16.0,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
-        ),
-      );
+        );
+      }
     }
 
     return SizedBox(

@@ -27,9 +27,11 @@ class CertificationView extends StatelessWidget {
         child: Scaffold(
             body: ListView(
           children: [
-            Panel(
-              child: Column(
-                children: tiles,
+            SafeArea(
+              child: Panel(
+                child: Column(
+                  children: tiles,
+                ),
               ),
             )
           ],
