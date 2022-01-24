@@ -20,12 +20,12 @@ class CertificationView extends StatelessWidget {
   Widget build(BuildContext context) {
     grades.sort((a, b) => a.subject.name.compareTo(b.subject.name));
     List<Widget> tiles = grades.map((e) => CertificationTile(e)).toList();
-    return HeroScrollView(
+    return Scaffold(
+        body: HeroScrollView(
         title: getGradeTypeTitle(gradeType),
         icon: FeatherIcons.award,
         iconSize: 50,
-        child: Scaffold(
-            body: ListView(
+            child: ListView(
           children: [
             SafeArea(
               child: Panel(
