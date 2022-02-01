@@ -378,6 +378,7 @@ class _GradeColorsSettingState extends State<GradeColorsSetting> {
                 type: MaterialType.transparency,
                 child: InkWell(
                   onTap: () {
+                    currentColor = settings.gradeColors[index];
                     showRoundedModalBottomSheet(
                       context,
                       child: Column(children: [

@@ -13,35 +13,9 @@ class CertificationCard extends StatelessWidget {
   final List<Grade> grades;
   final GradeType gradeType;
 
-  String getGradeTypeTitle() {
-    String title;
-
-    switch (gradeType) {
-      case GradeType.halfYear:
-        title = "mid".i18n;
-        break;
-      case GradeType.firstQ:
-        title = "1q".i18n;
-        break;
-      case GradeType.secondQ:
-        title = "2q".i18n;
-        break;
-      case GradeType.thirdQ:
-        title = "3q".i18n;
-        break;
-      case GradeType.fourthQ:
-        title = "4q".i18n;
-        break;
-      default:
-        title = "final".i18n;
-    }
-
-    return title;
-  }
-
   @override
   Widget build(BuildContext context) {
-    String title = getGradeTypeTitle();
+    String title = getGradeTypeTitle(gradeType);
     double average = AverageHelper.averageEvals(grades, finalAvg: true);
     String averageText = average.toStringAsFixed(1);
     if (I18n.of(context).locale.languageCode != "en") averageText = averageText.replaceAll(".", ",");
@@ -102,4 +76,30 @@ class CertificationCard extends StatelessWidget {
       ),
     );
   }
+}
+ 
+String getGradeTypeTitle(GradeType gradeType) {
+  String title;
+
+  switch (gradeType) {
+    case GradeType.halfYear:
+      title = "mid".i18n;
+      break;
+    case GradeType.firstQ:
+      title = "1q".i18n;
+      break;
+    case GradeType.secondQ:
+      title = "2q".i18n;
+      break;
+    case GradeType.thirdQ:
+      title = "3q".i18n;
+      break;
+    case GradeType.fourthQ:
+      title = "4q".i18n;
+      break;
+    default:
+      title = "final".i18n;
+  }
+
+  return title;
 }

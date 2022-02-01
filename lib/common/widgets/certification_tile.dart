@@ -56,13 +56,21 @@ class CertificationTile extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         onTap: onTap,
         leading: isSubjectView
-            ? GradeValueWidget(grade.value)
+            ? GradeValueWidget(
+                grade.value,
+                complemented: grade.description == 'Dicséret',
+              )
             : Padding(
                 padding: const EdgeInsets.only(left: 2.0),
                 child: Icon(SubjectIcon.lookup(subject: grade.subject), size: 28.0, color: AppColors.of(context).text.withOpacity(.75)),
               ),
         minLeadingWidth: isSubjectView ? 32.0 : 42.0,
-        trailing: isSubjectView ? const Icon(FeatherIcons.award) : GradeValueWidget(grade.value),
+        trailing: isSubjectView
+            ? const Icon(FeatherIcons.award)
+            : GradeValueWidget(
+                grade.value,
+                complemented: grade.description == 'Dicséret',
+              ),
         title: Text(isSubjectView ? certificationName : grade.subject.name.capital(),
             style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18.0)),
         subtitle: Text(grade.value.valueName, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16.0)),

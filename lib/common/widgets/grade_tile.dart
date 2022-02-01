@@ -121,11 +121,12 @@ class GradeTile extends StatelessWidget {
 }
 
 class GradeValueWidget extends StatelessWidget {
-  const GradeValueWidget(this.value, {Key? key, this.size = 38.0, this.fill = false}) : super(key: key);
+  const GradeValueWidget(this.value, {Key? key, this.size = 38.0, this.fill = false, this.complemented = false}) : super(key: key);
 
   final GradeValue value;
   final double size;
   final bool fill;
+  final bool complemented;
 
   @override
   Widget build(BuildContext context) {
@@ -154,17 +155,27 @@ class GradeValueWidget extends StatelessWidget {
         textAlign: TextAlign.center,
       );
     } else if (value.value != 0) {
-      valueText = Text(
-        value.value.toString(),
-        textAlign: TextAlign.center,
-        style: TextStyle(fontWeight: value.weight == 50 ? FontWeight.w600 : FontWeight.bold, fontSize: size, color: color, shadows: [
-          if (value.weight == 200)
-            Shadow(
-              color: color.withOpacity(.4),
-              offset: const Offset(-4, -3),
-            )
-        ]),
-      );
+      valueText = Stack(alignment: Alignment.topRight, children: [
+        Text(
+          value.value.toString(),
+          textAlign: TextAlign.center,
+          style: TextStyle(fontWeight: value.weight == 50 ? FontWeight.w600 : FontWeight.bold, fontSize: size, color: color, shadows: [
+            if (value.weight == 200)
+              Shadow(
+                color: color.withOpacity(.4),
+                offset: const Offset(-4, -3),
+              )
+          ]),
+        ),
+        if (complemented)
+          Transform.translate(
+            offset: const Offset(9, 1),
+            child: Text(
+              "*",
+              style: TextStyle(fontSize: size / 1.6, fontWeight: FontWeight.bold),
+            ),
+          ),
+      ]);
     } else if (value.valueName.toLowerCase().specialChars() == 'nem irt') {
       valueText = const Icon(FeatherIcons.slash);
     } else {

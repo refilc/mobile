@@ -1,10 +1,9 @@
 import 'dart:math';
 
+import 'package:animations/animations.dart';
 import 'package:filcnaplo_kreta_api/providers/grade_provider.dart';
 import 'package:filcnaplo/helpers/average_helper.dart';
 import 'package:filcnaplo/helpers/subject_icon.dart';
-import 'package:filcnaplo/theme.dart';
-import 'package:filcnaplo/utils/format.dart';
 import 'package:filcnaplo_kreta_api/models/grade.dart';
 import 'package:filcnaplo_kreta_api/models/subject.dart';
 import 'package:filcnaplo_mobile_ui/common/average_display.dart';
@@ -13,6 +12,7 @@ import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/certification_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/grade_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/grade_view.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/hero_scrollview.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/calculator/grade_calculator.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/calculator/grade_calculator_provider.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/graph.dart';
@@ -41,8 +41,8 @@ class _SubjectViewState extends State<SubjectView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   // Controllers
-  late ScrollController _scrollController;
   PersistentBottomSheetController? _sheetController;
+  final ScrollController _scrollController = ScrollController();
 
   List<Widget> gradeTiles = [];
 
@@ -53,28 +53,7 @@ class _SubjectViewState extends State<SubjectView> {
   late double average;
   late Widget gradeGraph;
 
-  bool showBarTitle = false;
   bool gradeCalcMode = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController = ScrollController();
-
-    _scrollController.addListener(() {
-      if (_scrollController.offset > 42.0) {
-        if (showBarTitle == false) setState(() => showBarTitle = true);
-      } else {
-        if (showBarTitle == true) setState(() => showBarTitle = false);
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _scrollController.dispose();
-  }
 
   List<Grade> getSubjectGrades(Subject subject) => !gradeCalcMode
       ? gradeProvider.grades.where((e) => e.subject == subject).toList()
@@ -100,27 +79,53 @@ class _SubjectViewState extends State<SubjectView> {
       tiles.insert(0, Container(height: 24.0));
     }
 
+    List<Widget> _gradeTiles = [];
+
     if (!gradeCalcMode) {
       subjectGrades.sort((a, b) => -a.date.compareTo(b.date));
       for (var grade in subjectGrades) {
         if (grade.type == GradeType.midYear) {
-          tiles.add(GradeTile(grade, onTap: () => GradeView.show(grade, context: context)));
+          _gradeTiles.add(GradeTile(
+            grade,
+            onTap: () => GradeView.show(grade, context: context),
+          ));
         } else {
-          tiles.add(CertificationTile(grade));
+          _gradeTiles.add(CertificationTile(grade));
         }
       }
-      tiles.insert(1, PanelTitle(title: Text("Grades".i18n)));
-      tiles.insert(2, const PanelHeader(padding: EdgeInsets.only(top: 12.0)));
-      tiles.add(const PanelFooter(padding: EdgeInsets.only(bottom: 12.0)));
     } else if (subjectGrades.isNotEmpty) {
       subjectGrades.sort((a, b) => -a.date.compareTo(b.date));
       for (var grade in subjectGrades) {
-        tiles.add(GradeTile(grade));
+        _gradeTiles.add(GradeTile(grade));
       }
-      tiles.insert(1, PanelTitle(title: Text("Ghost Grades".i18n)));
-      tiles.insert(2, const PanelHeader(padding: EdgeInsets.only(top: 12.0)));
-      tiles.add(const PanelFooter(padding: EdgeInsets.only(bottom: 12.0)));
     }
+    tiles.add(
+      PageTransitionSwitcher(
+        transitionBuilder: (
+          Widget child,
+          Animation<double> primaryAnimation,
+          Animation<double> secondaryAnimation,
+        ) {
+          return SharedAxisTransition(
+            animation: primaryAnimation,
+            secondaryAnimation: secondaryAnimation,
+            transitionType: SharedAxisTransitionType.vertical,
+            child: child,
+            fillColor: Colors.transparent,
+          );
+        },
+        child: _gradeTiles.isNotEmpty
+            ? Panel(
+                key: ValueKey(gradeCalcMode),
+                title: Text(
+                  gradeCalcMode ? "Ghost Grades".i18n : "Grades".i18n,
+                ),
+                child: Column(
+                  children: _gradeTiles,
+                ))
+            : const SizedBox(),
+      ),
+    );
 
     tiles.add(Padding(padding: EdgeInsets.only(bottom: !gradeCalcMode ? 24.0 : 250.0)));
     gradeTiles = List.castFrom(tiles);
@@ -153,111 +158,53 @@ class _SubjectViewState extends State<SubjectView> {
     }
 
     return Scaffold(
-      key: _scaffoldKey,
-      floatingActionButton: !gradeCalcMode && subjectGrades.where((e) => e.type == GradeType.midYear).isNotEmpty
-          ? FloatingActionButton(
-              child: const Icon(FeatherIcons.plus),
-              onPressed: () => gradeCalc(context),
-              backgroundColor: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.grey[900],
-              foregroundColor: Theme.of(context).colorScheme.secondary,
-            )
-          : null,
-      body: SafeArea(
-        child: RefreshIndicator(
+        key: _scaffoldKey,
+        floatingActionButton: !gradeCalcMode && subjectGrades.where((e) => e.type == GradeType.midYear).isNotEmpty
+            ? FloatingActionButton(
+                child: const Icon(FeatherIcons.plus),
+                onPressed: () => gradeCalc(context),
+                backgroundColor: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.grey[900],
+                foregroundColor: Theme.of(context).colorScheme.secondary,
+              )
+            : null,
+        body: RefreshIndicator(
           onRefresh: () async {},
           color: Theme.of(context).colorScheme.secondary,
-          child: NestedScrollView(
-            controller: _scrollController,
-            physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-            headerSliverBuilder: (context, _) => [
-              SliverAppBar(
-                pinned: true,
-                floating: false,
-                snap: false,
-                centerTitle: false,
-                titleSpacing: 0,
-                title: AnimatedOpacity(
-                    opacity: showBarTitle ? 1.0 : 0.0,
-                    child: Text(
-                      widget.subject.name.capital(),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      style: TextStyle(color: AppColors.of(context).text, fontWeight: FontWeight.w500),
-                    ),
-                    duration: const Duration(milliseconds: 200)),
-                leading: BackButton(
-                    color: AppColors.of(context).text,
-                    onPressed: () {
-                      if (_sheetController != null && gradeCalcMode) _sheetController!.close();
-                      Navigator.of(context).pop();
-                    }),
-                actions: [
-                  const SizedBox(width: 6.0),
-                  if (widget.classAverage != 0) Center(child: AverageDisplay(average: widget.classAverage, border: true)),
-                  const SizedBox(width: 6.0),
-                  if (average != 0) Center(child: AverageDisplay(average: average)),
-                  const SizedBox(width: 12.0),
-                ],
-                expandedHeight: 124.0,
-                stretch: true,
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Stack(
-                    children: [
-                      Center(
-                        child: Icon(
-                          SubjectIcon.lookup(subject: widget.subject),
-                          size: 100.0,
-                          color: AppColors.of(context).text.withOpacity(.15),
-                        ),
-                      ),
-                      Container(
-                        alignment: Alignment.bottomCenter,
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                        child: Text(
-                          widget.subject.name.capital(),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 36.0, color: AppColors.of(context).text.withOpacity(.9), fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
+          child: HeroScrollView(
+              onClose: () {
+                if (_sheetController != null && gradeCalcMode) {
+                  _sheetController!.close();
+                } else {
+                  Navigator.of(context).pop();
+                }
+              },
+              navBarItems: [
+                const SizedBox(width: 6.0),
+                if (widget.classAverage != 0) Center(child: AverageDisplay(average: widget.classAverage, border: true)),
+                const SizedBox(width: 6.0),
+                if (average != 0) Center(child: AverageDisplay(average: average)),
+                const SizedBox(width: 12.0),
+              ],
+              icon: SubjectIcon.lookup(subject: widget.subject),
+              scrollController: _scrollController,
+              title: widget.subject.name,
+              child: SubjectGradesContainer(
+                child: CupertinoScrollbar(
+                  child: ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) => gradeTiles[index],
+                    itemCount: gradeTiles.length,
                   ),
                 ),
-              ),
-            ],
-            body: SubjectGradesContainer(
-              child: CupertinoScrollbar(
-                child: ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    EdgeInsetsGeometry panelPadding = const EdgeInsets.symmetric(horizontal: 24.0);
-
-                    if ([GradeTile, CertificationTile].contains(gradeTiles[index].runtimeType)) {
-                      return Padding(
-                          padding: panelPadding,
-                          child: PanelBody(
-                            child: gradeTiles[index],
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          ));
-                    } else {
-                      return Padding(padding: panelPadding, child: gradeTiles[index]);
-                    }
-                  },
-                  itemCount: gradeTiles.length,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
+              )),
+        ));
   }
 
   void gradeCalc(BuildContext context) {
     // Scroll to the top of the page
-    _scrollController.animateTo(0, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+    _scrollController.animateTo(75, duration: const Duration(milliseconds: 500), curve: Curves.ease);
 
     calculatorProvider.clear();
     calculatorProvider.addAllGrades(gradeProvider.grades);
