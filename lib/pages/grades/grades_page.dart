@@ -51,7 +51,7 @@ class _GradesPageState extends State<GradesPage> {
       var nullavg = ClassAverage(average: 0.0, subject: subject, uid: "0");
       double classAverage = gradeProvider.classAverages.firstWhere((e) => e.subject == subject, orElse: () => nullavg).average;
 
-      subjectAvgs.add(avg);
+      if (avg != 0) subjectAvgs.add(avg);
 
       return SubjectTile(subject, average: avg, groupAverage: classAverage, onTap: () {
         SubjectView(subject, classAverage: classAverage).push(context, root: true);
