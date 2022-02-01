@@ -78,7 +78,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late LiveCardController _liveController;
   late bool showLiveCard;
   late PageController _pageController;
-  List<List<Widget>> widgetsByTab = [[], [], [], []];
   List<String> listOrder = ['A', 'B', 'C', 'D'];
 
   @override
@@ -133,9 +132,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
     List<String> nameParts = user.name?.split(" ") ?? ["?"];
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
-
-    List.generate(
-        4, (i) => getFilterWidgets(HomeFilter.values[i]).then((widgets) => widgetsByTab[i] = sortDateWidgets(context, dateWidgets: widgets)));
 
     return Scaffold(
       body: Padding(
@@ -252,18 +248,23 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   controller: _pageController,
                   childrenDelegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) {
-                        return RefreshIndicator(
+                        return FutureBuilder<List<DateWidget>>(
                             key: ValueKey<String>(listOrder[index]),
+                          future: getFilterWidgets(HomeFilter.values[index]),
+                          builder: (context, dateWidgets) => dateWidgets.data != null
+                              ? RefreshIndicator(
                             color: Theme.of(context).colorScheme.secondary,
                             onRefresh: () => syncAll(context),
                             child: ImplicitlyAnimatedList<Widget>(
-                              items: widgetsByTab[index],
+                                    items: sortDateWidgets(context, dateWidgets: dateWidgets.data!),
                               itemBuilder: _itemBuilder,
                               spawnIsolate: false,
                               areItemsTheSame: (a, b) => a.key == b.key,
                               physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                               padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                            ));
+                                  ))
+                              : Container(),
+                        );
                       },
                       childCount: 4,
                       findChildIndexCallback: (Key key) {
