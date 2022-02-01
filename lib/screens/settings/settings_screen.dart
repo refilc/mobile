@@ -472,7 +472,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 Center(
                   child: GestureDetector(
-                    child: Panel(title: Text("v" + (settings.packageInfo?.version ?? ""))),
+                    child: const Panel(title: Text("v" + String.fromEnvironment("APPVER", defaultValue: "?"))),
                     onTap: () {
                       if (devmodeCountdown > 0) {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(

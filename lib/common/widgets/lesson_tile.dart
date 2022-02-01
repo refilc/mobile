@@ -67,8 +67,8 @@ class LessonTile extends StatelessWidget {
       }
     }
 
-    for (var e in lesson.exams) {
-      Exam exam = Provider.of<ExamProvider>(context, listen: false).exams.firstWhere((t) => t.id == e, orElse: () => Exam.fromJson({}));
+    if (lesson.exam != "") {
+      Exam exam = Provider.of<ExamProvider>(context, listen: false).exams.firstWhere((t) => t.id == lesson.exam, orElse: () => Exam.fromJson({}));
       if (exam.id != "") {
         subtiles.add(LessonSubtile(
           type: LessonSubtileType.exam,

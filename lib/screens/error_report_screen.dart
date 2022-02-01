@@ -2,11 +2,9 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:filcnaplo/api/client.dart';
-import 'package:filcnaplo/models/settings.dart';
 import 'package:filcnaplo/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:provider/provider.dart';
 import 'error_report_screen.i18n.dart';
 
 class ErrorReportScreen extends StatelessWidget {
@@ -111,7 +109,7 @@ class ErrorReportScreen extends StatelessWidget {
     final report = ErrorReport(
       os: Platform.operatingSystem + " " + Platform.operatingSystemVersion,
       error: details.exceptionAsString(),
-      version: Provider.of<SettingsProvider>(context, listen: false).packageInfo?.version ?? "?",
+      version: const String.fromEnvironment("APPVER", defaultValue: "?"),
       stack: details.stack.toString(),
     );
     FilcAPI.sendReport(report);
@@ -126,7 +124,6 @@ class StacktracePopup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var settings = Provider.of<SettingsProvider>(context, listen: false);
     String stack = details.stack.toString();
 
     return Container(
@@ -155,7 +152,7 @@ class StacktracePopup extends StatelessWidget {
                     details.exceptionAsString(),
                   ),
                   ErrorDetail("os".i18n, Platform.operatingSystem + " " + Platform.operatingSystemVersion),
-                  ErrorDetail("version".i18n, settings.packageInfo?.version ?? "?"),
+                  ErrorDetail("version".i18n, const String.fromEnvironment("APPVER", defaultValue: "?")),
                   ErrorDetail("stack".i18n, stack.substring(0, min(stack.length, 5000)))
                 ]),
               ),
