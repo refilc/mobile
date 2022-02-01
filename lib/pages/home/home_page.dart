@@ -249,19 +249,19 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   childrenDelegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) {
                         return FutureBuilder<List<DateWidget>>(
-                            key: ValueKey<String>(listOrder[index]),
+                          key: ValueKey<String>(listOrder[index]),
                           future: getFilterWidgets(HomeFilter.values[index]),
                           builder: (context, dateWidgets) => dateWidgets.data != null
                               ? RefreshIndicator(
-                            color: Theme.of(context).colorScheme.secondary,
-                            onRefresh: () => syncAll(context),
-                            child: ImplicitlyAnimatedList<Widget>(
+                                  color: Theme.of(context).colorScheme.secondary,
+                                  onRefresh: () => syncAll(context),
+                                  child: ImplicitlyAnimatedList<Widget>(
                                     items: sortDateWidgets(context, dateWidgets: dateWidgets.data!),
-                              itemBuilder: _itemBuilder,
-                              spawnIsolate: false,
-                              areItemsTheSame: (a, b) => a.key == b.key,
-                              physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                                    itemBuilder: _itemBuilder,
+                                    spawnIsolate: false,
+                                    areItemsTheSame: (a, b) => a.key == b.key,
+                                    physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
                                   ))
                               : Container(),
                         );
@@ -587,6 +587,14 @@ List<Widget> sortDateWidgets(
             key: "${absenceTileWidgets.first.date.millisecondsSinceEpoch}-absence-group"));
       }
 
+      // Bring Lesson Tiles to front & sort by index asc
+      List<DateWidget> lessonTiles = elements.where((element) {
+        return element.widget.runtimeType == ChangedLessonTile;
+      }).toList();
+      lessonTiles.sort((a, b) => (a.widget as ChangedLessonTile).lesson.lessonIndex.compareTo((b.widget as ChangedLessonTile).lesson.lessonIndex));
+      elements.removeWhere((element) => element.widget.runtimeType == ChangedLessonTile);
+      elements.insertAll(0, lessonTiles);
+
       final date = (elements + absenceTileWidgets).first.date;
       items.add(DateWidget(
         date: date,
@@ -632,7 +640,8 @@ List<Widget> sortDateWidgets(
     );
   }
 
-  items.sort((a, b) => -a.date.compareTo(b.date));
+  // Sort future dates asc, past dates desc
+  items.sort((a, b) => (a.date.isAfter(now) && b.date.isAfter(now) ? 1 : -1) * a.date.compareTo(b.date));
 
   return items.map((e) => e.widget).toList();
 }
