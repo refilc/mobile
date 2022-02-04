@@ -4,8 +4,10 @@ import 'dart:math';
 
 import 'package:filcnaplo/api/providers/update_provider.dart';
 import 'package:filcnaplo/api/providers/sync.dart';
+import 'package:filcnaplo/helpers/subject_icon.dart';
 import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_kreta_api/models/absence.dart';
+import 'package:filcnaplo_kreta_api/models/lesson.dart';
 import 'package:filcnaplo_kreta_api/providers/absence_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/event_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/exam_provider.dart';
@@ -18,6 +20,7 @@ import 'package:filcnaplo/api/providers/status_provider.dart';
 import 'package:filcnaplo_kreta_api/models/grade.dart';
 import 'package:filcnaplo_kreta_api/models/message.dart';
 import 'package:filcnaplo_kreta_api/providers/timetable_provider.dart';
+import 'package:filcnaplo_mobile_ui/common/bottom_sheet_menu/rounded_bottom_sheet.dart';
 import 'package:filcnaplo_mobile_ui/common/empty.dart';
 import 'package:filcnaplo_mobile_ui/common/filter/filter_bar.dart';
 import 'package:filcnaplo_mobile_ui/common/filter/filter_controller.dart';
@@ -256,6 +259,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           getFilterWidgets(HomeFilter.exams),
           getFilterWidgets(HomeFilter.updates),
           getFilterWidgets(HomeFilter.certifications),
+          getFilterWidgets(HomeFilter.missedExams),
         ]);
         items.addAll(all.expand((x) => x));
 
@@ -273,10 +277,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         }
         break;
 
-      // Grades
+      // Certifications
       case HomeFilter.certifications:
         for (var gradeType in GradeType.values) {
-          if (gradeType == GradeType.midYear || gradeType == GradeType.unknown || gradeType == GradeType.levelExam) continue;
+          if ([GradeType.midYear, GradeType.unknown, GradeType.levelExam].contains(gradeType)) continue;
 
           List<Grade> grades = gradeProvider.grades.where((grade) => grade.type == gradeType).toList();
           if (grades.isNotEmpty) {
@@ -398,6 +402,77 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ),
             ),
           ));
+        }
+        break;
+
+      // Missed Exams
+      case HomeFilter.missedExams:
+        List<Lesson> missedExams = [];
+
+        for (var lesson in timetableProvider.lessons) {
+          final desc = lesson.description.toLowerCase().specialChars();
+          if (!lesson.studentPresence &&
+              (lesson.exam != "" ||
+                  desc.contains("dolgozat") ||
+                  desc.contains("feleles") ||
+                  desc.contains("temazaro") ||
+                  desc.contains("szamonkeres") ||
+                  desc == "tz") &&
+              !(desc.contains("felkeszules") || desc.contains("gyakorlas"))) {
+            missedExams.add(lesson);
+          }
+        }
+
+        if (missedExams.isNotEmpty) {
+          missedExams.sort((a, b) => -a.date.compareTo(b.date));
+
+          items.add(
+            DateWidget(
+              date: missedExams.first.date,
+              widget: PanelButton(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                leading: Icon(
+                  FeatherIcons.slash,
+                  color: AppColors.of(context).red.withOpacity(.75),
+                  size: 28.0,
+                ),
+                title: Text("missed_exams".i18n.plural(missedExams.length).fill([missedExams.length])),
+                trailing: const Icon(FeatherIcons.arrowRight),
+                onPressed: () => showRoundedModalBottomSheet(context,
+                    child: Column(
+                      children: missedExams
+                          .map((lesson) => Material(
+                                type: MaterialType.transparency,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                                  child: ListTile(
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+                                    leading: Icon(
+                                      SubjectIcon.lookup(subject: lesson.subject),
+                                      color: AppColors.of(context).text.withOpacity(.8),
+                                      size: 32.0,
+                                    ),
+                                    title: Text(
+                                      "${lesson.subject.name.capital()} • ${lesson.date.format(context)}",
+                                      style: const TextStyle(fontWeight: FontWeight.w600),
+                                    ),
+                                    subtitle: Text(
+                                      "missed_exam_contact".i18n.fill([lesson.teacher]),
+                                      style: const TextStyle(fontWeight: FontWeight.w500),
+                                    ),
+                                    trailing: const Icon(FeatherIcons.arrowRight),
+                                    onTap: () {
+                                      Navigator.of(context, rootNavigator: true).pop();
+                                      TimetablePage.jump(context, lesson: lesson);
+                                    },
+                                  ),
+                                ),
+                              ))
+                          .toList(),
+                    )),
+              ),
+            ),
+          );
         }
         break;
     }
@@ -569,4 +644,4 @@ class DateWidget {
   DateWidget({required this.date, required this.widget});
 }
 
-enum HomeFilter { all, grades, messages, absences, homework, exams, notes, events, lessons, updates, certifications }
+enum HomeFilter { all, grades, messages, absences, homework, exams, notes, events, lessons, updates, certifications, missedExams }

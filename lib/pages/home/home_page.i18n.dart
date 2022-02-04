@@ -16,6 +16,8 @@ extension Localization on String {
           "Messages": "Messages",
           "Absences": "Absences",
           "update_available": "Update Available",
+          "missed_exams": "You missed %s exams this week.".one("You missed an exam this week."),
+          "missed_exam_contact": "Contact %s, to resovle it!",
         },
         "hu_hu": {
           "goodmorning": "Jó reggelt, %s!",
@@ -30,6 +32,8 @@ extension Localization on String {
           "Messages": "Üzenetek",
           "Absences": "Hiányok",
           "update_available": "Frissítés elérhető",
+          "missed_exams": "Ezen a héten hiányoztál %s dolgozatról.",
+          "missed_exam_contact": "Keresd %s-t, ha pótolni szeretnéd!",
         },
         "de_de": {
           "goodmorning": "Guten morgen, %s!",
@@ -44,6 +48,8 @@ extension Localization on String {
           "Messages": "Nachrichten",
           "Absences": "Abwesenheiten",
           "update_available": "Update verfügbar",
+          "missed_exams": "Diese Woche haben Sie %s Prüfungen verpasst.".one("Diese Woche haben Sie eine Prüfung verpasst."),
+          "missed_exam_contact": "Wenden Sie sich an %s, um sie zu erneuern!",
         },
       };
 
