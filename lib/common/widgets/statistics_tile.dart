@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/grade_tile.dart';
 import 'package:flutter/material.dart';
@@ -32,9 +33,19 @@ class StatisticsTile extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.0),
         color: AppColors.of(context).highlight,
+        boxShadow: [
+          BoxShadow(
+            offset: const Offset(0, 21),
+            blurRadius: 23.0,
+            color: AppColors.of(context).shadow,
+          )
+        ],
+      ),
+      constraints: const BoxConstraints(
+        minHeight: 130.0,
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           if (title != null)
             DefaultTextStyle(
@@ -45,7 +56,7 @@ class StatisticsTile extends StatelessWidget {
               child: title!,
             ),
           if (title != null) const SizedBox(height: 4.0),
-          Text.rich(
+          AutoSizeText.rich(
             TextSpan(
               text: valueText,
               children: [
@@ -56,6 +67,9 @@ class StatisticsTile extends StatelessWidget {
                   ),
               ],
             ),
+            maxLines: 1,
+            minFontSize: 5,
+            textAlign: TextAlign.center,
             style: TextStyle(
               color: color ?? gradeColor(context: context, value: value),
               fontWeight: FontWeight.w800,

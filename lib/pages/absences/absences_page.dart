@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
 import 'package:filcnaplo_kreta_api/models/absence.dart';
 import 'package:filcnaplo_kreta_api/providers/absence_provider.dart';
@@ -192,7 +193,7 @@ class _AbsencesPageState extends State<AbsencesPage> {
                   child: Row(children: [
                     Expanded(
                       child: StatisticsTile(
-                        title: Text(
+                        title: AutoSizeText(
                           title1,
                           textAlign: TextAlign.center,
                           maxLines: 2,
@@ -207,7 +208,7 @@ class _AbsencesPageState extends State<AbsencesPage> {
                     const SizedBox(width: 24.0),
                     Expanded(
                       child: StatisticsTile(
-                        title: Text(
+                        title: AutoSizeText(
                           title2,
                           textAlign: TextAlign.center,
                           maxLines: 2,
