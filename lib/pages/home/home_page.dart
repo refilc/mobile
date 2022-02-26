@@ -326,7 +326,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
       // Homework
       case HomeFilter.homework:
-        homeworkProvider.homework.where((h) => h.deadline.isAfter(DateTime.now())).forEach((homework) {
+        final now = DateTime.now();
+        homeworkProvider.homework.where((h) => h.deadline.hour == 0 ? _sameDate(h.deadline, now) : h.deadline.isAfter(now)).forEach((homework) {
           items.add(DateWidget(
               date: homework.deadline.year != 0 ? homework.deadline : homework.date,
               widget: HomeworkTile(
