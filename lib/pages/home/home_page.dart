@@ -431,13 +431,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             DateWidget(
               date: missedExams.first.date,
               widget: PanelButton(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                leading: Icon(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
+                leading: SizedBox(
+                    width: 36,
+                    height: 36,
+                    child: Icon(
                   FeatherIcons.slash,
                   color: AppColors.of(context).red.withOpacity(.75),
                   size: 28.0,
-                ),
-                title: Text("missed_exams".i18n.plural(missedExams.length).fill([missedExams.length])),
+                    )),
+                title: Text("missed_exams".plural(missedExams.length).fill([missedExams.length])),
                 trailing: const Icon(FeatherIcons.arrowRight),
                 onPressed: () => showRoundedModalBottomSheet(context,
                     child: Column(
