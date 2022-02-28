@@ -6,6 +6,7 @@ import 'package:confetti/confetti.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
 import 'package:filcnaplo/api/providers/sync.dart';
 import 'package:filcnaplo/helpers/subject_icon.dart';
+import 'package:filcnaplo/models/settings.dart';
 import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_kreta_api/models/absence.dart';
 import 'package:filcnaplo_kreta_api/models/lesson.dart';
@@ -51,6 +52,7 @@ import 'package:filcnaplo_mobile_ui/pages/home/live_card/live_card.dart';
 import 'package:filcnaplo_kreta_api/controllers/live_card_controller.dart';
 import 'package:filcnaplo_mobile_ui/common/hero_dialog_route.dart';
 import 'package:filcnaplo_mobile_ui/pages/timetable/timetable_page.dart';
+import 'package:filcnaplo_mobile_ui/screens/navigation/navigation_screen.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/updates/updates_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -69,6 +71,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late UserProvider user;
+  late SettingsProvider settings;
   late UpdateProvider updateProvider;
   late StatusProvider statusProvider;
   late GradeProvider gradeProvider;
@@ -82,7 +85,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   late LiveCardController _liveController;
   late FilterController _filterController;
-  late ConfettiController? _confettiController;
+  ConfettiController? _confettiController;
 
   late String greeting;
   late String firstName;
@@ -100,12 +103,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     DateTime now = DateTime.now();
     if (now.isBefore(DateTime(now.year, DateTime.august, 31)) && now.isAfter(DateTime(now.year, DateTime.june, 14))) {
       greeting = "goodrest";
-      _confettiController = ConfettiController(duration: const Duration(seconds: 1));
-      Future.delayed(const Duration(seconds: 1)).then((value) => mounted ? _confettiController?.play() : null);
+
+      if (NavigationScreen.of(context)?.init("confetti") ?? false) {
+        _confettiController = ConfettiController(duration: const Duration(seconds: 1));
+        Future.delayed(const Duration(seconds: 1)).then((value) => mounted ? _confettiController?.play() : null);
+      }
     } else if (now.month == user.student?.birth.month && now.day == user.student?.birth.day) {
       greeting = "happybirthday";
-      _confettiController = ConfettiController(duration: const Duration(seconds: 3));
-      Future.delayed(const Duration(seconds: 1)).then((value) => mounted ? _confettiController?.play() : null);
+
+      if (NavigationScreen.of(context)?.init("confetti") ?? false) {
+        _confettiController = ConfettiController(duration: const Duration(seconds: 3));
+        Future.delayed(const Duration(seconds: 1)).then((value) => mounted ? _confettiController?.play() : null);
+      }
     } else if (now.month == DateTime.december && now.day >= 24 && now.day <= 26) {
       greeting = "merryxmas";
     } else if (now.month == DateTime.january && now.day == 1) {
@@ -132,6 +141,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     user = Provider.of<UserProvider>(context);
+    settings = Provider.of<SettingsProvider>(context);
     updateProvider = Provider.of<UpdateProvider>(context);
     statusProvider = Provider.of<StatusProvider>(context, listen: false);
     gradeProvider = Provider.of<GradeProvider>(context);
