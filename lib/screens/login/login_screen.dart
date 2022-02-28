@@ -137,14 +137,27 @@ class _LoginScreenState extends State<LoginScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Expanded(
-                                  child: Text("username".i18n,
-                                      maxLines: 1, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14.0)),
+                                  child: Text(
+                                    "username".i18n,
+                                    maxLines: 1,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14.0,
+                                    ),
+                                  ),
                                 ),
                                 Expanded(
-                                  child: Text("usernameHint".i18n,
-                                      maxLines: 1,
-                                      textAlign: TextAlign.right,
-                                      style: const TextStyle(color: Colors.white54, fontWeight: FontWeight.w500, fontSize: 12.0)),
+                                  child: Text(
+                                    "usernameHint".i18n,
+                                    maxLines: 1,
+                                    textAlign: TextAlign.right,
+                                    style: const TextStyle(
+                                      color: Colors.white54,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 12.0,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -164,14 +177,27 @@ class _LoginScreenState extends State<LoginScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Expanded(
-                                  child: Text("password".i18n,
-                                      maxLines: 1, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14.0)),
+                                  child: Text(
+                                    "password".i18n,
+                                    maxLines: 1,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14.0,
+                                    ),
+                                  ),
                                 ),
                                 Expanded(
-                                  child: Text("passwordHint".i18n,
-                                      maxLines: 1,
-                                      textAlign: TextAlign.right,
-                                      style: const TextStyle(color: Colors.white54, fontWeight: FontWeight.w500, fontSize: 12.0)),
+                                  child: Text(
+                                    "passwordHint".i18n,
+                                    maxLines: 1,
+                                    textAlign: TextAlign.right,
+                                    style: const TextStyle(
+                                      color: Colors.white54,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 12.0,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -187,7 +213,15 @@ class _LoginScreenState extends State<LoginScreen> {
                           // School
                           Padding(
                             padding: const EdgeInsets.only(bottom: 6.0),
-                            child: Text("school".i18n, maxLines: 1, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14.0)),
+                            child: Text(
+                              "school".i18n,
+                              maxLines: 1,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14.0,
+                              ),
+                            ),
                           ),
                           SchoolInput(
                             scroll: _scrollController,

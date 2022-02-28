@@ -2,6 +2,7 @@
 
 import 'dart:math';
 
+import 'package:confetti/confetti.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
 import 'package:filcnaplo/api/providers/sync.dart';
 import 'package:filcnaplo/helpers/subject_icon.dart';
@@ -66,7 +67,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
-  late FilterController _filterController;
   late UserProvider user;
   late UpdateProvider updateProvider;
   late StatusProvider statusProvider;
@@ -78,18 +78,31 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late ExamProvider examProvider;
   late NoteProvider noteProvider;
   late EventProvider eventProvider;
+
+  late LiveCardController _liveController;
+  late FilterController _filterController;
+  late ConfettiController _confettiController;
+
   late String greeting;
   late String firstName;
-  late LiveCardController _liveController;
   late bool showLiveCard;
 
   @override
   void initState() {
     super.initState();
+
     user = Provider.of<UserProvider>(context, listen: false);
+
+    _liveController = LiveCardController(context: context, vsync: this);
     _filterController = FilterController(itemCount: 4);
+    _confettiController = ConfettiController(duration: const Duration(seconds: 3));
+
+    Future.delayed(const Duration(seconds: 1)).then((value) => _confettiController.play());
+
     DateTime now = DateTime.now();
-    if (now.month == user.student?.birth.month && now.day == user.student?.birth.day) {
+    if (now.month == DateTime.june && now.day == 15) {
+      greeting = "goodrest";
+    } else if (now.month == user.student?.birth.month && now.day == user.student?.birth.day) {
       greeting = "happybirthday";
     } else if (now.month == DateTime.december && now.day >= 24 && now.day <= 26) {
       greeting = "merryxmas";
@@ -104,13 +117,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     } else {
       greeting = "goodevening";
     }
-
-    _liveController = LiveCardController(context: context, vsync: this);
   }
 
   @override
   void dispose() {
+    // _filterController.dispose();
     _liveController.dispose();
+    _confettiController.dispose();
     super.dispose();
   }
 
@@ -132,98 +145,119 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(top: 12.0),
-        child: NestedScrollView(
-          physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-          headerSliverBuilder: (context, _) => [
-            AnimatedBuilder(
-              animation: _liveController.animation,
-              builder: (context, child) {
-                return SliverAppBar(
-                  automaticallyImplyLeading: false,
-                  centerTitle: false,
-                  titleSpacing: 0.0,
-                  // Welcome text
-                  title: Padding(
-                    padding: const EdgeInsets.only(left: 24.0),
-                    child: Text(
-                      greeting.i18n.fill([firstName]),
-                      overflow: TextOverflow.fade,
-                      maxLines: 2,
-                      softWrap: true,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
-                        color: Theme.of(context).textTheme.bodyText1?.color,
-                      ),
-                    ),
-                  ),
-                  actions: [
-                    // TODO: Search Button
-                    // IconButton(
-                    //   icon: Icon(FeatherIcons.search),
-                    //   color: Theme.of(context).textTheme.bodyText1?.color,
-                    //   splashRadius: 24.0,
-                    //   onPressed: () {},
-                    // ),
-
-                    // Profile Icon
-                    Padding(
-                      padding: const EdgeInsets.only(right: 24.0),
-                      child: ProfileButton(
-                        child: ProfileImage(
-                          heroTag: "profile",
-                          name: firstName,
-                          backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
-                          badge: updateProvider.available,
-                          role: user.role,
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 12.0),
+            child: NestedScrollView(
+              physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+              headerSliverBuilder: (context, _) => [
+                AnimatedBuilder(
+                  animation: _liveController.animation,
+                  builder: (context, child) {
+                    return SliverAppBar(
+                      automaticallyImplyLeading: false,
+                      centerTitle: false,
+                      titleSpacing: 0.0,
+                      // Welcome text
+                      title: Padding(
+                        padding: const EdgeInsets.only(left: 24.0),
+                        child: Text(
+                          greeting.i18n.fill([firstName]),
+                          overflow: TextOverflow.fade,
+                          maxLines: 2,
+                          softWrap: true,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18.0,
+                            color: Theme.of(context).textTheme.bodyText1?.color,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                      actions: [
+                        // TODO: Search Button
+                        // IconButton(
+                        //   icon: Icon(FeatherIcons.search),
+                        //   color: Theme.of(context).textTheme.bodyText1?.color,
+                        //   splashRadius: 24.0,
+                        //   onPressed: () {},
+                        // ),
 
-                  expandedHeight: _liveController.animation.value * 234.0,
+                        // Profile Icon
+                        Padding(
+                          padding: const EdgeInsets.only(right: 24.0),
+                          child: ProfileButton(
+                            child: ProfileImage(
+                              heroTag: "profile",
+                              name: firstName,
+                              backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
+                              badge: updateProvider.available,
+                              role: user.role,
+                            ),
+                          ),
+                        ),
+                      ],
 
-                  // Live Card
-                  flexibleSpace: FlexibleSpaceBar(
-                    background: Padding(
-                      padding: EdgeInsets.only(
-                        left: 24.0,
-                        right: 24.0,
-                        top: 58.0 + MediaQuery.of(context).padding.top,
-                        bottom: 52.0,
+                      expandedHeight: _liveController.animation.value * 234.0,
+
+                      // Live Card
+                      flexibleSpace: FlexibleSpaceBar(
+                        background: Padding(
+                          padding: EdgeInsets.only(
+                            left: 24.0,
+                            right: 24.0,
+                            top: 58.0 + MediaQuery.of(context).padding.top,
+                            bottom: 52.0,
+                          ),
+                          child: LiveCard(
+                            onTap: openLiveCard,
+                            controller: _liveController,
+                          ),
+                        ),
                       ),
-                      child: LiveCard(
-                        onTap: openLiveCard,
-                        controller: _liveController,
-                      ),
-                    ),
-                  ),
-                  shadowColor: AppColors.of(context).shadow,
+                      shadowColor: AppColors.of(context).shadow,
 
-                  // Filter Bar
-                  bottom: FilterBar(items: [
-                    FilterItem(label: "All".i18n),
-                    FilterItem(label: "Grades".i18n),
-                    FilterItem(label: "Messages".i18n),
-                    FilterItem(label: "Absences".i18n),
-                  ], controller: _filterController),
-                  pinned: true,
-                  floating: false,
-                  snap: false,
-                );
-              },
-            ),
-          ],
-          body: FilterView(
-            controller: _filterController,
-            builder: (context, activeData) => FutureBuilder<Widget>(
-              future: filterViewBuilder(context, activeData),
-              builder: (context, snapshot) => snapshot.data ?? Container(),
+                      // Filter Bar
+                      bottom: FilterBar(items: [
+                        FilterItem(label: "All".i18n),
+                        FilterItem(label: "Grades".i18n),
+                        FilterItem(label: "Messages".i18n),
+                        FilterItem(label: "Absences".i18n),
+                      ], controller: _filterController),
+                      pinned: true,
+                      floating: false,
+                      snap: false,
+                    );
+                  },
+                ),
+              ],
+              body: FilterView(
+                controller: _filterController,
+                builder: (context, activeData) => FutureBuilder<Widget>(
+                  future: filterViewBuilder(context, activeData),
+                  builder: (context, snapshot) => snapshot.data ?? Container(),
+                ),
+              ),
             ),
           ),
-        ),
+
+          // confetti 🎊
+          if (greeting == "happybirthday")
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: ConfettiWidget(
+                confettiController: _confettiController,
+                blastDirection: -pi / 2,
+                emissionFrequency: 0.01,
+                numberOfParticles: 80,
+                maxBlastForce: 100,
+                minBlastForce: 90,
+                gravity: 0.3,
+                minimumSize: const Size(5, 5),
+                maximumSize: const Size(20, 20),
+              ),
+            ),
+        ],
       ),
     );
   }
