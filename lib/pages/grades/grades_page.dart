@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/grade_provider.dart';
 import 'package:filcnaplo/api/providers/user_provider.dart';
@@ -82,7 +83,7 @@ class _GradesPageState extends State<GradesPage> {
         children: [
           Expanded(
             child: StatisticsTile(
-              title: Text(
+              title: AutoSizeText(
                 "subjectavg".i18n,
                 textAlign: TextAlign.center,
                 maxLines: 2,
@@ -94,10 +95,11 @@ class _GradesPageState extends State<GradesPage> {
           const SizedBox(width: 24.0),
           Expanded(
             child: StatisticsTile(
-              title: Text(
+              title: AutoSizeText(
                 "classavg".i18n,
                 textAlign: TextAlign.center,
                 maxLines: 2,
+                wrapWords: false,
                 overflow: TextOverflow.ellipsis,
               ),
               value: classAvg,

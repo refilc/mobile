@@ -361,7 +361,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
       // Homework
       case HomeFilter.homework:
-        homeworkProvider.homework.where((h) => h.deadline.isAfter(DateTime.now())).forEach((homework) {
+        final now = DateTime.now();
+        homeworkProvider.homework.where((h) => h.deadline.hour == 0 ? _sameDate(h.deadline, now) : h.deadline.isAfter(now)).forEach((homework) {
           items.add(DateWidget(
               date: homework.deadline.year != 0 ? homework.deadline : homework.date,
               widget: HomeworkTile(
@@ -465,13 +466,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             DateWidget(
               date: missedExams.first.date,
               widget: PanelButton(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                leading: Icon(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
+                leading: SizedBox(
+                    width: 36,
+                    height: 36,
+                    child: Icon(
                   FeatherIcons.slash,
                   color: AppColors.of(context).red.withOpacity(.75),
                   size: 28.0,
-                ),
-                title: Text("missed_exams".i18n.plural(missedExams.length).fill([missedExams.length])),
+                    )),
+                title: Text("missed_exams".plural(missedExams.length).fill([missedExams.length])),
                 trailing: const Icon(FeatherIcons.arrowRight),
                 onPressed: () => showRoundedModalBottomSheet(context,
                     child: Column(
