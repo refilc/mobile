@@ -58,6 +58,10 @@ class _AbsencesPageState extends State<AbsencesPage> {
     List<String> nameParts = user.name?.split(" ") ?? ["?"];
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
 
+    // experiment
+
+    /////////////
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(top: 12.0),
@@ -86,9 +90,12 @@ class _AbsencesPageState extends State<AbsencesPage> {
               ],
               automaticallyImplyLeading: false,
               shadowColor: AppColors.of(context).shadow.withOpacity(0.5),
-              title: Text(
-                "Absences".i18n,
-                style: TextStyle(color: AppColors.of(context).text, fontSize: 32.0, fontWeight: FontWeight.bold),
+              title: Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Text(
+                  "Absences".i18n,
+                  style: TextStyle(color: AppColors.of(context).text, fontSize: 32.0, fontWeight: FontWeight.bold),
+                ),
               ),
               bottom: FilterBar(items: [
                 //! DO NOT REORDER, IT WILL BREAK

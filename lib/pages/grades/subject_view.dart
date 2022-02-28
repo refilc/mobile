@@ -145,7 +145,7 @@ class _SubjectViewState extends State<SubjectView> {
         child: Container(
           height: 175.0,
           padding: const EdgeInsets.only(top: 18.0, right: 16.0, bottom: 4.0),
-          child: GradeGraph(subjectGrades, dayThreshold: 5),
+          child: GradeGraph(subjectGrades, dayThreshold: 5, classAvg: widget.classAverage),
         ),
       ),
     );

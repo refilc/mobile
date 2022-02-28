@@ -205,16 +205,19 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                       children: entries,
                     );
                   },
-                  child: (_controller.days?.length ?? 0) > 0
-                      ? DayTitle(controller: _tabController, dayTitle: dayTitle)
-                      : Text(
-                          "timetable".i18n,
-                          style: TextStyle(
-                            fontSize: 32.0,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.of(context).text,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: (_controller.days?.length ?? 0) > 0
+                        ? DayTitle(controller: _tabController, dayTitle: dayTitle)
+                        : Text(
+                            "timetable".i18n,
+                            style: TextStyle(
+                              fontSize: 32.0,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.of(context).text,
+                            ),
                           ),
-                        ),
+                  ),
                 ),
                 shadowColor: AppColors.of(context).shadow.withOpacity(0.5),
                 bottom: PreferredSize(

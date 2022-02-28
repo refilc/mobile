@@ -52,6 +52,7 @@ import 'package:filcnaplo_kreta_api/controllers/live_card_controller.dart';
 import 'package:filcnaplo_mobile_ui/common/hero_dialog_route.dart';
 import 'package:filcnaplo_mobile_ui/pages/timetable/timetable_page.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/updates/updates_view.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:provider/provider.dart';
@@ -100,11 +101,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     if (now.isBefore(DateTime(now.year, DateTime.august, 31)) && now.isAfter(DateTime(now.year, DateTime.june, 14))) {
       greeting = "goodrest";
       _confettiController = ConfettiController(duration: const Duration(seconds: 1));
-      Future.delayed(const Duration(seconds: 1)).then((value) => _confettiController?.play());
+      Future.delayed(const Duration(seconds: 1)).then((value) => mounted ? _confettiController?.play() : null);
     } else if (now.month == user.student?.birth.month && now.day == user.student?.birth.day) {
       greeting = "happybirthday";
       _confettiController = ConfettiController(duration: const Duration(seconds: 3));
-      Future.delayed(const Duration(seconds: 1)).then((value) => _confettiController?.play());
+      Future.delayed(const Duration(seconds: 1)).then((value) => mounted ? _confettiController?.play() : null);
     } else if (now.month == DateTime.december && now.day >= 24 && now.day <= 26) {
       greeting = "merryxmas";
     } else if (now.month == DateTime.january && now.day == 1) {
@@ -243,7 +244,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ),
 
           // confetti 🎊
-          if (_confettiController != null)
+          if (_confettiController != null && !kDebugMode)
             Align(
               alignment: Alignment.bottomCenter,
               child: ConfettiWidget(
@@ -471,9 +472,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     width: 36,
                     height: 36,
                     child: Icon(
-                  FeatherIcons.slash,
-                  color: AppColors.of(context).red.withOpacity(.75),
-                  size: 28.0,
+                      FeatherIcons.slash,
+                      color: AppColors.of(context).red.withOpacity(.75),
+                      size: 28.0,
                     )),
                 title: Text("missed_exams".plural(missedExams.length).fill([missedExams.length])),
                 trailing: const Icon(FeatherIcons.arrowRight),
