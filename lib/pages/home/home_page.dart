@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   late LiveCardController _liveController;
   late FilterController _filterController;
-  late ConfettiController _confettiController;
+  late ConfettiController? _confettiController;
 
   late String greeting;
   late String firstName;
@@ -95,15 +95,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
     _liveController = LiveCardController(context: context, vsync: this);
     _filterController = FilterController(itemCount: 4);
-    _confettiController = ConfettiController(duration: const Duration(seconds: 3));
-
-    Future.delayed(const Duration(seconds: 1)).then((value) => _confettiController.play());
 
     DateTime now = DateTime.now();
-    if (now.month == DateTime.june && now.day == 15) {
+    if (now.isBefore(DateTime(now.year, DateTime.august, 31)) && now.isAfter(DateTime(now.year, DateTime.june, 14))) {
       greeting = "goodrest";
+      _confettiController = ConfettiController(duration: const Duration(seconds: 1));
+      Future.delayed(const Duration(seconds: 1)).then((value) => _confettiController?.play());
     } else if (now.month == user.student?.birth.month && now.day == user.student?.birth.day) {
       greeting = "happybirthday";
+      _confettiController = ConfettiController(duration: const Duration(seconds: 3));
+      Future.delayed(const Duration(seconds: 1)).then((value) => _confettiController?.play());
     } else if (now.month == DateTime.december && now.day >= 24 && now.day <= 26) {
       greeting = "merryxmas";
     } else if (now.month == DateTime.january && now.day == 1) {
@@ -123,7 +124,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   void dispose() {
     // _filterController.dispose();
     _liveController.dispose();
-    _confettiController.dispose();
+    _confettiController?.dispose();
     super.dispose();
   }
 
@@ -242,11 +243,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ),
 
           // confetti 🎊
-          if (greeting == "happybirthday")
+          if (_confettiController != null)
             Align(
               alignment: Alignment.bottomCenter,
               child: ConfettiWidget(
-                confettiController: _confettiController,
+                confettiController: _confettiController!,
                 blastDirection: -pi / 2,
                 emissionFrequency: 0.01,
                 numberOfParticles: 80,
