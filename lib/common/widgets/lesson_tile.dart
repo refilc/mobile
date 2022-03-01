@@ -52,6 +52,13 @@ class LessonTile extends StatelessWidget {
       accent = AppColors.of(context).text.withOpacity(0.6);
     }
 
+    if (!lesson.studentPresence) {
+      subtiles.add(LessonSubtile(
+        type: LessonSubtileType.absence,
+        title: "absence".i18n,
+      ));
+    }
+
     if (lesson.homeworkId != "") {
       Homework homework = Provider.of<HomeworkProvider>(context, listen: false)
           .homework
@@ -80,8 +87,10 @@ class LessonTile extends StatelessWidget {
     String description = '';
     String room = '';
 
+    final cleanDesc = lesson.description.specialChars().toLowerCase().replaceAll(lesson.subject.name.specialChars().toLowerCase(), '');
+
     if (!swapDesc) {
-      if (lesson.description.specialChars().toLowerCase().replaceAll(lesson.subject.name.specialChars().toLowerCase(), '') != "") {
+      if (cleanDesc != "") {
         description = lesson.description;
       }
 
@@ -100,22 +109,21 @@ class LessonTile extends StatelessWidget {
     }
 
     return Material(
-      type: MaterialType.transparency,
+      color: fill ? accent.withOpacity(.25) : Colors.transparent,
+      borderRadius: BorderRadius.circular(12.0),
       child: Visibility(
         visible: lesson.subject.id != '' || lesson.isEmpty,
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 2.0),
+          padding: EdgeInsets.only(bottom: subtiles.isEmpty ? 0.0 : 12.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                tileColor: fill ? accent.withOpacity(.25) : const Color(0x00000000),
                 minVerticalPadding: 12.0,
                 dense: true,
                 onTap: onTap,
                 visualDensity: VisualDensity.compact,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
                 title: Text(
                   !lesson.isEmpty ? lesson.subject.name.capital() : "empty".i18n,
                   maxLines: 2,
@@ -153,8 +161,10 @@ class LessonTile extends StatelessWidget {
                             color: accent,
                           ),
                         ),
+
+                        // Current lesson indicator
                         Transform.translate(
-                          offset: const Offset(-12.0, 0.0),
+                          offset: const Offset(-12.0, -2.0),
                           child: Container(
                             decoration: BoxDecoration(
                               color: fillLeading ? Theme.of(context).colorScheme.secondary.withOpacity(.3) : const Color(0x00000000),
@@ -190,7 +200,10 @@ class LessonTile extends StatelessWidget {
                                   textAlign: TextAlign.center,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
-                                  style: TextStyle(fontWeight: FontWeight.w500, color: AppColors.of(context).text.withOpacity(.75)),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.of(context).text.withOpacity(.75),
+                                  ),
                                 ),
                               ),
                             ),
@@ -228,7 +241,7 @@ class LessonTile extends StatelessWidget {
   }
 }
 
-enum LessonSubtileType { homework, exam }
+enum LessonSubtileType { homework, exam, absence }
 
 class LessonSubtile extends StatelessWidget {
   const LessonSubtile({Key? key, this.onPressed, required this.title, required this.type}) : super(key: key);
@@ -239,34 +252,47 @@ class LessonSubtile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    IconData icon;
+    Color iconColor = AppColors.of(context).text;
+
+    switch (type) {
+      case LessonSubtileType.absence:
+        icon = FeatherIcons.slash;
+        iconColor = AppColors.of(context).red;
+        break;
+      case LessonSubtileType.exam:
+        icon = FeatherIcons.file;
+        break;
+      case LessonSubtileType.homework:
+        icon = FeatherIcons.home;
+        break;
+    }
+
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: InkWell(
         onTap: onPressed,
         borderRadius: BorderRadius.circular(6.0),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4.0),
-          child: Row(
-            children: [
-              Center(
-                child: SizedBox(
-                  width: 30.0,
-                  child: Icon(type == LessonSubtileType.homework ? FeatherIcons.home : FeatherIcons.file, size: 20.0),
+        child: Row(
+          children: [
+            Center(
+              child: SizedBox(
+                width: 30.0,
+                child: Icon(icon, color: iconColor.withOpacity(.75), size: 20.0),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20.0),
+                child: Text(
+                  title.escapeHtml(),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontWeight: FontWeight.w500, color: AppColors.of(context).text.withOpacity(.65)),
                 ),
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: Text(
-                    title.escapeHtml(),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
