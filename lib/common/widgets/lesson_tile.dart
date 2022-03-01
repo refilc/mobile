@@ -36,7 +36,6 @@ class LessonTile extends StatelessWidget {
     var now = DateTime.now();
     if (lesson.start.isBefore(now) && lesson.end.isAfter(now)) {
       fillLeading = true;
-      accent = Theme.of(context).colorScheme.secondary;
     }
 
     if (lesson.substituteTeacher != "") {
@@ -142,21 +141,38 @@ class LessonTile extends StatelessWidget {
                 minLeadingWidth: 34.0,
                 leading: AspectRatio(
                   aspectRatio: 1,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: fillLeading ? accent.withOpacity(.25) : const Color(0x00000000),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    child: Center(
-                      child: Text(
-                        lesson.lessonIndex + lessonIndexTrailing,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.w600,
-                          color: accent,
+                  child: Center(
+                    child: Stack(
+                      children: [
+                        Text(
+                          lesson.lessonIndex + lessonIndexTrailing,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 30.0,
+                            fontWeight: FontWeight.w600,
+                            color: accent,
+                          ),
                         ),
-                      ),
+                        Transform.translate(
+                          offset: const Offset(-12.0, 0.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: fillLeading ? Theme.of(context).colorScheme.secondary.withOpacity(.3) : const Color(0x00000000),
+                              borderRadius: BorderRadius.circular(12.0),
+                              boxShadow: [
+                                if (fillLeading)
+                                  BoxShadow(
+                                    color: Theme.of(context).colorScheme.secondary.withOpacity(.25),
+                                    blurRadius: 6.0,
+                                  )
+                              ],
+                            ),
+                            margin: const EdgeInsets.symmetric(vertical: 4.0),
+                            width: 4.0,
+                            height: double.infinity,
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 ),
