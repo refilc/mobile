@@ -124,6 +124,7 @@ class LessonTile extends StatelessWidget {
                 onTap: onTap,
                 visualDensity: VisualDensity.compact,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
                 title: Text(
                   !lesson.isEmpty ? lesson.subject.name.capital() : "empty".i18n,
                   maxLines: 2,
