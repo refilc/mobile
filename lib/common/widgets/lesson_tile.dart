@@ -78,7 +78,7 @@ class LessonTile extends StatelessWidget {
       if (exam.id != "") {
         subtiles.add(LessonSubtile(
           type: LessonSubtileType.exam,
-          title: exam.description,
+          title: exam.description != "" ? exam.description : exam.mode?.description ?? "exam".i18n,
           onPressed: () => ExamView.show(exam, context: context),
         ));
       }
@@ -108,134 +108,137 @@ class LessonTile extends StatelessWidget {
       description = lesson.room.replaceAll("_", " ");
     }
 
-    return Material(
-      color: fill ? accent.withOpacity(.25) : Colors.transparent,
-      borderRadius: BorderRadius.circular(12.0),
-      child: Visibility(
-        visible: lesson.subject.id != '' || lesson.isEmpty,
-        child: Padding(
-          padding: EdgeInsets.only(bottom: subtiles.isEmpty ? 0.0 : 12.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                minVerticalPadding: 12.0,
-                dense: true,
-                onTap: onTap,
-                visualDensity: VisualDensity.compact,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-                title: Text(
-                  !lesson.isEmpty ? lesson.subject.name.capital() : "empty".i18n,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15.5,
-                    color: AppColors.of(context).text.withOpacity(!lesson.isEmpty ? 1.0 : 0.5),
-                  ),
-                ),
-                subtitle: description != ""
-                    ? Text(
-                        description,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14.0,
-                        ),
-                        maxLines: 1,
-                        softWrap: false,
-                        overflow: TextOverflow.ellipsis,
-                      )
-                    : null,
-                minLeadingWidth: 34.0,
-                leading: AspectRatio(
-                  aspectRatio: 1,
-                  child: Center(
-                    child: Stack(
-                      children: [
-                        Text(
-                          lesson.lessonIndex + lessonIndexTrailing,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 30.0,
-                            fontWeight: FontWeight.w600,
-                            color: accent,
-                          ),
-                        ),
-
-                        // Current lesson indicator
-                        Transform.translate(
-                          offset: const Offset(-12.0, -2.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: fillLeading ? Theme.of(context).colorScheme.secondary.withOpacity(.3) : const Color(0x00000000),
-                              borderRadius: BorderRadius.circular(12.0),
-                              boxShadow: [
-                                if (fillLeading)
-                                  BoxShadow(
-                                    color: Theme.of(context).colorScheme.secondary.withOpacity(.25),
-                                    blurRadius: 6.0,
-                                  )
-                              ],
-                            ),
-                            margin: const EdgeInsets.symmetric(vertical: 4.0),
-                            width: 4.0,
-                            height: double.infinity,
-                          ),
-                        )
-                      ],
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 2.0),
+      child: Material(
+        color: fill ? accent.withOpacity(.25) : Colors.transparent,
+        borderRadius: BorderRadius.circular(12.0),
+        child: Visibility(
+          visible: lesson.subject.id != '' || lesson.isEmpty,
+          child: Padding(
+            padding: EdgeInsets.only(bottom: subtiles.isEmpty ? 0.0 : 12.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  minVerticalPadding: 12.0,
+                  dense: true,
+                  onTap: onTap,
+                  visualDensity: VisualDensity.compact,
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+                  title: Text(
+                    !lesson.isEmpty ? lesson.subject.name.capital() : "empty".i18n,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15.5,
+                      color: AppColors.of(context).text.withOpacity(!lesson.isEmpty ? 1.0 : 0.5),
                     ),
                   ),
-                ),
-                trailing: !lesson.isEmpty
-                    ? Row(
-                        mainAxisSize: MainAxisSize.min,
+                  subtitle: description != ""
+                      ? Text(
+                          description,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14.0,
+                          ),
+                          maxLines: 1,
+                          softWrap: false,
+                          overflow: TextOverflow.ellipsis,
+                        )
+                      : null,
+                  minLeadingWidth: 34.0,
+                  leading: AspectRatio(
+                    aspectRatio: 1,
+                    child: Center(
+                      child: Stack(
                         children: [
-                          if (!swapDesc)
-                            SizedBox(
-                              width: 52.0,
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 6.0),
-                                child: Text(
-                                  room,
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColors.of(context).text.withOpacity(.75),
+                          Text(
+                            lesson.lessonIndex + lessonIndexTrailing,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 30.0,
+                              fontWeight: FontWeight.w600,
+                              color: accent,
+                            ),
+                          ),
+
+                          // Current lesson indicator
+                          Transform.translate(
+                            offset: const Offset(-12.0, -2.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: fillLeading ? Theme.of(context).colorScheme.secondary.withOpacity(.3) : const Color(0x00000000),
+                                borderRadius: BorderRadius.circular(12.0),
+                                boxShadow: [
+                                  if (fillLeading)
+                                    BoxShadow(
+                                      color: Theme.of(context).colorScheme.secondary.withOpacity(.25),
+                                      blurRadius: 6.0,
+                                    )
+                                ],
+                              ),
+                              margin: const EdgeInsets.symmetric(vertical: 4.0),
+                              width: 4.0,
+                              height: double.infinity,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  trailing: !lesson.isEmpty
+                      ? Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (!swapDesc)
+                              SizedBox(
+                                width: 52.0,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 6.0),
+                                  child: Text(
+                                    room,
+                                    textAlign: TextAlign.center,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.of(context).text.withOpacity(.75),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              // Fix alignment hack
-                              const Opacity(child: Text("EE:EE"), opacity: 0),
-                              Text(
-                                DateFormat("H:mm").format(lesson.start) + "\n" + DateFormat("H:mm").format(lesson.end),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.of(context).text.withOpacity(.9),
+                            Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                // Fix alignment hack
+                                const Opacity(child: Text("EE:EE"), opacity: 0),
+                                Text(
+                                  DateFormat("H:mm").format(lesson.start) + "\n" + DateFormat("H:mm").format(lesson.end),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.of(context).text.withOpacity(.9),
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      )
-                    : null,
-              ),
+                              ],
+                            ),
+                          ],
+                        )
+                      : null,
+                ),
 
-              // Homework & Exams
-              ...subtiles,
-            ],
+                // Homework & Exams
+                ...subtiles,
+              ],
+            ),
           ),
-        ),
-        replacement: Padding(
-          padding: const EdgeInsets.only(top: 6.0),
-          child: PanelTitle(title: Text(lesson.name)),
+          replacement: Padding(
+            padding: const EdgeInsets.only(top: 6.0),
+            child: PanelTitle(title: Text(lesson.name)),
+          ),
         ),
       ),
     );

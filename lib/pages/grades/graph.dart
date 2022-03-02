@@ -126,7 +126,7 @@ class _GradeGraphState extends State<GradeGraph> {
     }
 
     // Horizontal line displaying the class average
-    if (widget.classAvg != null && settings.graphClassAvg) {
+    if (widget.classAvg != null && widget.classAvg! > 0.0 && settings.graphClassAvg) {
       extraLinesH.add(HorizontalLine(
         y: widget.classAvg!,
         color: AppColors.of(context).text.withOpacity(.75),

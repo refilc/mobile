@@ -8,18 +8,21 @@ extension Localization on String {
           "cancelled": "Cancelled",
           "substitution": "Substituted",
           "absence": "You were absent on this lesson",
+          "exam": "Exam"
         },
         "hu_hu": {
           "empty": "Lyukasóra",
           "cancelled": "Elmarad",
           "substitution": "Helyettesítés",
           "absence": "Hiányoztál ezen az órán",
+          "exam": "Dolgozat"
         },
         "de_de": {
           "empty": "Springstunde",
           "cancelled": "Abgesagte",
           "substitution": "Vertretene",
           "absence": "Sie waren in dieser Lektion nicht anwesend",
+          "exam": "Prüfung"
         }
       };
 
