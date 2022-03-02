@@ -64,7 +64,7 @@ class _AbsencesPageState extends State<AbsencesPage> {
     super.initState();
 
     timetableProvider = Provider.of<TimetableProvider>(context, listen: false);
-    timetableProvider.fetch(week: Week.fromId(3));
+    if (timetableProvider.lastFetched != Week.fromId(3)) timetableProvider.fetch(week: Week.fromId(3));
 
     filterController = FilterController(itemCount: 3);
   }

@@ -89,7 +89,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   late String greeting;
   late String firstName;
-  late bool showLiveCard;
 
   @override
   void initState() {
@@ -222,7 +221,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             bottom: 52.0,
                           ),
                           child: LiveCard(
-                            onTap: openLiveCard,
                             controller: _liveController,
                           ),
                         ),
@@ -270,22 +268,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ),
             ),
         ],
-      ),
-    );
-  }
-
-  void openLiveCard() {
-    Navigator.of(context, rootNavigator: true).push(
-      HeroDialogRoute(
-        builder: (context) => Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height / 2,
-              child: LiveCard(expanded: true, controller: _liveController),
-            ),
-          ),
-        ),
       ),
     );
   }
