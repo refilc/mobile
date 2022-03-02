@@ -14,6 +14,9 @@ extension ScreensLocalization on String {
           "stat_4": "Unexcused Delay",
           "min": "min",
           "hr": "hrs",
+          "Subjects": "Subjects",
+          "attention": "Attention!",
+          "attention_body": "Percentage calculations are only an approximation so they may not be accurate.",
         },
         "hu_hu": {
           "Absences": "Hiányzások",
@@ -26,6 +29,9 @@ extension ScreensLocalization on String {
           "stat_4": "Igazolatlan Késés",
           "min": "perc",
           "hr": "óra",
+          "Subjects": "Tantárgyak",
+          "attention": "Figyelem!",
+          "attention_body": "A százalékos számítások csak közelítések, ezért előfordulhat, hogy nem pontosak.",
         },
         "de_de": {
           "Absences": "Abwesenheiten",
@@ -38,6 +44,9 @@ extension ScreensLocalization on String {
           "stat_4": "Unentschuldigte Verspätung",
           "min": "min",
           "hr": "hrs",
+          "Subjects": "Fächer",
+          "attention": "Achtung!",
+          "attention_body": "Prozentberechnungen sind nur eine Annäherung und können daher ungenau sein.",
         },
       };
 

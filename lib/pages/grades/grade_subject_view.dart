@@ -23,8 +23,8 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:provider/provider.dart';
 import 'grades_page.i18n.dart';
 
-class SubjectView extends StatefulWidget {
-  const SubjectView(this.subject, {Key? key, this.classAverage = 0.0}) : super(key: key);
+class GradeSubjectView extends StatefulWidget {
+  const GradeSubjectView(this.subject, {Key? key, this.classAverage = 0.0}) : super(key: key);
 
   final Subject subject;
   final double classAverage;
@@ -34,10 +34,10 @@ class SubjectView extends StatefulWidget {
   }
 
   @override
-  State<SubjectView> createState() => _SubjectViewState();
+  State<GradeSubjectView> createState() => _GradeSubjectViewState();
 }
 
-class _SubjectViewState extends State<SubjectView> {
+class _GradeSubjectViewState extends State<GradeSubjectView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   // Controllers

@@ -23,7 +23,8 @@ class Empty extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int index = Random(DateTime.now().millisecondsSinceEpoch).nextInt(faces.length);
+    // make the face randomness a bit more constant (to avoid strokes)
+    int index = Random(DateTime.now().minute).nextInt(faces.length);
 
     return Center(
       child: Padding(

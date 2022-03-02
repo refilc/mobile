@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:filcnaplo_kreta_api/providers/exam_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/homework_provider.dart';
 import 'package:filcnaplo/theme.dart';
@@ -124,6 +127,9 @@ class LessonTile extends StatelessWidget {
                   minVerticalPadding: 12.0,
                   dense: true,
                   onTap: onTap,
+                  onLongPress: () {
+                    log(jsonEncode(lesson.json));
+                  },
                   visualDensity: VisualDensity.compact,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),

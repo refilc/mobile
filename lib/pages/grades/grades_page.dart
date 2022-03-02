@@ -14,9 +14,9 @@ import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_button.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/statistics_tile.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/subject_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/grade_subject_tile.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/graph.dart';
-import 'package:filcnaplo_mobile_ui/pages/grades/subject_view.dart';
+import 'package:filcnaplo_mobile_ui/pages/grades/grade_subject_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:filcnaplo/utils/color.dart';
@@ -55,8 +55,8 @@ class _GradesPageState extends State<GradesPage> {
 
       if (avg != 0) subjectAvgs.add(avg);
 
-      return SubjectTile(subject, average: avg, groupAverage: classAverage, onTap: () {
-        SubjectView(subject, classAverage: classAverage).push(context, root: true);
+      return GradeSubjectTile(subject, average: avg, groupAverage: classAverage, onTap: () {
+        GradeSubjectView(subject, classAverage: classAverage).push(context, root: true);
       });
     }));
 
@@ -203,7 +203,7 @@ class _GradesPageState extends State<GradesPage> {
                 if (subjectTiles.isNotEmpty) {
                   EdgeInsetsGeometry panelPadding = const EdgeInsets.symmetric(horizontal: 24.0);
 
-                  if (subjectTiles[index].runtimeType == SubjectTile) {
+                  if (subjectTiles[index].runtimeType == GradeSubjectTile) {
                     return Padding(
                         padding: panelPadding,
                         child: PanelBody(
