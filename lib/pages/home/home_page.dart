@@ -488,7 +488,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Future<Widget> filterViewBuilder(context, int activeData) async {
     HomeFilter activeFilter = HomeFilter.values[activeData];
 
-    List<Widget> filterWidgets = sortDateWidgets(context, dateWidgets: await getFilterWidgets(activeFilter));
+    List<Widget> filterWidgets = sortDateWidgets(context, dateWidgets: await getFilterWidgets(activeFilter), showDivider: true);
 
     return Padding(
       padding: const EdgeInsets.only(top: 12.0),
@@ -522,6 +522,7 @@ List<Widget> sortDateWidgets(
   BuildContext context, {
   required List<DateWidget> dateWidgets,
   bool showTitle = true,
+  bool showDivider = false,
   EdgeInsetsGeometry? padding,
 }) {
   dateWidgets.sort((a, b) => -a.date.compareTo(b.date));
@@ -618,7 +619,7 @@ List<Widget> sortDateWidgets(
   final _now = DateTime.now();
   final now = DateTime(_now.year, _now.month, _now.day).subtract(const Duration(seconds: 1));
 
-  if (items.any((i) => i.date.isBefore(now)) && items.any((i) => i.date.isAfter(now))) {
+  if (showDivider && items.any((i) => i.date.isBefore(now)) && items.any((i) => i.date.isAfter(now))) {
     items.add(
       DateWidget(
         date: now,
