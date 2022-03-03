@@ -40,6 +40,7 @@ extension SettingsLocalization on String {
           "data_collected": "Data collected: Platform (eg. Android), App version (eg. 3.0.0), Unique Install Identifier",
           "Analytics": "Analytics",
           "Anonymous Usage Analytics": "Anonymous Usage Analytics",
+          "graph_class_avg": "Display class average on graph",
         },
         "hu_hu": {
           "personal_details": "Személyes információk",
@@ -78,6 +79,7 @@ extension SettingsLocalization on String {
           "data_collected": "Gyűjtött adat: Platform (pl. Android), App verzió (pl. 3.0.0), Egyedi telepítési azonosító",
           "Analytics": "Analitika",
           "Anonymous Usage Analytics": "Névtelen használási analitika",
+          "graph_class_avg": "Osztályátlag a grafikonon",
         },
         "de_de": {
           "personal_details": "Persönliche Angaben",
@@ -116,6 +118,7 @@ extension SettingsLocalization on String {
           "data_collected": "Erhobene Daten: Plattform (z.B. Android), App version (z.B. 3.0.0), Eindeutige Installationskennung",
           "Analytics": "Analytik",
           "Anonymous Usage Analytics": "Anonyme Nutzungsanalyse",
+          "graph_class_avg": "Klassendurchschnitt in der Grafik",
         },
       };
 

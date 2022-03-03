@@ -356,6 +356,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           title: Text("grade_colors".i18n),
                           leading: const Icon(FeatherIcons.star),
                         ),
+                        Material(
+                          type: MaterialType.transparency,
+                          child: SwitchListTile(
+                            contentPadding: const EdgeInsets.only(left: 12.0),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+                            title: Text("graph_class_avg".i18n, style: const TextStyle(fontWeight: FontWeight.w500)),
+                            onChanged: (v) => settings.update(context, graphClassAvg: v),
+                            value: settings.graphClassAvg,
+                            activeColor: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
                       ],
                     ),
                   ),

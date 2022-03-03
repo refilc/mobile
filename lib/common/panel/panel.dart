@@ -47,7 +47,7 @@ class PanelTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 14.0, right: 14.0, bottom: 8.0),
+      padding: const EdgeInsets.only(left: 14.0, bottom: 8.0),
       child: DefaultTextStyle(
         style: Theme.of(context).textTheme.subtitle2!.copyWith(fontWeight: FontWeight.w600, color: AppColors.of(context).text.withOpacity(0.65)),
         child: title,

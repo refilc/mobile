@@ -12,10 +12,11 @@ import 'package:provider/provider.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/certification_tile.i18n.dart';
 
 class GradeGraph extends StatefulWidget {
-  const GradeGraph(this.data, {Key? key, this.dayThreshold = 7}) : super(key: key);
+  const GradeGraph(this.data, {Key? key, this.dayThreshold = 7, this.classAvg}) : super(key: key);
 
   final List<Grade> data;
   final int dayThreshold;
+  final double? classAvg;
 
   @override
   _GradeGraphState createState() => _GradeGraphState();
@@ -62,7 +63,8 @@ class _GradeGraphState extends State<GradeGraph> {
 
     List<FlSpot> subjectSpots = [];
     List<FlSpot> ghostSpots = [];
-    List<VerticalLine> extraLines = [];
+    List<VerticalLine> extraLinesV = [];
+    List<HorizontalLine> extraLinesH = [];
 
     // Filter data
     List<Grade> data = widget.data
@@ -102,16 +104,17 @@ class _GradeGraphState extends State<GradeGraph> {
       final maxX = ghostSpots.isNotEmpty ? ghostSpots.first.x : 0;
       final x = halfYearGrade.writeDate.month + (halfYearGrade.writeDate.day / 31) + ((halfYearGrade.writeDate.year - data.last.writeDate.year) * 12);
       if (x <= maxX) {
-        extraLines.add(
+        extraLinesV.add(
           VerticalLine(
             x: x,
             strokeWidth: 3.0,
-            color: AppColors.of(context).text.withOpacity(.75),
+            color: AppColors.of(context).red.withOpacity(.75),
             label: VerticalLineLabel(
-              labelResolver: (_) => "mid".i18n,
+              labelResolver: (_) => " " + "mid".i18n + " ",
               show: true,
               alignment: Alignment.topLeft,
               style: TextStyle(
+                backgroundColor: AppColors.of(context).highlight,
                 color: AppColors.of(context).text,
                 fontSize: 16.0,
                 fontWeight: FontWeight.w600,
@@ -122,6 +125,14 @@ class _GradeGraphState extends State<GradeGraph> {
       }
     }
 
+    // Horizontal line displaying the class average
+    if (widget.classAvg != null && widget.classAvg! > 0.0 && settings.graphClassAvg) {
+      extraLinesH.add(HorizontalLine(
+        y: widget.classAvg!,
+        color: AppColors.of(context).text.withOpacity(.75),
+      ));
+    }
+
     // LineChart is really cute because it tries to render it's contents outside of it's rect.
     return ClipRect(
       child: SizedBox(
@@ -130,7 +141,7 @@ class _GradeGraphState extends State<GradeGraph> {
                 padding: const EdgeInsets.only(top: 8.0, right: 8.0),
                 child: LineChart(
                   LineChartData(
-                    extraLinesData: ExtraLinesData(verticalLines: extraLines),
+                    extraLinesData: ExtraLinesData(verticalLines: extraLinesV, horizontalLines: extraLinesH),
                     lineBarsData: [
                       LineChartBarData(
                         preventCurveOverShooting: true,
