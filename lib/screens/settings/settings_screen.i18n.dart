@@ -41,6 +41,11 @@ extension SettingsLocalization on String {
           "Analytics": "Analytics",
           "Anonymous Usage Analytics": "Anonymous Usage Analytics",
           "graph_class_avg": "Display class average on graph",
+          "goodstudent": "Good student mode",
+          "attention": "Attention!",
+          "goodstudent_disclaimer": "Same in English.",
+          "understand": "I understand",
+          "secret": "Secret Settings",
         },
         "hu_hu": {
           "personal_details": "Személyes információk",
@@ -80,6 +85,12 @@ extension SettingsLocalization on String {
           "Analytics": "Analitika",
           "Anonymous Usage Analytics": "Névtelen használási analitika",
           "graph_class_avg": "Osztályátlag a grafikonon",
+          "goodstudent": "Jó tanuló mód",
+          "attention": "Figyelem!",
+          "goodstudent_disclaimer":
+              "A Filc Napló® Informatikai Zrt. minden felelősséget elhárít a funkció használatával kapcsolatban.\n\n(Értsd: ha az anyád megver, mert megtévesztő ábrákat mutattál neki, azért csakis magadadat hibáztathatod.)",
+          "understand": "Értem",
+          "secret": "Titkos Beállítások",
         },
         "de_de": {
           "personal_details": "Persönliche Angaben",
@@ -119,6 +130,11 @@ extension SettingsLocalization on String {
           "Analytics": "Analytik",
           "Anonymous Usage Analytics": "Anonyme Nutzungsanalyse",
           "graph_class_avg": "Klassendurchschnitt in der Grafik",
+          "goodstudent": "Guter Student Modus",
+          "attention": "Achtung!",
+          "goodstudent_disclaimer": "Same in English.",
+          "understand": "Ich verstehe",
+          "secret": "Geheime Einstellungen",
         },
       };
 

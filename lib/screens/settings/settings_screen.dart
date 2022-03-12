@@ -14,6 +14,7 @@ import 'package:filcnaplo/models/settings.dart';
 import 'package:filcnaplo/models/user.dart';
 import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_kreta_api/client/client.dart';
+import 'package:filcnaplo_mobile_ui/common/action_button.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_sheet_menu/bottom_sheet_menu.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_sheet_menu/bottom_sheet_menu_item.dart';
 import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
@@ -46,6 +47,7 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   int devmodeCountdown = 3;
+  bool ss = false;
 
   late UserProvider user;
   late UpdateProvider updateProvider;
@@ -192,13 +194,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               centerTitle: true,
               titlePadding: const EdgeInsets.only(bottom: 14.0, left: 52.0, right: 48.0),
-              title: Text(
-                user.name ?? "?",
-                maxLines: 1,
-                softWrap: false,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600, color: AppColors.of(context).text),
+              title: GestureDetector(
+                onDoubleTap: () => setState(() => ss = true),
+                child: Text(
+                  user.name ?? "?",
+                  maxLines: 1,
+                  softWrap: false,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600, color: AppColors.of(context).text),
+                ),
               ),
             ),
           ),
@@ -315,6 +320,44 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                   ),
                 ),
+
+                // Secret Settings
+                if (ss)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
+                    child: Panel(
+                      title: Text("secret".i18n),
+                      child: Column(
+                        children: [
+                          Material(
+                            type: MaterialType.transparency,
+                            child: SwitchListTile(
+                              contentPadding: const EdgeInsets.only(left: 12.0),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+                              title: Text("goodstudent".i18n, style: const TextStyle(fontWeight: FontWeight.w500)),
+                              onChanged: (v) {
+                                settings.update(context, goodStudent: v);
+
+                                if (v) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+                                      title: Text("attention".i18n),
+                                      content: Text("goodstudent_disclaimer".i18n),
+                                      actions: [ActionButton(label: "understand".i18n, onTap: () => Navigator.of(context).pop())],
+                                    ),
+                                  );
+                                }
+                              },
+                              value: settings.goodStudent,
+                              activeColor: Theme.of(context).colorScheme.secondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
 
                 // Theme Settings
                 Padding(
