@@ -50,7 +50,6 @@ import 'package:filcnaplo_mobile_ui/common/widgets/note_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/note_view.dart';
 import 'package:filcnaplo_mobile_ui/pages/home/live_card/live_card.dart';
 import 'package:filcnaplo_kreta_api/controllers/live_card_controller.dart';
-import 'package:filcnaplo_mobile_ui/common/hero_dialog_route.dart';
 import 'package:filcnaplo_mobile_ui/pages/timetable/timetable_page.dart';
 import 'package:filcnaplo_mobile_ui/screens/navigation/navigation_screen.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/updates/updates_view.dart';

@@ -50,6 +50,17 @@ class ProgressPainter extends CustomPainter {
 
     if (width <= 0) return;
 
+    // Glow effect
+    Path path = Path();
+    path.addRRect(
+      RRect.fromRectAndRadius(
+        Rect.fromLTWH(-1, -1, width + 2, height + 2),
+        const Radius.circular(45.0),
+      ),
+    );
+    canvas.drawShadow(path, backgroundColor, 3.0, false);
+
+    // Slider
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         Rect.fromLTWH(0, 0, width, height),

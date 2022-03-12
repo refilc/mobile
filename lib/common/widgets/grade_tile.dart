@@ -125,6 +125,7 @@ class GradeValueWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isSubjectView = SubjectGradesContainer.of(context) != null;
+    SettingsProvider settings = Provider.of<SettingsProvider>(context, listen: false);
 
     Color color = gradeColor(context: context, value: value.value);
     Widget valueText;
@@ -151,15 +152,20 @@ class GradeValueWidget extends StatelessWidget {
     } else if (value.value != 0) {
       valueText = Stack(alignment: Alignment.topRight, children: [
         Text(
-          value.value.toString(),
+          !settings.goodStudent ? value.value.toString() : "5",
           textAlign: TextAlign.center,
-          style: TextStyle(fontWeight: value.weight == 50 ? FontWeight.w600 : FontWeight.bold, fontSize: size, color: color, shadows: [
-            if (value.weight == 200)
-              Shadow(
-                color: color.withOpacity(.4),
-                offset: const Offset(-4, -3),
-              )
-          ]),
+          style: TextStyle(
+            fontWeight: value.weight == 50 ? FontWeight.w600 : FontWeight.bold,
+            fontSize: size,
+            color: !settings.goodStudent ? color : gradeColor(context: context, value: 5),
+            shadows: [
+              if (value.weight == 200)
+                Shadow(
+                  color: (!settings.goodStudent ? color : gradeColor(context: context, value: 5)).withOpacity(.4),
+                  offset: const Offset(-4, -3),
+                )
+            ],
+          ),
         ),
         if (complemented)
           Transform.translate(

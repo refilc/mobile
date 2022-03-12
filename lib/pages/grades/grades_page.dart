@@ -76,8 +76,10 @@ class _GradesPageState extends State<GradesPage> {
       );
     }
 
-    double subjectAvg = subjectAvgs.fold(0.0, (double a, double b) => a + b) / subjectAvgs.length;
-    double classAvg = gradeProvider.classAverages.map((e) => e.average).fold(0.0, (double a, double b) => a + b) / gradeProvider.classAverages.length;
+    double subjectAvg = subjectAvgs.isNotEmpty ? subjectAvgs.fold(0.0, (double a, double b) => a + b) / subjectAvgs.length : 0.0;
+    final double classAvg = gradeProvider.classAverages.isNotEmpty
+        ? gradeProvider.classAverages.map((e) => e.average).fold(0.0, (double a, double b) => a + b) / gradeProvider.classAverages.length
+        : 0.0;
 
     if (subjectAvg > 0) {
       tiles.add(Row(
@@ -128,6 +130,7 @@ class _GradesPageState extends State<GradesPage> {
     final double totalClassAvg = gradeProvider.classAverages.isEmpty
         ? 0.0
         : gradeProvider.classAverages.map((e) => e.average).fold(0.0, (double a, double b) => a + b) / gradeProvider.classAverages.length;
+
     yearlyGraph = Padding(
       padding: const EdgeInsets.only(top: 12.0, bottom: 24.0),
       child: Panel(
@@ -137,8 +140,8 @@ class _GradesPageState extends State<GradesPage> {
             Text("annual_average".i18n),
             Row(
               children: [
-                if (totalClassAvg >= 1.0) AverageDisplay(average: totalClassAvg, border: true),
-                const SizedBox(width: 4.0),
+                // if (totalClassAvg >= 1.0) AverageDisplay(average: totalClassAvg, border: true),
+                // const SizedBox(width: 4.0),
                 if (gradeProvider.grades.where((e) => e.type == GradeType.midYear).isNotEmpty)
                   AverageDisplay(average: AverageHelper.averageEvals(gradeProvider.grades.where((e) => e.type == GradeType.midYear).toList())),
               ],
