@@ -2,11 +2,12 @@ import 'package:filcnaplo/theme.dart';
 import 'package:flutter/material.dart';
 
 class Panel extends StatelessWidget {
-  const Panel({Key? key, this.child, this.title, this.padding}) : super(key: key);
+  const Panel({Key? key, this.child, this.title, this.padding, this.hasShadow = true}) : super(key: key);
 
   final Widget? child;
   final Widget? title;
   final EdgeInsetsGeometry? padding;
+  final bool hasShadow;
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +25,12 @@ class Panel extends StatelessWidget {
               borderRadius: BorderRadius.circular(14.0),
               color: Theme.of(context).backgroundColor,
               boxShadow: [
-                BoxShadow(
-                  offset: const Offset(0, 21),
-                  blurRadius: 23.0,
-                  color: AppColors.of(context).shadow,
-                )
+                if (hasShadow)
+                  BoxShadow(
+                    offset: const Offset(0, 21),
+                    blurRadius: 23.0,
+                    color: AppColors.of(context).shadow,
+                  )
               ],
             ),
             padding: padding ?? const EdgeInsets.all(8.0),

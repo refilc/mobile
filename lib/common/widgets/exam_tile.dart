@@ -22,14 +22,17 @@ class ExamTile extends StatelessWidget {
         contentPadding: const EdgeInsets.only(left: 8.0, right: 12.0),
         onTap: onTap,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-        leading: Padding(
-          padding: const EdgeInsets.only(top: 2.0),
-          child: Icon(
-            SubjectIcon.lookup(subject: Subject.fromString(exam.subjectName)),
-            size: 28.0,
-            color: AppColors.of(context).text.withOpacity(.75),
-          ),
-        ),
+        leading: SizedBox(
+            width: 44,
+            height: 44,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 2.0),
+              child: Icon(
+                SubjectIcon.lookup(subject: Subject.fromString(exam.subjectName)),
+                size: 28.0,
+                color: AppColors.of(context).text.withOpacity(.75),
+              ),
+            )),
         title: Text(
           exam.description != "" ? exam.description : (exam.mode?.description ?? "Számonkérés"),
           maxLines: 2,

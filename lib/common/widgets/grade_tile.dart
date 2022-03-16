@@ -79,9 +79,15 @@ class GradeTile extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         leading: isSubjectView
             ? GradeValueWidget(grade.value)
-            : Padding(
-                padding: leadingPadding,
-                child: Icon(SubjectIcon.lookup(subject: grade.subject), size: 28.0, color: AppColors.of(context).text.withOpacity(.75)),
+            : SizedBox(
+                width: 44,
+                height: 44,
+                child: Center(
+                  child: Padding(
+                    padding: leadingPadding,
+                    child: Icon(SubjectIcon.lookup(subject: grade.subject), size: 28.0, color: AppColors.of(context).text.withOpacity(.75)),
+                  ),
+                ),
               ),
         title: Text(
           title,

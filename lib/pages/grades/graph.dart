@@ -110,7 +110,7 @@ class _GradeGraphState extends State<GradeGraph> {
             strokeWidth: 3.0,
             color: AppColors.of(context).red.withOpacity(.75),
             label: VerticalLineLabel(
-              labelResolver: (_) => " " + "mid".i18n + " ",
+              labelResolver: (_) => " " + "mid".i18n + " ​", // <- zwsp for padding
               show: true,
               alignment: Alignment.topLeft,
               style: TextStyle(
@@ -254,7 +254,11 @@ class _GradeGraphState extends State<GradeGraph> {
 
                           return title.toUpperCase();
                         },
-                        interval: ghostSpots.length > 13 ? 2 : 1,
+                        interval: () {
+                          List<Grade> tData = ghostData.isNotEmpty ? ghostData : data;
+                          tData.sort((a, b) => a.writeDate.compareTo(b.writeDate));
+                          return tData.first.writeDate.add(const Duration(days: 120)).isBefore(tData.last.writeDate) ? 2.0 : 1.0;
+                        }(),
                       ),
                       leftTitles: SideTitles(
                         showTitles: true,

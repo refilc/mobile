@@ -22,6 +22,7 @@ class _MessageViewState extends State<MessageView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leadingWidth: 64.0,
         leading: BackButton(color: AppColors.of(context).text),
         elevation: 0,
         actions: const [

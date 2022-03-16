@@ -15,34 +15,41 @@ class AttachmentTile extends StatelessWidget {
     return FutureBuilder<String>(
       future: attachment.download(context),
       builder: (context, snapshot) {
-        return snapshot.hasData
-            ? Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12.0),
-                  child: Material(
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                          builder: (context) => ImageView(snapshot.data!),
-                        ));
+        if (snapshot.hasData) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12.0),
+              child: Material(
+                child: InkWell(
+                  onTap: () {
+                    showModalBottomSheet(
+                      useRootNavigator: true,
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (context) {
+                        return ImageView(snapshot.data!);
                       },
-                      child: Ink.image(
-                        image: FileImage(File(snapshot.data ?? "")),
-                        height: 200.0,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
+                    );
+                  },
+                  child: Ink.image(
+                    image: FileImage(File(snapshot.data ?? "")),
+                    height: 200.0,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
                   ),
+                  borderRadius: BorderRadius.circular(12.0),
                 ),
-              )
-            : Center(
-                child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: CircularProgressIndicator(color: Theme.of(context).colorScheme.secondary),
-              ));
+              ),
+            ),
+          );
+        } else {
+          return Center(
+              child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: CircularProgressIndicator(color: Theme.of(context).colorScheme.secondary),
+          ));
+        }
       },
     );
   }
