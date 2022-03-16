@@ -37,7 +37,8 @@ class ChangedLessonTile extends StatelessWidget {
         onTap: onTap,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         leading: SizedBox(
-          width: 30.0,
+          width: 44.0,
+          height: 44.0,
           child: Center(
             child: Text(
               lesson.lessonIndex + lessonIndexTrailing,

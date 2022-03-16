@@ -2,16 +2,14 @@
 import 'dart:math';
 
 import 'package:filcnaplo/theme.dart';
+import 'package:flutter/foundation.dart';
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
 import 'package:filcnaplo/api/providers/sync.dart';
 import 'package:confetti/confetti.dart';
-import 'package:filcnaplo/api/providers/update_provider.dart';
-import 'package:filcnaplo/api/providers/sync.dart';
 import 'package:filcnaplo/helpers/subject_icon.dart';
 import 'package:filcnaplo/models/settings.dart';
-import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_kreta_api/models/absence.dart';
 import 'package:filcnaplo_kreta_api/models/lesson.dart';
 import 'package:filcnaplo_kreta_api/providers/absence_provider.dart';
@@ -51,11 +49,9 @@ import 'package:filcnaplo_mobile_ui/common/widgets/note_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/note_view.dart';
 import 'package:filcnaplo_mobile_ui/pages/home/live_card/live_card.dart';
 import 'package:filcnaplo_kreta_api/controllers/live_card_controller.dart';
-import 'package:filcnaplo_mobile_ui/common/hero_dialog_route.dart';
 import 'package:filcnaplo_mobile_ui/pages/timetable/timetable_page.dart';
 import 'package:filcnaplo_mobile_ui/screens/navigation/navigation_screen.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/updates/updates_view.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:provider/provider.dart';
@@ -86,19 +82,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late EventProvider eventProvider;
 
   late LiveCardController _liveController;
-  late FilterController _filterController;
+  late PageController _pageController;
   ConfettiController? _confettiController;
 
   late String greeting;
   late String firstName;
-  late LiveCardController _liveController;
-  late PageController _pageController;
+
   List<String> listOrder = ['A', 'B', 'C', 'D'];
 
   @override
   void initState() {
     super.initState();
-    
+
     _tabController = TabController(length: 4, vsync: this);
     _pageController = PageController();
     user = Provider.of<UserProvider>(context, listen: false);
@@ -141,7 +136,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     _pageController.dispose();
     _tabController.dispose();
     _confettiController?.dispose();
-    
+
     super.dispose();
   }
 
@@ -164,155 +159,161 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(top: 12.0),
-        child: NestedScrollView(
-            physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-            headerSliverBuilder: (context, _) => [
-                  AnimatedBuilder(
-                    animation: _liveController.animation,
-                    builder: (context, child) {
-                      return SliverAppBar(
-                        automaticallyImplyLeading: false,
-                        centerTitle: false,
-                        titleSpacing: 0.0,
-                        // Welcome text
-                        title: Padding(
-                          padding: const EdgeInsets.only(left: 24.0),
-                          child: Text(
-                            greeting.i18n.fill([firstName]),
-                            overflow: TextOverflow.fade,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.0,
-                              color: Theme.of(context).textTheme.bodyText1?.color,
-                            ),
-                          ),
-                        ),
-                        actions: [
-                          // TODO: Search Button
-                          // IconButton(
-                          //   icon: Icon(FeatherIcons.search),
-                          //   color: Theme.of(context).textTheme.bodyText1?.color,
-                          //   splashRadius: 24.0,
-                          //   onPressed: () {},
-                          // ),
-
-                          // Profile Icon
-                          Padding(
-                            padding: const EdgeInsets.only(right: 24.0),
-                            child: ProfileButton(
-                              child: ProfileImage(
-                                heroTag: "profile",
-                                name: firstName,
-                                backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
-                                badge: updateProvider.available,
-                                role: user.role,
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 12.0),
+            child: NestedScrollView(
+                physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                headerSliverBuilder: (context, _) => [
+                      AnimatedBuilder(
+                        animation: _liveController.animation,
+                        builder: (context, child) {
+                          return SliverAppBar(
+                            automaticallyImplyLeading: false,
+                            centerTitle: false,
+                            titleSpacing: 0.0,
+                            // Welcome text
+                            title: Padding(
+                              padding: const EdgeInsets.only(left: 24.0),
+                              child: Text(
+                                greeting.i18n.fill([firstName]),
+                                overflow: TextOverflow.fade,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18.0,
+                                  color: Theme.of(context).textTheme.bodyText1?.color,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                            actions: [
+                              // TODO: Search Button
+                              // IconButton(
+                              //   icon: Icon(FeatherIcons.search),
+                              //   color: Theme.of(context).textTheme.bodyText1?.color,
+                              //   splashRadius: 24.0,
+                              //   onPressed: () {},
+                              // ),
 
-                        expandedHeight: _liveController.animation.value * 234.0,
+                              // Profile Icon
+                              Padding(
+                                padding: const EdgeInsets.only(right: 24.0),
+                                child: ProfileButton(
+                                  child: ProfileImage(
+                                    heroTag: "profile",
+                                    name: firstName,
+                                    backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
+                                    badge: updateProvider.available,
+                                    role: user.role,
+                                  ),
+                                ),
+                              ),
+                            ],
 
-                        // Live Card
-                        flexibleSpace: FlexibleSpaceBar(
-                          background: LiveCard(
-                            onTap: openLiveCard,
-                            controller: _liveController,
-                          ),
-                        ),
-                        shadowColor: Colors.black,
+                            expandedHeight: _liveController.animation.value * 234.0,
 
-                        // Filter Bar
-                        bottom: FilterBar(
-                          items: [
-                            Tab(text: "All".i18n),
-                            Tab(text: "Grades".i18n),
-                            Tab(text: "Messages".i18n),
-                            Tab(text: "Absences".i18n),
-                          ],
-                          controller: _tabController,
-                          onTap: (i) async {
-                            int selectedPage = _pageController.page!.round();
+                            // Live Card
+                            flexibleSpace: FlexibleSpaceBar(
+                              background: Padding(
+                                padding: EdgeInsets.only(
+                                  left: 24.0,
+                                  right: 24.0,
+                                  top: 58.0 + MediaQuery.of(context).padding.top,
+                                  bottom: 52.0,
+                                ),
+                                child: LiveCard(
+                                  controller: _liveController,
+                                ),
+                              ),
+                            ),
+                            shadowColor: Colors.black,
 
-                            if (i == selectedPage) return;
-                            if (_pageController.page?.roundToDouble() != _pageController.page) {
-                              _pageController.animateToPage(i, curve: Curves.easeIn, duration: kTabScrollDuration);
-                              return;
-                            }
+                            // Filter Bar
+                            bottom: FilterBar(
+                              items: [
+                                Tab(text: "All".i18n),
+                                Tab(text: "Grades".i18n),
+                                Tab(text: "Messages".i18n),
+                                Tab(text: "Absences".i18n),
+                              ],
+                              controller: _tabController,
+                              onTap: (i) async {
+                                int selectedPage = _pageController.page!.round();
 
-                            // swap current page with target page
-                            setState(() {
-                              _pageController.jumpToPage(i);
-                              String currentList = listOrder[selectedPage];
-                              listOrder[selectedPage] = listOrder[i];
-                              listOrder[i] = currentList;
-                            });
-                          },
-                        ),
-                        pinned: true,
-                        floating: false,
-                        snap: false,
-                      );
+                                if (i == selectedPage) return;
+                                if (_pageController.page?.roundToDouble() != _pageController.page) {
+                                  _pageController.animateToPage(i, curve: Curves.easeIn, duration: kTabScrollDuration);
+                                  return;
+                                }
+
+                                // swap current page with target page
+                                setState(() {
+                                  _pageController.jumpToPage(i);
+                                  String currentList = listOrder[selectedPage];
+                                  listOrder[selectedPage] = listOrder[i];
+                                  listOrder[i] = currentList;
+                                });
+                              },
+                            ),
+                            pinned: true,
+                            floating: false,
+                            snap: false,
+                          );
+                        },
+                      ),
+                    ],
+                body: Padding(
+                  padding: const EdgeInsets.only(top: 12.0),
+                  child: NotificationListener<ScrollNotification>(
+                    onNotification: (notification) {
+                      // from flutter source
+                      if (notification is ScrollUpdateNotification && !_tabController.indexIsChanging) {
+                        if ((_pageController.page! - _tabController.index).abs() > 1.0) {
+                          _tabController.index = _pageController.page!.floor();
+                        }
+                        _tabController.offset = (_pageController.page! - _tabController.index).clamp(-1.0, 1.0);
+                      } else if (notification is ScrollEndNotification) {
+                        _tabController.index = _pageController.page!.round();
+                        if (!_tabController.indexIsChanging) _tabController.offset = (_pageController.page! - _tabController.index).clamp(-1.0, 1.0);
+                      }
+                      return false;
                     },
+                    child: PageView.custom(
+                      controller: _pageController,
+                      childrenDelegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) {
+                            return FutureBuilder<List<DateWidget>>(
+                              key: ValueKey<String>(listOrder[index]),
+                              future: getFilterWidgets(HomeFilter.values[index]),
+                              builder: (context, dateWidgets) => dateWidgets.data != null
+                                  ? RefreshIndicator(
+                                      color: Theme.of(context).colorScheme.secondary,
+                                      onRefresh: () => syncAll(context),
+                                      child: ImplicitlyAnimatedList<Widget>(
+                                        items: sortDateWidgets(context, dateWidgets: dateWidgets.data!),
+                                        itemBuilder: _itemBuilder,
+                                        spawnIsolate: false,
+                                        areItemsTheSame: (a, b) => a.key == b.key,
+                                        physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                                      ))
+                                  : Container(),
+                            );
+                          },
+                          childCount: 4,
+                          findChildIndexCallback: (Key key) {
+                            final ValueKey<String> valueKey = key as ValueKey<String>;
+                            final String data = valueKey.value;
+                            return listOrder.indexOf(data);
+                          }),
+                      physics: const PageScrollPhysics().applyTo(const BouncingScrollPhysics()),
+                    ),
                   ),
-                ],
-            body: Padding(
-              padding: const EdgeInsets.only(top: 12.0),
-              child: NotificationListener<ScrollNotification>(
-                onNotification: (notification) {
-                  // from flutter source
-                  if (notification is ScrollUpdateNotification && !_tabController.indexIsChanging) {
-                    if ((_pageController.page! - _tabController.index).abs() > 1.0) {
-                      _tabController.index = _pageController.page!.floor();
-                    }
-                    _tabController.offset = (_pageController.page! - _tabController.index).clamp(-1.0, 1.0);
-                  } else if (notification is ScrollEndNotification) {
-                    _tabController.index = _pageController.page!.round();
-                    if (!_tabController.indexIsChanging) _tabController.offset = (_pageController.page! - _tabController.index).clamp(-1.0, 1.0);
-                  }
-                  return false;
-                },
-                child: PageView.custom(
-                  controller: _pageController,
-                  childrenDelegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                        return FutureBuilder<List<DateWidget>>(
-                          key: ValueKey<String>(listOrder[index]),
-                          future: getFilterWidgets(HomeFilter.values[index]),
-                          builder: (context, dateWidgets) => dateWidgets.data != null
-                              ? RefreshIndicator(
-                                  color: Theme.of(context).colorScheme.secondary,
-                                  onRefresh: () => syncAll(context),
-                                  child: ImplicitlyAnimatedList<Widget>(
-                                    items: sortDateWidgets(context, dateWidgets: dateWidgets.data!),
-                                    itemBuilder: _itemBuilder,
-                                    spawnIsolate: false,
-                                    areItemsTheSame: (a, b) => a.key == b.key,
-                                    physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                                  ))
-                              : Container(),
-                        );
-                      },
-                      childCount: 4,
-                      findChildIndexCallback: (Key key) {
-                        final ValueKey<String> valueKey = key as ValueKey<String>;
-                        final String data = valueKey.value;
-                        return listOrder.indexOf(data);
-                      }),
-                  physics: const PageScrollPhysics().applyTo(const BouncingScrollPhysics()),
-                ),
-              ),
-            )),
-      ),
-    );
-  }
-
+                )),
+          ),
 
           // confetti 🎊
-          if (_confettiController != null && !kDebugMode)
+          if (_confettiController != null)
             Align(
               alignment: Alignment.bottomCenter,
               child: ConfettiWidget(

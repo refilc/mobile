@@ -39,7 +39,7 @@ class _LiveCardState extends State<LiveCard> {
       );
     }
 
-    final card = LiveCardWidget(
+    return LiveCardWidget(
       onTap: widget.controller.nextLessons?.isNotEmpty ?? false ? widget.onTap : null,
       lesson: widget.controller.currentLesson!,
       next: widget.controller.nextLesson?.subject,
