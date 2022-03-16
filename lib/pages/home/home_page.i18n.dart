@@ -49,7 +49,7 @@ extension Localization on String {
           "All": "Alles",
           "Grades": "Noten",
           "Messages": "Nachrichten",
-          "Absences": "Abwesenheiten",
+          "Absences": "Fehlen",
           "update_available": "Update verfügbar",
           "missed_exams": "Diese Woche haben Sie %s Prüfungen verpasst.".one("Diese Woche haben Sie eine Prüfung verpasst."),
           "missed_exam_contact": "Wenden Sie sich an %s, um sie zu erneuern!",

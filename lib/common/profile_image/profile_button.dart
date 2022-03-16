@@ -24,7 +24,7 @@ class ProfileButton extends StatelessWidget {
           context,
           useRootNavigator: true,
           builder: (context) => SlidingSheetDialog(
-            color: AppColors.of(context).background,
+            color: Theme.of(context).scaffoldBackgroundColor,
             duration: const Duration(milliseconds: 400),
             scrollSpec: const ScrollSpec.bouncingScroll(),
             snapSpec: const SnapSpec(
@@ -35,7 +35,7 @@ class ProfileButton extends StatelessWidget {
             cornerRadius: 16,
             cornerRadiusOnFullscreen: 0,
             builder: (context, state) => Material(
-              color: AppColors.of(context).background,
+              color: Theme.of(context).scaffoldBackgroundColor,
               child: const SettingsScreen(),
             ),
           ),

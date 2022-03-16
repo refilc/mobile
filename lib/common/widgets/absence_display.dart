@@ -14,7 +14,7 @@ class AbsenceDisplay extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 6.0),
       decoration: BoxDecoration(
-        color: AppColors.of(context).background.withOpacity(.2),
+        color: Theme.of(context).scaffoldBackgroundColor.withOpacity(.2),
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: Row(children: [

@@ -34,7 +34,7 @@ class LiveCardWidget extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 2.0),
       padding: const EdgeInsets.all(12.0),
       decoration: BoxDecoration(
-        color: AppColors.of(context).highlight,
+        color: Theme.of(context).backgroundColor,
         borderRadius: BorderRadius.circular(16.0),
         boxShadow: [
           BoxShadow(

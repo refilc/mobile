@@ -49,7 +49,7 @@ Utolsó módosítás: 2021. 09. 25.
               """,
                 onOpen: (link) => launch(link.url,
                     customTabsOption: CustomTabsOption(
-                      toolbarColor: AppColors.of(context).background,
+                      toolbarColor: Theme.of(context).scaffoldBackgroundColor,
                       showPageTitle: true,
                     )),
               ),

@@ -124,36 +124,39 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
             ),
 
             // Status bar
-            const StatusBar(),
+            Material(
+              color: Theme.of(context).backgroundColor,
+              child: const StatusBar(),
+            ),
 
             // Bottom Navigaton Bar
             SafeArea(
               top: false,
-              child: BottomNavigationBar(
-                items: [
-                  BottomNavigationBarItem(
+              child: NavigationBar(
+                destinations: [
+                  NavigationDestination(
                     label: "home".i18n,
                     icon: const Icon(FilcIcons.home),
                   ),
-                  BottomNavigationBarItem(
+                  NavigationDestination(
                     label: "grades".i18n,
                     icon: const Icon(FeatherIcons.bookmark),
                   ),
-                  BottomNavigationBarItem(
+                  NavigationDestination(
                     label: "timetable".i18n,
                     icon: const Icon(FeatherIcons.calendar),
                   ),
-                  BottomNavigationBarItem(
+                  NavigationDestination(
                     label: "messages".i18n,
                     icon: const Icon(FeatherIcons.messageSquare),
                   ),
-                  BottomNavigationBarItem(
+                  NavigationDestination(
                     label: "absences".i18n,
                     icon: const Icon(FeatherIcons.clock),
                   ),
                 ],
-                currentIndex: selected.index,
-                onTap: (index) {
+                selectedIndex: selected.index,
+                onDestinationSelected: (index) {
                   // Vibrate, then set the active screen
                   if (selected.index != index) {
                     switch (settings.vibrate) {
@@ -172,12 +175,6 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
                     _navigatorState.currentState?.pushReplacementNamed(selected.name);
                   }
                 },
-                elevation: 0,
-                showSelectedLabels: false,
-                showUnselectedLabels: false,
-                selectedItemColor: Theme.of(context).colorScheme.secondary,
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                type: BottomNavigationBarType.fixed,
               ),
             ),
           ],

@@ -22,7 +22,7 @@ class Panel extends StatelessWidget {
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14.0),
+              borderRadius: BorderRadius.circular(16.0),
               color: Theme.of(context).backgroundColor,
               boxShadow: [
                 if (hasShadow)
@@ -69,7 +69,7 @@ class PanelHeader extends StatelessWidget {
       width: double.infinity,
       padding: padding,
       decoration: BoxDecoration(
-        borderRadius: const BorderRadius.only(topLeft: Radius.circular(14.0), topRight: Radius.circular(14.0)),
+        borderRadius: const BorderRadius.only(topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
         color: Theme.of(context).backgroundColor,
         boxShadow: [
           BoxShadow(
@@ -120,7 +120,7 @@ class PanelFooter extends StatelessWidget {
       width: double.infinity,
       padding: padding,
       decoration: BoxDecoration(
-        borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(14.0), bottomRight: Radius.circular(14.0)),
+        borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(16.0), bottomRight: Radius.circular(16.0)),
         color: Theme.of(context).backgroundColor,
         boxShadow: [
           BoxShadow(

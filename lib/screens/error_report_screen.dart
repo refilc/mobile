@@ -132,7 +132,7 @@ class StacktracePopup extends StatelessWidget {
         backgroundColor: Colors.transparent,
         body: Container(
           decoration: BoxDecoration(
-            color: AppColors.of(context).background,
+            color: Theme.of(context).scaffoldBackgroundColor,
             borderRadius: BorderRadius.circular(4.0),
           ),
           padding: const EdgeInsets.only(top: 15.0, right: 15.0, left: 15.0),

@@ -72,7 +72,7 @@ class MessageTile extends StatelessWidget {
       openShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
       closedShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
       middleColor: Theme.of(context).backgroundColor,
-      openColor: AppColors.of(context).background,
+      openColor: Theme.of(context).scaffoldBackgroundColor,
       closedColor: Theme.of(context).backgroundColor,
       transitionType: ContainerTransitionType.fadeThrough,
       transitionDuration: const Duration(milliseconds: 400),

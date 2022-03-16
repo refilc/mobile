@@ -114,7 +114,7 @@ class _GradeGraphState extends State<GradeGraph> {
               show: true,
               alignment: Alignment.topLeft,
               style: TextStyle(
-                backgroundColor: AppColors.of(context).highlight,
+                backgroundColor: Theme.of(context).backgroundColor,
                 color: AppColors.of(context).text,
                 fontSize: 16.0,
                 fontWeight: FontWeight.w600,
@@ -232,7 +232,7 @@ class _GradeGraphState extends State<GradeGraph> {
                     borderData: FlBorderData(
                       show: false,
                       border: Border.all(
-                        color: AppColors.of(context).background,
+                        color: Theme.of(context).scaffoldBackgroundColor,
                         width: 4,
                       ),
                     ),

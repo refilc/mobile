@@ -14,7 +14,7 @@ class ImageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppColors.of(context).background,
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: SafeArea(
         minimum: const EdgeInsets.only(top: 24.0),
         child: Scaffold(
@@ -36,7 +36,7 @@ class ImageView extends StatelessWidget {
             maxScale: 4.0,
             minScale: PhotoViewComputedScale.contained,
             backgroundDecoration: BoxDecoration(
-              color: AppColors.of(context).background,
+              color: Theme.of(context).scaffoldBackgroundColor,
             ),
           ),
         ),

@@ -34,7 +34,7 @@ class ProfileImage extends StatelessWidget {
   }
 
   Widget buildWithoutHero(BuildContext context) {
-    Color color = ColorUtils.foregroundColor(backgroundColor ?? AppColors.of(context).background);
+    Color color = ColorUtils.foregroundColor(backgroundColor ?? Theme.of(context).scaffoldBackgroundColor);
     Color roleColor;
 
     if (Theme.of(context).brightness == Brightness.light) {
@@ -90,7 +90,7 @@ class ProfileImage extends StatelessWidget {
   }
 
   Widget buildWithHero(BuildContext context) {
-    Color color = ColorUtils.foregroundColor(backgroundColor ?? AppColors.of(context).background);
+    Color color = ColorUtils.foregroundColor(backgroundColor ?? Theme.of(context).scaffoldBackgroundColor);
     Color roleColor;
 
     if (Theme.of(context).brightness == Brightness.light) {

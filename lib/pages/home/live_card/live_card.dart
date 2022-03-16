@@ -145,7 +145,7 @@ class _LiveCardState extends State<LiveCard> {
           secondaryAnimation: secondaryAnimation,
           transitionType: SharedAxisTransitionType.horizontal,
           child: child,
-          fillColor: AppColors.of(context).background,
+          fillColor: Theme.of(context).scaffoldBackgroundColor,
         );
       },
       child: child,

@@ -208,9 +208,16 @@ class SettingsHelper {
                         decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                         ),
-                        child: Provider.of<SettingsProvider>(context, listen: false).accentColor == AccentColor.values[index]
-                            ? Icon(FeatherIcons.check, color: Colors.black.withOpacity(0.7))
-                            : null,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            if (AccentColor.values[index] == AccentColor.adaptive)
+                              Icon(Icons.palette, color: accentColorMap[AccentColor.values[index]]),
+                            if (AccentColor.values[index] == AccentColor.adaptive) const Icon(Icons.palette, color: Colors.black38),
+                            if (Provider.of<SettingsProvider>(context, listen: false).accentColor == AccentColor.values[index])
+                              Icon(FeatherIcons.check, color: Colors.black.withOpacity(0.7)),
+                          ],
+                        ),
                       ),
                     ),
                   ),

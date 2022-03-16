@@ -197,7 +197,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                       secondaryAnimation: secondaryAnimation,
                       transitionType: SharedAxisTransitionType.horizontal,
                       child: child,
-                      fillColor: AppColors.of(context).background,
+                      fillColor: Theme.of(context).scaffoldBackgroundColor,
                     );
                   },
                   layoutBuilder: (List<Widget> entries) {
@@ -296,7 +296,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                   child: child,
                   animation: primaryAnimation,
                   secondaryAnimation: secondaryAnimation,
-                  fillColor: AppColors.of(context).background,
+                  fillColor: Theme.of(context).scaffoldBackgroundColor,
                 );
               },
               child: _controller.days != null
@@ -378,7 +378,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                           indicatorPadding: const EdgeInsets.symmetric(horizontal: 8.0),
                           indicator: BoxDecoration(
                             color: Theme.of(context).colorScheme.secondary.withOpacity(0.25),
-                            borderRadius: BorderRadius.circular(8.0),
+                            borderRadius: BorderRadius.circular(45.0),
                           ),
                           overlayColor: MaterialStateProperty.all(const Color(0x00000000)),
                           // Tabs

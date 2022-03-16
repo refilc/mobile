@@ -126,7 +126,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void _openDKT(User u) => tabs.launch("https://dkttanulo.e-kreta.hu/sso?accessToken=${kretaClient.accessToken}",
       customTabsOption: tabs.CustomTabsOption(
-        toolbarColor: AppColors.of(context).background,
+        toolbarColor: Theme.of(context).scaffoldBackgroundColor,
         showPageTitle: true,
       ));
 
@@ -159,23 +159,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
       children: [
         const SizedBox(height: 32.0),
 
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //   children: [
-        //     IconButton(
-        //       splashRadius: 32.0,
-        //       onPressed: () => _showBottomSheet(user.getUser(user.id ?? ""), context: context, kreta: kretaClient),
-        //       icon: Icon(FeatherIcons.moreVertical, color: AppColors.of(context).text.withOpacity(0.8)),
-        //     ),
-        //     IconButton(
-        //       splashRadius: 26.0,
-        //       onPressed: () {
-        //         Navigator.of(context).pop();
-        //       },
-        //       icon: Icon(FeatherIcons.x, color: AppColors.of(context).text.withOpacity(0.8)),
-        //     ),
-        //   ],
-        // ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton(
+              splashRadius: 32.0,
+              onPressed: () => _showBottomSheet(user.getUser(user.id ?? "")),
+              icon: Icon(FeatherIcons.moreVertical, color: AppColors.of(context).text.withOpacity(0.8)),
+            ),
+            IconButton(
+              splashRadius: 26.0,
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: Icon(FeatherIcons.x, color: AppColors.of(context).text.withOpacity(0.8)),
+            ),
+          ],
+        ),
 
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -488,7 +488,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 message: "data_collected".i18n,
                 padding: const EdgeInsets.all(4.0),
                 textStyle: TextStyle(fontWeight: FontWeight.w500, color: AppColors.of(context).text),
-                decoration: BoxDecoration(color: AppColors.of(context).highlight),
+                decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
                 child: Material(
                   type: MaterialType.transparency,
                   child: SwitchListTile(
