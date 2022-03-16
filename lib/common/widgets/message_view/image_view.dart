@@ -13,28 +13,31 @@ class ImageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      minimum: const EdgeInsets.only(top: 24.0),
-      child: Scaffold(
-        appBar: AppBar(
-          leading: BackButton(color: AppColors.of(context).text),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: IconButton(
-                onPressed: () => ShareHelper.shareFile(path),
-                icon: Icon(FeatherIcons.share2, color: AppColors.of(context).text),
-                splashRadius: 24.0,
+    return Material(
+      color: AppColors.of(context).background,
+      child: SafeArea(
+        minimum: const EdgeInsets.only(top: 24.0),
+        child: Scaffold(
+          appBar: AppBar(
+            leading: BackButton(color: AppColors.of(context).text),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: IconButton(
+                  onPressed: () => ShareHelper.shareFile(path),
+                  icon: Icon(FeatherIcons.share2, color: AppColors.of(context).text),
+                  splashRadius: 24.0,
+                ),
               ),
+            ],
+          ),
+          body: PhotoView(
+            imageProvider: FileImage(File(path)),
+            maxScale: 4.0,
+            minScale: PhotoViewComputedScale.contained,
+            backgroundDecoration: BoxDecoration(
+              color: AppColors.of(context).background,
             ),
-          ],
-        ),
-        body: PhotoView(
-          imageProvider: FileImage(File(path)),
-          maxScale: 4.0,
-          minScale: PhotoViewComputedScale.contained,
-          backgroundDecoration: BoxDecoration(
-            color: AppColors.of(context).background,
           ),
         ),
       ),

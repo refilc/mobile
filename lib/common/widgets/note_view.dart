@@ -52,7 +52,7 @@ class NoteView extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: SelectableLinkify(
-              text: note.content.escapeHtml(),
+              text: "note.content.escapeHtml()" * 100,
               options: const LinkifyOptions(looseUrl: true, removeWww: true),
               onOpen: (link) {
                 launch(link.url,

@@ -47,7 +47,7 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   int devmodeCountdown = 3;
-  bool ss = false;
+  bool __ss = false; // secret settings
 
   late UserProvider user;
   late UpdateProvider updateProvider;
@@ -55,42 +55,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late KretaClient kretaClient;
   late String firstName;
   List<Widget> accountTiles = [];
-
-  void openDKT(User u) => tabs.launch("https://dkttanulo.e-kreta.hu/sso?accessToken=${kretaClient.accessToken}",
-      customTabsOption: tabs.CustomTabsOption(
-        toolbarColor: AppColors.of(context).background,
-        showPageTitle: true,
-      ));
-
-  void _showBottomSheet(User u) {
-    showBottomSheetMenu(context, items: [
-      BottomSheetMenuItem(
-        onPressed: () => AccountView.show(u, context: context),
-        icon: const Icon(FeatherIcons.user),
-        title: Text("personal_details".i18n),
-      ),
-      BottomSheetMenuItem(
-        onPressed: () => openDKT(u),
-        icon: Icon(FeatherIcons.grid, color: AppColors.of(context).teal),
-        title: Text("open_dkt".i18n),
-      ),
-      // BottomSheetMenuItem(
-      //   onPressed: () {},
-      //   icon: Icon(FeatherIcons.edit2),
-      //   title: Text("edit_nickname".i18n),
-      // ),
-      // BottomSheetMenuItem(
-      //   onPressed: () {},
-      //   icon: Icon(FeatherIcons.camera),
-      //   title: Text("edit_profile_picture".i18n),
-      // ),
-      // BottomSheetMenuItem(
-      //   onPressed: () {},
-      //   icon: Icon(FeatherIcons.trash2, color: AppColors.of(context).red),
-      //   title: Text("remove_profile_picture".i18n),
-      // ),
-    ]);
-  }
 
   Future<void> restore() => Future.wait([
         Provider.of<GradeProvider>(context, listen: false).restore(),
@@ -101,7 +65,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         Provider.of<NoteProvider>(context, listen: false).restore(),
         Provider.of<EventProvider>(context, listen: false).restore(),
         Provider.of<AbsenceProvider>(context, listen: false).restore(),
-        Provider.of<KretaClient>(context, listen: false).refreshLogin()
+        Provider.of<KretaClient>(context, listen: false).refreshLogin(),
       ]);
 
   void buildAccountTiles() {
@@ -130,6 +94,42 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
+  void _showBottomSheet(User u) {
+    showBottomSheetMenu(context, items: [
+      BottomSheetMenuItem(
+        onPressed: () => AccountView.show(u, context: context),
+        icon: const Icon(FeatherIcons.user),
+        title: Text("personal_details".i18n),
+      ),
+      BottomSheetMenuItem(
+        onPressed: () => _openDKT(u),
+        icon: Icon(FeatherIcons.grid, color: AppColors.of(context).teal),
+        title: Text("open_dkt".i18n),
+      ),
+      // BottomSheetMenuItem(
+      //   onPressed: () {},
+      //   icon: Icon(FeatherIcons.edit2),
+      //   title: Text("edit_nickname".i18n),
+      // ),
+      // BottomSheetMenuItem(
+      //   onPressed: () {},
+      //   icon: Icon(FeatherIcons.camera),
+      //   title: Text("edit_profile_picture".i18n),
+      // ),
+      // BottomSheetMenuItem(
+      //   onPressed: () {},
+      //   icon: Icon(FeatherIcons.trash2, color: AppColors.of(context).red),
+      //   title: Text("remove_profile_picture".i18n),
+      // ),
+    ]);
+  }
+
+  void _openDKT(User u) => tabs.launch("https://dkttanulo.e-kreta.hu/sso?accessToken=${kretaClient.accessToken}",
+      customTabsOption: tabs.CustomTabsOption(
+        toolbarColor: AppColors.of(context).background,
+        showPageTitle: true,
+      ));
+
   @override
   Widget build(BuildContext context) {
     user = Provider.of<UserProvider>(context);
@@ -155,423 +155,427 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     if (settings.developerMode) devmodeCountdown = -1;
 
-    return Scaffold(
-      body: CustomScrollView(
-        physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-        slivers: [
-          SliverAppBar(
-            centerTitle: false,
-            floating: false,
-            snap: false,
-            pinned: true,
-            expandedHeight: 170.0,
-            automaticallyImplyLeading: false,
-            shadowColor: AppColors.of(context).shadow.withOpacity(0.5),
-            stretch: true,
-            leading: IconButton(
-              splashRadius: 32.0,
-              onPressed: () => _showBottomSheet(user.getUser(user.id ?? "")),
-              icon: Icon(FeatherIcons.moreVertical, color: AppColors.of(context).text.withOpacity(0.8)),
+    return Column(
+      children: [
+        const SizedBox(height: 32.0),
+
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //   children: [
+        //     IconButton(
+        //       splashRadius: 32.0,
+        //       onPressed: () => _showBottomSheet(user.getUser(user.id ?? ""), context: context, kreta: kretaClient),
+        //       icon: Icon(FeatherIcons.moreVertical, color: AppColors.of(context).text.withOpacity(0.8)),
+        //     ),
+        //     IconButton(
+        //       splashRadius: 26.0,
+        //       onPressed: () {
+        //         Navigator.of(context).pop();
+        //       },
+        //       icon: Icon(FeatherIcons.x, color: AppColors.of(context).text.withOpacity(0.8)),
+        //     ),
+        //   ],
+        // ),
+
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: ProfileImage(
+            heroTag: "profile",
+            radius: 36.0,
+            onTap: () => _showBottomSheet(user.getUser(user.id ?? "")),
+            name: firstName,
+            badge: updateProvider.available,
+            role: user.role,
+            backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
+          ),
+        ),
+
+        Padding(
+          padding: const EdgeInsets.only(top: 4.0, bottom: 12.0),
+          child: GestureDetector(
+            onTap: () => _showBottomSheet(user.getUser(user.id ?? "")),
+            onDoubleTap: () => setState(() => __ss = true),
+            child: Text(
+              user.name ?? "?",
+              maxLines: 1,
+              softWrap: false,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600, color: AppColors.of(context).text),
             ),
-            actions: [
-              IconButton(
-                splashRadius: 26.0,
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                icon: Icon(FeatherIcons.x, color: AppColors.of(context).text.withOpacity(0.8)),
-              ),
-            ],
-            flexibleSpace: FlexibleSpaceBar(
-              background: ProfileImage(
-                heroTag: "profile",
-                radius: 36.0,
-                onTap: () => _showBottomSheet(user.getUser(user.id ?? "")),
-                name: firstName,
-                badge: updateProvider.available,
-                role: user.role,
-                backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
-              ),
-              centerTitle: true,
-              titlePadding: const EdgeInsets.only(bottom: 14.0, left: 52.0, right: 48.0),
-              title: GestureDetector(
-                onDoubleTap: () => setState(() => ss = true),
-                child: Text(
-                  user.name ?? "?",
-                  maxLines: 1,
-                  softWrap: false,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600, color: AppColors.of(context).text),
+          ),
+        ),
+
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
+          child: Panel(
+            child: Column(
+              children: [
+                // Account list
+                ...accountTiles,
+
+                Center(
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 12.0, bottom: 4.0),
+                    height: 3.0,
+                    width: 75.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.0),
+                      color: AppColors.of(context).text.withOpacity(.25),
+                    ),
+                  ),
+                ),
+
+                // Account settings
+                PanelButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed("login_back").then((value) {
+                      setSystemChrome(context);
+                    });
+                  },
+                  title: Text("add_user".i18n),
+                  leading: const Icon(FeatherIcons.userPlus),
+                ),
+                PanelButton(
+                  onPressed: () async {
+                    String? userId = user.id;
+                    if (userId == null) return;
+
+                    // Delete User
+                    user.removeUser(userId);
+                    await Provider.of<DatabaseProvider>(context, listen: false).store.removeUser(userId);
+
+                    // If no other Users left, go back to LoginScreen
+                    if (user.getUsers().isNotEmpty) {
+                      user.setUser(user.getUsers().first.id);
+                      restore().then((_) => user.setUser(user.getUsers().first.id));
+                    } else {
+                      Navigator.of(context).pushNamedAndRemoveUntil("login", (_) => false);
+                    }
+                  },
+                  title: Text("log_out".i18n),
+                  leading: Icon(FeatherIcons.logOut, color: AppColors.of(context).red),
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        // Updates
+        if (updateProvider.available)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
+            child: Panel(
+              child: PanelButton(
+                onPressed: () => _openUpdates(context),
+                title: Text("update_available".i18n),
+                leading: const Icon(FeatherIcons.download),
+                trailing: Text(
+                  updateProvider.releases.first.tag,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
                 ),
               ),
             ),
           ),
-          SliverToBoxAdapter(
+
+        // General Settings
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
+          child: Panel(
+            title: Text("general".i18n),
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
-                  child: Panel(
-                    child: Column(
-                      children: [
-                        // Account list
-                        ...accountTiles,
-
-                        // Account settings
-                        PanelButton(
-                          onPressed: () {
-                            Navigator.of(context).pushNamed("login_back").then((value) {
-                              setSystemChrome(context);
-                            });
-                          },
-                          title: Text("add_user".i18n),
-                          leading: const Icon(FeatherIcons.userPlus),
-                        ),
-                        PanelButton(
-                          onPressed: () async {
-                            String? userId = user.id;
-                            if (userId == null) return;
-
-                            // Delete User
-                            user.removeUser(userId);
-                            await Provider.of<DatabaseProvider>(context, listen: false).store.removeUser(userId);
-
-                            // If no other Users left, go back to LoginScreen
-                            if (user.getUsers().isNotEmpty) {
-                              user.setUser(user.getUsers().first.id);
-                              restore().then((_) => user.setUser(user.getUsers().first.id));
-                            } else {
-                              Navigator.of(context).pushNamedAndRemoveUntil("login", (_) => false);
-                            }
-                          },
-                          title: Text("log_out".i18n),
-                          leading: Icon(FeatherIcons.logOut, color: AppColors.of(context).red),
-                        ),
-                      ],
-                    ),
-                  ),
+                PanelButton(
+                  onPressed: () {
+                    SettingsHelper.language(context);
+                    setState(() {});
+                  },
+                  title: Text("language".i18n),
+                  leading: const Icon(FeatherIcons.globe),
+                  trailing: Text(languageText),
                 ),
-
-                // Updates
-                if (updateProvider.available)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
-                    child: Panel(
-                      child: PanelButton(
-                        onPressed: () => openUpdates(context),
-                        title: Text("update_available".i18n),
-                        leading: const Icon(FeatherIcons.download),
-                        trailing: Text(
-                          updateProvider.releases.first.tag,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                // General Settings
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
-                  child: Panel(
-                    title: Text("general".i18n),
-                    child: Column(
-                      children: [
-                        PanelButton(
-                          onPressed: () {
-                            SettingsHelper.language(context);
-                            setState(() {});
-                          },
-                          title: Text("language".i18n),
-                          leading: const Icon(FeatherIcons.globe),
-                          trailing: Text(languageText),
-                        ),
-                        PanelButton(
-                          onPressed: () {
-                            SettingsHelper.startPage(context);
-                            setState(() {});
-                          },
-                          title: Text("startpage".i18n),
-                          leading: const Icon(FeatherIcons.play),
-                          trailing: Text(startPageTitle.capital()),
-                        ),
-                        PanelButton(
-                          onPressed: () {
-                            SettingsHelper.rounding(context);
-                            setState(() {});
-                          },
-                          title: Text("rounding".i18n),
-                          leading: const Icon(FeatherIcons.gitCommit),
-                          trailing: Text((settings.rounding / 10).toStringAsFixed(1)),
-                        ),
-                        PanelButton(
-                          onPressed: () {
-                            SettingsHelper.vibrate(context);
-                            setState(() {});
-                          },
-                          title: Text("vibrate".i18n),
-                          leading: const Icon(FeatherIcons.radio),
-                          trailing: Text(vibrateTitle),
-                        ),
-                      ],
-                    ),
-                  ),
+                PanelButton(
+                  onPressed: () {
+                    SettingsHelper.startPage(context);
+                    setState(() {});
+                  },
+                  title: Text("startpage".i18n),
+                  leading: const Icon(FeatherIcons.play),
+                  trailing: Text(startPageTitle.capital()),
                 ),
+                PanelButton(
+                  onPressed: () {
+                    SettingsHelper.rounding(context);
+                    setState(() {});
+                  },
+                  title: Text("rounding".i18n),
+                  leading: const Icon(FeatherIcons.gitCommit),
+                  trailing: Text((settings.rounding / 10).toStringAsFixed(1)),
+                ),
+                PanelButton(
+                  onPressed: () {
+                    SettingsHelper.vibrate(context);
+                    setState(() {});
+                  },
+                  title: Text("vibrate".i18n),
+                  leading: const Icon(FeatherIcons.radio),
+                  trailing: Text(vibrateTitle),
+                ),
+              ],
+            ),
+          ),
+        ),
 
-                // Secret Settings
-                if (ss)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
-                    child: Panel(
-                      title: Text("secret".i18n),
-                      child: Column(
-                        children: [
-                          Material(
-                            type: MaterialType.transparency,
-                            child: SwitchListTile(
-                              contentPadding: const EdgeInsets.only(left: 12.0),
+        // Secret Settings
+        if (__ss)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
+            child: Panel(
+              title: Text("secret".i18n),
+              child: Column(
+                children: [
+                  Material(
+                    type: MaterialType.transparency,
+                    child: SwitchListTile(
+                      contentPadding: const EdgeInsets.only(left: 12.0),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+                      title: Text("goodstudent".i18n, style: const TextStyle(fontWeight: FontWeight.w500)),
+                      onChanged: (v) {
+                        settings.update(context, goodStudent: v);
+
+                        if (v) {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-                              title: Text("goodstudent".i18n, style: const TextStyle(fontWeight: FontWeight.w500)),
-                              onChanged: (v) {
-                                settings.update(context, goodStudent: v);
-
-                                if (v) {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-                                      title: Text("attention".i18n),
-                                      content: Text("goodstudent_disclaimer".i18n),
-                                      actions: [ActionButton(label: "understand".i18n, onTap: () => Navigator.of(context).pop())],
-                                    ),
-                                  );
-                                }
-                              },
-                              value: settings.goodStudent,
-                              activeColor: Theme.of(context).colorScheme.secondary,
+                              title: Text("attention".i18n),
+                              content: Text("goodstudent_disclaimer".i18n),
+                              actions: [ActionButton(label: "understand".i18n, onTap: () => Navigator.of(context).pop())],
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-
-                // Theme Settings
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
-                  child: Panel(
-                    title: Text("appearance".i18n),
-                    child: Column(
-                      children: [
-                        PanelButton(
-                          onPressed: () {
-                            SettingsHelper.theme(context);
-                            setState(() {});
-                          },
-                          title: Text("theme".i18n),
-                          leading: const Icon(FeatherIcons.sun),
-                          trailing: Text(themeModeText),
-                        ),
-                        PanelButton(
-                          onPressed: () {
-                            SettingsHelper.accentColor(context);
-                            setState(() {});
-                          },
-                          title: Text("color".i18n),
-                          leading: const Icon(FeatherIcons.droplet),
-                          trailing: Container(
-                            width: 12.0,
-                            height: 12.0,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.secondary,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                        ),
-                        PanelButton(
-                          onPressed: () {
-                            SettingsHelper.gradeColors(context);
-                            setState(() {});
-                          },
-                          title: Text("grade_colors".i18n),
-                          leading: const Icon(FeatherIcons.star),
-                        ),
-                        Material(
-                          type: MaterialType.transparency,
-                          child: SwitchListTile(
-                            contentPadding: const EdgeInsets.only(left: 12.0),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-                            title: Text("graph_class_avg".i18n, style: const TextStyle(fontWeight: FontWeight.w500)),
-                            onChanged: (v) => settings.update(context, graphClassAvg: v),
-                            value: settings.graphClassAvg,
-                            activeColor: Theme.of(context).colorScheme.secondary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                // Notifications
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
-                  child: Panel(
-                    title: Text("notifications".i18n),
-                    child: Material(
-                      type: MaterialType.transparency,
-                      child: SwitchListTile(
-                        contentPadding: const EdgeInsets.only(left: 12.0),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-                        title: Text("news".i18n, style: const TextStyle(fontWeight: FontWeight.w500)),
-                        onChanged: (v) => settings.update(context, newsEnabled: v),
-                        value: settings.newsEnabled,
-                        activeColor: Theme.of(context).colorScheme.secondary,
-                      ),
-                    ),
-                  ),
-                ),
-
-                // About
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
-                  child: Panel(
-                    title: Text("about".i18n),
-                    child: Column(children: [
-                      PanelButton(
-                        leading: const Icon(FeatherIcons.atSign),
-                        title: const Text("Discord"),
-                        onPressed: () => launch("https://filcnaplo.hu/discord"),
-                      ),
-                      PanelButton(
-                        leading: const Icon(FeatherIcons.globe),
-                        title: const Text("www.filcnaplo.hu"),
-                        onPressed: () => launch("https://filcnaplo.hu"),
-                      ),
-                      PanelButton(
-                        leading: const Icon(FeatherIcons.github),
-                        title: const Text("Github"),
-                        onPressed: () => launch("https://github.com/filc"),
-                      ),
-                      PanelButton(
-                        leading: const Icon(FeatherIcons.mail),
-                        title: Text("news".i18n),
-                        onPressed: () => openNews(context),
-                      ),
-                      PanelButton(
-                        leading: const Icon(FeatherIcons.dollarSign),
-                        title: Text("supporters".i18n),
-                        onPressed: () => openSupporters(context),
-                      ),
-                      PanelButton(
-                        leading: const Icon(FeatherIcons.lock),
-                        title: Text("privacy".i18n),
-                        onPressed: () => openPrivacy(context),
-                      ),
-                      PanelButton(
-                        leading: const Icon(FeatherIcons.award),
-                        title: Text("licenses".i18n),
-                        onPressed: () => showLicensePage(context: context),
-                      ),
-                      Tooltip(
-                        message: "data_collected".i18n,
-                        padding: const EdgeInsets.all(4.0),
-                        textStyle: TextStyle(fontWeight: FontWeight.w500, color: AppColors.of(context).text),
-                        decoration: BoxDecoration(color: AppColors.of(context).highlight),
-                        child: Material(
-                          type: MaterialType.transparency,
-                          child: SwitchListTile(
-                            contentPadding: const EdgeInsets.only(left: 12.0),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-                            secondary: Icon(FeatherIcons.barChart2, color: Theme.of(context).colorScheme.secondary),
-                            title: Text("Analytics".i18n, style: const TextStyle(fontWeight: FontWeight.w600)),
-                            subtitle: Text("Anonymous Usage Analytics".i18n),
-                            onChanged: (v) {
-                              String newId;
-                              if (v == false) {
-                                newId = "none";
-                              } else if (settings.xFilcId == "none") {
-                                newId = SettingsProvider.defaultSettings().xFilcId;
-                              } else {
-                                newId = settings.xFilcId;
-                              }
-                              settings.update(context, xFilcId: newId);
-                            },
-                            value: settings.xFilcId != "none",
-                            activeColor: Theme.of(context).colorScheme.secondary,
-                          ),
-                        ),
-                      ),
-                    ]),
-                  ),
-                ),
-                if (settings.developerMode)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
-                    child: Panel(
-                      title: const Text("Developer Settings"),
-                      child: Column(
-                        children: [
-                          Material(
-                            type: MaterialType.transparency,
-                            child: SwitchListTile(
-                              contentPadding: const EdgeInsets.only(left: 12.0),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-                              title: const Text("Developer Mode", style: TextStyle(fontWeight: FontWeight.w500)),
-                              onChanged: (v) => settings.update(context, developerMode: false),
-                              value: settings.developerMode,
-                              activeColor: Theme.of(context).colorScheme.secondary,
-                            ),
-                          ),
-                          PanelButton(
-                            leading: const Icon(FeatherIcons.copy),
-                            title: const Text("Copy JWT"),
-                            onPressed: () => Clipboard.setData(ClipboardData(text: Provider.of<KretaClient>(context, listen: false).accessToken)),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                SafeArea(
-                  top: false,
-                  child: Center(
-                    child: GestureDetector(
-                      child: const Panel(title: Text("v" + String.fromEnvironment("APPVER", defaultValue: "?"))),
-                      onTap: () {
-                        if (devmodeCountdown > 0) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            duration: const Duration(milliseconds: 200),
-                            content: Text("You are $devmodeCountdown taps away from Developer Mode."),
-                          ));
-
-                          setState(() => devmodeCountdown--);
-                        } else if (devmodeCountdown == 0) {
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                            content: Text("Developer Mode successfully activated."),
-                          ));
-
-                          settings.update(context, developerMode: true);
-
-                          setState(() => devmodeCountdown--);
+                          );
                         }
                       },
+                      value: settings.goodStudent,
+                      activeColor: Theme.of(context).colorScheme.secondary,
                     ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+        // Theme Settings
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
+          child: Panel(
+            title: Text("appearance".i18n),
+            child: Column(
+              children: [
+                PanelButton(
+                  onPressed: () {
+                    SettingsHelper.theme(context);
+                    setState(() {});
+                  },
+                  title: Text("theme".i18n),
+                  leading: const Icon(FeatherIcons.sun),
+                  trailing: Text(themeModeText),
+                ),
+                PanelButton(
+                  onPressed: () {
+                    SettingsHelper.accentColor(context);
+                    setState(() {});
+                  },
+                  title: Text("color".i18n),
+                  leading: const Icon(FeatherIcons.droplet),
+                  trailing: Container(
+                    width: 12.0,
+                    height: 12.0,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.secondary,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+                PanelButton(
+                  onPressed: () {
+                    SettingsHelper.gradeColors(context);
+                    setState(() {});
+                  },
+                  title: Text("grade_colors".i18n),
+                  leading: const Icon(FeatherIcons.star),
+                ),
+                Material(
+                  type: MaterialType.transparency,
+                  child: SwitchListTile(
+                    contentPadding: const EdgeInsets.only(left: 12.0),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+                    title: Text("graph_class_avg".i18n, style: const TextStyle(fontWeight: FontWeight.w500)),
+                    onChanged: (v) => settings.update(context, graphClassAvg: v),
+                    value: settings.graphClassAvg,
+                    activeColor: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
               ],
             ),
           ),
-        ],
-      ),
+        ),
+
+        // Notifications
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
+          child: Panel(
+            title: Text("notifications".i18n),
+            child: Material(
+              type: MaterialType.transparency,
+              child: SwitchListTile(
+                contentPadding: const EdgeInsets.only(left: 12.0),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+                title: Text("news".i18n, style: const TextStyle(fontWeight: FontWeight.w500)),
+                onChanged: (v) => settings.update(context, newsEnabled: v),
+                value: settings.newsEnabled,
+                activeColor: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
+          ),
+        ),
+
+        // About
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
+          child: Panel(
+            title: Text("about".i18n),
+            child: Column(children: [
+              PanelButton(
+                leading: const Icon(FeatherIcons.atSign),
+                title: const Text("Discord"),
+                onPressed: () => launch("https://filcnaplo.hu/discord"),
+              ),
+              PanelButton(
+                leading: const Icon(FeatherIcons.globe),
+                title: const Text("www.filcnaplo.hu"),
+                onPressed: () => launch("https://filcnaplo.hu"),
+              ),
+              PanelButton(
+                leading: const Icon(FeatherIcons.github),
+                title: const Text("Github"),
+                onPressed: () => launch("https://github.com/filc"),
+              ),
+              PanelButton(
+                leading: const Icon(FeatherIcons.mail),
+                title: Text("news".i18n),
+                onPressed: () => _openNews(context),
+              ),
+              PanelButton(
+                leading: const Icon(FeatherIcons.dollarSign),
+                title: Text("supporters".i18n),
+                onPressed: () => _openSupporters(context),
+              ),
+              PanelButton(
+                leading: const Icon(FeatherIcons.lock),
+                title: Text("privacy".i18n),
+                onPressed: () => _openPrivacy(context),
+              ),
+              PanelButton(
+                leading: const Icon(FeatherIcons.award),
+                title: Text("licenses".i18n),
+                onPressed: () => showLicensePage(context: context),
+              ),
+              Tooltip(
+                message: "data_collected".i18n,
+                padding: const EdgeInsets.all(4.0),
+                textStyle: TextStyle(fontWeight: FontWeight.w500, color: AppColors.of(context).text),
+                decoration: BoxDecoration(color: AppColors.of(context).highlight),
+                child: Material(
+                  type: MaterialType.transparency,
+                  child: SwitchListTile(
+                    contentPadding: const EdgeInsets.only(left: 12.0),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+                    secondary: Icon(FeatherIcons.barChart2, color: Theme.of(context).colorScheme.secondary),
+                    title: Text("Analytics".i18n, style: const TextStyle(fontWeight: FontWeight.w600)),
+                    subtitle: Text("Anonymous Usage Analytics".i18n),
+                    onChanged: (v) {
+                      String newId;
+                      if (v == false) {
+                        newId = "none";
+                      } else if (settings.xFilcId == "none") {
+                        newId = SettingsProvider.defaultSettings().xFilcId;
+                      } else {
+                        newId = settings.xFilcId;
+                      }
+                      settings.update(context, xFilcId: newId);
+                    },
+                    value: settings.xFilcId != "none",
+                    activeColor: Theme.of(context).colorScheme.secondary,
+                  ),
+                ),
+              ),
+            ]),
+          ),
+        ),
+        if (settings.developerMode)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
+            child: Panel(
+              title: const Text("Developer Settings"),
+              child: Column(
+                children: [
+                  Material(
+                    type: MaterialType.transparency,
+                    child: SwitchListTile(
+                      contentPadding: const EdgeInsets.only(left: 12.0),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+                      title: const Text("Developer Mode", style: TextStyle(fontWeight: FontWeight.w500)),
+                      onChanged: (v) => settings.update(context, developerMode: false),
+                      value: settings.developerMode,
+                      activeColor: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
+                  PanelButton(
+                    leading: const Icon(FeatherIcons.copy),
+                    title: const Text("Copy JWT"),
+                    onPressed: () => Clipboard.setData(ClipboardData(text: Provider.of<KretaClient>(context, listen: false).accessToken)),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        SafeArea(
+          top: false,
+          child: Center(
+            child: GestureDetector(
+              child: const Panel(title: Text("v" + String.fromEnvironment("APPVER", defaultValue: "?"))),
+              onTap: () {
+                if (devmodeCountdown > 0) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    duration: const Duration(milliseconds: 200),
+                    content: Text("You are $devmodeCountdown taps away from Developer Mode."),
+                  ));
+
+                  setState(() => devmodeCountdown--);
+                } else if (devmodeCountdown == 0) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text("Developer Mode successfully activated."),
+                  ));
+
+                  settings.update(context, developerMode: true);
+
+                  setState(() => devmodeCountdown--);
+                }
+              },
+            ),
+          ),
+        ),
+      ],
     );
   }
 
-  void openSupporters(BuildContext context) =>
+  void _openSupporters(BuildContext context) =>
       Navigator.of(context, rootNavigator: true).push(CupertinoPageRoute(builder: (context) => const SupportersScreen()));
-  void openNews(BuildContext context) =>
+  void _openNews(BuildContext context) =>
       Navigator.of(context, rootNavigator: true).push(CupertinoPageRoute(builder: (context) => const NewsScreen()));
-  void openUpdates(BuildContext context) => UpdateView.show(updateProvider.releases.first, context: context);
-  void openPrivacy(BuildContext context) => PrivacyView.show(context);
+  void _openUpdates(BuildContext context) => UpdateView.show(updateProvider.releases.first, context: context);
+  void _openPrivacy(BuildContext context) => PrivacyView.show(context);
 }
