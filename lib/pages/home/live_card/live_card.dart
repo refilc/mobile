@@ -1,5 +1,4 @@
 import 'package:filcnaplo/helpers/subject_icon.dart';
-import 'package:filcnaplo/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:filcnaplo/utils/format.dart';
 import 'package:filcnaplo_kreta_api/controllers/live_card_controller.dart';
@@ -53,6 +52,13 @@ class _LiveCardState extends State<LiveCard> {
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           color: Theme.of(context).colorScheme.secondary.withOpacity(.85),
+                        ),
+                      ),
+                      TextSpan(
+                        text: " (${widget.controller.nextLesson!.room.capital()}) ",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12.0,
                         ),
                       ),
                       const TextSpan(text: " lesz, "),

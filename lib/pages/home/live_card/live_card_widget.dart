@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'live_card.i18n.dart';
 
-// TODO: text overflow
-
 class LiveCardWidget extends StatelessWidget {
   const LiveCardWidget({
     Key? key,
@@ -139,7 +137,7 @@ class LiveCardWidget extends StatelessWidget {
                       child: Text.rich(
                         TextSpan(
                           children: [
-                            const TextSpan(text: "Következő: "),
+                            // const TextSpan(text: "Következő: "),
                             TextSpan(
                               text: nextSubject,
                               style: TextStyle(
