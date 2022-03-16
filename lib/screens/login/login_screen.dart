@@ -126,73 +126,109 @@ class _LoginScreenState extends State<LoginScreen> {
                   // Inputs
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Username
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 6.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Text("username".i18n,
-                                    maxLines: 1, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14.0)),
-                              ),
-                              Expanded(
-                                child: Text("usernameHint".i18n,
+                    child: AutofillGroup(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Username
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 6.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    "username".i18n,
+                                    maxLines: 1,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14.0,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    "usernameHint".i18n,
                                     maxLines: 1,
                                     textAlign: TextAlign.right,
-                                    style: const TextStyle(color: Colors.white54, fontWeight: FontWeight.w500, fontSize: 12.0)),
-                              ),
-                            ],
+                                    style: const TextStyle(
+                                      color: Colors.white54,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 12.0,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 12.0),
-                          child: LoginInput(
-                            style: LoginInputStyle.username,
-                            controller: usernameController,
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 12.0),
+                            child: LoginInput(
+                              style: LoginInputStyle.username,
+                              controller: usernameController,
+                            ),
                           ),
-                        ),
 
-                        // Password
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 6.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Text("password".i18n,
-                                    maxLines: 1, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14.0)),
-                              ),
-                              Expanded(
-                                child: Text("passwordHint".i18n,
+                          // Password
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 6.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    "password".i18n,
+                                    maxLines: 1,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14.0,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    "passwordHint".i18n,
                                     maxLines: 1,
                                     textAlign: TextAlign.right,
-                                    style: const TextStyle(color: Colors.white54, fontWeight: FontWeight.w500, fontSize: 12.0)),
-                              ),
-                            ],
+                                    style: const TextStyle(
+                                      color: Colors.white54,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 12.0,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 12.0),
-                          child: LoginInput(
-                            style: LoginInputStyle.password,
-                            controller: passwordController,
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 12.0),
+                            child: LoginInput(
+                              style: LoginInputStyle.password,
+                              controller: passwordController,
+                            ),
                           ),
-                        ),
 
-                        // School
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 6.0),
-                          child: Text("school".i18n, maxLines: 1, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14.0)),
-                        ),
-                        SchoolInput(
-                          scroll: _scrollController,
-                          controller: schoolController,
-                        ),
-                      ],
+                          // School
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 6.0),
+                            child: Text(
+                              "school".i18n,
+                              maxLines: 1,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14.0,
+                              ),
+                            ),
+                          ),
+                          SchoolInput(
+                            scroll: _scrollController,
+                            controller: schoolController,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
 

@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:animations/animations.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
+import 'package:filcnaplo_kreta_api/client/client.dart';
 import 'package:filcnaplo_kreta_api/models/week.dart';
 import 'package:filcnaplo_kreta_api/providers/timetable_provider.dart';
 import 'package:filcnaplo/api/providers/user_provider.dart';
@@ -76,7 +77,10 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
   }
 
   // Update timetable on user change
-  void _userListener() => _controller.jump(_controller.currentWeek, context: context);
+  Future<void> _userListener() async {
+    await Provider.of<KretaClient>(context, listen: false).refreshLogin();
+    _controller.jump(_controller.currentWeek, context: context);
+  }
 
   @override
   void initState() {
@@ -201,16 +205,19 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                       children: entries,
                     );
                   },
-                  child: (_controller.days?.length ?? 0) > 0
-                      ? DayTitle(controller: _tabController, dayTitle: dayTitle)
-                      : Text(
-                          "timetable".i18n,
-                          style: TextStyle(
-                            fontSize: 32.0,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.of(context).text,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: (_controller.days?.length ?? 0) > 0
+                        ? DayTitle(controller: _tabController, dayTitle: dayTitle)
+                        : Text(
+                            "timetable".i18n,
+                            style: TextStyle(
+                              fontSize: 32.0,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.of(context).text,
+                            ),
                           ),
-                        ),
+                  ),
                 ),
                 shadowColor: AppColors.of(context).shadow.withOpacity(0.5),
                 bottom: PreferredSize(

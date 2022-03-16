@@ -35,6 +35,7 @@ import 'package:provider/provider.dart';
 import 'package:filcnaplo/utils/color.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'settings_screen.i18n.dart';
+import 'package:flutter/services.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -355,6 +356,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           title: Text("grade_colors".i18n),
                           leading: const Icon(FeatherIcons.star),
                         ),
+                        Material(
+                          type: MaterialType.transparency,
+                          child: SwitchListTile(
+                            contentPadding: const EdgeInsets.only(left: 12.0),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+                            title: Text("graph_class_avg".i18n, style: const TextStyle(fontWeight: FontWeight.w500)),
+                            onChanged: (v) => settings.update(context, graphClassAvg: v),
+                            value: settings.graphClassAvg,
+                            activeColor: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -457,40 +469,52 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
                     child: Panel(
                       title: const Text("Developer Settings"),
-                      child: Material(
-                        type: MaterialType.transparency,
-                        child: SwitchListTile(
-                          contentPadding: const EdgeInsets.only(left: 12.0),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-                          title: const Text("Developer Mode", style: TextStyle(fontWeight: FontWeight.w500)),
-                          onChanged: (v) => settings.update(context, developerMode: false),
-                          value: settings.developerMode,
-                          activeColor: Theme.of(context).colorScheme.secondary,
-                        ),
+                      child: Column(
+                        children: [
+                          Material(
+                            type: MaterialType.transparency,
+                            child: SwitchListTile(
+                              contentPadding: const EdgeInsets.only(left: 12.0),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+                              title: const Text("Developer Mode", style: TextStyle(fontWeight: FontWeight.w500)),
+                              onChanged: (v) => settings.update(context, developerMode: false),
+                              value: settings.developerMode,
+                              activeColor: Theme.of(context).colorScheme.secondary,
+                            ),
+                          ),
+                          PanelButton(
+                            leading: const Icon(FeatherIcons.copy),
+                            title: const Text("Copy JWT"),
+                            onPressed: () => Clipboard.setData(ClipboardData(text: Provider.of<KretaClient>(context, listen: false).accessToken)),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                Center(
-                  child: GestureDetector(
-                    child: Panel(title: Text("v" + (settings.packageInfo?.version ?? ""))),
-                    onTap: () {
-                      if (devmodeCountdown > 0) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          duration: const Duration(milliseconds: 200),
-                          content: Text("You are $devmodeCountdown taps away from Developer Mode."),
-                        ));
+                SafeArea(
+                  top: false,
+                  child: Center(
+                    child: GestureDetector(
+                      child: const Panel(title: Text("v" + String.fromEnvironment("APPVER", defaultValue: "?"))),
+                      onTap: () {
+                        if (devmodeCountdown > 0) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            duration: const Duration(milliseconds: 200),
+                            content: Text("You are $devmodeCountdown taps away from Developer Mode."),
+                          ));
 
-                        setState(() => devmodeCountdown--);
-                      } else if (devmodeCountdown == 0) {
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text("Developer Mode successfully activated."),
-                        ));
+                          setState(() => devmodeCountdown--);
+                        } else if (devmodeCountdown == 0) {
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                            content: Text("Developer Mode successfully activated."),
+                          ));
 
-                        settings.update(context, developerMode: true);
+                          settings.update(context, developerMode: true);
 
-                        setState(() => devmodeCountdown--);
-                      }
-                    },
+                          setState(() => devmodeCountdown--);
+                        }
+                      },
+                    ),
                   ),
                 ),
               ],

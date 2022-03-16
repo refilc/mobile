@@ -6,7 +6,14 @@ import 'package:implicitly_animated_reorderable_list/transitions.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
 import 'package:filcnaplo/api/providers/sync.dart';
+import 'package:confetti/confetti.dart';
+import 'package:filcnaplo/api/providers/update_provider.dart';
+import 'package:filcnaplo/api/providers/sync.dart';
+import 'package:filcnaplo/helpers/subject_icon.dart';
+import 'package:filcnaplo/models/settings.dart';
+import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_kreta_api/models/absence.dart';
+import 'package:filcnaplo_kreta_api/models/lesson.dart';
 import 'package:filcnaplo_kreta_api/providers/absence_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/event_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/exam_provider.dart';
@@ -19,6 +26,7 @@ import 'package:filcnaplo/api/providers/status_provider.dart';
 import 'package:filcnaplo_kreta_api/models/grade.dart';
 import 'package:filcnaplo_kreta_api/models/message.dart';
 import 'package:filcnaplo_kreta_api/providers/timetable_provider.dart';
+import 'package:filcnaplo_mobile_ui/common/bottom_sheet_menu/rounded_bottom_sheet.dart';
 import 'package:filcnaplo_mobile_ui/common/empty.dart';
 import 'package:filcnaplo_mobile_ui/common/filter_bar.dart';
 import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
@@ -45,7 +53,9 @@ import 'package:filcnaplo_mobile_ui/pages/home/live_card/live_card.dart';
 import 'package:filcnaplo_kreta_api/controllers/live_card_controller.dart';
 import 'package:filcnaplo_mobile_ui/common/hero_dialog_route.dart';
 import 'package:filcnaplo_mobile_ui/pages/timetable/timetable_page.dart';
+import 'package:filcnaplo_mobile_ui/screens/navigation/navigation_screen.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/updates/updates_view.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:provider/provider.dart';
@@ -63,6 +73,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late TabController _tabController;
   late UserProvider user;
+  late SettingsProvider settings;
   late UpdateProvider updateProvider;
   late StatusProvider statusProvider;
   late GradeProvider gradeProvider;
@@ -73,23 +84,41 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late ExamProvider examProvider;
   late NoteProvider noteProvider;
   late EventProvider eventProvider;
+
+  late LiveCardController _liveController;
+  late FilterController _filterController;
+  ConfettiController? _confettiController;
+
   late String greeting;
   late String firstName;
   late LiveCardController _liveController;
-  late bool showLiveCard;
   late PageController _pageController;
   List<String> listOrder = ['A', 'B', 'C', 'D'];
 
   @override
   void initState() {
     super.initState();
+    
     _tabController = TabController(length: 4, vsync: this);
     _pageController = PageController();
     user = Provider.of<UserProvider>(context, listen: false);
+    _liveController = LiveCardController(context: context, vsync: this);
 
     DateTime now = DateTime.now();
-    if (now.month == user.student?.birth.month && now.day == user.student?.birth.day) {
+    if (now.isBefore(DateTime(now.year, DateTime.august, 31)) && now.isAfter(DateTime(now.year, DateTime.june, 14))) {
+      greeting = "goodrest";
+
+      if (NavigationScreen.of(context)?.init("confetti") ?? false) {
+        _confettiController = ConfettiController(duration: const Duration(seconds: 1));
+        Future.delayed(const Duration(seconds: 1)).then((value) => mounted ? _confettiController?.play() : null);
+      }
+    } else if (now.month == user.student?.birth.month && now.day == user.student?.birth.day) {
       greeting = "happybirthday";
+
+      if (NavigationScreen.of(context)?.init("confetti") ?? false) {
+        _confettiController = ConfettiController(duration: const Duration(seconds: 3));
+        Future.delayed(const Duration(seconds: 1)).then((value) => mounted ? _confettiController?.play() : null);
+      }
     } else if (now.month == DateTime.december && now.day >= 24 && now.day <= 26) {
       greeting = "merryxmas";
     } else if (now.month == DateTime.january && now.day == 1) {
@@ -103,22 +132,23 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     } else {
       greeting = "goodevening";
     }
-
-    _liveController = LiveCardController(context: context, vsync: this);
   }
 
   @override
   void dispose() {
+    // _filterController.dispose();
     _liveController.dispose();
     _pageController.dispose();
     _tabController.dispose();
-
+    _confettiController?.dispose();
+    
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     user = Provider.of<UserProvider>(context);
+    settings = Provider.of<SettingsProvider>(context);
     updateProvider = Provider.of<UpdateProvider>(context);
     statusProvider = Provider.of<StatusProvider>(context, listen: false);
     gradeProvider = Provider.of<GradeProvider>(context);
@@ -280,18 +310,24 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 
-  void openLiveCard() {
-    Navigator.of(context, rootNavigator: true).push(
-      HeroDialogRoute(
-        builder: (context) => Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height / 2,
-              child: LiveCard(expanded: true, onTap: () => Navigator.pop(context), controller: _liveController),
+
+          // confetti 🎊
+          if (_confettiController != null && !kDebugMode)
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: ConfettiWidget(
+                confettiController: _confettiController!,
+                blastDirection: -pi / 2,
+                emissionFrequency: 0.01,
+                numberOfParticles: 80,
+                maxBlastForce: 100,
+                minBlastForce: 90,
+                gravity: 0.3,
+                minimumSize: const Size(5, 5),
+                maximumSize: const Size(20, 20),
+              ),
             ),
-          ),
-        ),
+        ],
       ),
     );
   }
@@ -311,6 +347,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           getFilterWidgets(HomeFilter.exams),
           getFilterWidgets(HomeFilter.updates),
           getFilterWidgets(HomeFilter.certifications),
+          getFilterWidgets(HomeFilter.missedExams),
         ]);
         items.addAll(all.expand((x) => x));
 
@@ -329,10 +366,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         }
         break;
 
-      // Grades
+      // Certifications
       case HomeFilter.certifications:
         for (var gradeType in GradeType.values) {
-          if (gradeType == GradeType.midYear || gradeType == GradeType.unknown || gradeType == GradeType.levelExam) continue;
+          if ([GradeType.midYear, GradeType.unknown, GradeType.levelExam].contains(gradeType)) continue;
 
           List<Grade> grades = gradeProvider.grades.where((grade) => grade.type == gradeType).toList();
           if (grades.isNotEmpty) {
@@ -380,7 +417,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
       // Homework
       case HomeFilter.homework:
-        homeworkProvider.homework.where((h) => h.deadline.isAfter(DateTime.now())).forEach((homework) {
+        final now = DateTime.now();
+        homeworkProvider.homework.where((h) => h.deadline.hour == 0 ? _sameDate(h.deadline, now) : h.deadline.isAfter(now)).forEach((homework) {
           items.add(DateWidget(
               key: homework.id,
               date: homework.deadline.year != 0 ? homework.deadline : homework.date,
@@ -463,6 +501,80 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ));
         }
         break;
+
+      // Missed Exams
+      case HomeFilter.missedExams:
+        List<Lesson> missedExams = [];
+
+        for (var lesson in timetableProvider.lessons) {
+          final desc = lesson.description.toLowerCase().specialChars();
+          if (!lesson.studentPresence &&
+              (lesson.exam != "" ||
+                  desc.contains("dolgozat") ||
+                  desc.contains("feleles") ||
+                  desc.contains("temazaro") ||
+                  desc.contains("szamonkeres") ||
+                  desc == "tz") &&
+              !(desc.contains("felkeszules") || desc.contains("gyakorlas"))) {
+            missedExams.add(lesson);
+          }
+        }
+
+        if (missedExams.isNotEmpty) {
+          missedExams.sort((a, b) => -a.date.compareTo(b.date));
+
+          items.add(
+            DateWidget(
+              date: missedExams.first.date,
+              widget: PanelButton(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
+                leading: SizedBox(
+                    width: 36,
+                    height: 36,
+                    child: Icon(
+                      FeatherIcons.slash,
+                      color: AppColors.of(context).red.withOpacity(.75),
+                      size: 28.0,
+                    )),
+                title: Text("missed_exams".plural(missedExams.length).fill([missedExams.length])),
+                trailing: const Icon(FeatherIcons.arrowRight),
+                onPressed: () => showRoundedModalBottomSheet(context,
+                    child: Column(
+                      children: missedExams
+                          .map((lesson) => Material(
+                                type: MaterialType.transparency,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                                  child: ListTile(
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+                                    leading: Icon(
+                                      SubjectIcon.lookup(subject: lesson.subject),
+                                      color: AppColors.of(context).text.withOpacity(.8),
+                                      size: 32.0,
+                                    ),
+                                    title: Text(
+                                      "${lesson.subject.name.capital()} • ${lesson.date.format(context)}",
+                                      style: const TextStyle(fontWeight: FontWeight.w600),
+                                    ),
+                                    subtitle: Text(
+                                      "missed_exam_contact".i18n.fill([lesson.teacher]),
+                                      style: const TextStyle(fontWeight: FontWeight.w500),
+                                    ),
+                                    trailing: const Icon(FeatherIcons.arrowRight),
+                                    onTap: () {
+                                      Navigator.of(context, rootNavigator: true).pop();
+                                      TimetablePage.jump(context, lesson: lesson);
+                                    },
+                                  ),
+                                ),
+                              ))
+                          .toList(),
+                    )),
+              ),
+            ),
+          );
+        }
+        break;
     }
     return items;
   }
@@ -472,7 +584,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Future<Widget> filterViewBuilder(context, int activeData) async {
     HomeFilter activeFilter = HomeFilter.values[activeData];
 
-    List<Widget> filterWidgets = sortDateWidgets(context, dateWidgets: await getFilterWidgets(activeFilter));
+    List<Widget> filterWidgets = sortDateWidgets(context, dateWidgets: await getFilterWidgets(activeFilter), showDivider: true);
 
     return Padding(
       padding: const EdgeInsets.only(top: 12.0),
@@ -506,6 +618,7 @@ List<Widget> sortDateWidgets(
   BuildContext context, {
   required List<DateWidget> dateWidgets,
   bool showTitle = true,
+  bool showDivider = false,
   EdgeInsetsGeometry? padding,
 }) {
   dateWidgets.sort((a, b) => -a.date.compareTo(b.date));
@@ -621,7 +734,7 @@ List<Widget> sortDateWidgets(
   final _now = DateTime.now();
   final now = DateTime(_now.year, _now.month, _now.day).subtract(const Duration(seconds: 1));
 
-  if (items.any((i) => i.date.isBefore(now)) && items.any((i) => i.date.isAfter(now))) {
+  if (showDivider && items.any((i) => i.date.isBefore(now)) && items.any((i) => i.date.isAfter(now))) {
     items.add(
       DateWidget(
         date: now,
@@ -653,8 +766,6 @@ class DateWidget {
   const DateWidget({required this.date, required this.widget, this.key});
 }
 
-enum HomeFilter { all, grades, messages, absences, homework, exams, notes, events, lessons, updates, certifications }
-
 Widget _itemBuilder(BuildContext context, Animation<double> animation, Widget item, int index) {
   final wrappedItem = SizeFadeTransition(
     curve: Curves.easeInOutCubic,
@@ -683,3 +794,5 @@ Widget _itemBuilder(BuildContext context, Animation<double> animation, Widget it
           })
       : wrappedItem;
 }
+
+enum HomeFilter { all, grades, messages, absences, homework, exams, notes, events, lessons, updates, certifications, missedExams }

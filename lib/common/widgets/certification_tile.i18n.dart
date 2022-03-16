@@ -11,7 +11,8 @@ extension Localization on String {
           "3q": "3. Quarter",
           "4q": "4. Quarter",
           "equivalency": "Equivalency test",
-          "unknown": "Unknown"
+          "unknown": "Unknown",
+          "classavg": "Class Average",
         },
         "hu_hu": {
           "final": "Év vége",
@@ -21,7 +22,8 @@ extension Localization on String {
           "3q": "3. Negyedév",
           "4q": "4. Negyedév",
           "equivalency": "Osztályozó",
-          "unknown": "Ismeretlen"
+          "unknown": "Ismeretlen",
+          "classavg": "Osztályátlag",
         },
         "de_de": {
           "final": "Zeugnis",
@@ -31,7 +33,8 @@ extension Localization on String {
           "3q": "3. Quartal",
           "4q": "4. Quartal",
           "equivalency": "Zulassungsprüfung",
-          "unknown": "Unbekannt"
+          "unknown": "Unbekannt",
+          "classavg": "Klassendurchschnitt",
         }
       };
 

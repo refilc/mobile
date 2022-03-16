@@ -12,10 +12,11 @@ import 'package:provider/provider.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/certification_tile.i18n.dart';
 
 class GradeGraph extends StatefulWidget {
-  const GradeGraph(this.data, {Key? key, this.dayThreshold = 7}) : super(key: key);
+  const GradeGraph(this.data, {Key? key, this.dayThreshold = 7, this.classAvg}) : super(key: key);
 
   final List<Grade> data;
   final int dayThreshold;
+  final double? classAvg;
 
   @override
   _GradeGraphState createState() => _GradeGraphState();
@@ -62,7 +63,8 @@ class _GradeGraphState extends State<GradeGraph> {
 
     List<FlSpot> subjectSpots = [];
     List<FlSpot> ghostSpots = [];
-    List<VerticalLine> extraLines = [];
+    List<VerticalLine> extraLinesV = [];
+    List<HorizontalLine> extraLinesH = [];
 
     // Filter data
     List<Grade> data = widget.data
@@ -100,18 +102,19 @@ class _GradeGraphState extends State<GradeGraph> {
 
     if (halfYearGrade.date.year != 0 && data.isNotEmpty) {
       final maxX = ghostSpots.isNotEmpty ? ghostSpots.first.x : 0;
-      final x = halfYearGrade.date.month + (halfYearGrade.date.day / 31) + ((halfYearGrade.date.year - data.last.writeDate.year) * 12);
+      final x = halfYearGrade.writeDate.month + (halfYearGrade.writeDate.day / 31) + ((halfYearGrade.writeDate.year - data.last.writeDate.year) * 12);
       if (x <= maxX) {
-        extraLines.add(
+        extraLinesV.add(
           VerticalLine(
             x: x,
             strokeWidth: 3.0,
-            color: AppColors.of(context).text.withOpacity(.75),
+            color: AppColors.of(context).red.withOpacity(.75),
             label: VerticalLineLabel(
-              labelResolver: (_) => "mid".i18n,
+              labelResolver: (_) => " " + "mid".i18n + " ​", // <- zwsp for padding
               show: true,
               alignment: Alignment.topLeft,
               style: TextStyle(
+                backgroundColor: AppColors.of(context).highlight,
                 color: AppColors.of(context).text,
                 fontSize: 16.0,
                 fontWeight: FontWeight.w600,
@@ -122,142 +125,160 @@ class _GradeGraphState extends State<GradeGraph> {
       }
     }
 
-    return SizedBox(
-      child: subjectSpots.length > 1
-          ? LineChart(
-              LineChartData(
-                extraLinesData: ExtraLinesData(verticalLines: extraLines),
-                lineBarsData: [
-                  LineChartBarData(
-                    preventCurveOverShooting: true,
-                    spots: subjectSpots,
-                    isCurved: true,
-                    colors: [averageColor],
-                    barWidth: 8,
-                    isStrokeCapRound: true,
-                    dotData: FlDotData(show: false),
-                    belowBarData: BarAreaData(
-                      show: true,
-                      colors: [
-                        averageColor.withOpacity(0.7),
-                        averageColor.withOpacity(0.3),
-                        averageColor.withOpacity(0.2),
-                        averageColor.withOpacity(0.1),
-                      ],
-                      gradientColorStops: [0.1, 0.6, 0.8, 1],
-                      gradientFrom: const Offset(0, 0),
-                      gradientTo: const Offset(0, 1),
-                    ),
-                  ),
-                  if (ghostData.isNotEmpty && ghostSpots.isNotEmpty)
-                    LineChartBarData(
-                      preventCurveOverShooting: true,
-                      spots: ghostSpots,
-                      isCurved: true,
-                      colors: [AppColors.of(context).text],
-                      barWidth: 8,
-                      isStrokeCapRound: true,
-                      dotData: FlDotData(show: false),
-                      belowBarData: BarAreaData(
-                        show: true,
-                        colors: [
-                          AppColors.of(context).text.withOpacity(0.7),
-                          AppColors.of(context).text.withOpacity(0.3),
-                          AppColors.of(context).text.withOpacity(0.2),
-                          AppColors.of(context).text.withOpacity(0.1),
-                        ],
-                        gradientColorStops: [0.1, 0.6, 0.8, 1],
-                        gradientFrom: const Offset(0, 0),
-                        gradientTo: const Offset(0, 1),
-                      ),
-                    ),
-                ],
-                minY: 1,
-                maxY: 5,
-                gridData: FlGridData(
-                  show: true,
-                  horizontalInterval: 1,
-                  // checkToShowVerticalLine: (_) => false,
-                  // getDrawingHorizontalLine: (_) => FlLine(
-                  //   color: AppColors.of(context).text.withOpacity(.15),
-                  //   strokeWidth: 2,
-                  // ),
-                  // getDrawingVerticalLine: (_) => FlLine(
-                  //   color: AppColors.of(context).text.withOpacity(.25),
-                  //   strokeWidth: 2,
-                  // ),
-                ),
-                lineTouchData: LineTouchData(
-                  touchTooltipData: LineTouchTooltipData(
-                    tooltipBgColor: Colors.grey.shade800,
-                    fitInsideVertically: true,
-                    fitInsideHorizontally: true,
-                  ),
-                  handleBuiltInTouches: true,
-                  touchSpotThreshold: 20.0,
-                  getTouchedSpotIndicator: (_, spots) {
-                    return List.generate(
-                      spots.length,
-                      (index) => TouchedSpotIndicatorData(
-                        FlLine(
-                          color: Colors.grey.shade900,
-                          strokeWidth: 3.5,
+    // Horizontal line displaying the class average
+    if (widget.classAvg != null && widget.classAvg! > 0.0 && settings.graphClassAvg) {
+      extraLinesH.add(HorizontalLine(
+        y: widget.classAvg!,
+        color: AppColors.of(context).text.withOpacity(.75),
+      ));
+    }
+
+    // LineChart is really cute because it tries to render it's contents outside of it's rect.
+    return ClipRect(
+      child: SizedBox(
+        child: subjectSpots.length > 1
+            ? Padding(
+                padding: const EdgeInsets.only(top: 8.0, right: 8.0),
+                child: LineChart(
+                  LineChartData(
+                    extraLinesData: ExtraLinesData(verticalLines: extraLinesV, horizontalLines: extraLinesH),
+                    lineBarsData: [
+                      LineChartBarData(
+                        preventCurveOverShooting: true,
+                        spots: subjectSpots,
+                        isCurved: true,
+                        colors: [averageColor],
+                        barWidth: 8,
+                        isStrokeCapRound: true,
+                        dotData: FlDotData(show: false),
+                        belowBarData: BarAreaData(
+                          show: true,
+                          colors: [
+                            averageColor.withOpacity(0.7),
+                            averageColor.withOpacity(0.3),
+                            averageColor.withOpacity(0.2),
+                            averageColor.withOpacity(0.1),
+                          ],
+                          gradientColorStops: [0.1, 0.6, 0.8, 1],
+                          gradientFrom: const Offset(0, 0),
+                          gradientTo: const Offset(0, 1),
                         ),
-                        FlDotData(
-                          getDotPainter: (a, b, c, d) => FlDotCirclePainter(
-                            strokeWidth: 0,
-                            color: Colors.grey.shade900,
-                            radius: 10.0,
+                      ),
+                      if (ghostData.isNotEmpty && ghostSpots.isNotEmpty)
+                        LineChartBarData(
+                          preventCurveOverShooting: true,
+                          spots: ghostSpots,
+                          isCurved: true,
+                          colors: [AppColors.of(context).text],
+                          barWidth: 8,
+                          isStrokeCapRound: true,
+                          dotData: FlDotData(show: false),
+                          belowBarData: BarAreaData(
+                            show: true,
+                            colors: [
+                              AppColors.of(context).text.withOpacity(0.7),
+                              AppColors.of(context).text.withOpacity(0.3),
+                              AppColors.of(context).text.withOpacity(0.2),
+                              AppColors.of(context).text.withOpacity(0.1),
+                            ],
+                            gradientColorStops: [0.1, 0.6, 0.8, 1],
+                            gradientFrom: const Offset(0, 0),
+                            gradientTo: const Offset(0, 1),
                           ),
                         ),
+                    ],
+                    minY: 1,
+                    maxY: 5,
+                    gridData: FlGridData(
+                      show: true,
+                      horizontalInterval: 1,
+                      // checkToShowVerticalLine: (_) => false,
+                      // getDrawingHorizontalLine: (_) => FlLine(
+                      //   color: AppColors.of(context).text.withOpacity(.15),
+                      //   strokeWidth: 2,
+                      // ),
+                      // getDrawingVerticalLine: (_) => FlLine(
+                      //   color: AppColors.of(context).text.withOpacity(.25),
+                      //   strokeWidth: 2,
+                      // ),
+                    ),
+                    lineTouchData: LineTouchData(
+                      touchTooltipData: LineTouchTooltipData(
+                        tooltipBgColor: Colors.grey.shade800,
+                        fitInsideVertically: true,
+                        fitInsideHorizontally: true,
                       ),
-                    );
-                  },
-                ),
-                borderData: FlBorderData(
-                  show: false,
-                  border: Border.all(
-                    color: AppColors.of(context).background,
-                    width: 4,
-                  ),
-                ),
-                titlesData: FlTitlesData(
-                  bottomTitles: SideTitles(
-                    showTitles: true,
-                    reservedSize: 24,
-                    getTextStyles: (context, value) => TextStyle(
-                      color: AppColors.of(context).text.withOpacity(.75),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14.0,
+                      handleBuiltInTouches: true,
+                      touchSpotThreshold: 20.0,
+                      getTouchedSpotIndicator: (_, spots) {
+                        return List.generate(
+                          spots.length,
+                          (index) => TouchedSpotIndicatorData(
+                            FlLine(
+                              color: Colors.grey.shade900,
+                              strokeWidth: 3.5,
+                            ),
+                            FlDotData(
+                              getDotPainter: (a, b, c, d) => FlDotCirclePainter(
+                                strokeWidth: 0,
+                                color: Colors.grey.shade900,
+                                radius: 10.0,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                    margin: 12.0,
-                    getTitles: (value) {
-                      var format = DateFormat("MMM", I18n.of(context).locale.toString());
-
-                      String title = format.format(DateTime(0, value.floor() % 12)).replaceAll(".", "");
-                      title = title.substring(0, min(title.length, 4));
-
-                      return title.toUpperCase();
-                    },
-                    interval: ghostSpots.length > 13 ? 2 : 1,
-                  ),
-                  leftTitles: SideTitles(
-                    showTitles: true,
-                    interval: 1.0,
-                    getTextStyles: (context, value) => TextStyle(
-                      color: AppColors.of(context).text,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.0,
+                    borderData: FlBorderData(
+                      show: false,
+                      border: Border.all(
+                        color: AppColors.of(context).background,
+                        width: 4,
+                      ),
                     ),
-                    margin: 16,
+                    titlesData: FlTitlesData(
+                      bottomTitles: SideTitles(
+                        showTitles: true,
+                        reservedSize: 24,
+                        getTextStyles: (context, value) => TextStyle(
+                          color: AppColors.of(context).text.withOpacity(.75),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14.0,
+                        ),
+                        margin: 12.0,
+                        getTitles: (value) {
+                          var format = DateFormat("MMM", I18n.of(context).locale.toString());
+
+                          String title = format.format(DateTime(0, value.floor() % 12)).replaceAll(".", "");
+                          title = title.substring(0, min(title.length, 4));
+
+                          return title.toUpperCase();
+                        },
+                        interval: () {
+                          List<Grade> tData = ghostData.isNotEmpty ? ghostData : data;
+                          tData.sort((a, b) => a.writeDate.compareTo(b.writeDate));
+                          return tData.first.writeDate.add(const Duration(days: 120)).isBefore(tData.last.writeDate) ? 2.0 : 1.0;
+                        }(),
+                      ),
+                      leftTitles: SideTitles(
+                        showTitles: true,
+                        interval: 1.0,
+                        getTextStyles: (context, value) => TextStyle(
+                          color: AppColors.of(context).text,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18.0,
+                        ),
+                        margin: 16,
+                      ),
+                      rightTitles: SideTitles(showTitles: false),
+                      topTitles: SideTitles(showTitles: false),
+                    ),
                   ),
-                  rightTitles: SideTitles(showTitles: false),
-                  topTitles: SideTitles(showTitles: false),
                 ),
-              ),
-            )
-          : null,
-      height: double.infinity,
+              )
+            : null,
+        height: double.infinity,
+      ),
     );
   }
 }

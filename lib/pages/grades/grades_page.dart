@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/grade_provider.dart';
 import 'package:filcnaplo/api/providers/user_provider.dart';
@@ -7,14 +8,15 @@ import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_kreta_api/models/grade.dart';
 import 'package:filcnaplo_kreta_api/models/subject.dart';
 import 'package:filcnaplo_kreta_api/models/class_average.dart';
+import 'package:filcnaplo_mobile_ui/common/average_display.dart';
 import 'package:filcnaplo_mobile_ui/common/empty.dart';
 import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_button.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/statistics_tile.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/subject_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/grade_subject_tile.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/graph.dart';
-import 'package:filcnaplo_mobile_ui/pages/grades/subject_view.dart';
+import 'package:filcnaplo_mobile_ui/pages/grades/grade_subject_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:filcnaplo/utils/color.dart';
@@ -51,10 +53,10 @@ class _GradesPageState extends State<GradesPage> {
       var nullavg = ClassAverage(average: 0.0, subject: subject, uid: "0");
       double classAverage = gradeProvider.classAverages.firstWhere((e) => e.subject == subject, orElse: () => nullavg).average;
 
-      subjectAvgs.add(avg);
+      if (avg != 0) subjectAvgs.add(avg);
 
-      return SubjectTile(subject, average: avg, groupAverage: classAverage, onTap: () {
-        SubjectView(subject, classAverage: classAverage).push(context, root: true);
+      return GradeSubjectTile(subject, average: avg, groupAverage: classAverage, onTap: () {
+        GradeSubjectView(subject, classAverage: classAverage).push(context, root: true);
       });
     }));
 
@@ -82,7 +84,7 @@ class _GradesPageState extends State<GradesPage> {
         children: [
           Expanded(
             child: StatisticsTile(
-              title: Text(
+              title: AutoSizeText(
                 "subjectavg".i18n,
                 textAlign: TextAlign.center,
                 maxLines: 2,
@@ -94,10 +96,11 @@ class _GradesPageState extends State<GradesPage> {
           const SizedBox(width: 24.0),
           Expanded(
             child: StatisticsTile(
-              title: Text(
+              title: AutoSizeText(
                 "classavg".i18n,
                 textAlign: TextAlign.center,
                 maxLines: 2,
+                wrapWords: false,
                 overflow: TextOverflow.ellipsis,
               ),
               value: classAvg,
@@ -122,14 +125,30 @@ class _GradesPageState extends State<GradesPage> {
     List<String> nameParts = user.name?.split(" ") ?? ["?"];
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
 
+    final double totalClassAvg = gradeProvider.classAverages.isEmpty
+        ? 0.0
+        : gradeProvider.classAverages.map((e) => e.average).fold(0.0, (double a, double b) => a + b) / gradeProvider.classAverages.length;
     yearlyGraph = Padding(
       padding: const EdgeInsets.only(top: 12.0, bottom: 24.0),
       child: Panel(
-        title: Text("annual_average".i18n),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("annual_average".i18n),
+            Row(
+              children: [
+                if (totalClassAvg >= 1.0) AverageDisplay(average: totalClassAvg, border: true),
+                const SizedBox(width: 4.0),
+                if (gradeProvider.grades.where((e) => e.type == GradeType.midYear).isNotEmpty)
+                  AverageDisplay(average: AverageHelper.averageEvals(gradeProvider.grades.where((e) => e.type == GradeType.midYear).toList())),
+              ],
+            )
+          ],
+        ),
         child: Container(
           height: 165.0,
-          padding: const EdgeInsets.only(top: 24.0, right: 12.0),
-          child: GradeGraph(gradeProvider.grades.where((e) => e.type == GradeType.midYear).toList(), dayThreshold: 2),
+          padding: const EdgeInsets.only(top: 12.0, right: 12.0),
+          child: GradeGraph(gradeProvider.grades.where((e) => e.type == GradeType.midYear).toList(), dayThreshold: 2, classAvg: totalClassAvg),
         ),
       ),
     );
@@ -163,9 +182,12 @@ class _GradesPageState extends State<GradesPage> {
                 ),
               ],
               automaticallyImplyLeading: false,
-              title: Text(
-                "Grades".i18n,
-                style: TextStyle(color: AppColors.of(context).text, fontSize: 32.0, fontWeight: FontWeight.bold),
+              title: Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Text(
+                  "Grades".i18n,
+                  style: TextStyle(color: AppColors.of(context).text, fontSize: 32.0, fontWeight: FontWeight.bold),
+                ),
               ),
               shadowColor: AppColors.of(context).shadow.withOpacity(0.5),
             ),
@@ -181,7 +203,7 @@ class _GradesPageState extends State<GradesPage> {
                 if (subjectTiles.isNotEmpty) {
                   EdgeInsetsGeometry panelPadding = const EdgeInsets.symmetric(horizontal: 24.0);
 
-                  if (subjectTiles[index].runtimeType == SubjectTile) {
+                  if (subjectTiles[index].runtimeType == GradeSubjectTile) {
                     return Padding(
                         padding: panelPadding,
                         child: PanelBody(

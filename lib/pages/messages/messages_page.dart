@@ -74,9 +74,12 @@ class _MessagesPageState extends State<MessagesPage> with TickerProviderStateMix
               ],
               automaticallyImplyLeading: false,
               shadowColor: AppColors.of(context).shadow.withOpacity(0.5),
-              title: Text(
-                "Messages".i18n,
-                style: TextStyle(color: AppColors.of(context).text, fontSize: 32.0, fontWeight: FontWeight.bold),
+              title: Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Text(
+                  "Messages".i18n,
+                  style: TextStyle(color: AppColors.of(context).text, fontSize: 32.0, fontWeight: FontWeight.bold),
+                ),
               ),
               bottom: FilterBar(items: [
                 Tab(text: "Inbox".i18n),

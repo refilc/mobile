@@ -28,7 +28,16 @@ class NavigationScreen extends StatefulWidget {
 
 class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingObserver {
   late NavigationRoute selected;
+  List<String> initializers = [];
   final _navigatorState = GlobalKey<NavigatorState>();
+
+  bool init(String id) {
+    if (initializers.contains(id)) return false;
+
+    initializers.add(id);
+
+    return true;
+  }
 
   @override
   void initState() {
