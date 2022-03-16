@@ -214,17 +214,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 // Account list
                 ...accountTiles,
 
-                Center(
-                  child: Container(
-                    margin: const EdgeInsets.only(top: 12.0, bottom: 4.0),
-                    height: 3.0,
-                    width: 75.0,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12.0),
-                      color: AppColors.of(context).text.withOpacity(.25),
+                if (accountTiles.isNotEmpty)
+                  Center(
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 12.0, bottom: 4.0),
+                      height: 3.0,
+                      width: 75.0,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12.0),
+                        color: AppColors.of(context).text.withOpacity(.25),
+                      ),
                     ),
                   ),
-                ),
 
                 // Account settings
                 PanelButton(
