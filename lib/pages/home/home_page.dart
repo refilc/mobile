@@ -1,7 +1,11 @@
 // ignore_for_file: dead_code
-
 import 'dart:math';
 
+import 'package:filcnaplo/theme.dart';
+import 'package:implicitly_animated_reorderable_list/transitions.dart';
+import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
+import 'package:filcnaplo/api/providers/update_provider.dart';
+import 'package:filcnaplo/api/providers/sync.dart';
 import 'package:confetti/confetti.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
 import 'package:filcnaplo/api/providers/sync.dart';
@@ -24,10 +28,7 @@ import 'package:filcnaplo_kreta_api/models/message.dart';
 import 'package:filcnaplo_kreta_api/providers/timetable_provider.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_sheet_menu/rounded_bottom_sheet.dart';
 import 'package:filcnaplo_mobile_ui/common/empty.dart';
-import 'package:filcnaplo_mobile_ui/common/filter/filter_bar.dart';
-import 'package:filcnaplo_mobile_ui/common/filter/filter_controller.dart';
-import 'package:filcnaplo_mobile_ui/common/filter/filter_item.dart';
-import 'package:filcnaplo_mobile_ui/common/filter/filter_view.dart';
+import 'package:filcnaplo_mobile_ui/common/filter_bar.dart';
 import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
 import 'package:filcnaplo_mobile_ui/common/panel/panel_button.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_button.dart';
@@ -70,6 +71,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  late TabController _tabController;
   late UserProvider user;
   late SettingsProvider settings;
   late UpdateProvider updateProvider;
@@ -89,15 +91,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   late String greeting;
   late String firstName;
+  late LiveCardController _liveController;
+  late PageController _pageController;
+  List<String> listOrder = ['A', 'B', 'C', 'D'];
 
   @override
   void initState() {
     super.initState();
-
+    
+    _tabController = TabController(length: 4, vsync: this);
+    _pageController = PageController();
     user = Provider.of<UserProvider>(context, listen: false);
-
     _liveController = LiveCardController(context: context, vsync: this);
-    _filterController = FilterController(itemCount: 4);
 
     DateTime now = DateTime.now();
     if (now.isBefore(DateTime(now.year, DateTime.august, 31)) && now.isAfter(DateTime(now.year, DateTime.june, 14))) {
@@ -133,7 +138,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   void dispose() {
     // _filterController.dispose();
     _liveController.dispose();
+    _pageController.dispose();
+    _tabController.dispose();
     _confettiController?.dispose();
+    
     super.dispose();
   }
 
@@ -156,100 +164,152 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
 
     return Scaffold(
-      body: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 12.0),
-            child: NestedScrollView(
-              physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-              headerSliverBuilder: (context, _) => [
-                AnimatedBuilder(
-                  animation: _liveController.animation,
-                  builder: (context, child) {
-                    return SliverAppBar(
-                      automaticallyImplyLeading: false,
-                      centerTitle: false,
-                      titleSpacing: 0.0,
-                      // Welcome text
-                      title: Padding(
-                        padding: const EdgeInsets.only(left: 24.0),
-                        child: Text(
-                          greeting.i18n.fill([firstName]),
-                          overflow: TextOverflow.fade,
-                          maxLines: 2,
-                          softWrap: true,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18.0,
-                            color: Theme.of(context).textTheme.bodyText1?.color,
-                          ),
-                        ),
-                      ),
-                      actions: [
-                        // TODO: Search Button
-                        // IconButton(
-                        //   icon: Icon(FeatherIcons.search),
-                        //   color: Theme.of(context).textTheme.bodyText1?.color,
-                        //   splashRadius: 24.0,
-                        //   onPressed: () {},
-                        // ),
-
-                        // Profile Icon
-                        Padding(
-                          padding: const EdgeInsets.only(right: 24.0),
-                          child: ProfileButton(
-                            child: ProfileImage(
-                              heroTag: "profile",
-                              name: firstName,
-                              backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
-                              badge: updateProvider.available,
-                              role: user.role,
+      body: Padding(
+        padding: const EdgeInsets.only(top: 12.0),
+        child: NestedScrollView(
+            physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+            headerSliverBuilder: (context, _) => [
+                  AnimatedBuilder(
+                    animation: _liveController.animation,
+                    builder: (context, child) {
+                      return SliverAppBar(
+                        automaticallyImplyLeading: false,
+                        centerTitle: false,
+                        titleSpacing: 0.0,
+                        // Welcome text
+                        title: Padding(
+                          padding: const EdgeInsets.only(left: 24.0),
+                          child: Text(
+                            greeting.i18n.fill([firstName]),
+                            overflow: TextOverflow.fade,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18.0,
+                              color: Theme.of(context).textTheme.bodyText1?.color,
                             ),
                           ),
                         ),
-                      ],
+                        actions: [
+                          // TODO: Search Button
+                          // IconButton(
+                          //   icon: Icon(FeatherIcons.search),
+                          //   color: Theme.of(context).textTheme.bodyText1?.color,
+                          //   splashRadius: 24.0,
+                          //   onPressed: () {},
+                          // ),
 
-                      expandedHeight: _liveController.animation.value * 234.0,
-
-                      // Live Card
-                      flexibleSpace: FlexibleSpaceBar(
-                        background: Padding(
-                          padding: EdgeInsets.only(
-                            left: 24.0,
-                            right: 24.0,
-                            top: 58.0 + MediaQuery.of(context).padding.top,
-                            bottom: 52.0,
+                          // Profile Icon
+                          Padding(
+                            padding: const EdgeInsets.only(right: 24.0),
+                            child: ProfileButton(
+                              child: ProfileImage(
+                                heroTag: "profile",
+                                name: firstName,
+                                backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
+                                badge: updateProvider.available,
+                                role: user.role,
+                              ),
+                            ),
                           ),
-                          child: LiveCard(
+                        ],
+
+                        expandedHeight: _liveController.animation.value * 234.0,
+
+                        // Live Card
+                        flexibleSpace: FlexibleSpaceBar(
+                          background: LiveCard(
+                            onTap: openLiveCard,
                             controller: _liveController,
                           ),
                         ),
-                      ),
-                      shadowColor: AppColors.of(context).shadow,
+                        shadowColor: Colors.black,
 
-                      // Filter Bar
-                      bottom: FilterBar(items: [
-                        FilterItem(label: "All".i18n),
-                        FilterItem(label: "Grades".i18n),
-                        FilterItem(label: "Messages".i18n),
-                        FilterItem(label: "Absences".i18n),
-                      ], controller: _filterController),
-                      pinned: true,
-                      floating: false,
-                      snap: false,
-                    );
-                  },
-                ),
-              ],
-              body: FilterView(
-                controller: _filterController,
-                builder: (context, activeData) => FutureBuilder<Widget>(
-                  future: filterViewBuilder(context, activeData),
-                  builder: (context, snapshot) => snapshot.data ?? Container(),
+                        // Filter Bar
+                        bottom: FilterBar(
+                          items: [
+                            Tab(text: "All".i18n),
+                            Tab(text: "Grades".i18n),
+                            Tab(text: "Messages".i18n),
+                            Tab(text: "Absences".i18n),
+                          ],
+                          controller: _tabController,
+                          onTap: (i) async {
+                            int selectedPage = _pageController.page!.round();
+
+                            if (i == selectedPage) return;
+                            if (_pageController.page?.roundToDouble() != _pageController.page) {
+                              _pageController.animateToPage(i, curve: Curves.easeIn, duration: kTabScrollDuration);
+                              return;
+                            }
+
+                            // swap current page with target page
+                            setState(() {
+                              _pageController.jumpToPage(i);
+                              String currentList = listOrder[selectedPage];
+                              listOrder[selectedPage] = listOrder[i];
+                              listOrder[i] = currentList;
+                            });
+                          },
+                        ),
+                        pinned: true,
+                        floating: false,
+                        snap: false,
+                      );
+                    },
+                  ),
+                ],
+            body: Padding(
+              padding: const EdgeInsets.only(top: 12.0),
+              child: NotificationListener<ScrollNotification>(
+                onNotification: (notification) {
+                  // from flutter source
+                  if (notification is ScrollUpdateNotification && !_tabController.indexIsChanging) {
+                    if ((_pageController.page! - _tabController.index).abs() > 1.0) {
+                      _tabController.index = _pageController.page!.floor();
+                    }
+                    _tabController.offset = (_pageController.page! - _tabController.index).clamp(-1.0, 1.0);
+                  } else if (notification is ScrollEndNotification) {
+                    _tabController.index = _pageController.page!.round();
+                    if (!_tabController.indexIsChanging) _tabController.offset = (_pageController.page! - _tabController.index).clamp(-1.0, 1.0);
+                  }
+                  return false;
+                },
+                child: PageView.custom(
+                  controller: _pageController,
+                  childrenDelegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                        return FutureBuilder<List<DateWidget>>(
+                          key: ValueKey<String>(listOrder[index]),
+                          future: getFilterWidgets(HomeFilter.values[index]),
+                          builder: (context, dateWidgets) => dateWidgets.data != null
+                              ? RefreshIndicator(
+                                  color: Theme.of(context).colorScheme.secondary,
+                                  onRefresh: () => syncAll(context),
+                                  child: ImplicitlyAnimatedList<Widget>(
+                                    items: sortDateWidgets(context, dateWidgets: dateWidgets.data!),
+                                    itemBuilder: _itemBuilder,
+                                    spawnIsolate: false,
+                                    areItemsTheSame: (a, b) => a.key == b.key,
+                                    physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                                  ))
+                              : Container(),
+                        );
+                      },
+                      childCount: 4,
+                      findChildIndexCallback: (Key key) {
+                        final ValueKey<String> valueKey = key as ValueKey<String>;
+                        final String data = valueKey.value;
+                        return listOrder.indexOf(data);
+                      }),
+                  physics: const PageScrollPhysics().applyTo(const BouncingScrollPhysics()),
                 ),
               ),
-            ),
-          ),
+            )),
+      ),
+    );
+  }
+
 
           // confetti 🎊
           if (_confettiController != null && !kDebugMode)
@@ -298,6 +358,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         for (var grade in gradeProvider.grades) {
           if (grade.type == GradeType.midYear) {
             items.add(DateWidget(
+              key: grade.id,
               date: grade.date,
               widget: GradeTile(grade, onTap: () => GradeView.show(grade, context: context)),
             ));
@@ -330,6 +391,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         for (var message in messageProvider.messages) {
           if (message.type == MessageType.inbox) {
             items.add(DateWidget(
+                key: "${message.id}",
                 date: message.date,
                 widget: MessageTile(
                   message,
@@ -344,6 +406,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       case HomeFilter.absences:
         absenceProvider.absences.where((a) => !absencesNoExcused || a.state != Justification.excused).forEach((absence) {
           items.add(DateWidget(
+              key: absence.id,
               date: absence.date,
               widget: AbsenceTile(
                 absence,
@@ -357,6 +420,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         final now = DateTime.now();
         homeworkProvider.homework.where((h) => h.deadline.hour == 0 ? _sameDate(h.deadline, now) : h.deadline.isAfter(now)).forEach((homework) {
           items.add(DateWidget(
+              key: homework.id,
               date: homework.deadline.year != 0 ? homework.deadline : homework.date,
               widget: HomeworkTile(
                 homework,
@@ -369,6 +433,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       case HomeFilter.exams:
         for (var exam in examProvider.exams) {
           items.add(DateWidget(
+              key: exam.id,
               date: exam.writeDate.year != 0 ? exam.writeDate : exam.date,
               widget: ExamTile(
                 exam,
@@ -381,6 +446,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       case HomeFilter.notes:
         for (var note in noteProvider.notes) {
           items.add(DateWidget(
+              key: note.id,
               date: note.date,
               widget: NoteTile(
                 note,
@@ -393,6 +459,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       case HomeFilter.events:
         for (var event in eventProvider.events) {
           items.add(DateWidget(
+              key: event.id,
               date: event.start,
               widget: EventTile(
                 event,
@@ -405,6 +472,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       case HomeFilter.lessons:
         timetableProvider.lessons.where((l) => l.isChanged && l.start.isAfter(DateTime.now())).forEach((lesson) {
           items.add(DateWidget(
+              key: lesson.id,
               date: lesson.date,
               widget: ChangedLessonTile(
                 lesson,
@@ -589,6 +657,7 @@ List<Widget> sortDateWidgets(
     conv.sort();
 
     dateWidgets.add(DateWidget(
+      key: "${conv.newest.date.millisecondsSinceEpoch}-msg",
       date: conv.newest.date,
       widget: MessageTile(
         conv.newest,
@@ -622,22 +691,40 @@ List<Widget> sortDateWidgets(
       List<AbsenceTile> absenceTiles = absenceTileWidgets.map((e) => e.widget as AbsenceTile).toList();
       if (absenceTiles.length > 1) {
         elements.removeWhere((element) => element.widget.runtimeType == AbsenceTile && (element.widget as AbsenceTile).absence.delay == 0);
-
         if (elements.isEmpty) {
           _showTitle = false;
         }
-
-        elements.add(DateWidget(widget: AbsenceGroupTile(absenceTiles, showDate: !_showTitle), date: absenceTileWidgets.first.date));
+        elements.add(DateWidget(
+            widget: AbsenceGroupTile(absenceTiles, showDate: !_showTitle),
+            date: absenceTileWidgets.first.date,
+            key: "${absenceTileWidgets.first.date.millisecondsSinceEpoch}-absence-group"));
       }
 
+      // Bring Lesson Tiles to front & sort by index asc
+      List<DateWidget> lessonTiles = elements.where((element) {
+        return element.widget.runtimeType == ChangedLessonTile;
+      }).toList();
+      lessonTiles.sort((a, b) => (a.widget as ChangedLessonTile).lesson.lessonIndex.compareTo((b.widget as ChangedLessonTile).lesson.lessonIndex));
+      elements.removeWhere((element) => element.widget.runtimeType == ChangedLessonTile);
+      elements.insertAll(0, lessonTiles);
+
+      final date = (elements + absenceTileWidgets).first.date;
       items.add(DateWidget(
-        date: (elements + absenceTileWidgets).first.date,
+        date: date,
         widget: Padding(
+          key: ValueKey(date),
           padding: const EdgeInsets.only(bottom: 12.0),
           child: Panel(
             padding: padding,
-            title: _showTitle ? Text((elements + absenceTileWidgets).first.date.format(context, forceToday: true)) : null,
-            child: Column(children: elements.map((e) => e.widget).toList()),
+            title: _showTitle ? Text(date.format(context, forceToday: true)) : null,
+            hasShadow: false,
+            child: ImplicitlyAnimatedList<DateWidget>(
+                areItemsTheSame: (a, b) => a.key == b.key,
+                spawnIsolate: false,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, animation, item, index) => _itemBuilder(context, animation, item.widget, index),
+                items: elements),
           ),
         ),
       ));
@@ -666,15 +753,46 @@ List<Widget> sortDateWidgets(
     );
   }
 
-  items.sort((a, b) => -a.date.compareTo(b.date));
+  // Sort future dates asc, past dates desc
+  items.sort((a, b) => (a.date.isAfter(now) && b.date.isAfter(now) ? 1 : -1) * a.date.compareTo(b.date));
 
   return items.map((e) => e.widget).toList();
 }
 
 class DateWidget {
-  DateTime date;
-  Widget widget;
-  DateWidget({required this.date, required this.widget});
+  final DateTime date;
+  final Widget widget;
+  final String? key;
+  const DateWidget({required this.date, required this.widget, this.key});
+}
+
+Widget _itemBuilder(BuildContext context, Animation<double> animation, Widget item, int index) {
+  final wrappedItem = SizeFadeTransition(
+    curve: Curves.easeInOutCubic,
+    animation: animation,
+    child: item,
+  );
+  return item is Panel
+      // Re-add & animate shadow
+      ? AnimatedBuilder(
+          animation: animation,
+          child: wrappedItem,
+          builder: (context, child) {
+            return DecoratedBox(
+              child: child,
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                      offset: const Offset(0, 21),
+                      blurRadius: 23.0,
+                      color: AppColors.of(context).shadow.withOpacity(
+                          CurvedAnimation(parent: CurvedAnimation(parent: animation, curve: Curves.easeInOutCubic), curve: const Interval(2 / 3, 1.0))
+                              .value))
+                ],
+              ),
+            );
+          })
+      : wrappedItem;
 }
 
 enum HomeFilter { all, grades, messages, absences, homework, exams, notes, events, lessons, updates, certifications, missedExams }

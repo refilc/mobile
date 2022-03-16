@@ -1,3 +1,4 @@
+import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_kreta_api/controllers/live_card_controller.dart';
 import 'package:filcnaplo_mobile_ui/pages/home/live_card/live_card_widget.dart';
 import 'package:flutter/material.dart';
@@ -30,9 +31,15 @@ class _LiveCardState extends State<LiveCard> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.controller.currentLesson == null) return Container();
+    if (widget.controller.currentLesson == null) {
+      return Container(
+        color: AppColors.of(context).background,
+        width: MediaQuery.of(context).size.width,
+        height: 200,
+      );
+    }
 
-    return LiveCardWidget(
+    final card = LiveCardWidget(
       onTap: widget.controller.nextLessons?.isNotEmpty ?? false ? widget.onTap : null,
       lesson: widget.controller.currentLesson!,
       next: widget.controller.nextLesson?.subject,

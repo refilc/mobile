@@ -6,10 +6,7 @@ import 'package:filcnaplo/api/providers/user_provider.dart';
 import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_kreta_api/models/message.dart';
 import 'package:filcnaplo_mobile_ui/common/empty.dart';
-import 'package:filcnaplo_mobile_ui/common/filter/filter_bar.dart';
-import 'package:filcnaplo_mobile_ui/common/filter/filter_controller.dart';
-import 'package:filcnaplo_mobile_ui/common/filter/filter_item.dart';
-import 'package:filcnaplo_mobile_ui/common/filter/filter_view.dart';
+import 'package:filcnaplo_mobile_ui/common/filter_bar.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_button.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/message_tile.dart';
@@ -26,18 +23,18 @@ class MessagesPage extends StatefulWidget {
   _MessagesPageState createState() => _MessagesPageState();
 }
 
-class _MessagesPageState extends State<MessagesPage> {
+class _MessagesPageState extends State<MessagesPage> with TickerProviderStateMixin {
   late UserProvider user;
   late MessageProvider messageProvider;
   late UpdateProvider updateProvider;
   late String firstName;
-  late FilterController filterController;
+  late TabController tabController;
 
   @override
   void initState() {
     super.initState();
 
-    filterController = FilterController(itemCount: 4);
+    tabController = TabController(length: 4, vsync: this);
   }
 
   @override
@@ -85,14 +82,17 @@ class _MessagesPageState extends State<MessagesPage> {
                 ),
               ),
               bottom: FilterBar(items: [
-                FilterItem(label: "Inbox".i18n),
-                FilterItem(label: "Sent".i18n),
-                FilterItem(label: "Trash".i18n),
-                FilterItem(label: "Draft".i18n),
-              ], controller: filterController),
+                Tab(text: "Inbox".i18n),
+                Tab(text: "Sent".i18n),
+                Tab(text: "Trash".i18n),
+                Tab(text: "Draft".i18n),
+              ], controller: tabController),
             ),
           ],
-          body: FilterView(controller: filterController, builder: filterViewBuilder),
+          body: TabBarView(
+              physics: const BouncingScrollPhysics(),
+              controller: tabController,
+              children: List.generate(4, (index) => filterViewBuilder(context, index))),
         ),
       ),
     );
