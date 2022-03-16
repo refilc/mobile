@@ -6,23 +6,23 @@ extension Localization on String {
         "en_en": {
           "next": "Next",
           "remaining": "%d mins".one("%d min"),
-          "pause": "Pause",
+          "pause": "Break",
           "go to room": "Go to room %s.",
-          "stay": "Maradj a helyeden.",
+          "stay": "Stay in this room.",
         },
         "hu_hu": {
           "next": "Következő",
           "remaining": "%d perc".one("%d perc"),
           "pause": "Szünet",
           "go to room": "Menj a(z) %s terembe.",
-          "stay": "Maradj a helyeden.",
+          "stay": "Maradj ebben a teremben.",
         },
         "de_de": {
           "next": "Nächste",
           "remaining": "%d Minuten".one("%d Minute"),
           "pause": "Pause",
           "go to room": "Gehe zu Raum %s.",
-          "stay": "Maradj a helyeden.",
+          "stay": "Im Zimmer bleiben.",
         },
       };
 
