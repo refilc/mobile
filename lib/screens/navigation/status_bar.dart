@@ -26,27 +26,27 @@ class _StatusBarState extends State<StatusBar> {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 250),
       curve: Curves.easeInOut,
-      height: currentStatus != null ? 28.0 : 0,
+      height: currentStatus != null ? 32.0 : 0,
       width: double.infinity,
       child: Stack(
         children: [
           // Background
           AnimatedContainer(
-            margin: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.0),
+            margin: const EdgeInsets.only(left: 6.0, right: 6.0, top: 8.0),
             duration: const Duration(milliseconds: 250),
             curve: Curves.easeInOut,
             height: currentStatus != null ? 28.0 : 0,
             decoration: BoxDecoration(
               color: backgroundColor,
               boxShadow: [BoxShadow(color: AppColors.of(context).shadow, blurRadius: 8.0)],
-              borderRadius: BorderRadius.circular(4.0),
+              borderRadius: BorderRadius.circular(45.0),
             ),
           ),
 
           // Progress bar
           if (currentStatus == Status.syncing)
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.0),
+              margin: const EdgeInsets.only(left: 6.0, right: 6.0, top: 8.0),
               alignment: Alignment.bottomLeft,
               child: AnimatedContainer(
                 height: currentStatus != null ? 28.0 : 0,
@@ -55,16 +55,19 @@ class _StatusBarState extends State<StatusBar> {
                 width: MediaQuery.of(context).size.width * statusProvider.progress - 16.0,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.secondary.withOpacity(0.8),
-                  borderRadius: BorderRadius.circular(4.0),
+                  borderRadius: BorderRadius.circular(45.0),
                 ),
               ),
             ),
 
           // Text
-          Center(
-            child: Text(
-              _statusString(currentStatus),
-              style: TextStyle(color: color, fontWeight: FontWeight.w500),
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Center(
+              child: Text(
+                _statusString(currentStatus),
+                style: TextStyle(color: color, fontWeight: FontWeight.w500),
+              ),
             ),
           ),
         ],

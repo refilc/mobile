@@ -116,10 +116,27 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
         body: Column(
           children: [
             Expanded(
-              child: Navigator(
-                key: _navigatorState,
-                initialRoute: selected.name,
-                onGenerateRoute: (settings) => navigationRouteHandler(settings),
+              child: Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  Navigator(
+                    key: _navigatorState,
+                    initialRoute: selected.name,
+                    onGenerateRoute: (settings) => navigationRouteHandler(settings),
+                  ),
+                  Container(
+                    height: 8.0,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Colors.black.withOpacity(Theme.of(context).brightness == Brightness.light ? .03 : .08), Colors.transparent],
+                        stops: const [0.0, 1.0],
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
 
