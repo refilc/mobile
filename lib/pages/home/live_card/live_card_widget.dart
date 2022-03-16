@@ -70,43 +70,42 @@ class LiveCardWidget extends StatelessWidget {
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Expanded(
-                          child: Row(
-                            children: [
-                              if (title != null)
-                                Expanded(
-                                  child: Text.rich(
-                                    TextSpan(
-                                      children: [
+                        Row(
+                          children: [
+                            if (title != null)
+                              Expanded(
+                                child: Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: title,
+                                      ),
+                                      if (subtitle != null)
                                         TextSpan(
-                                          text: title,
+                                          text: "  " + subtitle!,
+                                          style: TextStyle(fontSize: 14.0, color: AppColors.of(context).text.withOpacity(.75)),
                                         ),
-                                        if (subtitle != null)
-                                          TextSpan(
-                                            text: "  " + subtitle!,
-                                            style: TextStyle(fontSize: 14.0, color: AppColors.of(context).text.withOpacity(.75)),
-                                          ),
-                                      ],
-                                    ),
-                                    style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 22.0),
-                                    maxLines: 1,
-                                    softWrap: false,
-                                    overflow: TextOverflow.ellipsis,
+                                    ],
                                   ),
+                                  style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 22.0),
+                                  maxLines: 1,
+                                  softWrap: false,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                              if (title != null) const SizedBox(width: 6.0),
-                              if (icon != null)
-                                Padding(
-                                  padding: const EdgeInsets.all(2.0),
-                                  child: Icon(
-                                    icon,
-                                    size: 26.0,
-                                    color: AppColors.of(context).text.withOpacity(.75),
-                                  ),
+                              ),
+                            if (title != null) const SizedBox(width: 6.0),
+                            if (icon != null)
+                              Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: Icon(
+                                  icon,
+                                  size: 26.0,
+                                  color: AppColors.of(context).text.withOpacity(.75),
                                 ),
-                            ],
-                          ),
+                              ),
+                          ],
                         ),
                         if (description != null)
                           DefaultTextStyle(
@@ -115,7 +114,7 @@ class LiveCardWidget extends StatelessWidget {
                                   fontSize: 16.0,
                                   color: AppColors.of(context).text.withOpacity(.75),
                                 ),
-                            maxLines: 1,
+                            maxLines: 2,
                             softWrap: false,
                             overflow: TextOverflow.ellipsis,
                             child: description!,

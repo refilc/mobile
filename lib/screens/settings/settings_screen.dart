@@ -92,17 +92,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
     ]);
   }
 
-  void restore() {
-    Provider.of<GradeProvider>(context, listen: false).restore();
-    Provider.of<TimetableProvider>(context, listen: false).restore();
-    Provider.of<ExamProvider>(context, listen: false).restore();
-    Provider.of<HomeworkProvider>(context, listen: false).restore();
-    Provider.of<MessageProvider>(context, listen: false).restore();
-    Provider.of<NoteProvider>(context, listen: false).restore();
-    Provider.of<EventProvider>(context, listen: false).restore();
-    Provider.of<AbsenceProvider>(context, listen: false).restore();
-    Provider.of<KretaClient>(context, listen: false).refreshLogin();
-  }
+  Future<void> restore() => Future.wait([
+        Provider.of<GradeProvider>(context, listen: false).restore(),
+        Provider.of<TimetableProvider>(context, listen: false).restore(),
+        Provider.of<ExamProvider>(context, listen: false).restore(),
+        Provider.of<HomeworkProvider>(context, listen: false).restore(),
+        Provider.of<MessageProvider>(context, listen: false).restore(),
+        Provider.of<NoteProvider>(context, listen: false).restore(),
+        Provider.of<EventProvider>(context, listen: false).restore(),
+        Provider.of<AbsenceProvider>(context, listen: false).restore(),
+        Provider.of<KretaClient>(context, listen: false).refreshLogin()
+      ]);
 
   void buildAccountTiles() {
     accountTiles = [];
@@ -122,7 +122,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         onTap: () {
           user.setUser(account.id);
-          restore();
+          restore().then((_) => user.setUser(account.id));
           Navigator.of(context).pop();
         },
         onTapMenu: () => _showBottomSheet(account),
@@ -240,7 +240,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             // If no other Users left, go back to LoginScreen
                             if (user.getUsers().isNotEmpty) {
                               user.setUser(user.getUsers().first.id);
-                              restore();
+                              restore().then((_) => user.setUser(user.getUsers().first.id));
                             } else {
                               Navigator.of(context).pushNamedAndRemoveUntil("login", (_) => false);
                             }
