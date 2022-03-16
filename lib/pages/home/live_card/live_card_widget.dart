@@ -126,38 +126,40 @@ class LiveCardWidget extends StatelessWidget {
                 ],
               ),
             ),
-            if (nextSubject != null)
+            if (!(nextSubject == null && progressCurrent == null && progressMax == null))
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Row(
                   children: [
-                    const Icon(FeatherIcons.arrowRight, size: 12.0),
-                    const SizedBox(width: 4.0),
-                    Expanded(
-                      child: Text.rich(
-                        TextSpan(
-                          children: [
-                            // const TextSpan(text: "Következő: "),
-                            TextSpan(
-                              text: nextSubject,
-                              style: TextStyle(
-                                color: AppColors.of(context).text.withOpacity(.8),
-                                fontWeight: FontWeight.w600,
+                    if (nextSubject != null) const Icon(FeatherIcons.arrowRight, size: 12.0),
+                    if (nextSubject != null) const SizedBox(width: 4.0),
+                    if (nextSubject != null)
+                      Expanded(
+                        child: Text.rich(
+                          TextSpan(
+                            children: [
+                              // const TextSpan(text: "Következő: "),
+                              TextSpan(
+                                text: nextSubject,
+                                style: TextStyle(
+                                  color: AppColors.of(context).text.withOpacity(.8),
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
-                            if (nextRoom != null) const TextSpan(text: " • ", style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold)),
-                            if (nextRoom != null) TextSpan(text: nextRoom, style: const TextStyle(fontSize: 12.0)),
-                          ],
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: false,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.of(context).text.withOpacity(.75),
+                              if (nextRoom != null) const TextSpan(text: " • ", style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold)),
+                              if (nextRoom != null) TextSpan(text: nextRoom, style: const TextStyle(fontSize: 12.0)),
+                            ],
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.of(context).text.withOpacity(.75),
+                          ),
                         ),
                       ),
-                    ),
+                    if (nextSubject == null) const Spacer(),
                     if (progressCurrent != null && progressMax != null)
                       Text(
                         "remaining".plural((progressMax! - progressCurrent!).round()),
