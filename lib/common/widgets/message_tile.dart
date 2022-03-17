@@ -1,4 +1,5 @@
 import 'package:animations/animations.dart';
+import 'package:filcnaplo/models/settings.dart';
 import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo/utils/color.dart';
 import 'package:filcnaplo/utils/format.dart';
@@ -7,6 +8,7 @@ import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/message_view/message_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:provider/provider.dart';
 
 class MessageTile extends StatelessWidget {
   const MessageTile(
@@ -34,16 +36,22 @@ class MessageTile extends StatelessWidget {
             visualDensity: VisualDensity.compact,
             contentPadding: const EdgeInsets.only(left: 8.0, right: 4.0),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-            leading: ProfileImage(
-              name: message.author,
-              radius: 22.0,
-              backgroundColor: ColorUtils.stringToColor(message.author),
-            ),
+            leading: !Provider.of<SettingsProvider>(context, listen: false).presentationMode
+                ? ProfileImage(
+                    name: message.author,
+                    radius: 22.0,
+                    backgroundColor: ColorUtils.stringToColor(message.author),
+                  )
+                : ProfileImage(
+                    name: "Béla",
+                    radius: 22.0,
+                    backgroundColor: Theme.of(context).colorScheme.secondary,
+                  ),
             title: Row(
               children: [
                 Expanded(
                   child: Text(
-                    message.author,
+                    !Provider.of<SettingsProvider>(context, listen: false).presentationMode ? message.author : "Béla",
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15.5),

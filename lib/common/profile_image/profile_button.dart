@@ -1,7 +1,9 @@
+import 'package:filcnaplo/models/settings.dart';
 import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 
 class ProfileButton extends StatelessWidget {
@@ -11,11 +13,13 @@ class ProfileButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool pMode = Provider.of<SettingsProvider>(context, listen: false).presentationMode;
+
     return ProfileImage(
-      backgroundColor: child.backgroundColor,
+      backgroundColor: !pMode ? child.backgroundColor : Theme.of(context).colorScheme.secondary,
       heroTag: child.heroTag,
       key: child.key,
-      name: child.name,
+      name: !pMode ? child.name : "Béla",
       radius: child.radius,
       badge: child.badge,
       role: child.role,

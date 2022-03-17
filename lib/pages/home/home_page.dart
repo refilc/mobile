@@ -155,7 +155,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     eventProvider = Provider.of<EventProvider>(context);
 
     List<String> nameParts = user.name?.split(" ") ?? ["?"];
-    firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
+    if (!settings.presentationMode) {
+      firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
+    } else {
+      firstName = "Béla";
+    }
 
     return Scaffold(
       body: Stack(
@@ -201,7 +205,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   child: ProfileImage(
                                     heroTag: "profile",
                                     name: firstName,
-                                    backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
+                                    backgroundColor: !settings.presentationMode
+                                        ? ColorUtils.stringToColor(user.name ?? "?")
+                                        : Theme.of(context).colorScheme.secondary,
                                     badge: updateProvider.available,
                                     role: user.role,
                                   ),

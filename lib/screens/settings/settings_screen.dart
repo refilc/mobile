@@ -73,15 +73,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
     user.getUsers().forEach((account) {
       if (account.id == user.id) return;
 
-      List<String> _nameParts = account.name.split(" ");
-      String _firstName = _nameParts.length > 1 ? _nameParts[1] : _nameParts[0];
+      String _firstName;
+
+      List<String> _nameParts = user.name?.split(" ") ?? ["?"];
+      if (!settings.presentationMode) {
+        _firstName = _nameParts.length > 1 ? _nameParts[1] : _nameParts[0];
+      } else {
+        _firstName = "Béla";
+      }
 
       accountTiles.add(AccountTile(
-        name: Text(account.name, style: const TextStyle(fontWeight: FontWeight.w500)),
-        username: Text(account.username),
+        name: Text(!settings.presentationMode ? account.name : "Béla", style: const TextStyle(fontWeight: FontWeight.w500)),
+        username: Text(!settings.presentationMode ? account.username : "72469696969"),
         profileImage: ProfileImage(
           name: _firstName,
-          backgroundColor: ColorUtils.stringToColor(account.name),
+          backgroundColor: !settings.presentationMode ? ColorUtils.stringToColor(account.name) : Theme.of(context).colorScheme.secondary,
           role: account.role,
         ),
         onTap: () {
@@ -138,7 +144,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
     kretaClient = Provider.of<KretaClient>(context);
 
     List<String> nameParts = user.name?.split(" ") ?? ["?"];
-    firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
+    if (!settings.presentationMode) {
+      firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
+    } else {
+      firstName = "Béla";
+    }
 
     String startPageTitle = SettingsHelper.localizedPageTitles()[settings.startPage] ?? "?";
     String themeModeText = {ThemeMode.light: "light".i18n, ThemeMode.dark: "dark".i18n, ThemeMode.system: "system".i18n}[settings.theme] ?? "?";
@@ -186,7 +196,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             name: firstName,
             badge: updateProvider.available,
             role: user.role,
-            backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
+            backgroundColor: !settings.presentationMode ? ColorUtils.stringToColor(user.name ?? "?") : Theme.of(context).colorScheme.secondary,
           ),
         ),
 
@@ -196,7 +206,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             onTap: () => _showBottomSheet(user.getUser(user.id ?? "")),
             onDoubleTap: () => setState(() => __ss = true),
             child: Text(
-              user.name ?? "?",
+              !settings.presentationMode ? (user.name ?? "?") : "Béla",
               maxLines: 1,
               softWrap: false,
               overflow: TextOverflow.ellipsis,
@@ -338,6 +348,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               title: Text("secret".i18n),
               child: Column(
                 children: [
+                  // Good student mode
                   Material(
                     type: MaterialType.transparency,
                     child: SwitchListTile(
@@ -360,6 +371,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         }
                       },
                       value: settings.goodStudent,
+                      activeColor: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
+
+                  // Presentation mode
+                  Material(
+                    type: MaterialType.transparency,
+                    child: SwitchListTile(
+                      contentPadding: const EdgeInsets.only(left: 12.0),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+                      title: const Text("Presentation Mode", style: TextStyle(fontWeight: FontWeight.w500)),
+                      onChanged: (v) => settings.update(context, presentationMode: v),
+                      value: settings.presentationMode,
                       activeColor: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
