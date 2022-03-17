@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:filcnaplo/api/providers/user_provider.dart';
 import 'package:filcnaplo/helpers/subject_icon.dart';
+import 'package:filcnaplo/icons/filc_icons.dart';
 import 'package:filcnaplo/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:filcnaplo/utils/format.dart';
@@ -57,23 +58,23 @@ class _LiveCardState extends State<LiveCard> {
               ? Text.rich(
                   TextSpan(
                     children: [
-                      const TextSpan(text: "0"), //"Az első órád "),
+                      TextSpan(text: "first_lesson_1".i18n),
                       TextSpan(
-                        text: "a", //widget.controller.nextLesson!.subject.name.capital(),
+                        text: widget.controller.nextLesson!.subject.name.capital(),
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           color: Theme.of(context).colorScheme.secondary.withOpacity(.85),
                         ),
                       ),
-                      const TextSpan(text: " lesz, a "),
+                      TextSpan(text: "first_lesson_2".i18n),
                       TextSpan(
-                        text: "b", //widget.controller.nextLesson!.room.capital(),
+                        text: widget.controller.nextLesson!.room.capital(),
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           color: Theme.of(context).colorScheme.secondary.withOpacity(.85),
                         ),
                       ),
-                      const TextSpan(text: " teremben, "),
+                      TextSpan(text: "first_lesson_3".i18n),
                       TextSpan(
                         text: DateFormat('H:mm').format(widget.controller.nextLesson!.start),
                         style: TextStyle(
@@ -81,7 +82,7 @@ class _LiveCardState extends State<LiveCard> {
                           color: Theme.of(context).colorScheme.secondary.withOpacity(.85),
                         ),
                       ),
-                      const TextSpan(text: "-kor."),
+                      TextSpan(text: "first_lesson_4".i18n),
                     ],
                   ),
                 )
@@ -103,15 +104,43 @@ class _LiveCardState extends State<LiveCard> {
         );
         break;
       case LiveCardState.duringBreak:
+        String getFloorDifference() {
+          final prevFloor = widget.controller.prevLesson!.getFloor();
+          final nextFloor = widget.controller.nextLesson!.getFloor();
+
+          if (prevFloor == null || nextFloor == null || prevFloor == nextFloor) {
+            return "to room";
+          }
+
+          if (nextFloor == 0) {
+            return "ground floor";
+          }
+
+          if (nextFloor > prevFloor) {
+            return "up floor";
+          } else {
+            return "down floor";
+          }
+        }
+
+        final iconFloorMap = {
+          "to room": FeatherIcons.chevronsRight,
+          "up floor": FilcIcons.upstairs,
+          "down floor": FilcIcons.downstairs,
+          "ground floor": FilcIcons.downstairs,
+        };
+
+        final diff = getFloorDifference();
+
         child = LiveCardWidget(
           key: const Key('livecard.duringBreak'),
           title: "break".i18n,
-          icon: FeatherIcons.chevronsRight,
+          icon: iconFloorMap[diff],
           description: widget.controller.nextLesson!.room != widget.controller.prevLesson!.room
-              ? Text("go to room".i18n.fill([widget.controller.nextLesson!.room]))
+              ? Text("go $diff".i18n.fill([diff != "to room" ? (widget.controller.nextLesson!.getFloor() ?? 0) : widget.controller.nextLesson!.room]))
               : Text("stay".i18n),
           nextSubject: widget.controller.nextLesson?.subject.name.capital(),
-          // nextRoom: widget.controller.nextLesson?.room,
+          nextRoom: diff != "to room" ? widget.controller.nextLesson?.room : null,
           progressMax: widget.controller.nextLesson!.start.difference(widget.controller.prevLesson!.end).inMinutes.toDouble(),
           progressCurrent: DateTime.now().difference(widget.controller.prevLesson!.end).inMinutes.toDouble(),
         );

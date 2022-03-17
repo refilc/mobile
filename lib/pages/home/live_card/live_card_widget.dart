@@ -114,7 +114,7 @@ class LiveCardWidget extends StatelessWidget {
                                   fontSize: 16.0,
                                   color: AppColors.of(context).text.withOpacity(.75),
                                 ),
-                            maxLines: 2,
+                            maxLines: !(nextSubject == null && progressCurrent == null && progressMax == null) ? 1 : 2,
                             softWrap: false,
                             overflow: TextOverflow.ellipsis,
                             child: description!,
