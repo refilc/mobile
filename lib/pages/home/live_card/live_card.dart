@@ -2,6 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:filcnaplo/api/providers/user_provider.dart';
 import 'package:filcnaplo/helpers/subject_icon.dart';
 import 'package:filcnaplo/icons/filc_icons.dart';
+import 'package:filcnaplo/models/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:filcnaplo/utils/format.dart';
 import 'package:filcnaplo_kreta_api/controllers/live_card_controller.dart';
@@ -47,6 +48,10 @@ class _LiveCardState extends State<LiveCard> {
 
     Widget child;
 
+    Duration bellDelay = widget.controller.delay;
+
+    //print(bellDelay);
+
     switch (widget.controller.currentState) {
       case LiveCardState.morning:
         child = LiveCardWidget(
@@ -89,10 +94,12 @@ class _LiveCardState extends State<LiveCard> {
         );
         break;
       case LiveCardState.duringLesson:
-        final elapsedTime = DateTime.now().difference(widget.controller.currentLesson!.start).inSeconds.toDouble();
+        final elapsedTime = DateTime.now().difference(widget.controller.currentLesson!.start).inSeconds.toDouble() - bellDelay.inSeconds;
         final maxTime = widget.controller.currentLesson!.end.difference(widget.controller.currentLesson!.start).inSeconds.toDouble();
 
         final showMinutes = maxTime - elapsedTime > 60;
+
+        //print(showMinutes);
 
         child = LiveCardWidget(
           key: const Key('livecard.duringLesson'),
@@ -146,7 +153,8 @@ class _LiveCardState extends State<LiveCard> {
               : Text("stay".i18n),
           nextSubject: widget.controller.nextLesson?.subject.name.capital(),
           nextRoom: diff != "to room" ? widget.controller.nextLesson?.room : null,
-          progressMax: widget.controller.nextLesson!.start.difference(widget.controller.prevLesson!.end).inMinutes.toDouble(),
+          progressMax:
+              widget.controller.nextLesson!.start.difference(widget.controller.prevLesson!.end).inMinutes.toDouble() + bellDelay.inMinutes.toDouble(),
           progressCurrent: DateTime.now().difference(widget.controller.prevLesson!.end).inMinutes.toDouble(),
         );
         break;

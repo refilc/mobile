@@ -335,6 +335,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   leading: const Icon(FeatherIcons.radio),
                   trailing: Text(vibrateTitle),
                 ),
+                PanelButton(
+                  onPressed: () {
+                    SettingsHelper.bellDelay(context);
+                    setState(() {});
+                  },
+                  title: Text("bell_delay".i18n),
+                  leading: settings.bellDelayEnabled ? const Icon(FeatherIcons.bell) : const Icon(FeatherIcons.bellOff),
+                  trailing: Switch(
+                    onChanged: (v) => settings.update(context, bellDelayEnabled: v),
+                    value: settings.bellDelayEnabled,
+                    activeColor: Theme.of(context).colorScheme.secondary,
+                  ),
+                ),
               ],
             ),
           ),

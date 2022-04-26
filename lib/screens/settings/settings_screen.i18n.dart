@@ -46,6 +46,9 @@ extension SettingsLocalization on String {
           "goodstudent_disclaimer": "Same in English.",
           "understand": "I understand",
           "secret": "Secret Settings",
+          "bell_delay": "Bell Delay",
+          "delay": "Delay",
+          "hurry": "Hurry",
         },
         "hu_hu": {
           "personal_details": "Személyes információk",
@@ -91,6 +94,9 @@ extension SettingsLocalization on String {
               "A Filc Napló® Informatikai Zrt. minden felelősséget elhárít a funkció használatával kapcsolatban.\n\n(Értsd: ha az anyád megver, mert megtévesztő ábrákat mutattál neki, azért csakis magadadat hibáztathatod.)",
           "understand": "Értem",
           "secret": "Titkos Beállítások",
+          "bell_delay": "Csengő beállítása",
+          "delay": "Késleltetés",
+          "hurry": "Siettetés",
         },
         "de_de": {
           "personal_details": "Persönliche Angaben",
@@ -135,6 +141,9 @@ extension SettingsLocalization on String {
           "goodstudent_disclaimer": "Same in English.",
           "understand": "Ich verstehe",
           "secret": "Geheime Einstellungen",
+          "bell_delay": "Klingelverzögerung",
+          "delay": "Verzögern",
+          "hurry": "Eile",
         },
       };
 

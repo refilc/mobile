@@ -8,9 +8,12 @@ import 'package:filcnaplo_kreta_api/models/grade.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_sheet_menu/bottom_sheet_menu.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_sheet_menu/bottom_sheet_menu_item.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_sheet_menu/rounded_bottom_sheet.dart';
+import 'package:filcnaplo_mobile_ui/common/filter_bar.dart';
 import 'package:filcnaplo_mobile_ui/common/material_action_button.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/grade/grade_tile.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:i18n_extension/i18n_widget.dart';
 import 'package:provider/provider.dart';
@@ -208,16 +211,9 @@ class SettingsHelper {
                         decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                         ),
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            if (AccentColor.values[index] == AccentColor.adaptive)
-                              Icon(Icons.palette, color: accentColorMap[AccentColor.values[index]]),
-                            if (AccentColor.values[index] == AccentColor.adaptive) const Icon(Icons.palette, color: Colors.black38),
-                            if (Provider.of<SettingsProvider>(context, listen: false).accentColor == AccentColor.values[index])
-                              Icon(FeatherIcons.check, color: Colors.black.withOpacity(0.7)),
-                          ],
-                        ),
+                        child: Provider.of<SettingsProvider>(context, listen: false).accentColor == AccentColor.values[index]
+                            ? Icon(FeatherIcons.check, color: Colors.black.withOpacity(0.7))
+                            : null,
                       ),
                     ),
                   ),
@@ -270,6 +266,13 @@ class SettingsHelper {
           ),
         );
       }),
+    );
+  }
+
+  static void bellDelay(BuildContext context) {
+    showRoundedModalBottomSheet(
+      context,
+      child: const BellDelaySetting(),
     );
   }
 }
@@ -352,6 +355,78 @@ class _RoundingSettingState extends State<RoundingSetting> {
         ),
       ),
     ]);
+  }
+}
+
+// Bell Delay Modal
+
+class BellDelaySetting extends StatefulWidget {
+  const BellDelaySetting({Key? key}) : super(key: key);
+
+  @override
+  State<BellDelaySetting> createState() => _BellDelaySettingState();
+}
+
+class _BellDelaySettingState extends State<BellDelaySetting> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  late Duration currentDelay;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this, initialIndex: Provider.of<SettingsProvider>(context, listen: false).bellDelay < 0 ? 1 : 0);
+    currentDelay = Duration(seconds: Provider.of<SettingsProvider>(context, listen: false).bellDelay);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        FilterBar(
+          scrollable: false,
+          items: [
+            Tab(text: SettingsLocalization("delay").i18n),
+            Tab(text: SettingsLocalization("hurry").i18n),
+          ],
+          controller: _tabController,
+          onTap: (i) async {
+            // swap current page with target page
+            setState(() {
+              currentDelay = -currentDelay;
+            });
+          },
+        ),
+        SizedBox(
+          height: 200,
+          child: CupertinoTheme(
+            data: CupertinoThemeData(
+              brightness: Theme.of(context).brightness,
+            ),
+            child: CupertinoTimerPicker(
+              mode: CupertinoTimerPickerMode.ms,
+              initialTimerDuration: currentDelay.abs(),
+              onTimerDurationChanged: (Duration d) {
+                HapticFeedback.selectionClick();
+
+                currentDelay = currentDelay.inSeconds < 0 ? -d : d;
+              },
+            ),
+          ),
+        ),
+        //const Text("A csengő 4 perccel van késleltetve", style: TextStyle(fontSize: 26.0, fontWeight: FontWeight.w500)),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 12.0, top: 6.0),
+          child: MaterialActionButton(
+            child: Text(SettingsLocalization("done").i18n),
+            onPressed: () {
+              //Provider.of<SettingsProvider>(context, listen: false).update(context, rounding: (r * 10).toInt());
+              Provider.of<SettingsProvider>(context, listen: false).update(context, bellDelay: currentDelay.inSeconds);
+              Navigator.of(context).maybePop();
+            },
+          ),
+        ),
+      ],
+    );
   }
 }
 
