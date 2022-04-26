@@ -2,7 +2,6 @@ import 'package:animations/animations.dart';
 import 'package:filcnaplo/api/providers/user_provider.dart';
 import 'package:filcnaplo/helpers/subject_icon.dart';
 import 'package:filcnaplo/icons/filc_icons.dart';
-import 'package:filcnaplo/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:filcnaplo/utils/format.dart';
 import 'package:filcnaplo_kreta_api/controllers/live_card_controller.dart';
@@ -90,6 +89,11 @@ class _LiveCardState extends State<LiveCard> {
         );
         break;
       case LiveCardState.duringLesson:
+        final elapsedTime = DateTime.now().difference(widget.controller.currentLesson!.start).inSeconds.toDouble();
+        final maxTime = widget.controller.currentLesson!.end.difference(widget.controller.currentLesson!.start).inSeconds.toDouble();
+
+        final showMinutes = maxTime - elapsedTime > 60;
+
         child = LiveCardWidget(
           key: const Key('livecard.duringLesson'),
           leading: widget.controller.currentLesson!.lessonIndex + (RegExp(r'\d').hasMatch(widget.controller.currentLesson!.lessonIndex) ? "." : ""),
@@ -99,8 +103,9 @@ class _LiveCardState extends State<LiveCard> {
           description: widget.controller.currentLesson!.description != "" ? Text(widget.controller.currentLesson!.description) : null,
           nextSubject: widget.controller.nextLesson?.subject.name.capital(),
           nextRoom: widget.controller.nextLesson?.room,
-          progressMax: widget.controller.currentLesson!.end.difference(widget.controller.currentLesson!.start).inMinutes.toDouble(),
-          progressCurrent: DateTime.now().difference(widget.controller.currentLesson!.start).inMinutes.toDouble(),
+          progressMax: showMinutes ? maxTime / 60 : maxTime,
+          progressCurrent: showMinutes ? elapsedTime / 60 : elapsedTime,
+          progressAccuracy: showMinutes ? ProgressAccuracy.minutes : ProgressAccuracy.seconds,
         );
         break;
       case LiveCardState.duringBreak:

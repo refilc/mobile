@@ -1,4 +1,3 @@
-import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_kreta_api/models/event.dart';
 import 'package:filcnaplo/utils/format.dart';
 import 'package:filcnaplo_mobile_ui/common/sliding_bottom_sheet.dart';

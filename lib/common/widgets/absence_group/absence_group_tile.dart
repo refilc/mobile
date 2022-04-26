@@ -1,7 +1,8 @@
 import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_kreta_api/models/absence.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/absence_group_container.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/absence_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/absence/absence_viewable.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/absence_group/absence_group_container.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/absence/absence_tile.dart';
 import 'package:filcnaplo/utils/format.dart';
 import 'package:flutter/material.dart';
 import 'absence_group_tile.i18n.dart';
@@ -9,7 +10,7 @@ import 'absence_group_tile.i18n.dart';
 class AbsenceGroupTile extends StatelessWidget {
   const AbsenceGroupTile(this.absences, {Key? key, this.showDate = false}) : super(key: key);
 
-  final List<AbsenceTile> absences;
+  final List<AbsenceViewable> absences;
   final bool showDate;
 
   @override

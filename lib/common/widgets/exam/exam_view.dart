@@ -24,10 +24,13 @@ class ExamView extends StatelessWidget {
         children: [
           // Header
           ListTile(
-            leading: Icon(
-              SubjectIcon.lookup(subjectName: exam.subjectName),
-              size: 36.0,
-              color: AppColors.of(context).text.withOpacity(.75),
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 6.0),
+              child: Icon(
+                SubjectIcon.lookup(subjectName: exam.subjectName),
+                size: 36.0,
+                color: AppColors.of(context).text.withOpacity(.75),
+              ),
             ),
             title: Text(
               exam.subjectName.capital(),

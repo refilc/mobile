@@ -1,4 +1,3 @@
-import 'package:filcnaplo/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_sheet/sliding_sheet.dart' as ss;
 

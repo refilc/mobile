@@ -5,7 +5,7 @@ import 'package:filcnaplo_kreta_api/models/grade.dart';
 import 'package:filcnaplo_kreta_api/models/subject.dart';
 import 'package:filcnaplo_mobile_ui/common/custom_snack_bar.dart';
 import 'package:filcnaplo_mobile_ui/common/material_action_button.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/grade_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/grade/grade_tile.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/calculator/grade_calculator_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

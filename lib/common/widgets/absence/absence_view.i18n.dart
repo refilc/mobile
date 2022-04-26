@@ -9,6 +9,8 @@ extension Localization on String {
           "Mode": "Mode",
           "Submit date": "Submit Date",
           "show in timetable": "Show in timetable",
+          "minutes": "minutes".one("minute"),
+          "delay": "Delay",
         },
         "hu_hu": {
           "Lesson": "Óra",
@@ -16,6 +18,8 @@ extension Localization on String {
           "Mode": "Típus",
           "Submit date": "Rögzítés dátuma",
           "show in timetable": "Megtekintés az órarendben",
+          "minutes": "perc",
+          "delay": "Késés",
         },
         "de_de": {
           "Lesson": "Stunde",
@@ -23,6 +27,8 @@ extension Localization on String {
           "Mode": "Typ",
           "Submit date": "Datum einreichen",
           "show in timetable": "im Stundenplan anzeigen",
+          "minutes": "Minuten".one("Minute"),
+          "delay": "Verspätung",
         }
       };
 

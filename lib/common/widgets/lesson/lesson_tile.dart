@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:filcnaplo_kreta_api/providers/exam_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/homework_provider.dart';
 import 'package:filcnaplo/theme.dart';
@@ -9,8 +6,8 @@ import 'package:filcnaplo_kreta_api/models/homework.dart';
 import 'package:filcnaplo_kreta_api/models/lesson.dart';
 import 'package:filcnaplo/utils/format.dart';
 import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/exam_view.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/homework_view.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/exam/exam_view.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/homework/homework_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:intl/intl.dart';
@@ -127,9 +124,7 @@ class LessonTile extends StatelessWidget {
                   minVerticalPadding: 12.0,
                   dense: true,
                   onTap: onTap,
-                  onLongPress: () {
-                    log(jsonEncode(lesson.json));
-                  },
+                  // onLongPress: kDebugMode ? () => log(jsonEncode(lesson.json)) : null,
                   visualDensity: VisualDensity.compact,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),

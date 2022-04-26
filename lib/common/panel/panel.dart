@@ -19,22 +19,25 @@ class Panel extends StatelessWidget {
 
         // Panel Body
         if (child != null)
-          Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16.0),
-              color: Theme.of(context).backgroundColor,
-              boxShadow: [
-                if (hasShadow)
-                  BoxShadow(
-                    offset: const Offset(0, 21),
-                    blurRadius: 23.0,
-                    color: AppColors.of(context).shadow,
-                  )
-              ],
+          ClipRRect(
+            borderRadius: BorderRadius.circular(16.0),
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16.0),
+                color: Theme.of(context).backgroundColor,
+                boxShadow: [
+                  if (hasShadow)
+                    BoxShadow(
+                      offset: const Offset(0, 21),
+                      blurRadius: 23.0,
+                      color: AppColors.of(context).shadow,
+                    )
+                ],
+              ),
+              padding: padding ?? const EdgeInsets.all(8.0),
+              child: child,
             ),
-            padding: padding ?? const EdgeInsets.all(8.0),
-            child: child,
           ),
       ],
     );

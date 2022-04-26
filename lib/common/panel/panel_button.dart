@@ -1,7 +1,17 @@
+import 'dart:ui';
+
+import 'package:filcnaplo/theme.dart';
 import 'package:flutter/material.dart';
 
 class PanelButton extends StatelessWidget {
-  const PanelButton({Key? key, this.onPressed, this.padding = const EdgeInsets.symmetric(horizontal: 14.0), this.leading, this.title, this.trailing})
+  const PanelButton(
+      {Key? key,
+      this.onPressed,
+      this.padding = const EdgeInsets.symmetric(horizontal: 14.0),
+      this.leading,
+      this.title,
+      this.trailing,
+      this.background = false})
       : super(key: key);
 
   final void Function()? onPressed;
@@ -9,13 +19,15 @@ class PanelButton extends StatelessWidget {
   final Widget? leading;
   final Widget? title;
   final Widget? trailing;
+  final bool background;
 
   @override
   Widget build(BuildContext context) {
-    return RawMaterialButton(
+    final button = RawMaterialButton(
       onPressed: onPressed,
       padding: padding,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+      fillColor: background ? Colors.white.withOpacity(Theme.of(context).brightness == Brightness.light ? .35 : .2) : null,
       child: ListTile(
         leading: leading != null
             ? Theme(
@@ -31,5 +43,14 @@ class PanelButton extends StatelessWidget {
         visualDensity: VisualDensity.compact,
       ),
     );
+
+    if (!background) return button;
+
+    return BackdropFilter(
+        filter: ImageFilter.blur(
+          sigmaX: 12.0,
+          sigmaY: 12.0,
+        ),
+        child: button);
   }
 }

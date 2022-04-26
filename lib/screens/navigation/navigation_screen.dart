@@ -9,6 +9,7 @@ import 'package:filcnaplo_mobile_ui/screens/navigation/navigation_route_handler.
 import 'package:filcnaplo/icons/filc_icons.dart';
 import 'package:filcnaplo_mobile_ui/screens/navigation/status_bar.dart';
 import 'package:filcnaplo_mobile_ui/screens/news/news_view.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -47,7 +48,7 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
     selected.index = settings.startPage.index; // set page index to start page
 
     // add brightness observer
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
 
     // set client User-Agent
     Provider.of<KretaClient>(context, listen: false).userAgent = settings.config.userAgent;
@@ -68,16 +69,14 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
   @override
   void dispose() {
     super.dispose();
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
   }
 
   @override
   void didChangePlatformBrightness() {
     if (settings.theme == ThemeMode.system) {
-      Brightness? brightness = WidgetsBinding.instance?.window.platformBrightness;
-      if (brightness != null) {
-        Provider.of<ThemeModeObserver>(context, listen: false).changeTheme(brightness == Brightness.light ? ThemeMode.light : ThemeMode.dark);
-      }
+      Brightness? brightness = WidgetsBinding.instance.window.platformBrightness;
+      Provider.of<ThemeModeObserver>(context, listen: false).changeTheme(brightness == Brightness.light ? ThemeMode.light : ThemeMode.dark);
     }
     super.didChangePlatformBrightness();
   }
@@ -95,7 +94,7 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
     newsProvider = Provider.of<NewsProvider>(context);
 
     // Show news
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (newsProvider.show) {
         newsProvider.lock();
         NewsView.show(newsProvider.news[newsProvider.state], context: context).then((value) => newsProvider.release());
@@ -109,7 +108,19 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
 
     return WillPopScope(
       onWillPop: () async {
-        if (_navigatorState.currentState?.canPop() ?? false) _navigatorState.currentState?.pop();
+        if (_navigatorState.currentState?.canPop() ?? false) {
+          _navigatorState.currentState?.pop();
+          if (!kDebugMode) {
+            return true;
+          }
+          return false;
+        }
+
+        if (selected.index != 0) {
+          setState(() => selected.index = 0);
+          _navigatorState.currentState?.pushReplacementNamed(selected.name);
+        }
+
         return false;
       },
       child: Scaffold(

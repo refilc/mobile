@@ -1,5 +1,4 @@
 import 'package:filcnaplo/models/settings.dart';
-import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/settings_screen.dart';
 import 'package:flutter/material.dart';

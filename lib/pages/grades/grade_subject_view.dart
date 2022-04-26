@@ -9,10 +9,11 @@ import 'package:filcnaplo_kreta_api/models/subject.dart';
 import 'package:filcnaplo_mobile_ui/common/average_display.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_sheet_menu/rounded_bottom_sheet.dart';
 import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/certification_tile.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/grade_tile.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/grade_view.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/hero_scrollview.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/cretification/certification_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/grade/grade_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/grade/grade_view.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/grade/grade_viewable.dart';
+import 'package:filcnaplo_mobile_ui/common/hero_scrollview.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/calculator/grade_calculator.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/calculator/grade_calculator_provider.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/graph.dart';
@@ -85,10 +86,7 @@ class _GradeSubjectViewState extends State<GradeSubjectView> {
       subjectGrades.sort((a, b) => -a.date.compareTo(b.date));
       for (var grade in subjectGrades) {
         if (grade.type == GradeType.midYear) {
-          _gradeTiles.add(GradeTile(
-            grade,
-            onTap: () => GradeView.show(grade, context: context),
-          ));
+          _gradeTiles.add(GradeViewable(grade));
         } else {
           _gradeTiles.add(CertificationTile(grade));
         }

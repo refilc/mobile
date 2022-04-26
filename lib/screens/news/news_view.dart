@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:filcnaplo/models/settings.dart';
-import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_mobile_ui/common/dialog_button.dart';
 import 'package:flutter/material.dart';
 import 'package:filcnaplo/models/news.dart';

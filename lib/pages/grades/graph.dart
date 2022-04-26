@@ -9,7 +9,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:i18n_extension/i18n_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/certification_tile.i18n.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/cretification/certification_tile.i18n.dart';
 
 class GradeGraph extends StatefulWidget {
   const GradeGraph(this.data, {Key? key, this.dayThreshold = 7, this.classAvg}) : super(key: key);

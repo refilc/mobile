@@ -16,9 +16,10 @@ import 'package:filcnaplo_mobile_ui/common/filter_bar.dart';
 import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_button.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/absence_subject_tile.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/absence_tile.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/absence_view.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/absence/absence_subject_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/absence/absence_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/absence/absence_view.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/absence/absence_viewable.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/statistics_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/miss_tile.dart';
 import 'package:filcnaplo_mobile_ui/pages/absences/absence_subject_view.dart';
@@ -176,7 +177,7 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
           if (absence.delay != 0) {
             items.add(DateWidget(
               date: absence.date,
-              widget: AbsenceTile(absence, onTap: () => AbsenceView.show(absence, context: context)),
+              widget: AbsenceViewable(absence, padding: EdgeInsets.zero),
             ));
           }
         }
@@ -256,7 +257,7 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
           itemCount: max(filterWidgets.length + (activeData < 2 ? 1 : 0), 1),
           itemBuilder: (context, index) {
             if (filterWidgets.isNotEmpty) {
-              if ((index == 0 && activeData == 1) || (index == filterWidgets.length && activeData == 0)) {
+              if ((index == 0 && activeData == 1) || (index == 0 && activeData == 0)) {
                 int value1 = 0;
                 int value2 = 0;
                 String title1 = "";
@@ -321,7 +322,7 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
 
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: filterWidgets[index - (activeData == 1 ? 1 : 0)],
+                child: filterWidgets[index - 1],
               );
             } else {
               return Empty(subtitle: "empty".i18n);

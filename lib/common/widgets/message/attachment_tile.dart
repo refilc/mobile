@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:filcnaplo_kreta_api/models/attachment.dart';
 import 'package:filcnaplo/helpers/attachment_helper.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/message_view/image_view.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/message/image_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 

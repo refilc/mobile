@@ -65,11 +65,19 @@ class _HeroScrollViewState extends State<HeroScrollView> {
                 titleSpacing: 0,
                 title: AnimatedOpacity(
                     opacity: showBarTitle ? 1.0 : 0.0,
-                    child: Text(
-                      widget.title.capital(),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      style: TextStyle(color: AppColors.of(context).text, fontWeight: FontWeight.w500),
+                    child: Row(
+                      children: [
+                        Icon(widget.icon, color: AppColors.of(context).text.withOpacity(.8)),
+                        const SizedBox(width: 8.0),
+                        Expanded(
+                          child: Text(
+                            widget.title.capital(),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            style: TextStyle(color: AppColors.of(context).text, fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ],
                     ),
                     duration: const Duration(milliseconds: 200)),
                 leading: BackButton(
@@ -110,6 +118,9 @@ class _HeroScrollViewState extends State<HeroScrollView> {
                 ),
               ),
             ],
-        body: widget.child);
+        body: Padding(
+          padding: const EdgeInsets.only(bottom: 32.0),
+          child: widget.child,
+        ));
   }
 }

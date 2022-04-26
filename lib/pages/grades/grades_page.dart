@@ -14,7 +14,7 @@ import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_button.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/statistics_tile.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/grade_subject_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/grade/grade_subject_tile.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/graph.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/grade_subject_view.dart';
 import 'package:flutter/material.dart';

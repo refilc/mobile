@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'live_card.i18n.dart';
 
+enum ProgressAccuracy { minutes, seconds }
+
 class LiveCardWidget extends StatelessWidget {
   const LiveCardWidget({
     Key? key,
@@ -16,6 +18,7 @@ class LiveCardWidget extends StatelessWidget {
     this.nextSubject,
     this.progressCurrent,
     this.progressMax,
+    this.progressAccuracy = ProgressAccuracy.minutes,
   }) : super(key: key);
 
   final String? leading;
@@ -27,6 +30,7 @@ class LiveCardWidget extends StatelessWidget {
   final String? nextRoom;
   final double? progressCurrent;
   final double? progressMax;
+  final ProgressAccuracy? progressAccuracy;
 
   @override
   Widget build(BuildContext context) {
@@ -161,7 +165,7 @@ class LiveCardWidget extends StatelessWidget {
                     if (nextSubject == null) const Spacer(),
                     if (progressCurrent != null && progressMax != null)
                       Text(
-                        "remaining".plural((progressMax! - progressCurrent!).round()),
+                        "remaining ${progressAccuracy == ProgressAccuracy.minutes ? 'min' : 'sec'}".plural((progressMax! - progressCurrent!).round()),
                         maxLines: 1,
                         style: TextStyle(
                           fontWeight: FontWeight.w500,

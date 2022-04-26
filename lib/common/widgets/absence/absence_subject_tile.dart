@@ -2,7 +2,7 @@ import 'package:filcnaplo/helpers/subject_icon.dart';
 import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo/utils/format.dart';
 import 'package:filcnaplo_kreta_api/models/subject.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/absence_display.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/absence/absence_display.dart';
 import 'package:flutter/material.dart';
 
 class AbsenceSubjectTile extends StatelessWidget {
@@ -28,17 +28,17 @@ class AbsenceSubjectTile extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         visualDensity: VisualDensity.compact,
         onTap: onTap,
-        leading: Icon(SubjectIcon.lookup(subject: subject)),
+        leading: Icon(SubjectIcon.lookup(subject: subject), size: 32.0),
         title: Text(
           subject.name.capital(),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
-          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14.0),
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15.0),
         ),
+        subtitle: AbsenceDisplay(excused, unexcused, pending),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            AbsenceDisplay(excused, unexcused, pending),
             const SizedBox(width: 8.0),
             Stack(
               alignment: Alignment.centerRight,
@@ -46,7 +46,12 @@ class AbsenceSubjectTile extends StatelessWidget {
                 const Opacity(child: Text("100%", style: TextStyle(fontFamily: "monospace")), opacity: 0),
                 Text(
                   percentage.round().toString() + "%",
-                  style: TextStyle(fontFamily: "monospace", color: getColorByPercentage(percentage, context: context)),
+                  style: TextStyle(
+                    // fontFamily: "monospace",
+                    color: getColorByPercentage(percentage, context: context),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 24.0,
+                  ),
                 ),
               ],
             ),
@@ -70,5 +75,5 @@ Color getColorByPercentage(double percentage, {required BuildContext context}) {
     color = AppColors.of(context).yellow;
   }
 
-  return color.withOpacity(.75);
+  return color.withOpacity(.8);
 }

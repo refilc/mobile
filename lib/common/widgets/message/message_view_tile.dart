@@ -1,10 +1,9 @@
 import 'package:filcnaplo/api/providers/user_provider.dart';
-import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo/utils/color.dart';
 import 'package:filcnaplo_kreta_api/models/message.dart';
 import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/message_view/attachment_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/message/attachment_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:filcnaplo/utils/format.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';

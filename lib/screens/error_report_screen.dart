@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:filcnaplo/api/client.dart';
-import 'package:filcnaplo/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'error_report_screen.i18n.dart';

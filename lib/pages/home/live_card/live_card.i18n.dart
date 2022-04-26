@@ -5,7 +5,8 @@ extension Localization on String {
       {
         "en_en": {
           "next": "Next",
-          "remaining": "%d mins".one("%d min"),
+          "remaining min": "%d mins".one("%d min"),
+          "remaining sec": "%d secs".one("%d sec"),
           "break": "Break",
           "go to room": "Go to room %s.",
           "go ground floor": "Go to the ground floor.",
@@ -19,7 +20,8 @@ extension Localization on String {
         },
         "hu_hu": {
           "next": "Következő",
-          "remaining": "%d perc".one("%d perc"),
+          "remaining min": "%d perc".one("%d perc"),
+          "remaining sec": "%d másodperc".one("%d másodperc"),
           "break": "Szünet",
           "go to room": "Menj a(z) %s terembe.",
           "go ground floor": "Menj a földszintre.",
@@ -33,7 +35,8 @@ extension Localization on String {
         },
         "de_de": {
           "next": "Nächste",
-          "remaining": "%d Minuten".one("%d Minute"),
+          "remaining min": "%d Minuten".one("%d Minute"),
+          "remaining sec": "%d Sekunden".one("%d Sekunden"),
           "break": "Pause",
           "go to room": "Geh in den Raum %s.",
           "go ground floor": "Geh dir Treppe hinunter.",
