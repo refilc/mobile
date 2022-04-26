@@ -94,7 +94,7 @@ class _LiveCardState extends State<LiveCard> {
         );
         break;
       case LiveCardState.duringLesson:
-        final elapsedTime = DateTime.now().difference(widget.controller.currentLesson!.start).inSeconds.toDouble() - bellDelay.inSeconds;
+        final elapsedTime = DateTime.now().difference(widget.controller.currentLesson!.start).inSeconds.toDouble() + bellDelay.inSeconds;
         final maxTime = widget.controller.currentLesson!.end.difference(widget.controller.currentLesson!.start).inSeconds.toDouble();
 
         final showMinutes = maxTime - elapsedTime > 60;
@@ -153,9 +153,8 @@ class _LiveCardState extends State<LiveCard> {
               : Text("stay".i18n),
           nextSubject: widget.controller.nextLesson?.subject.name.capital(),
           nextRoom: diff != "to room" ? widget.controller.nextLesson?.room : null,
-          progressMax:
-              widget.controller.nextLesson!.start.difference(widget.controller.prevLesson!.end).inMinutes.toDouble() + bellDelay.inMinutes.toDouble(),
-          progressCurrent: DateTime.now().difference(widget.controller.prevLesson!.end).inMinutes.toDouble(),
+          progressMax: widget.controller.nextLesson!.start.difference(widget.controller.prevLesson!.end).inMinutes.toDouble(),
+          progressCurrent: DateTime.now().difference(widget.controller.prevLesson!.end).inMinutes.toDouble() + bellDelay.inMinutes.toDouble(),
         );
         break;
       case LiveCardState.afternoon:

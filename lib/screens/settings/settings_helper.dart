@@ -374,7 +374,7 @@ class _BellDelaySettingState extends State<BellDelaySetting> with SingleTickerPr
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this, initialIndex: Provider.of<SettingsProvider>(context, listen: false).bellDelay < 0 ? 1 : 0);
+    _tabController = TabController(length: 2, vsync: this, initialIndex: Provider.of<SettingsProvider>(context, listen: false).bellDelay > 0 ? 1 : 0);
     currentDelay = Duration(seconds: Provider.of<SettingsProvider>(context, listen: false).bellDelay);
   }
 
@@ -392,7 +392,7 @@ class _BellDelaySettingState extends State<BellDelaySetting> with SingleTickerPr
           onTap: (i) async {
             // swap current page with target page
             setState(() {
-              currentDelay = -currentDelay;
+              currentDelay = i == 0 ? -currentDelay.abs() : currentDelay.abs();
             });
           },
         ),
