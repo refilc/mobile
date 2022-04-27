@@ -417,7 +417,7 @@ class _ContextMenuRoute<T> extends PopupRoute<T> {
   static const Color _kModalBarrierColor = Color(0x6604040F);
   // The duration of the transition used when a modal popup is shown. Eyeballed
   // from a physical device running iOS 13.1.2.
-  static const Duration _kModalPopupTransitionDuration = Duration(milliseconds: 2000);
+  static const Duration _kModalPopupTransitionDuration = Duration(milliseconds: 335);
 
   final List<Widget> _actions;
   final _ContextMenuPreviewBuilderChildless? _builder;
