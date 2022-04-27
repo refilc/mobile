@@ -10,6 +10,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 
+// Calculate animation
+
+double valueFromPercentageInRange({required final double min, max, percentage}) {
+  return percentage * (max - min) + min;
+}
+
 // The scale of the child at the time that the CupertinoContextMenu opens.
 // This value was eyeballed from a physical device running iOS 13.1.2.
 const double _kOpenScale = 1.025;
@@ -117,31 +123,35 @@ class _ViewableState extends State<Viewable> with TickerProviderStateMixin {
     _route = _ContextMenuRoute<void>(
       actions: widget.actions,
       barrierLabel: 'Dismiss',
-      filter: ui.ImageFilter.blur(
-        sigmaX: 5.0,
-        sigmaY: 5.0,
-      ),
       contextMenuLocation: _contextMenuLocation,
       previousChildRect: _decoyChildEndRect!,
       builder: (BuildContext context, Animation<double> animation) {
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(16.0),
-          child: Material(
-            color: Theme.of(context).backgroundColor,
+        double blur = valueFromPercentageInRange(min: 0.0, max: 5.0, percentage: Curves.easeInOutCubic.transform(animation.value));
+
+        return BackdropFilter(
+          filter: ui.ImageFilter.blur(
+            sigmaX: blur,
+            sigmaY: blur,
+          ),
+          child: ClipRRect(
             borderRadius: BorderRadius.circular(16.0),
-            child: Padding(
-              padding: const EdgeInsets.only(top: 6.0),
-              child: Stack(
-                children: [
-                  Opacity(
-                    opacity: 1 - (animation.value * 2).clamp(0, 1),
-                    child: widget.tile,
-                  ),
-                  Opacity(
-                    opacity: (animation.value * 2).clamp(0, 1),
-                    child: widget.view,
-                  ),
-                ],
+            child: Material(
+              color: Theme.of(context).backgroundColor,
+              borderRadius: BorderRadius.circular(16.0),
+              child: Padding(
+                padding: EdgeInsets.only(top: valueFromPercentageInRange(min: 6.0, max: 2.0, percentage: animation.value)),
+                child: Stack(
+                  children: [
+                    Opacity(
+                      opacity: 1 - (animation.value * 2).clamp(0, 1),
+                      child: widget.tile,
+                    ),
+                    Opacity(
+                      opacity: (animation.value * 2).clamp(0, 1),
+                      child: widget.view,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -209,6 +219,7 @@ class _ViewableState extends State<Viewable> with TickerProviderStateMixin {
     });
 
     final Rect childRect = _getRect(_childGlobalKey);
+    //print("tapdown");
     _decoyChildEndRect = Rect.fromCenter(
       center: childRect.center,
       width: childRect.width * _kOpenScale,
@@ -406,7 +417,7 @@ class _ContextMenuRoute<T> extends PopupRoute<T> {
   static const Color _kModalBarrierColor = Color(0x6604040F);
   // The duration of the transition used when a modal popup is shown. Eyeballed
   // from a physical device running iOS 13.1.2.
-  static const Duration _kModalPopupTransitionDuration = Duration(milliseconds: 335);
+  static const Duration _kModalPopupTransitionDuration = Duration(milliseconds: 2000);
 
   final List<Widget> _actions;
   final _ContextMenuPreviewBuilderChildless? _builder;
@@ -528,7 +539,7 @@ class _ContextMenuRoute<T> extends PopupRoute<T> {
     final Rect childRectOriginal = Rect.fromCenter(
       center: _previousChildRect.center,
       width: _previousChildRect.width / _kOpenScale,
-      height: _previousChildRect.height / _kOpenScale,
+      height: _previousChildRect.height / _kOpenScale + 14,
     );
 
     final Rect sheetRect = _getRect(_sheetGlobalKey);
@@ -776,6 +787,7 @@ class _ContextMenuRouteStaticState extends State<_ContextMenuRouteStatic> with T
     _moveController.removeStatusListener(_flingStatusListener);
     // If it was a fling back to the start, it has reset itself, and it should
     // not be dismissed.
+    //print("_flingStatusListener");
     if (_moveAnimation.value.dy == 0.0) {
       return;
     }
