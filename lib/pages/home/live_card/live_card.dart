@@ -2,7 +2,6 @@ import 'package:animations/animations.dart';
 import 'package:filcnaplo/api/providers/user_provider.dart';
 import 'package:filcnaplo/helpers/subject_icon.dart';
 import 'package:filcnaplo/icons/filc_icons.dart';
-import 'package:filcnaplo/models/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:filcnaplo/utils/format.dart';
 import 'package:filcnaplo_kreta_api/controllers/live_card_controller.dart';

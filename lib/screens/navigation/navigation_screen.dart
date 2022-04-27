@@ -32,6 +32,10 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
   List<String> initializers = [];
   final _navigatorState = GlobalKey<NavigatorState>();
 
+  NavigatorState? get navigator => _navigatorState.currentState;
+
+  void customRoute(Route route) => navigator?.pushReplacement(route);
+
   bool init(String id) {
     if (initializers.contains(id)) return false;
 
