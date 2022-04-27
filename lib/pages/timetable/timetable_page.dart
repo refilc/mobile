@@ -12,7 +12,6 @@ import 'package:filcnaplo_mobile_ui/common/empty.dart';
 import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_button.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/lesson/lesson_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/lesson/lesson_view.dart';
 import 'package:filcnaplo_kreta_api/controllers/timetable_controller.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/timetable/lesson_viewable.dart';
@@ -37,16 +36,15 @@ class TimetablePage extends StatefulWidget {
 
   static void jump(BuildContext context, {Week? week, DateTime? day, Lesson? lesson}) {
     // Go to timetable page with arguments
-    Navigator.pushReplacement(
-        context,
-        navigationPageRoute((context) => TimetablePage(
-              initialDay: lesson?.date ?? day,
-              initialWeek: lesson?.date != null
-                  ? Week.fromDate(lesson!.date)
-                  : day != null
-                      ? Week.fromDate(day)
-                      : week,
-            )));
+    NavigationScreen.of(context)?.customRoute(navigationPageRoute((context) => TimetablePage(
+          initialDay: lesson?.date ?? day,
+          initialWeek: lesson?.date != null
+              ? Week.fromDate(lesson!.date)
+              : day != null
+                  ? Week.fromDate(day)
+                  : week,
+        )));
+
     NavigationScreen.of(context)?.setPage("timetable");
 
     // Show initial Lesson

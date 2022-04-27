@@ -11,7 +11,6 @@ import 'package:filcnaplo_mobile_ui/common/bottom_sheet_menu/rounded_bottom_shee
 import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/cretification/certification_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/grade/grade_tile.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/grade/grade_view.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/grade/grade_viewable.dart';
 import 'package:filcnaplo_mobile_ui/common/hero_scrollview.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/calculator/grade_calculator.dart';

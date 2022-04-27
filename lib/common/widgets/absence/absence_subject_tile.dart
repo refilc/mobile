@@ -49,7 +49,7 @@ class AbsenceSubjectTile extends StatelessWidget {
                   style: TextStyle(
                     // fontFamily: "monospace",
                     color: getColorByPercentage(percentage, context: context),
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w700,
                     fontSize: 24.0,
                   ),
                 ),

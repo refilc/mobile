@@ -1,18 +1,17 @@
 import 'dart:ui';
 
-import 'package:filcnaplo/theme.dart';
 import 'package:flutter/material.dart';
 
 class PanelButton extends StatelessWidget {
-  const PanelButton(
-      {Key? key,
-      this.onPressed,
-      this.padding = const EdgeInsets.symmetric(horizontal: 14.0),
-      this.leading,
-      this.title,
-      this.trailing,
-      this.background = false})
-      : super(key: key);
+  const PanelButton({
+    Key? key,
+    this.onPressed,
+    this.padding = const EdgeInsets.symmetric(horizontal: 14.0),
+    this.leading,
+    this.title,
+    this.trailing,
+    this.background = false,
+  }) : super(key: key);
 
   final void Function()? onPressed;
   final EdgeInsetsGeometry padding;

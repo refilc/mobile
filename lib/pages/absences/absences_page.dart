@@ -17,8 +17,6 @@ import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_button.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/absence/absence_subject_tile.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/absence/absence_tile.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/absence/absence_view.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/absence/absence_viewable.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/statistics_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/miss_tile.dart';
