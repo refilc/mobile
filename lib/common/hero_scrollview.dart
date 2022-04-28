@@ -54,73 +54,71 @@ class _HeroScrollViewState extends State<HeroScrollView> {
   @override
   Widget build(BuildContext context) {
     return NestedScrollView(
-        controller: _scrollController,
-        physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-        headerSliverBuilder: (context, _) => [
-              SliverAppBar(
-                pinned: true,
-                floating: false,
-                snap: false,
-                centerTitle: false,
-                titleSpacing: 0,
-                title: AnimatedOpacity(
-                    opacity: showBarTitle ? 1.0 : 0.0,
-                    child: Row(
-                      children: [
-                        Icon(widget.icon, color: AppColors.of(context).text.withOpacity(.8)),
-                        const SizedBox(width: 8.0),
-                        Expanded(
-                          child: Text(
-                            widget.title.capital(),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                            style: TextStyle(color: AppColors.of(context).text, fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                      ],
+      controller: _scrollController,
+      physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+      headerSliverBuilder: (context, _) => [
+        SliverAppBar(
+          pinned: true,
+          floating: false,
+          snap: false,
+          centerTitle: false,
+          titleSpacing: 0,
+          title: AnimatedOpacity(
+              opacity: showBarTitle ? 1.0 : 0.0,
+              child: Row(
+                children: [
+                  Icon(widget.icon, color: AppColors.of(context).text.withOpacity(.8)),
+                  const SizedBox(width: 8.0),
+                  Expanded(
+                    child: Text(
+                      widget.title.capital(),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      style: TextStyle(color: AppColors.of(context).text, fontWeight: FontWeight.w500),
                     ),
-                    duration: const Duration(milliseconds: 200)),
-                leading: BackButton(
-                    color: AppColors.of(context).text,
-                    onPressed: () {
-                      if (widget.onClose != null) {
-                        widget.onClose!();
-                      } else {
-                        Navigator.of(context).pop();
-                      }
-                    }),
-                actions: widget.navBarItems,
-                expandedHeight: 124.0,
-                stretch: true,
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Stack(
-                    children: [
-                      Center(
-                        child: Icon(
-                          widget.icon,
-                          size: widget.iconSize,
-                          color: AppColors.of(context).text.withOpacity(.15),
-                        ),
-                      ),
-                      Container(
-                        alignment: Alignment.bottomCenter,
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                        child: Text(
-                          widget.title.capital(),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 36.0, color: AppColors.of(context).text.withOpacity(.9), fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
+                  ),
+                ],
+              ),
+              duration: const Duration(milliseconds: 200)),
+          leading: BackButton(
+              color: AppColors.of(context).text,
+              onPressed: () {
+                if (widget.onClose != null) {
+                  widget.onClose!();
+                } else {
+                  Navigator.of(context).pop();
+                }
+              }),
+          actions: widget.navBarItems,
+          expandedHeight: 124.0,
+          stretch: true,
+          flexibleSpace: FlexibleSpaceBar(
+            background: Stack(
+              children: [
+                Center(
+                  child: Icon(
+                    widget.icon,
+                    size: widget.iconSize,
+                    color: AppColors.of(context).text.withOpacity(.15),
                   ),
                 ),
-              ),
-            ],
-        body: Padding(
-          padding: const EdgeInsets.only(bottom: 32.0),
-          child: widget.child,
-        ));
+                Container(
+                  alignment: Alignment.bottomCenter,
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: Text(
+                    widget.title.capital(),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 36.0, color: AppColors.of(context).text.withOpacity(.9), fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+      body: widget.child,
+    );
   }
 }
