@@ -144,6 +144,7 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
     absenceProvider = Provider.of<AbsenceProvider>(context);
     noteProvider = Provider.of<NoteProvider>(context);
     updateProvider = Provider.of<UpdateProvider>(context);
+    timetableProvider = Provider.of<TimetableProvider>(context);
 
     List<String> nameParts = user.name?.split(" ") ?? ["?"];
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
