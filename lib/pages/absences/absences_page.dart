@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:animations/animations.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
-import 'package:filcnaplo/models/settings.dart';
 import 'package:filcnaplo/models/subject_lesson_count.dart';
 import 'package:filcnaplo_kreta_api/models/absence.dart';
 import 'package:filcnaplo_kreta_api/models/subject.dart';
@@ -50,7 +49,6 @@ class AbsencesPage extends StatefulWidget {
 
 class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMixin {
   late UserProvider user;
-  late SettingsProvider settings;
   late AbsenceProvider absenceProvider;
   late TimetableProvider timetableProvider;
   late NoteProvider noteProvider;
@@ -65,25 +63,23 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
 
     _tabController = TabController(length: 3, vsync: this);
     timetableProvider = Provider.of<TimetableProvider>(context, listen: false);
-    settings = Provider.of<SettingsProvider>(context, listen: false);
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       // Updates every week
-      final needsUpdate = settings.subjectLessonCount.lastUpdated.isBefore(DateTime.now().subtract(const Duration(days: 7)));
+      final needsUpdate = timetableProvider.subjectLessonCount.lastUpdated.isBefore(DateTime.now().subtract(const Duration(days: 7)));
 
-      if (needsUpdate && settings.subjectLessonCount.state != SubjectLessonCountUpdateState.updating) {
+      if (needsUpdate && timetableProvider.subjectLessonCount.state != SubjectLessonCountUpdateState.updating) {
         () async {
           // Wait for build
           await Future.delayed(const Duration(milliseconds: 500));
 
           // Safety
-          if (settings.subjectLessonCount.state == SubjectLessonCountUpdateState.updating) return;
+          if (timetableProvider.subjectLessonCount.state == SubjectLessonCountUpdateState.updating) return;
 
           // Set updating state to show progress indicator
-          await settings.update(
-            context,
+          await timetableProvider.setLessonCount(
+            timetableProvider.subjectLessonCount..state = SubjectLessonCountUpdateState.updating,
             store: false,
-            subjectLessonCount: settings.subjectLessonCount..state = SubjectLessonCountUpdateState.updating,
           );
 
           Week week = Week.fromId(0);
@@ -104,10 +100,7 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
           }
 
           // Set redy state and store data
-          await settings.update(
-            context,
-            subjectLessonCount: lessonCount,
-          );
+          await timetableProvider.setLessonCount(lessonCount);
         }();
       }
     });
@@ -128,7 +121,7 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
 
     _absences.forEach((subject, absence) {
       final absentLessonsOfSubject = absenceProvider.absences.where((e) => e.subject == subject && e.delay == 0).length;
-      final totalLessonsOfSubject = settings.subjectLessonCount.subjects[subject] ?? 0;
+      final totalLessonsOfSubject = timetableProvider.subjectLessonCount.subjects[subject] ?? 0;
 
       double absentLessonsOfSubjectPercentage;
 
@@ -151,7 +144,6 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
     absenceProvider = Provider.of<AbsenceProvider>(context);
     noteProvider = Provider.of<NoteProvider>(context);
     updateProvider = Provider.of<UpdateProvider>(context);
-    settings = Provider.of<SettingsProvider>(context);
 
     List<String> nameParts = user.name?.split(" ") ?? ["?"];
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
@@ -305,7 +297,7 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
                   fillColor: Theme.of(context).backgroundColor,
                 );
               },
-              child: settings.subjectLessonCount.state == SubjectLessonCountUpdateState.ready
+              child: timetableProvider.subjectLessonCount.state == SubjectLessonCountUpdateState.ready
                   ? Column(
                       children: getFilterWidgets(AbsenceFilter.values[activeData]).map((e) => e.widget).cast<Widget>().toList(),
                     )
@@ -314,15 +306,15 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
                       child: Center(
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
-                          children: const [
-                            SizedBox(
+                          children: [
+                            const SizedBox(
                               height: 32.0,
                               width: 32.0,
                               child: CircularProgressIndicator(),
                             ),
                             Padding(
-                              padding: EdgeInsets.only(top: 12.0),
-                              child: Text("Updating absence percentages..."),
+                              padding: const EdgeInsets.only(top: 12.0),
+                              child: Text("Updating absence percentages...".i18n),
                             ),
                           ],
                         ),
@@ -345,7 +337,7 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
         child: ListView.builder(
           padding: EdgeInsets.zero,
           physics: const BouncingScrollPhysics(),
-          itemCount: max(filterWidgets.length + (activeData < 2 ? 1 : 0), 1),
+          itemCount: max(filterWidgets.length + (activeData <= 1 ? 1 : 0), 1),
           itemBuilder: (context, index) {
             if (filterWidgets.isNotEmpty) {
               if ((index == 0 && activeData == 1) || (index == 0 && activeData == 0)) {
@@ -413,7 +405,7 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
 
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: filterWidgets[index - 1],
+                child: filterWidgets[index - (activeData <= 1 ? 1 : 0)],
               );
             } else {
               return Empty(subtitle: "empty".i18n);

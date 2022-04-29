@@ -17,6 +17,7 @@ extension ScreensLocalization on String {
           "Subjects": "Subjects",
           "attention": "Attention!",
           "attention_body": "Percentage calculations are only an approximation so they may not be accurate.",
+          "Updating absence percentages...": "Updating absence percentages...",
         },
         "hu_hu": {
           "Absences": "Hiányzások",
@@ -32,6 +33,7 @@ extension ScreensLocalization on String {
           "Subjects": "Tantárgyak",
           "attention": "Figyelem!",
           "attention_body": "A százalékos számítások csak közelítések, ezért előfordulhat, hogy nem pontosak.",
+          "Updating absence percentages...": "Hiányzási százalékok frissítése...",
         },
         "de_de": {
           "Absences": "Fehlen",
@@ -47,6 +49,7 @@ extension ScreensLocalization on String {
           "Subjects": "Fächer",
           "attention": "Achtung!",
           "attention_body": "Prozentberechnungen sind nur eine Annäherung und können daher ungenau sein.",
+          "Updating absence percentages...": "Aktualisierung der Abwesenheitsquoten...",
         },
       };
 
