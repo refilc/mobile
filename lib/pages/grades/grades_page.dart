@@ -7,7 +7,7 @@ import 'package:filcnaplo/api/providers/user_provider.dart';
 import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_kreta_api/models/grade.dart';
 import 'package:filcnaplo_kreta_api/models/subject.dart';
-import 'package:filcnaplo_kreta_api/models/class_average.dart';
+import 'package:filcnaplo_kreta_api/models/group_average.dart';
 import 'package:filcnaplo_mobile_ui/common/average_display.dart';
 import 'package:filcnaplo_mobile_ui/common/empty.dart';
 import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
@@ -50,13 +50,13 @@ class _GradesPageState extends State<GradesPage> {
       List<Grade> subjectGrades = getSubjectGrades(subject);
 
       double avg = AverageHelper.averageEvals(subjectGrades);
-      var nullavg = ClassAverage(average: 0.0, subject: subject, uid: "0");
-      double classAverage = gradeProvider.classAverages.firstWhere((e) => e.subject == subject, orElse: () => nullavg).average;
+      var nullavg = GroupAverage(average: 0.0, subject: subject, uid: "0");
+      double groupAverage = gradeProvider.groupAverages.firstWhere((e) => e.subject == subject, orElse: () => nullavg).average;
 
       if (avg != 0) subjectAvgs.add(avg);
 
-      return GradeSubjectTile(subject, average: avg, groupAverage: classAverage, onTap: () {
-        GradeSubjectView(subject, classAverage: classAverage).push(context, root: true);
+      return GradeSubjectTile(subject, average: avg, groupAverage: groupAverage, onTap: () {
+        GradeSubjectView(subject, groupAverage: groupAverage).push(context, root: true);
       });
     }));
 
@@ -77,8 +77,8 @@ class _GradesPageState extends State<GradesPage> {
     }
 
     double subjectAvg = subjectAvgs.isNotEmpty ? subjectAvgs.fold(0.0, (double a, double b) => a + b) / subjectAvgs.length : 0.0;
-    final double classAvg = gradeProvider.classAverages.isNotEmpty
-        ? gradeProvider.classAverages.map((e) => e.average).fold(0.0, (double a, double b) => a + b) / gradeProvider.classAverages.length
+    final double classAvg = gradeProvider.groupAverages.isNotEmpty
+        ? gradeProvider.groupAverages.map((e) => e.average).fold(0.0, (double a, double b) => a + b) / gradeProvider.groupAverages.length
         : 0.0;
 
     if (subjectAvg > 0) {
@@ -127,9 +127,9 @@ class _GradesPageState extends State<GradesPage> {
     List<String> nameParts = user.name?.split(" ") ?? ["?"];
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
 
-    final double totalClassAvg = gradeProvider.classAverages.isEmpty
+    final double totalClassAvg = gradeProvider.groupAverages.isEmpty
         ? 0.0
-        : gradeProvider.classAverages.map((e) => e.average).fold(0.0, (double a, double b) => a + b) / gradeProvider.classAverages.length;
+        : gradeProvider.groupAverages.map((e) => e.average).fold(0.0, (double a, double b) => a + b) / gradeProvider.groupAverages.length;
 
     yearlyGraph = Padding(
       padding: const EdgeInsets.only(top: 12.0, bottom: 24.0),
