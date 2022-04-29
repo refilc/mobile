@@ -14,7 +14,7 @@ class LessonViewable extends StatelessWidget {
   Widget build(BuildContext context) {
     final tile = LessonTile(lesson, swapDesc: swapDesc);
 
-    if (tile.lesson.isEmpty) return tile;
+    if (lesson.subject.id == '' || tile.lesson.isEmpty) return tile;
 
     return Viewable(tile: tile, view: LessonView(lesson));
   }

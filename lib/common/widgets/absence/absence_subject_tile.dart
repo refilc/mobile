@@ -22,7 +22,7 @@ class AbsenceSubjectTile extends StatelessWidget {
     return Material(
       type: MaterialType.transparency,
       child: ListTile(
-        minLeadingWidth: 32.0,
+        // minLeadingWidth: 32.0,
         dense: true,
         contentPadding: const EdgeInsets.only(left: 8.0, right: 6.0),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
@@ -40,21 +40,22 @@ class AbsenceSubjectTile extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             const SizedBox(width: 8.0),
-            Stack(
-              alignment: Alignment.centerRight,
-              children: [
-                const Opacity(child: Text("100%", style: TextStyle(fontFamily: "monospace")), opacity: 0),
-                Text(
-                  percentage.round().toString() + "%",
-                  style: TextStyle(
-                    // fontFamily: "monospace",
-                    color: getColorByPercentage(percentage, context: context),
-                    fontWeight: FontWeight.w700,
-                    fontSize: 24.0,
+            if (percentage >= 0)
+              Stack(
+                alignment: Alignment.centerRight,
+                children: [
+                  const Opacity(child: Text("100%", style: TextStyle(fontFamily: "monospace")), opacity: 0),
+                  Text(
+                    percentage.round().toString() + "%",
+                    style: TextStyle(
+                      // fontFamily: "monospace",
+                      color: getColorByPercentage(percentage, context: context),
+                      fontWeight: FontWeight.w700,
+                      fontSize: 24.0,
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
           ],
         ),
       ),

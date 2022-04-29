@@ -254,11 +254,11 @@ class _GradeGraphState extends State<GradeGraph> {
 
                           return title.toUpperCase();
                         },
-                        interval: () {
-                          List<Grade> tData = ghostData.isNotEmpty ? ghostData : data;
-                          tData.sort((a, b) => a.writeDate.compareTo(b.writeDate));
-                          return tData.first.writeDate.add(const Duration(days: 120)).isBefore(tData.last.writeDate) ? 2.0 : 1.0;
-                        }(),
+                        // interval: () {
+                        //   List<Grade> tData = ghostData.isNotEmpty ? ghostData : data;
+                        //   tData.sort((a, b) => a.writeDate.compareTo(b.writeDate));
+                        //   return tData.first.writeDate.add(const Duration(days: 120)).isBefore(tData.last.writeDate) ? 2.0 : 1.0;
+                        // }(),
                       ),
                       leftTitles: SideTitles(
                         showTitles: true,

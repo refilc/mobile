@@ -1,7 +1,10 @@
 import 'dart:math';
 
+import 'package:animations/animations.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
+import 'package:filcnaplo/models/settings.dart';
+import 'package:filcnaplo/models/subject_lesson_count.dart';
 import 'package:filcnaplo_kreta_api/models/absence.dart';
 import 'package:filcnaplo_kreta_api/models/subject.dart';
 import 'package:filcnaplo_kreta_api/models/week.dart';
@@ -47,6 +50,7 @@ class AbsencesPage extends StatefulWidget {
 
 class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMixin {
   late UserProvider user;
+  late SettingsProvider settings;
   late AbsenceProvider absenceProvider;
   late TimetableProvider timetableProvider;
   late NoteProvider noteProvider;
@@ -61,7 +65,52 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
 
     _tabController = TabController(length: 3, vsync: this);
     timetableProvider = Provider.of<TimetableProvider>(context, listen: false);
-    if (timetableProvider.lastFetched != Week.fromId(3)) timetableProvider.fetch(week: Week.fromId(3));
+    settings = Provider.of<SettingsProvider>(context, listen: false);
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      // Updates every week
+      final needsUpdate = settings.subjectLessonCount.lastUpdated.isBefore(DateTime.now().subtract(const Duration(days: 7)));
+
+      if (needsUpdate && settings.subjectLessonCount.state != SubjectLessonCountUpdateState.updating) {
+        () async {
+          // Wait for build
+          await Future.delayed(const Duration(milliseconds: 500));
+
+          // Safety
+          if (settings.subjectLessonCount.state == SubjectLessonCountUpdateState.updating) return;
+
+          // Set updating state to show progress indicator
+          await settings.update(
+            context,
+            store: false,
+            subjectLessonCount: settings.subjectLessonCount..state = SubjectLessonCountUpdateState.updating,
+          );
+
+          Week week = Week.fromId(0);
+          final lastWeek = DateTime(week.start.year + 1, DateTime.june, 15);
+          var lessonCount = SubjectLessonCount(subjects: {}, lastUpdated: DateTime.now());
+
+          while (week.start.isBefore(lastWeek)) {
+            await timetableProvider.fetch(week: week, db: false);
+
+            for (var lesson in timetableProvider.lessons) {
+              if (lesson.isEmpty || lesson.subject.id == '') continue;
+
+              lessonCount.subjects.update(lesson.subject, (value) => value + 1, ifAbsent: () => 1);
+            }
+
+            // set next week;
+            week = week.next();
+          }
+
+          // Set redy state and store data
+          await settings.update(
+            context,
+            subjectLessonCount: lessonCount,
+          );
+        }();
+      }
+    });
   }
 
   void buildSubjectAbsences() {
@@ -79,9 +128,17 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
 
     _absences.forEach((subject, absence) {
       final absentLessonsOfSubject = absenceProvider.absences.where((e) => e.subject == subject && e.delay == 0).length;
-      final totalLessonsOfSubject = timetableProvider.lessons.where((e) => e.subject == subject).length * 35.5;
-      final absentLessonsOfSubjectPercentage = absentLessonsOfSubject / totalLessonsOfSubject * 100;
-      _absences[subject]?.percentage = absentLessonsOfSubjectPercentage.clamp(0.0, 100.0);
+      final totalLessonsOfSubject = settings.subjectLessonCount.subjects[subject] ?? 0;
+
+      double absentLessonsOfSubjectPercentage;
+
+      if (absentLessonsOfSubject <= totalLessonsOfSubject) {
+        absentLessonsOfSubjectPercentage = absentLessonsOfSubject / totalLessonsOfSubject * 100;
+      } else {
+        absentLessonsOfSubjectPercentage = -1;
+      }
+
+      _absences[subject]?.percentage = absentLessonsOfSubjectPercentage.clamp(-1, 100.0);
     });
 
     absences = _absences.values.toList();
@@ -92,9 +149,9 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
   Widget build(BuildContext context) {
     user = Provider.of<UserProvider>(context);
     absenceProvider = Provider.of<AbsenceProvider>(context);
-    timetableProvider = Provider.of<TimetableProvider>(context);
     noteProvider = Provider.of<NoteProvider>(context);
     updateProvider = Provider.of<UpdateProvider>(context);
+    settings = Provider.of<SettingsProvider>(context);
 
     List<String> nameParts = user.name?.split(" ") ?? ["?"];
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
@@ -235,7 +292,43 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
                 ),
               ],
             ),
-            child: Column(children: getFilterWidgets(AbsenceFilter.values[activeData]).map((e) => e.widget).cast<Widget>().toList()),
+            child: PageTransitionSwitcher(
+              transitionBuilder: (
+                Widget child,
+                Animation<double> primaryAnimation,
+                Animation<double> secondaryAnimation,
+              ) {
+                return FadeThroughTransition(
+                  child: child,
+                  animation: primaryAnimation,
+                  secondaryAnimation: secondaryAnimation,
+                  fillColor: Theme.of(context).backgroundColor,
+                );
+              },
+              child: settings.subjectLessonCount.state == SubjectLessonCountUpdateState.ready
+                  ? Column(
+                      children: getFilterWidgets(AbsenceFilter.values[activeData]).map((e) => e.widget).cast<Widget>().toList(),
+                    )
+                  : SizedBox(
+                      height: 100.0,
+                      child: Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: const [
+                            SizedBox(
+                              height: 32.0,
+                              width: 32.0,
+                              child: CircularProgressIndicator(),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 12.0),
+                              child: Text("Updating absence percentages..."),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+            ),
           ),
         )
       ];
