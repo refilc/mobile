@@ -50,7 +50,7 @@ class AbsenceSubjectView extends StatelessWidget {
               date: a.date,
             ))
         .toList();
-    List<Widget> absenceTiles = sortDateWidgets(context, dateWidgets: dateWidgets, padding: EdgeInsets.zero);
+    List<Widget> absenceTiles = sortDateWidgets(context, dateWidgets: dateWidgets, padding: EdgeInsets.zero, hasShadow: true);
 
     return Scaffold(
       body: HeroScrollView(
@@ -62,7 +62,10 @@ class AbsenceSubjectView extends StatelessWidget {
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.all(24.0),
               shrinkWrap: true,
-              itemBuilder: (context, index) => absenceTiles[index],
+              itemBuilder: (context, index) => Padding(
+                padding: const EdgeInsets.only(bottom: 12.0),
+                child: absenceTiles[index],
+              ),
               itemCount: absenceTiles.length,
             ),
           ),

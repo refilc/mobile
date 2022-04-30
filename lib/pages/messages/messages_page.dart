@@ -146,7 +146,7 @@ class _MessagesPageState extends State<MessagesPage> with TickerProviderStateMix
   }
 
   Widget filterViewBuilder(context, int activeData) {
-    List<Widget> filterWidgets = sortDateWidgets(context, dateWidgets: getFilterWidgets(MessageType.values[activeData]));
+    List<Widget> filterWidgets = sortDateWidgets(context, dateWidgets: getFilterWidgets(MessageType.values[activeData]), hasShadow: true);
 
     return Padding(
       padding: const EdgeInsets.only(top: 12.0),
@@ -164,7 +164,7 @@ class _MessagesPageState extends State<MessagesPage> with TickerProviderStateMix
           physics: const BouncingScrollPhysics(),
           itemBuilder: (context, index) => filterWidgets.isNotEmpty
               ? Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 6.0),
                   child: filterWidgets[index],
                 )
               : Empty(subtitle: "empty".i18n),

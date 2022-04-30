@@ -618,6 +618,7 @@ List<Widget> sortDateWidgets(
   required List<DateWidget> dateWidgets,
   bool showTitle = true,
   bool showDivider = false,
+  bool hasShadow = false,
   EdgeInsetsGeometry? padding,
 }) {
   dateWidgets.sort((a, b) => -a.date.compareTo(b.date));
@@ -710,21 +711,18 @@ List<Widget> sortDateWidgets(
       final date = (elements + absenceTileWidgets).first.date;
       items.add(DateWidget(
         date: date,
-        widget: Padding(
+        widget: Panel(
           key: ValueKey(date),
-          padding: const EdgeInsets.only(bottom: 12.0),
-          child: Panel(
-            padding: padding ?? const EdgeInsets.symmetric(vertical: 6.0),
-            title: _showTitle ? Text(date.format(context, forceToday: true)) : null,
-            hasShadow: false,
-            child: ImplicitlyAnimatedList<DateWidget>(
-              areItemsTheSame: (a, b) => a.key == b.key,
-              spawnIsolate: false,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, animation, item, index) => _itemBuilder(context, animation, item.widget, index),
-              items: elements,
-            ),
+          padding: padding ?? const EdgeInsets.symmetric(vertical: 6.0),
+          title: _showTitle ? Text(date.format(context, forceToday: true)) : null,
+          hasShadow: hasShadow,
+          child: ImplicitlyAnimatedList<DateWidget>(
+            areItemsTheSame: (a, b) => a.key == b.key,
+            spawnIsolate: false,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, animation, item, index) => _itemBuilder(context, animation, item.widget, index),
+            items: elements,
           ),
         ),
       ));
@@ -778,21 +776,24 @@ Widget _itemBuilder(BuildContext context, Animation<double> animation, Widget it
           animation: animation,
           child: wrappedItem,
           builder: (context, child) {
-            return DecoratedBox(
-              child: child,
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    offset: const Offset(0, 21),
-                    blurRadius: 23.0,
-                    color: AppColors.of(context).shadow.withOpacity(
-                          CurvedAnimation(
-                            parent: CurvedAnimation(parent: animation, curve: Curves.easeInOutCubic),
-                            curve: const Interval(2 / 3, 1.0),
-                          ).value,
-                        ),
-                  ),
-                ],
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 12.0),
+              child: DecoratedBox(
+                child: child,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      offset: const Offset(0, 21),
+                      blurRadius: 23.0,
+                      color: AppColors.of(context).shadow.withOpacity(
+                            CurvedAnimation(
+                              parent: CurvedAnimation(parent: animation, curve: Curves.easeInOutCubic),
+                              curve: const Interval(2 / 3, 1.0),
+                            ).value,
+                          ),
+                    ),
+                  ],
+                ),
               ),
             );
           })

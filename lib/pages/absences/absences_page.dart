@@ -3,11 +3,9 @@ import 'dart:math';
 import 'package:animations/animations.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
-import 'package:filcnaplo/models/subject_lesson_count.dart';
 import 'package:filcnaplo_kreta_api/models/absence.dart';
 import 'package:filcnaplo_kreta_api/models/lesson.dart';
 import 'package:filcnaplo_kreta_api/models/subject.dart';
-import 'package:filcnaplo_kreta_api/models/week.dart';
 import 'package:filcnaplo_kreta_api/providers/absence_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/note_provider.dart';
 import 'package:filcnaplo/api/providers/user_provider.dart';
@@ -57,7 +55,7 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
   late String firstName;
   late TabController _tabController;
   late List<SubjectAbsence> absences = [];
-  Map<Subject, Lesson> _lessonCount = {};
+  final Map<Subject, Lesson> _lessonCount = {};
 
   @override
   void initState() {
@@ -233,6 +231,7 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
         context,
         dateWidgets: getFilterWidgets(AbsenceFilter.values[activeData]),
         padding: EdgeInsets.zero,
+        hasShadow: true,
       );
     } else {
       filterWidgets = [
@@ -366,7 +365,7 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
               }
 
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 6.0),
                 child: filterWidgets[index - (activeData <= 1 ? 1 : 0)],
               );
             } else {
