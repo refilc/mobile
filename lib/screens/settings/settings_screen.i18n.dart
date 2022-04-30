@@ -94,7 +94,7 @@ extension SettingsLocalization on String {
               "A Filc Napló® Informatikai Zrt. minden felelősséget elhárít a funkció használatával kapcsolatban.\n\n(Értsd: ha az anyád megver, mert megtévesztő ábrákat mutattál neki, azért csakis magadadat hibáztathatod.)",
           "understand": "Értem",
           "secret": "Titkos Beállítások",
-          "bell_delay": "Csengő beállítása",
+          "bell_delay": "Csengő eltolódása",
           "delay": "Késleltetés",
           "hurry": "Siettetés",
         },

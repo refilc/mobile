@@ -336,12 +336,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   trailing: Text(vibrateTitle),
                 ),
                 PanelButton(
+                  padding: const EdgeInsets.only(left: 14.0),
                   onPressed: () {
                     SettingsHelper.bellDelay(context);
                     setState(() {});
                   },
-                  title: Text("bell_delay".i18n),
-                  leading: settings.bellDelayEnabled ? const Icon(FeatherIcons.bell) : const Icon(FeatherIcons.bellOff),
+                  title: Text(
+                    "bell_delay".i18n,
+                    style: TextStyle(color: AppColors.of(context).text.withOpacity(settings.bellDelayEnabled ? 1.0 : .5)),
+                  ),
+                  leading: settings.bellDelayEnabled
+                      ? const Icon(FeatherIcons.bell)
+                      : Icon(FeatherIcons.bellOff, color: AppColors.of(context).text.withOpacity(.25)),
+                  trailingDivider: true,
                   trailing: Switch(
                     onChanged: (v) => settings.update(context, bellDelayEnabled: v),
                     value: settings.bellDelayEnabled,
@@ -450,7 +457,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   child: SwitchListTile(
                     contentPadding: const EdgeInsets.only(left: 12.0),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-                    title: Text("graph_class_avg".i18n, style: const TextStyle(fontWeight: FontWeight.w500)),
+                    title: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          FeatherIcons.barChart,
+                          color: settings.graphClassAvg ? Theme.of(context).colorScheme.secondary : AppColors.of(context).text.withOpacity(.25),
+                        ),
+                        const SizedBox(width: 24.0),
+                        Text(
+                          "graph_class_avg".i18n,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16.0,
+                            color: AppColors.of(context).text.withOpacity(settings.graphClassAvg ? 1.0 : .5),
+                          ),
+                        ),
+                      ],
+                    ),
                     onChanged: (v) => settings.update(context, graphClassAvg: v),
                     value: settings.graphClassAvg,
                     activeColor: Theme.of(context).colorScheme.secondary,
@@ -471,7 +495,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: SwitchListTile(
                 contentPadding: const EdgeInsets.only(left: 12.0),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-                title: Text("news".i18n, style: const TextStyle(fontWeight: FontWeight.w500)),
+                title: Row(
+                  children: [
+                    Icon(
+                      Icons.newspaper_outlined,
+                      color: settings.newsEnabled ? Theme.of(context).colorScheme.secondary : AppColors.of(context).text.withOpacity(.25),
+                    ),
+                    const SizedBox(width: 24.0),
+                    Text(
+                      "news".i18n,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16.0,
+                        color: AppColors.of(context).text.withOpacity(settings.newsEnabled ? 1.0 : .5),
+                      ),
+                    ),
+                  ],
+                ),
                 onChanged: (v) => settings.update(context, newsEnabled: v),
                 value: settings.newsEnabled,
                 activeColor: Theme.of(context).colorScheme.secondary,
@@ -531,9 +571,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   child: SwitchListTile(
                     contentPadding: const EdgeInsets.only(left: 12.0),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-                    secondary: Icon(FeatherIcons.barChart2, color: Theme.of(context).colorScheme.secondary),
-                    title: Text("Analytics".i18n, style: const TextStyle(fontWeight: FontWeight.w600)),
-                    subtitle: Text("Anonymous Usage Analytics".i18n),
+                    secondary: Icon(
+                      FeatherIcons.barChart2,
+                      color: settings.xFilcId != "none" ? Theme.of(context).colorScheme.secondary : AppColors.of(context).text.withOpacity(.25),
+                    ),
+                    title: Text(
+                      "Analytics".i18n,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16.0,
+                        color: AppColors.of(context).text.withOpacity(settings.xFilcId != "none" ? 1.0 : .5),
+                      ),
+                    ),
+                    subtitle: Text(
+                      "Anonymous Usage Analytics".i18n,
+                      style: TextStyle(
+                        color: AppColors.of(context).text.withOpacity(settings.xFilcId != "none" ? .5 : .2),
+                      ),
+                    ),
                     onChanged: (v) {
                       String newId;
                       if (v == false) {

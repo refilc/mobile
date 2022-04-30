@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:filcnaplo/theme.dart';
 import 'package:flutter/material.dart';
 
 class PanelButton extends StatelessWidget {
@@ -11,6 +12,7 @@ class PanelButton extends StatelessWidget {
     this.title,
     this.trailing,
     this.background = false,
+    this.trailingDivider = false,
   }) : super(key: key);
 
   final void Function()? onPressed;
@@ -19,6 +21,7 @@ class PanelButton extends StatelessWidget {
   final Widget? title;
   final Widget? trailing;
   final bool background;
+  final bool trailingDivider;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +37,22 @@ class PanelButton extends StatelessWidget {
                 child: leading!,
               )
             : null,
-        trailing: trailing,
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (trailingDivider)
+              Container(
+                margin: const EdgeInsets.only(right: 6.0),
+                width: 2.0,
+                height: 32.0,
+                decoration: BoxDecoration(
+                  color: AppColors.of(context).text.withOpacity(.15),
+                  borderRadius: BorderRadius.circular(45.0),
+                ),
+              ),
+            if (trailing != null) trailing!,
+          ],
+        ),
         title: title != null
             ? DefaultTextStyle(style: Theme.of(context).textTheme.subtitle2!.copyWith(fontWeight: FontWeight.w600, fontSize: 16.0), child: title!)
             : null,
