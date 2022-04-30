@@ -458,19 +458,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     contentPadding: const EdgeInsets.only(left: 12.0),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
                     title: Row(
-                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(
                           FeatherIcons.barChart,
                           color: settings.graphClassAvg ? Theme.of(context).colorScheme.secondary : AppColors.of(context).text.withOpacity(.25),
                         ),
                         const SizedBox(width: 24.0),
-                        Text(
-                          "graph_class_avg".i18n,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16.0,
-                            color: AppColors.of(context).text.withOpacity(settings.graphClassAvg ? 1.0 : .5),
+                        Expanded(
+                          child: Text(
+                            "graph_class_avg".i18n,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16.0,
+                              color: AppColors.of(context).text.withOpacity(settings.graphClassAvg ? 1.0 : .5),
+                            ),
                           ),
                         ),
                       ],
@@ -502,12 +503,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       color: settings.newsEnabled ? Theme.of(context).colorScheme.secondary : AppColors.of(context).text.withOpacity(.25),
                     ),
                     const SizedBox(width: 24.0),
-                    Text(
-                      "news".i18n,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16.0,
-                        color: AppColors.of(context).text.withOpacity(settings.newsEnabled ? 1.0 : .5),
+                    Expanded(
+                      child: Text(
+                        "news".i18n,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16.0,
+                          color: AppColors.of(context).text.withOpacity(settings.newsEnabled ? 1.0 : .5),
+                        ),
                       ),
                     ),
                   ],

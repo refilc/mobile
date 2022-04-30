@@ -40,7 +40,7 @@ extension SettingsLocalization on String {
           "data_collected": "Data collected: Platform (eg. Android), App version (eg. 3.0.0), Unique Install Identifier",
           "Analytics": "Analytics",
           "Anonymous Usage Analytics": "Anonymous Usage Analytics",
-          "graph_class_avg": "Display class average on graph",
+          "graph_class_avg": "Class average on graph",
           "goodstudent": "Good student mode",
           "attention": "Attention!",
           "goodstudent_disclaimer": "Same in English.",
