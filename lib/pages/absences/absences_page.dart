@@ -5,6 +5,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
 import 'package:filcnaplo/models/subject_lesson_count.dart';
 import 'package:filcnaplo_kreta_api/models/absence.dart';
+import 'package:filcnaplo_kreta_api/models/lesson.dart';
 import 'package:filcnaplo_kreta_api/models/subject.dart';
 import 'package:filcnaplo_kreta_api/models/week.dart';
 import 'package:filcnaplo_kreta_api/providers/absence_provider.dart';
@@ -56,6 +57,7 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
   late String firstName;
   late TabController _tabController;
   late List<SubjectAbsence> absences = [];
+  Map<Subject, Lesson> _lessonCount = {};
 
   @override
   void initState() {
@@ -64,44 +66,23 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
     _tabController = TabController(length: 3, vsync: this);
     timetableProvider = Provider.of<TimetableProvider>(context, listen: false);
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      // Updates every week
-      final needsUpdate = timetableProvider.subjectLessonCount.lastUpdated.isBefore(DateTime.now().subtract(const Duration(days: 7)));
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await timetableProvider.restore();
 
-      if (needsUpdate && timetableProvider.subjectLessonCount.state != SubjectLessonCountUpdateState.updating) {
-        () async {
-          // Wait for build
-          await Future.delayed(const Duration(milliseconds: 500));
-
-          // Safety
-          if (timetableProvider.subjectLessonCount.state == SubjectLessonCountUpdateState.updating) return;
-
-          // Set updating state to show progress indicator
-          await timetableProvider.setLessonCount(
-            timetableProvider.subjectLessonCount..state = SubjectLessonCountUpdateState.updating,
-            store: false,
+      for (final lesson in timetableProvider.lessons) {
+        if (!lesson.isEmpty && lesson.subject.id != '' && lesson.lessonYearIndex != null) {
+          _lessonCount.update(
+            lesson.subject,
+            (value) {
+              if (lesson.lessonYearIndex! > value.lessonYearIndex!) {
+                return lesson;
+              } else {
+                return value;
+              }
+            },
+            ifAbsent: () => lesson,
           );
-
-          Week week = Week.fromId(0);
-          final lastWeek = DateTime(week.start.year + 1, DateTime.june, 15);
-          var lessonCount = SubjectLessonCount(subjects: {}, lastUpdated: DateTime.now());
-
-          while (week.start.isBefore(lastWeek)) {
-            await timetableProvider.fetch(week: week, db: false);
-
-            for (var lesson in timetableProvider.lessons) {
-              if (lesson.isEmpty || lesson.subject.id == '') continue;
-
-              lessonCount.subjects.update(lesson.subject, (value) => value + 1, ifAbsent: () => 1);
-            }
-
-            // set next week;
-            week = week.next();
-          }
-
-          // Set redy state and store data
-          await timetableProvider.setLessonCount(lessonCount);
-        }();
+        }
       }
     });
   }
@@ -121,7 +102,7 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
 
     _absences.forEach((subject, absence) {
       final absentLessonsOfSubject = absenceProvider.absences.where((e) => e.subject == subject && e.delay == 0).length;
-      final totalLessonsOfSubject = timetableProvider.subjectLessonCount.subjects[subject] ?? 0;
+      final totalLessonsOfSubject = _lessonCount[subject]?.lessonYearIndex ?? 0;
 
       double absentLessonsOfSubjectPercentage;
 
@@ -298,29 +279,9 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
                   fillColor: Theme.of(context).backgroundColor,
                 );
               },
-              child: timetableProvider.subjectLessonCount.state == SubjectLessonCountUpdateState.ready
-                  ? Column(
-                      children: getFilterWidgets(AbsenceFilter.values[activeData]).map((e) => e.widget).cast<Widget>().toList(),
-                    )
-                  : SizedBox(
-                      height: 100.0,
-                      child: Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const SizedBox(
-                              height: 32.0,
-                              width: 32.0,
-                              child: CircularProgressIndicator(),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 12.0),
-                              child: Text("Updating absence percentages...".i18n),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+              child: Column(
+                children: getFilterWidgets(AbsenceFilter.values[activeData]).map((e) => e.widget).cast<Widget>().toList(),
+              ),
             ),
           ),
         )

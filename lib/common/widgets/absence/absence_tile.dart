@@ -22,11 +22,12 @@ class AbsenceTile extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         boxShadow: [
-          BoxShadow(
-            offset: Offset(0, 21 * elevation),
-            blurRadius: 23.0 * elevation,
-            color: AppColors.of(context).shadow,
-          )
+          if (elevation > 0)
+            BoxShadow(
+              offset: Offset(0, 21 * elevation),
+              blurRadius: 23.0 * elevation,
+              color: AppColors.of(context).shadow,
+            )
         ],
         borderRadius: BorderRadius.circular(14.0),
       ),
