@@ -451,6 +451,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   },
                   title: Text("grade_colors".i18n),
                   leading: const Icon(FeatherIcons.star),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: List.generate(
+                      5,
+                      (i) => Container(
+                        margin: const EdgeInsets.only(left: 2.0),
+                        width: 12.0,
+                        height: 12.0,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: settings.gradeColors[i],
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
                 Material(
                   type: MaterialType.transparency,

@@ -28,7 +28,7 @@ class PanelButton extends StatelessWidget {
     final button = RawMaterialButton(
       onPressed: onPressed,
       padding: padding,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
       fillColor: background ? Colors.white.withOpacity(Theme.of(context).brightness == Brightness.light ? .35 : .2) : null,
       child: ListTile(
         leading: leading != null
@@ -37,22 +37,23 @@ class PanelButton extends StatelessWidget {
                 child: leading!,
               )
             : null,
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (trailingDivider)
-              Container(
-                margin: const EdgeInsets.only(right: 6.0),
-                width: 2.0,
-                height: 32.0,
-                decoration: BoxDecoration(
-                  color: AppColors.of(context).text.withOpacity(.15),
-                  borderRadius: BorderRadius.circular(45.0),
-                ),
-              ),
-            if (trailing != null) trailing!,
-          ],
-        ),
+        trailing: trailingDivider
+            ? Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(right: 6.0),
+                    width: 2.0,
+                    height: 32.0,
+                    decoration: BoxDecoration(
+                      color: AppColors.of(context).text.withOpacity(.15),
+                      borderRadius: BorderRadius.circular(45.0),
+                    ),
+                  ),
+                  if (trailing != null) trailing!,
+                ],
+              )
+            : trailing,
         title: title != null
             ? DefaultTextStyle(style: Theme.of(context).textTheme.subtitle2!.copyWith(fontWeight: FontWeight.w600, fontSize: 16.0), child: title!)
             : null,
