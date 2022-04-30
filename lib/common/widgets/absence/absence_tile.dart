@@ -34,7 +34,7 @@ class AbsenceTile extends StatelessWidget {
       child: Material(
         type: MaterialType.transparency,
         child: Padding(
-          padding: padding ?? const EdgeInsets.symmetric(horizontal: 8.0),
+          padding: padding ?? (group ? EdgeInsets.zero : const EdgeInsets.symmetric(horizontal: 8.0)),
           child: ListTile(
             onTap: onTap,
             visualDensity: VisualDensity.compact,
