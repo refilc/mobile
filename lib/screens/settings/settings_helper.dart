@@ -408,7 +408,7 @@ class _BellDelaySettingState extends State<BellDelaySetting> with SingleTickerPr
               onTimerDurationChanged: (Duration d) {
                 HapticFeedback.selectionClick();
 
-                currentDelay = currentDelay.inSeconds < 0 ? -d : d;
+                currentDelay = _tabController.index == 0 ? -d : d;
               },
             ),
           ),
