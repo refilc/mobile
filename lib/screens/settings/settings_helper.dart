@@ -5,6 +5,7 @@ import 'package:filcnaplo/icons/filc_icons.dart';
 import 'package:filcnaplo/models/settings.dart';
 import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_kreta_api/models/grade.dart';
+import 'package:filcnaplo_kreta_api/providers/timetable_provider.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_sheet_menu/bottom_sheet_menu.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_sheet_menu/bottom_sheet_menu_item.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_sheet_menu/rounded_bottom_sheet.dart';
@@ -403,6 +404,7 @@ class _BellDelaySettingState extends State<BellDelaySetting> with SingleTickerPr
               brightness: Theme.of(context).brightness,
             ),
             child: CupertinoTimerPicker(
+              key: UniqueKey(),
               mode: CupertinoTimerPickerMode.ms,
               initialTimerDuration: currentDelay.abs(),
               onTimerDurationChanged: (Duration d) {
@@ -413,16 +415,46 @@ class _BellDelaySettingState extends State<BellDelaySetting> with SingleTickerPr
             ),
           ),
         ),
-        //const Text("A csengő 4 perccel van késleltetve", style: TextStyle(fontSize: 26.0, fontWeight: FontWeight.w500)),
+        Text(SettingsLocalization("sync_help").i18n,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w500, color: AppColors.of(context).text.withOpacity(.75))),
         Padding(
           padding: const EdgeInsets.only(bottom: 12.0, top: 6.0),
-          child: MaterialActionButton(
-            child: Text(SettingsLocalization("done").i18n),
-            onPressed: () {
-              //Provider.of<SettingsProvider>(context, listen: false).update(context, rounding: (r * 10).toInt());
-              Provider.of<SettingsProvider>(context, listen: false).update(context, bellDelay: currentDelay.inSeconds);
-              Navigator.of(context).maybePop();
-            },
+          child: Column(
+            children: [
+              MaterialActionButton(
+                backgroundColor: AppColors.of(context).filc,
+                child: Text(SettingsLocalization("sync").i18n),
+                onPressed: () {
+                  final lessonProvider = Provider.of<TimetableProvider>(context, listen: false);
+                  lessonProvider.restore();
+
+                  Duration? closest;
+                  DateTime now = DateTime.now();
+                  for (var lesson in lessonProvider.lessons) {
+                    Duration sdiff = lesson.start.difference(now);
+                    Duration ediff = lesson.end.difference(now);
+
+                    if (closest == null || sdiff.abs() < closest.abs()) closest = sdiff;
+                    if (ediff.abs() < closest.abs()) closest = ediff;
+                  }
+                  if (closest != null) {
+                    currentDelay = closest;
+                    Provider.of<SettingsProvider>(context, listen: false).update(context, bellDelay: currentDelay.inSeconds);
+                    _tabController.index = currentDelay.inSeconds > 0 ? 1 : 0;
+                    setState(() {});
+                  }
+                },
+              ),
+              MaterialActionButton(
+                child: Text(SettingsLocalization("done").i18n),
+                onPressed: () {
+                  //Provider.of<SettingsProvider>(context, listen: false).update(context, rounding: (r * 10).toInt());
+                  Provider.of<SettingsProvider>(context, listen: false).update(context, bellDelay: currentDelay.inSeconds);
+                  Navigator.of(context).maybePop();
+                },
+              ),
+            ],
           ),
         ),
       ],

@@ -49,6 +49,8 @@ extension SettingsLocalization on String {
           "bell_delay": "Bell Delay",
           "delay": "Delay",
           "hurry": "Hurry",
+          "sync": "Synchronize",
+          "sync_help": "Press the Synchronize button when the bell rings.",
         },
         "hu_hu": {
           "personal_details": "Személyes információk",
@@ -97,6 +99,8 @@ extension SettingsLocalization on String {
           "bell_delay": "Csengő eltolódása",
           "delay": "Késleltetés",
           "hurry": "Siettetés",
+          "sync": "Szinkronizálás",
+          "sync_help": "Csengetéskor nyomd meg a Szinkrinizálás gombot.",
         },
         "de_de": {
           "personal_details": "Persönliche Angaben",
@@ -144,6 +148,8 @@ extension SettingsLocalization on String {
           "bell_delay": "Klingelverzögerung",
           "delay": "Verzögern",
           "hurry": "Eile",
+          "sync": "Synchronisieren",
+          "sync_help": "Drücken Sie die Sync-Taste, wenn die Glocke läutet.",
         },
       };
 
