@@ -782,16 +782,17 @@ Widget _itemBuilder(BuildContext context, Animation<double> animation, Widget it
                 child: child,
                 decoration: BoxDecoration(
                   boxShadow: [
-                    BoxShadow(
-                      offset: const Offset(0, 21),
-                      blurRadius: 23.0,
-                      color: AppColors.of(context).shadow.withOpacity(
-                            CurvedAnimation(
-                              parent: CurvedAnimation(parent: animation, curve: Curves.easeInOutCubic),
-                              curve: const Interval(2 / 3, 1.0),
-                            ).value,
-                          ),
-                    ),
+                    if (Theme.of(context).brightness == Brightness.light)
+                      BoxShadow(
+                        offset: const Offset(0, 21),
+                        blurRadius: 23.0,
+                        color: AppColors.of(context).shadow.withOpacity(
+                              CurvedAnimation(
+                                parent: CurvedAnimation(parent: animation, curve: Curves.easeInOutCubic),
+                                curve: const Interval(2 / 3, 1.0),
+                              ).value,
+                            ),
+                      ),
                   ],
                 ),
               ),
