@@ -439,6 +439,7 @@ class _BellDelaySettingState extends State<BellDelaySetting> with SingleTickerPr
                     if (ediff.abs() < closest.abs()) closest = ediff;
                   }
                   if (closest != null) {
+                    if (closest.inHours >= 1) return;
                     currentDelay = closest;
                     Provider.of<SettingsProvider>(context, listen: false).update(context, bellDelay: currentDelay.inSeconds);
                     _tabController.index = currentDelay.inSeconds > 0 ? 1 : 0;
