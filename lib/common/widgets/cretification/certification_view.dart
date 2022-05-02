@@ -1,8 +1,8 @@
 import 'package:filcnaplo_kreta_api/models/grade.dart';
 import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/certification_card.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/certification_tile.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/hero_scrollview.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/cretification/certification_card.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/cretification/certification_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/hero_scrollview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';

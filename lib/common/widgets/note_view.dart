@@ -1,4 +1,3 @@
-import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo/utils/color.dart';
 import 'package:filcnaplo_kreta_api/models/note.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
@@ -49,19 +48,21 @@ class NoteView extends StatelessWidget {
           ),
 
           // Details
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: SelectableLinkify(
-              text: note.content.escapeHtml(),
-              options: const LinkifyOptions(looseUrl: true, removeWww: true),
-              onOpen: (link) {
-                launch(link.url,
-                    customTabsOption: CustomTabsOption(
-                      toolbarColor: AppColors.of(context).background,
-                      showPageTitle: true,
-                    ));
-              },
-              style: const TextStyle(fontWeight: FontWeight.w400),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: SelectableLinkify(
+                text: note.content.escapeHtml(),
+                options: const LinkifyOptions(looseUrl: true, removeWww: true),
+                onOpen: (link) {
+                  launch(link.url,
+                      customTabsOption: CustomTabsOption(
+                        toolbarColor: Theme.of(context).scaffoldBackgroundColor,
+                        showPageTitle: true,
+                      ));
+                },
+                style: const TextStyle(fontWeight: FontWeight.w400),
+              ),
             ),
           ),
         ],

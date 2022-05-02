@@ -5,12 +5,16 @@ import 'package:filcnaplo/icons/filc_icons.dart';
 import 'package:filcnaplo/models/settings.dart';
 import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_kreta_api/models/grade.dart';
+import 'package:filcnaplo_kreta_api/providers/timetable_provider.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_sheet_menu/bottom_sheet_menu.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_sheet_menu/bottom_sheet_menu_item.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_sheet_menu/rounded_bottom_sheet.dart';
+import 'package:filcnaplo_mobile_ui/common/filter_bar.dart';
 import 'package:filcnaplo_mobile_ui/common/material_action_button.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/grade_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/grade/grade_tile.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:i18n_extension/i18n_widget.dart';
 import 'package:provider/provider.dart';
@@ -265,6 +269,13 @@ class SettingsHelper {
       }),
     );
   }
+
+  static void bellDelay(BuildContext context) {
+    showRoundedModalBottomSheet(
+      context,
+      child: const BellDelaySetting(),
+    );
+  }
 }
 
 // Rounding modal
@@ -345,6 +356,110 @@ class _RoundingSettingState extends State<RoundingSetting> {
         ),
       ),
     ]);
+  }
+}
+
+// Bell Delay Modal
+
+class BellDelaySetting extends StatefulWidget {
+  const BellDelaySetting({Key? key}) : super(key: key);
+
+  @override
+  State<BellDelaySetting> createState() => _BellDelaySettingState();
+}
+
+class _BellDelaySettingState extends State<BellDelaySetting> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  late Duration currentDelay;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this, initialIndex: Provider.of<SettingsProvider>(context, listen: false).bellDelay > 0 ? 1 : 0);
+    currentDelay = Duration(seconds: Provider.of<SettingsProvider>(context, listen: false).bellDelay);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        FilterBar(
+          scrollable: false,
+          items: [
+            Tab(text: SettingsLocalization("delay").i18n),
+            Tab(text: SettingsLocalization("hurry").i18n),
+          ],
+          controller: _tabController,
+          onTap: (i) async {
+            // swap current page with target page
+            setState(() {
+              currentDelay = i == 0 ? -currentDelay.abs() : currentDelay.abs();
+            });
+          },
+        ),
+        SizedBox(
+          height: 200,
+          child: CupertinoTheme(
+            data: CupertinoThemeData(
+              brightness: Theme.of(context).brightness,
+            ),
+            child: CupertinoTimerPicker(
+              key: UniqueKey(),
+              mode: CupertinoTimerPickerMode.ms,
+              initialTimerDuration: currentDelay.abs(),
+              onTimerDurationChanged: (Duration d) {
+                HapticFeedback.selectionClick();
+
+                currentDelay = _tabController.index == 0 ? -d : d;
+              },
+            ),
+          ),
+        ),
+        Text(SettingsLocalization("sync_help").i18n,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w500, color: AppColors.of(context).text.withOpacity(.75))),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 12.0, top: 6.0),
+          child: Column(
+            children: [
+              MaterialActionButton(
+                backgroundColor: AppColors.of(context).filc,
+                child: Text(SettingsLocalization("sync").i18n),
+                onPressed: () {
+                  final lessonProvider = Provider.of<TimetableProvider>(context, listen: false);
+                  lessonProvider.restore();
+
+                  Duration? closest;
+                  DateTime now = DateTime.now();
+                  for (var lesson in lessonProvider.lessons) {
+                    Duration sdiff = lesson.start.difference(now);
+                    Duration ediff = lesson.end.difference(now);
+
+                    if (closest == null || sdiff.abs() < closest.abs()) closest = sdiff;
+                    if (ediff.abs() < closest.abs()) closest = ediff;
+                  }
+                  if (closest != null) {
+                    if (closest.inHours.abs() >= 1) return;
+                    currentDelay = closest;
+                    Provider.of<SettingsProvider>(context, listen: false).update(context, bellDelay: currentDelay.inSeconds);
+                    _tabController.index = currentDelay.inSeconds > 0 ? 1 : 0;
+                    setState(() {});
+                  }
+                },
+              ),
+              MaterialActionButton(
+                child: Text(SettingsLocalization("done").i18n),
+                onPressed: () {
+                  //Provider.of<SettingsProvider>(context, listen: false).update(context, rounding: (r * 10).toInt());
+                  Provider.of<SettingsProvider>(context, listen: false).update(context, bellDelay: currentDelay.inSeconds);
+                  Navigator.of(context).maybePop();
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }
 

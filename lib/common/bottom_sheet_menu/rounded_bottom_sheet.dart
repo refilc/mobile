@@ -14,8 +14,12 @@ class RoundedBottomSheet extends StatelessWidget {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 500),
       decoration: BoxDecoration(
-          color: Theme.of(context).backgroundColor,
-          borderRadius: BorderRadius.only(topLeft: Radius.circular(borderRadius), topRight: Radius.circular(borderRadius))),
+        color: Theme.of(context).backgroundColor,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(borderRadius),
+          topRight: Radius.circular(borderRadius),
+        ),
+      ),
       child: SafeArea(
         child: Column(
           mainAxisSize: shrink ? MainAxisSize.min : MainAxisSize.max,
@@ -31,6 +35,7 @@ class RoundedBottomSheet extends StatelessWidget {
                 ),
               ),
             if (child != null) child!,
+            SizedBox(height: MediaQuery.of(context).padding.bottom),
           ],
         ),
       ),

@@ -10,7 +10,7 @@ extension Localization on String {
           "absence": "hiányzás",
         },
         "de_de": {
-          "absence": "Abwesenheiten",
+          "absence": "Fehlen",
         }
       };
 

@@ -1,8 +1,8 @@
 import 'package:filcnaplo/helpers/average_helper.dart';
 import 'package:i18n_extension/i18n_widget.dart';
 import 'package:filcnaplo_kreta_api/models/grade.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/certification_view.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/grade_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/cretification/certification_view.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/grade/grade_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'certification_card.i18n.dart';

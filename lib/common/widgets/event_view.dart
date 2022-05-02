@@ -1,4 +1,3 @@
-import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_kreta_api/models/event.dart';
 import 'package:filcnaplo/utils/format.dart';
 import 'package:filcnaplo_mobile_ui/common/sliding_bottom_sheet.dart';
@@ -44,7 +43,7 @@ class EventView extends StatelessWidget {
               onOpen: (link) {
                 launch(link.url,
                     customTabsOption: CustomTabsOption(
-                      toolbarColor: AppColors.of(context).background,
+                      toolbarColor: Theme.of(context).scaffoldBackgroundColor,
                       showPageTitle: true,
                     ));
               },

@@ -9,6 +9,7 @@ import 'package:filcnaplo_mobile_ui/screens/navigation/navigation_route_handler.
 import 'package:filcnaplo/icons/filc_icons.dart';
 import 'package:filcnaplo_mobile_ui/screens/navigation/status_bar.dart';
 import 'package:filcnaplo_mobile_ui/screens/news/news_view.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -31,6 +32,10 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
   List<String> initializers = [];
   final _navigatorState = GlobalKey<NavigatorState>();
 
+  NavigatorState? get navigator => _navigatorState.currentState;
+
+  void customRoute(Route route) => navigator?.pushReplacement(route);
+
   bool init(String id) {
     if (initializers.contains(id)) return false;
 
@@ -47,7 +52,7 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
     selected.index = settings.startPage.index; // set page index to start page
 
     // add brightness observer
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
 
     // set client User-Agent
     Provider.of<KretaClient>(context, listen: false).userAgent = settings.config.userAgent;
@@ -68,16 +73,14 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
   @override
   void dispose() {
     super.dispose();
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
   }
 
   @override
   void didChangePlatformBrightness() {
     if (settings.theme == ThemeMode.system) {
-      Brightness? brightness = WidgetsBinding.instance?.window.platformBrightness;
-      if (brightness != null) {
-        Provider.of<ThemeModeObserver>(context, listen: false).changeTheme(brightness == Brightness.light ? ThemeMode.light : ThemeMode.dark);
-      }
+      Brightness? brightness = WidgetsBinding.instance.window.platformBrightness;
+      Provider.of<ThemeModeObserver>(context, listen: false).changeTheme(brightness == Brightness.light ? ThemeMode.light : ThemeMode.dark);
     }
     super.didChangePlatformBrightness();
   }
@@ -95,7 +98,7 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
     newsProvider = Provider.of<NewsProvider>(context);
 
     // Show news
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (newsProvider.show) {
         newsProvider.lock();
         NewsView.show(newsProvider.news[newsProvider.state], context: context).then((value) => newsProvider.release());
@@ -109,51 +112,83 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
 
     return WillPopScope(
       onWillPop: () async {
-        if (_navigatorState.currentState?.canPop() ?? false) _navigatorState.currentState?.pop();
+        if (_navigatorState.currentState?.canPop() ?? false) {
+          _navigatorState.currentState?.pop();
+          if (!kDebugMode) {
+            return true;
+          }
+          return false;
+        }
+
+        if (selected.index != 0) {
+          setState(() => selected.index = 0);
+          _navigatorState.currentState?.pushReplacementNamed(selected.name);
+        }
+
         return false;
       },
       child: Scaffold(
         body: Column(
           children: [
             Expanded(
-              child: Navigator(
-                key: _navigatorState,
-                initialRoute: selected.name,
-                onGenerateRoute: (settings) => navigationRouteHandler(settings),
+              child: Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  Navigator(
+                    key: _navigatorState,
+                    initialRoute: selected.name,
+                    onGenerateRoute: (settings) => navigationRouteHandler(settings),
+                  ),
+                  Container(
+                    height: 8.0,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Colors.black.withOpacity(Theme.of(context).brightness == Brightness.light ? .03 : .08), Colors.transparent],
+                        stops: const [0.0, 1.0],
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
 
             // Status bar
-            const StatusBar(),
+            Material(
+              color: Theme.of(context).backgroundColor,
+              child: const StatusBar(),
+            ),
 
             // Bottom Navigaton Bar
             SafeArea(
               top: false,
-              child: BottomNavigationBar(
-                items: [
-                  BottomNavigationBarItem(
+              child: NavigationBar(
+                destinations: [
+                  NavigationDestination(
                     label: "home".i18n,
                     icon: const Icon(FilcIcons.home),
                   ),
-                  BottomNavigationBarItem(
+                  NavigationDestination(
                     label: "grades".i18n,
                     icon: const Icon(FeatherIcons.bookmark),
                   ),
-                  BottomNavigationBarItem(
+                  NavigationDestination(
                     label: "timetable".i18n,
                     icon: const Icon(FeatherIcons.calendar),
                   ),
-                  BottomNavigationBarItem(
+                  NavigationDestination(
                     label: "messages".i18n,
                     icon: const Icon(FeatherIcons.messageSquare),
                   ),
-                  BottomNavigationBarItem(
+                  NavigationDestination(
                     label: "absences".i18n,
                     icon: const Icon(FeatherIcons.clock),
                   ),
                 ],
-                currentIndex: selected.index,
-                onTap: (index) {
+                selectedIndex: selected.index,
+                onDestinationSelected: (index) {
                   // Vibrate, then set the active screen
                   if (selected.index != index) {
                     switch (settings.vibrate) {
@@ -172,12 +207,6 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
                     _navigatorState.currentState?.pushReplacementNamed(selected.name);
                   }
                 },
-                elevation: 0,
-                showSelectedLabels: false,
-                showUnselectedLabels: false,
-                selectedItemColor: Theme.of(context).colorScheme.secondary,
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                type: BottomNavigationBarType.fixed,
               ),
             ),
           ],

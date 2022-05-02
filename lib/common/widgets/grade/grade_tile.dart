@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:filcnaplo/models/settings.dart';
 import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_kreta_api/models/grade.dart';
@@ -8,16 +5,16 @@ import 'package:filcnaplo/helpers/subject_icon.dart';
 import 'package:filcnaplo/utils/format.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/calculator/grade_calculator_provider.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/subject_grades_container.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:provider/provider.dart';
 
 class GradeTile extends StatelessWidget {
-  const GradeTile(this.grade, {Key? key, this.onTap}) : super(key: key);
+  const GradeTile(this.grade, {Key? key, this.onTap, this.padding}) : super(key: key);
 
   final Grade grade;
   final void Function()? onTap;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -61,60 +58,58 @@ class GradeTile extends StatelessWidget {
     if (subtitle != "") leadingPadding = const EdgeInsets.only(top: 2.0);
 
     return Material(
-      color: Theme.of(context).backgroundColor,
-      borderRadius: BorderRadius.circular(8.0),
-      child: ListTile(
-        visualDensity: VisualDensity.compact,
-        contentPadding: isSubjectView
-            ? grade.type != GradeType.ghost
-                ? const EdgeInsets.symmetric(horizontal: 12.0)
-                : const EdgeInsets.only(left: 12.0, right: 4.0)
-            : const EdgeInsets.only(left: 8.0, right: 12.0),
-        onTap: onTap,
-        onLongPress: () {
-          if (kDebugMode) {
-            log(jsonEncode(grade.json));
-          }
-        },
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-        leading: isSubjectView
-            ? GradeValueWidget(grade.value)
-            : SizedBox(
-                width: 44,
-                height: 44,
-                child: Center(
-                  child: Padding(
-                    padding: leadingPadding,
-                    child: Icon(SubjectIcon.lookup(subject: grade.subject), size: 28.0, color: AppColors.of(context).text.withOpacity(.75)),
+      type: MaterialType.transparency,
+      child: Padding(
+        padding: padding ?? const EdgeInsets.symmetric(horizontal: 8.0),
+        child: ListTile(
+          visualDensity: VisualDensity.compact,
+          contentPadding: isSubjectView
+              ? grade.type != GradeType.ghost
+                  ? const EdgeInsets.symmetric(horizontal: 12.0)
+                  : const EdgeInsets.only(left: 12.0, right: 4.0)
+              : const EdgeInsets.only(left: 8.0, right: 12.0),
+          onTap: onTap,
+          // onLongPress: kDebugMode ? () => log(jsonEncode(grade.json)) : null,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.0)),
+          leading: isSubjectView
+              ? GradeValueWidget(grade.value)
+              : SizedBox(
+                  width: 44,
+                  height: 44,
+                  child: Center(
+                    child: Padding(
+                      padding: leadingPadding,
+                      child: Icon(SubjectIcon.lookup(subject: grade.subject), size: 28.0, color: AppColors.of(context).text.withOpacity(.75)),
+                    ),
                   ),
                 ),
-              ),
-        title: Text(
-          title,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          style: const TextStyle(fontWeight: FontWeight.w600),
+          title: Text(
+            title,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontWeight: FontWeight.w600),
+          ),
+          subtitle: subtitle != ""
+              ? Text(
+                  subtitle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontWeight: FontWeight.w500),
+                )
+              : null,
+          trailing: isSubjectView
+              ? grade.type != GradeType.ghost
+                  ? Text(grade.date.format(context), style: const TextStyle(fontWeight: FontWeight.w500))
+                  : IconButton(
+                      splashRadius: 24.0,
+                      icon: Icon(FeatherIcons.trash2, color: AppColors.of(context).red),
+                      onPressed: () {
+                        calculatorProvider.removeGrade(grade);
+                      },
+                    )
+              : GradeValueWidget(grade.value),
+          minLeadingWidth: isSubjectView ? 32.0 : 0,
         ),
-        subtitle: subtitle != ""
-            ? Text(
-                subtitle,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontWeight: FontWeight.w500),
-              )
-            : null,
-        trailing: isSubjectView
-            ? grade.type != GradeType.ghost
-                ? Text(grade.date.format(context), style: const TextStyle(fontWeight: FontWeight.w500))
-                : IconButton(
-                    splashRadius: 24.0,
-                    icon: Icon(FeatherIcons.trash2, color: AppColors.of(context).red),
-                    onPressed: () {
-                      calculatorProvider.removeGrade(grade);
-                    },
-                  )
-            : GradeValueWidget(grade.value),
-        minLeadingWidth: isSubjectView ? 32.0 : 0,
       ),
     );
   }
@@ -131,6 +126,7 @@ class GradeValueWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isSubjectView = SubjectGradesContainer.of(context) != null;
+    SettingsProvider settings = Provider.of<SettingsProvider>(context, listen: false);
 
     Color color = gradeColor(context: context, value: value.value);
     Widget valueText;
@@ -156,16 +152,24 @@ class GradeValueWidget extends StatelessWidget {
       );
     } else if (value.value != 0) {
       valueText = Stack(alignment: Alignment.topRight, children: [
-        Text(
-          value.value.toString(),
-          textAlign: TextAlign.center,
-          style: TextStyle(fontWeight: value.weight == 50 ? FontWeight.w600 : FontWeight.bold, fontSize: size, color: color, shadows: [
-            if (value.weight == 200)
-              Shadow(
-                color: color.withOpacity(.4),
-                offset: const Offset(-4, -3),
-              )
-          ]),
+        Transform.translate(
+          offset: (value.weight >= 200) ? const Offset(2, 1.5) : Offset.zero,
+          child: Text(
+            !settings.goodStudent ? value.value.toString() : "5",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: value.weight == 50 ? FontWeight.w600 : FontWeight.bold,
+              fontSize: size,
+              color: !settings.goodStudent ? color : gradeColor(context: context, value: 5),
+              shadows: [
+                if (value.weight >= 200)
+                  Shadow(
+                    color: (!settings.goodStudent ? color : gradeColor(context: context, value: 5)).withOpacity(.4),
+                    offset: const Offset(-4, -3),
+                  )
+              ],
+            ),
+          ),
         ),
         if (complemented)
           Transform.translate(

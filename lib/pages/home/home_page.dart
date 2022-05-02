@@ -2,6 +2,9 @@
 import 'dart:math';
 
 import 'package:filcnaplo/theme.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/absence/absence_viewable.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/exam/exam_viewable.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/grade/grade_viewable.dart';
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
@@ -30,20 +33,14 @@ import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
 import 'package:filcnaplo_mobile_ui/common/panel/panel_button.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_button.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/absence_group_tile.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/absence_tile.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/absence_view.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/certification_card.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/changed_lesson_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/absence_group/absence_group_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/cretification/certification_card.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/timetable/changed_lesson_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/event_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/event_view.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/exam_tile.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/exam_view.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/grade_tile.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/grade_view.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/homework_tile.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/homework_view.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/message_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/homework/homework_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/homework/homework_view.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/message/message_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/note_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/note_view.dart';
 import 'package:filcnaplo_mobile_ui/pages/home/live_card/live_card.dart';
@@ -155,7 +152,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     eventProvider = Provider.of<EventProvider>(context);
 
     List<String> nameParts = user.name?.split(" ") ?? ["?"];
-    firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
+    if (!settings.presentationMode) {
+      firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
+    } else {
+      firstName = "Béla";
+    }
 
     return Scaffold(
       body: Stack(
@@ -201,7 +202,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   child: ProfileImage(
                                     heroTag: "profile",
                                     name: firstName,
-                                    backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
+                                    backgroundColor: !settings.presentationMode
+                                        ? ColorUtils.stringToColor(user.name ?? "?")
+                                        : Theme.of(context).colorScheme.secondary,
                                     badge: updateProvider.available,
                                     role: user.role,
                                   ),
@@ -360,7 +363,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             items.add(DateWidget(
               key: grade.id,
               date: grade.date,
-              widget: GradeTile(grade, onTap: () => GradeView.show(grade, context: context)),
+              widget: GradeViewable(grade),
             ));
           }
         }
@@ -406,12 +409,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       case HomeFilter.absences:
         absenceProvider.absences.where((a) => !absencesNoExcused || a.state != Justification.excused).forEach((absence) {
           items.add(DateWidget(
-              key: absence.id,
-              date: absence.date,
-              widget: AbsenceTile(
-                absence,
-                onTap: () => AbsenceView.show(absence, context: context),
-              )));
+            key: absence.id,
+            date: absence.date,
+            widget: AbsenceViewable(absence),
+          ));
         });
         break;
 
@@ -433,12 +434,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       case HomeFilter.exams:
         for (var exam in examProvider.exams) {
           items.add(DateWidget(
-              key: exam.id,
-              date: exam.writeDate.year != 0 ? exam.writeDate : exam.date,
-              widget: ExamTile(
-                exam,
-                onTap: () => ExamView.show(exam, context: context),
-              )));
+            key: exam.id,
+            date: exam.writeDate.year != 0 ? exam.writeDate : exam.date,
+            widget: ExamViewable(exam),
+          ));
         }
         break;
 
@@ -619,6 +618,7 @@ List<Widget> sortDateWidgets(
   required List<DateWidget> dateWidgets,
   bool showTitle = true,
   bool showDivider = false,
+  bool hasShadow = false,
   EdgeInsetsGeometry? padding,
 }) {
   dateWidgets.sort((a, b) => -a.date.compareTo(b.date));
@@ -686,11 +686,11 @@ List<Widget> sortDateWidgets(
 
       // Group Absence Tiles
       List<DateWidget> absenceTileWidgets = elements.where((element) {
-        return element.widget.runtimeType == AbsenceTile && (element.widget as AbsenceTile).absence.delay == 0;
+        return element.widget is AbsenceViewable && (element.widget as AbsenceViewable).absence.delay == 0;
       }).toList();
-      List<AbsenceTile> absenceTiles = absenceTileWidgets.map((e) => e.widget as AbsenceTile).toList();
+      List<AbsenceViewable> absenceTiles = absenceTileWidgets.map((e) => e.widget as AbsenceViewable).toList();
       if (absenceTiles.length > 1) {
-        elements.removeWhere((element) => element.widget.runtimeType == AbsenceTile && (element.widget as AbsenceTile).absence.delay == 0);
+        elements.removeWhere((element) => element.widget.runtimeType == AbsenceViewable && (element.widget as AbsenceViewable).absence.delay == 0);
         if (elements.isEmpty) {
           _showTitle = false;
         }
@@ -711,20 +711,18 @@ List<Widget> sortDateWidgets(
       final date = (elements + absenceTileWidgets).first.date;
       items.add(DateWidget(
         date: date,
-        widget: Padding(
+        widget: Panel(
           key: ValueKey(date),
-          padding: const EdgeInsets.only(bottom: 12.0),
-          child: Panel(
-            padding: padding,
-            title: _showTitle ? Text(date.format(context, forceToday: true)) : null,
-            hasShadow: false,
-            child: ImplicitlyAnimatedList<DateWidget>(
-                areItemsTheSame: (a, b) => a.key == b.key,
-                spawnIsolate: false,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, animation, item, index) => _itemBuilder(context, animation, item.widget, index),
-                items: elements),
+          padding: padding ?? const EdgeInsets.symmetric(vertical: 6.0),
+          title: _showTitle ? Text(date.format(context, forceToday: true)) : null,
+          hasShadow: hasShadow,
+          child: ImplicitlyAnimatedList<DateWidget>(
+            areItemsTheSame: (a, b) => a.key == b.key,
+            spawnIsolate: false,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, animation, item, index) => _itemBuilder(context, animation, item.widget, index),
+            items: elements,
           ),
         ),
       ));
@@ -778,17 +776,25 @@ Widget _itemBuilder(BuildContext context, Animation<double> animation, Widget it
           animation: animation,
           child: wrappedItem,
           builder: (context, child) {
-            return DecoratedBox(
-              child: child,
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                      offset: const Offset(0, 21),
-                      blurRadius: 23.0,
-                      color: AppColors.of(context).shadow.withOpacity(
-                          CurvedAnimation(parent: CurvedAnimation(parent: animation, curve: Curves.easeInOutCubic), curve: const Interval(2 / 3, 1.0))
-                              .value))
-                ],
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 12.0),
+              child: DecoratedBox(
+                child: child,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    if (Theme.of(context).brightness == Brightness.light)
+                      BoxShadow(
+                        offset: const Offset(0, 21),
+                        blurRadius: 23.0,
+                        color: AppColors.of(context).shadow.withOpacity(
+                              CurvedAnimation(
+                                parent: CurvedAnimation(parent: animation, curve: Curves.easeInOutCubic),
+                                curve: const Interval(2 / 3, 1.0),
+                              ).value,
+                            ),
+                      ),
+                  ],
+                ),
               ),
             );
           })

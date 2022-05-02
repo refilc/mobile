@@ -19,7 +19,7 @@ class NewContentIndicator extends StatelessWidget {
         width: size / 3.0,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          border: Border.all(color: AppColors.of(context).background, width: size / 20.0),
+          border: Border.all(color: Theme.of(context).scaffoldBackgroundColor, width: size / 20.0),
         ),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),

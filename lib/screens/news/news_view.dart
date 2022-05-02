@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:filcnaplo/models/settings.dart';
-import 'package:filcnaplo/theme.dart';
 import 'package:filcnaplo_mobile_ui/common/dialog_button.dart';
 import 'package:flutter/material.dart';
 import 'package:filcnaplo/models/news.dart';
@@ -45,7 +44,7 @@ class NewsView extends StatelessWidget {
                       onOpen: (link) {
                         launch(
                           link.url,
-                          customTabsOption: CustomTabsOption(showPageTitle: true, toolbarColor: AppColors.of(context).background),
+                          customTabsOption: CustomTabsOption(showPageTitle: true, toolbarColor: Theme.of(context).scaffoldBackgroundColor),
                         );
                       },
                       style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0),
@@ -63,7 +62,7 @@ class NewsView extends StatelessWidget {
                       label: news.openLabel != "" ? news.openLabel : "open".i18n.toUpperCase(),
                       onTap: () => launch(
                         news.link,
-                        customTabsOption: CustomTabsOption(showPageTitle: true, toolbarColor: AppColors.of(context).background),
+                        customTabsOption: CustomTabsOption(showPageTitle: true, toolbarColor: Theme.of(context).scaffoldBackgroundColor),
                       ),
                     ),
                   DialogButton(

@@ -9,7 +9,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:i18n_extension/i18n_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/certification_tile.i18n.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/cretification/certification_tile.i18n.dart';
 
 class GradeGraph extends StatefulWidget {
   const GradeGraph(this.data, {Key? key, this.dayThreshold = 7, this.classAvg}) : super(key: key);
@@ -114,7 +114,7 @@ class _GradeGraphState extends State<GradeGraph> {
               show: true,
               alignment: Alignment.topLeft,
               style: TextStyle(
-                backgroundColor: AppColors.of(context).highlight,
+                backgroundColor: Theme.of(context).backgroundColor,
                 color: AppColors.of(context).text,
                 fontSize: 16.0,
                 fontWeight: FontWeight.w600,
@@ -232,7 +232,7 @@ class _GradeGraphState extends State<GradeGraph> {
                     borderData: FlBorderData(
                       show: false,
                       border: Border.all(
-                        color: AppColors.of(context).background,
+                        color: Theme.of(context).scaffoldBackgroundColor,
                         width: 4,
                       ),
                     ),

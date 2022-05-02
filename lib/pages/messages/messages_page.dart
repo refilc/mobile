@@ -9,7 +9,7 @@ import 'package:filcnaplo_mobile_ui/common/empty.dart';
 import 'package:filcnaplo_mobile_ui/common/filter_bar.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_button.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/message_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/message/message_tile.dart';
 import 'package:filcnaplo_mobile_ui/pages/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -146,7 +146,7 @@ class _MessagesPageState extends State<MessagesPage> with TickerProviderStateMix
   }
 
   Widget filterViewBuilder(context, int activeData) {
-    List<Widget> filterWidgets = sortDateWidgets(context, dateWidgets: getFilterWidgets(MessageType.values[activeData]));
+    List<Widget> filterWidgets = sortDateWidgets(context, dateWidgets: getFilterWidgets(MessageType.values[activeData]), hasShadow: true);
 
     return Padding(
       padding: const EdgeInsets.only(top: 12.0),
@@ -164,7 +164,7 @@ class _MessagesPageState extends State<MessagesPage> with TickerProviderStateMix
           physics: const BouncingScrollPhysics(),
           itemBuilder: (context, index) => filterWidgets.isNotEmpty
               ? Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 6.0),
                   child: filterWidgets[index],
                 )
               : Empty(subtitle: "empty".i18n),

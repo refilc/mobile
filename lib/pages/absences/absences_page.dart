@@ -1,10 +1,11 @@
 import 'dart:math';
 
+import 'package:animations/animations.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
 import 'package:filcnaplo_kreta_api/models/absence.dart';
+import 'package:filcnaplo_kreta_api/models/lesson.dart';
 import 'package:filcnaplo_kreta_api/models/subject.dart';
-import 'package:filcnaplo_kreta_api/models/week.dart';
 import 'package:filcnaplo_kreta_api/providers/absence_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/note_provider.dart';
 import 'package:filcnaplo/api/providers/user_provider.dart';
@@ -16,9 +17,8 @@ import 'package:filcnaplo_mobile_ui/common/filter_bar.dart';
 import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_button.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/absence_subject_tile.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/absence_tile.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/absence_view.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/absence/absence_subject_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/absence/absence_viewable.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/statistics_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/miss_tile.dart';
 import 'package:filcnaplo_mobile_ui/pages/absences/absence_subject_view.dart';
@@ -55,6 +55,7 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
   late String firstName;
   late TabController _tabController;
   late List<SubjectAbsence> absences = [];
+  final Map<Subject, Lesson> _lessonCount = {};
 
   @override
   void initState() {
@@ -62,7 +63,26 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
 
     _tabController = TabController(length: 3, vsync: this);
     timetableProvider = Provider.of<TimetableProvider>(context, listen: false);
-    if (timetableProvider.lastFetched != Week.fromId(3)) timetableProvider.fetch(week: Week.fromId(3));
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await timetableProvider.restore();
+
+      for (final lesson in timetableProvider.lessons) {
+        if (!lesson.isEmpty && lesson.subject.id != '' && lesson.lessonYearIndex != null) {
+          _lessonCount.update(
+            lesson.subject,
+            (value) {
+              if (lesson.lessonYearIndex! > value.lessonYearIndex!) {
+                return lesson;
+              } else {
+                return value;
+              }
+            },
+            ifAbsent: () => lesson,
+          );
+        }
+      }
+    });
   }
 
   void buildSubjectAbsences() {
@@ -80,9 +100,17 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
 
     _absences.forEach((subject, absence) {
       final absentLessonsOfSubject = absenceProvider.absences.where((e) => e.subject == subject && e.delay == 0).length;
-      final totalLessonsOfSubject = timetableProvider.lessons.where((e) => e.subject == subject).length * 35.5;
-      final absentLessonsOfSubjectPercentage = absentLessonsOfSubject / totalLessonsOfSubject * 100;
-      _absences[subject]?.percentage = absentLessonsOfSubjectPercentage.clamp(0.0, 100.0);
+      final totalLessonsOfSubject = _lessonCount[subject]?.lessonYearIndex ?? 0;
+
+      double absentLessonsOfSubjectPercentage;
+
+      if (absentLessonsOfSubject <= totalLessonsOfSubject) {
+        absentLessonsOfSubjectPercentage = absentLessonsOfSubject / totalLessonsOfSubject * 100;
+      } else {
+        absentLessonsOfSubjectPercentage = -1;
+      }
+
+      _absences[subject]?.percentage = absentLessonsOfSubjectPercentage.clamp(-1, 100.0);
     });
 
     absences = _absences.values.toList();
@@ -93,9 +121,9 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
   Widget build(BuildContext context) {
     user = Provider.of<UserProvider>(context);
     absenceProvider = Provider.of<AbsenceProvider>(context);
-    timetableProvider = Provider.of<TimetableProvider>(context);
     noteProvider = Provider.of<NoteProvider>(context);
     updateProvider = Provider.of<UpdateProvider>(context);
+    timetableProvider = Provider.of<TimetableProvider>(context);
 
     List<String> nameParts = user.name?.split(" ") ?? ["?"];
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
@@ -176,7 +204,7 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
           if (absence.delay != 0) {
             items.add(DateWidget(
               date: absence.date,
-              widget: AbsenceTile(absence, onTap: () => AbsenceView.show(absence, context: context)),
+              widget: AbsenceViewable(absence, padding: EdgeInsets.zero),
             ));
           }
         }
@@ -203,6 +231,7 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
         context,
         dateWidgets: getFilterWidgets(AbsenceFilter.values[activeData]),
         padding: EdgeInsets.zero,
+        hasShadow: true,
       );
     } else {
       filterWidgets = [
@@ -236,7 +265,23 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
                 ),
               ],
             ),
-            child: Column(children: getFilterWidgets(AbsenceFilter.values[activeData]).map((e) => e.widget).cast<Widget>().toList()),
+            child: PageTransitionSwitcher(
+              transitionBuilder: (
+                Widget child,
+                Animation<double> primaryAnimation,
+                Animation<double> secondaryAnimation,
+              ) {
+                return FadeThroughTransition(
+                  child: child,
+                  animation: primaryAnimation,
+                  secondaryAnimation: secondaryAnimation,
+                  fillColor: Theme.of(context).backgroundColor,
+                );
+              },
+              child: Column(
+                children: getFilterWidgets(AbsenceFilter.values[activeData]).map((e) => e.widget).cast<Widget>().toList(),
+              ),
+            ),
           ),
         )
       ];
@@ -253,10 +298,10 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
         child: ListView.builder(
           padding: EdgeInsets.zero,
           physics: const BouncingScrollPhysics(),
-          itemCount: max(filterWidgets.length + (activeData < 2 ? 1 : 0), 1),
+          itemCount: max(filterWidgets.length + (activeData <= 1 ? 1 : 0), 1),
           itemBuilder: (context, index) {
             if (filterWidgets.isNotEmpty) {
-              if ((index == 0 && activeData == 1) || (index == filterWidgets.length && activeData == 0)) {
+              if ((index == 0 && activeData == 1) || (index == 0 && activeData == 0)) {
                 int value1 = 0;
                 int value2 = 0;
                 String title1 = "";
@@ -320,8 +365,8 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
               }
 
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: filterWidgets[index - (activeData == 1 ? 1 : 0)],
+                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 6.0),
+                child: filterWidgets[index - (activeData <= 1 ? 1 : 0)],
               );
             } else {
               return Empty(subtitle: "empty".i18n);

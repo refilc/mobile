@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:filcnaplo/theme.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/grade_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/grade/grade_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:i18n_extension/i18n_widget.dart';
 
@@ -32,7 +32,7 @@ class StatisticsTile extends StatelessWidget {
       padding: const EdgeInsets.all(18.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.0),
-        color: AppColors.of(context).highlight,
+        color: Theme.of(context).backgroundColor,
         boxShadow: [
           BoxShadow(
             offset: const Offset(0, 21),

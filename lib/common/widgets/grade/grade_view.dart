@@ -1,13 +1,15 @@
 import 'package:filcnaplo_kreta_api/models/grade.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_card.dart';
 import 'package:filcnaplo_mobile_ui/common/detail.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/grade_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/grade/grade_tile.dart';
 import 'package:filcnaplo/utils/format.dart';
 import 'package:flutter/material.dart';
 import 'grade_view.i18n.dart';
 
 class GradeView extends StatelessWidget {
   const GradeView(this.grade, {Key? key}) : super(key: key);
+
+  static show(Grade grade, {required BuildContext context}) => showBottomCard(context: context, child: GradeView(grade));
 
   final Grade grade;
 
@@ -40,27 +42,14 @@ class GradeView extends StatelessWidget {
           ),
 
           // Grade Details
-          Detail(
-              title: "value".i18n,
-              description: "${grade.value.valueName} " + percentText()),
-          if (grade.description != "")
-            Detail(title: "description".i18n, description: grade.description),
-          if (grade.mode.description != "")
-            Detail(title: "mode".i18n, description: grade.mode.description),
-          if (grade.writeDate.year != 0)
-            Detail(
-                title: "date".i18n,
-                description: grade.writeDate.format(context)),
+          Detail(title: "value".i18n, description: "${grade.value.valueName} " + percentText()),
+          if (grade.description != "") Detail(title: "description".i18n, description: grade.description),
+          if (grade.mode.description != "") Detail(title: "mode".i18n, description: grade.mode.description),
+          if (grade.writeDate.year != 0) Detail(title: "date".i18n, description: grade.writeDate.format(context)),
         ],
       ),
     );
   }
 
-  String percentText() => grade.value.weight != 100 && grade.value.weight > 0
-      ? "${grade.value.weight}%"
-      : "";
-
-  static show(Grade grade, {required BuildContext context}) {
-    showBottomCard(context: context, child: GradeView(grade));
-  }
+  String percentText() => grade.value.weight != 100 && grade.value.weight > 0 ? "${grade.value.weight}%" : "";
 }

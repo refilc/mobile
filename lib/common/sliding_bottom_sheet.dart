@@ -1,4 +1,3 @@
-import 'package:filcnaplo/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_sheet/sliding_sheet.dart' as ss;
 
@@ -8,7 +7,7 @@ void showSlidingBottomSheet({required Widget child, required BuildContext contex
           cornerRadius: 16,
           cornerRadiusOnFullscreen: 0,
           avoidStatusBar: true,
-          color: AppColors.of(context).highlight,
+          color: Theme.of(context).backgroundColor,
           duration: const Duration(milliseconds: 400),
           snapSpec: const ss.SnapSpec(
             snap: true,
@@ -17,7 +16,7 @@ void showSlidingBottomSheet({required Widget child, required BuildContext contex
           ),
           headerBuilder: (context, state) {
             return Material(
-              color: AppColors.of(context).highlight,
+              color: Theme.of(context).backgroundColor,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -36,7 +35,7 @@ void showSlidingBottomSheet({required Widget child, required BuildContext contex
           },
           builder: (context, state) {
             return Material(
-              color: AppColors.of(context).highlight,
+              color: Theme.of(context).backgroundColor,
               child: Padding(padding: const EdgeInsets.fromLTRB(12.0, 0, 12.0, 8.0), child: child),
             );
           },

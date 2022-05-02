@@ -22,7 +22,7 @@ extension ScreensLocalization on String {
           "grades": "Noten",
           "timetable": "Zeitplan",
           "messages": "Mitteilungen",
-          "absences": "Abwesenheiten",
+          "absences": "Fehlen",
         },
       };
 

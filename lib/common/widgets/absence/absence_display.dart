@@ -12,11 +12,12 @@ class AbsenceDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 6.0),
-      decoration: BoxDecoration(
-        color: AppColors.of(context).background.withOpacity(.2),
-        borderRadius: BorderRadius.circular(12.0),
-      ),
+      padding: const EdgeInsets.only(top: 5.0),
+      // padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 6.0),
+      // decoration: BoxDecoration(
+      //   color: Theme.of(context).scaffoldBackgroundColor.withOpacity(.2),
+      //   borderRadius: BorderRadius.circular(12.0),
+      // ),
       child: Row(children: [
         if (excused > 0)
           Icon(
@@ -25,7 +26,7 @@ class AbsenceDisplay extends StatelessWidget {
             color: AppColors.of(context).green,
           ),
         if (excused > 0) const SizedBox(width: 2.0),
-        if (excused > 0) Text(excused.toString(), style: const TextStyle(fontFamily: "monospace")),
+        if (excused > 0) Text(excused.toString(), style: const TextStyle(fontFamily: "monospace", fontSize: 14.0)),
         if (excused > 0 && pending > 0) const SizedBox(width: 6.0),
         if (pending > 0)
           Icon(
@@ -34,7 +35,7 @@ class AbsenceDisplay extends StatelessWidget {
             color: AppColors.of(context).orange,
           ),
         if (pending > 0) const SizedBox(width: 3.0),
-        if (pending > 0) Text(pending.toString(), style: const TextStyle(fontFamily: "monospace")),
+        if (pending > 0) Text(pending.toString(), style: const TextStyle(fontFamily: "monospace", fontSize: 14.0)),
         if (unexcused > 0 && pending > 0) const SizedBox(width: 3.0),
         if (unexcused > 0)
           Icon(
@@ -42,7 +43,7 @@ class AbsenceDisplay extends StatelessWidget {
             size: 18.0,
             color: AppColors.of(context).red,
           ),
-        if (unexcused > 0) Text(unexcused.toString(), style: const TextStyle(fontFamily: "monospace")),
+        if (unexcused > 0) Text(unexcused.toString(), style: const TextStyle(fontFamily: "monospace", fontSize: 14.0)),
       ]),
     );
   }

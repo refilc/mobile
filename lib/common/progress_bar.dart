@@ -50,6 +50,7 @@ class ProgressPainter extends CustomPainter {
 
     if (width <= 0) return;
 
+    // Slider
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         Rect.fromLTWH(0, 0, width, height),

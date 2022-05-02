@@ -33,7 +33,7 @@ class ErrorScreen extends StatelessWidget {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(14.0),
-                    color: AppColors.of(context).highlight,
+                    color: Theme.of(context).backgroundColor,
                   ),
                   child: CupertinoScrollbar(
                     child: SingleChildScrollView(

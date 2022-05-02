@@ -9,10 +9,10 @@ import 'package:filcnaplo_kreta_api/models/subject.dart';
 import 'package:filcnaplo_mobile_ui/common/average_display.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_sheet_menu/rounded_bottom_sheet.dart';
 import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/certification_tile.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/grade_tile.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/grade_view.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/hero_scrollview.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/cretification/certification_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/grade/grade_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/grade/grade_viewable.dart';
+import 'package:filcnaplo_mobile_ui/common/hero_scrollview.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/calculator/grade_calculator.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/calculator/grade_calculator_provider.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/graph.dart';
@@ -24,10 +24,10 @@ import 'package:provider/provider.dart';
 import 'grades_page.i18n.dart';
 
 class GradeSubjectView extends StatefulWidget {
-  const GradeSubjectView(this.subject, {Key? key, this.classAverage = 0.0}) : super(key: key);
+  const GradeSubjectView(this.subject, {Key? key, this.groupAverage = 0.0}) : super(key: key);
 
   final Subject subject;
-  final double classAverage;
+  final double groupAverage;
 
   void push(BuildContext context, {bool root = false}) {
     Navigator.of(context, rootNavigator: root).push(CupertinoPageRoute(builder: (context) => this));
@@ -85,10 +85,7 @@ class _GradeSubjectViewState extends State<GradeSubjectView> {
       subjectGrades.sort((a, b) => -a.date.compareTo(b.date));
       for (var grade in subjectGrades) {
         if (grade.type == GradeType.midYear) {
-          _gradeTiles.add(GradeTile(
-            grade,
-            onTap: () => GradeView.show(grade, context: context),
-          ));
+          _gradeTiles.add(GradeViewable(grade));
         } else {
           _gradeTiles.add(CertificationTile(grade));
         }
@@ -145,7 +142,7 @@ class _GradeSubjectViewState extends State<GradeSubjectView> {
         child: Container(
           height: 175.0,
           padding: const EdgeInsets.only(top: 18.0, right: 16.0, bottom: 4.0),
-          child: GradeGraph(subjectGrades, dayThreshold: 5, classAvg: widget.classAverage),
+          child: GradeGraph(subjectGrades, dayThreshold: 5, classAvg: widget.groupAverage),
         ),
       ),
     );
@@ -180,7 +177,7 @@ class _GradeSubjectViewState extends State<GradeSubjectView> {
               },
               navBarItems: [
                 const SizedBox(width: 6.0),
-                if (widget.classAverage != 0) Center(child: AverageDisplay(average: widget.classAverage, border: true)),
+                if (widget.groupAverage != 0) Center(child: AverageDisplay(average: widget.groupAverage, border: true)),
                 const SizedBox(width: 6.0),
                 if (average != 0) Center(child: AverageDisplay(average: average)),
                 const SizedBox(width: 12.0),

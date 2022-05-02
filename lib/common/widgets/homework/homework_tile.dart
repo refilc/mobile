@@ -1,15 +1,15 @@
 import 'package:filcnaplo/helpers/subject_icon.dart';
 import 'package:filcnaplo/theme.dart';
-import 'package:filcnaplo_kreta_api/models/exam.dart';
+import 'package:filcnaplo_kreta_api/models/homework.dart';
 import 'package:filcnaplo_kreta_api/models/subject.dart';
-import 'package:flutter/material.dart';
 import 'package:filcnaplo/utils/format.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 
-class ExamTile extends StatelessWidget {
-  const ExamTile(this.exam, {Key? key, this.onTap}) : super(key: key);
+class HomeworkTile extends StatelessWidget {
+  const HomeworkTile(this.homework, {Key? key, this.onTap}) : super(key: key);
 
-  final Exam exam;
+  final Homework homework;
   final void Function()? onTap;
 
   @override
@@ -23,30 +23,31 @@ class ExamTile extends StatelessWidget {
         onTap: onTap,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         leading: SizedBox(
-            width: 44,
-            height: 44,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 2.0),
-              child: Icon(
-                SubjectIcon.lookup(subject: Subject.fromString(exam.subjectName)),
-                size: 28.0,
-                color: AppColors.of(context).text.withOpacity(.75),
-              ),
-            )),
+          width: 44,
+          height: 44,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 2.0),
+            child: Icon(
+              SubjectIcon.lookup(subject: Subject.fromString(homework.subjectName)),
+              size: 28.0,
+              color: AppColors.of(context).text.withOpacity(.75),
+            ),
+          ),
+        ),
         title: Text(
-          exam.description != "" ? exam.description : (exam.mode?.description ?? "Számonkérés"),
+          homework.subjectName.capital(),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: const TextStyle(fontWeight: FontWeight.w600),
         ),
         subtitle: Text(
-          exam.subjectName.capital(),
+          homework.content.escapeHtml().replaceAll('\n', ' '),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: const TextStyle(fontWeight: FontWeight.w500),
         ),
         trailing: Icon(
-          FeatherIcons.edit,
+          FeatherIcons.home,
           color: AppColors.of(context).text.withOpacity(.75),
         ),
         minLeadingWidth: 0,
