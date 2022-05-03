@@ -1,8 +1,6 @@
-import 'package:filcnaplo/models/settings.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/grade/grade_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:i18n_extension/i18n_widget.dart';
-import 'package:provider/provider.dart';
 
 class AverageDisplay extends StatelessWidget {
   const AverageDisplay({Key? key, this.average = 0.0, this.border = false}) : super(key: key);
@@ -12,11 +10,9 @@ class AverageDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SettingsProvider settings = Provider.of<SettingsProvider>(context, listen: false);
-    double _average = !settings.goodStudent || border ? average : 5.0;
-    Color color = gradeColor(context: context, value: _average);
+    Color color = gradeColor(context: context, value: average);
 
-    String averageText = _average.toStringAsFixed(2);
+    String averageText = average.toStringAsFixed(2);
     if (I18n.of(context).locale.languageCode != "en") averageText = averageText.replaceAll(".", ",");
 
     return Container(

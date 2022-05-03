@@ -376,18 +376,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
                       title: Text("goodstudent".i18n, style: const TextStyle(fontWeight: FontWeight.w500)),
                       onChanged: (v) {
-                        settings.update(context, goodStudent: v);
-
                         if (v) {
                           showDialog(
                             context: context,
-                            builder: (context) => AlertDialog(
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-                              title: Text("attention".i18n),
-                              content: Text("goodstudent_disclaimer".i18n),
-                              actions: [ActionButton(label: "understand".i18n, onTap: () => Navigator.of(context).pop())],
+                            builder: (context) => WillPopScope(
+                              onWillPop: () async => false,
+                              child: AlertDialog(
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+                                title: Text("attention".i18n),
+                                content: Text("goodstudent_disclaimer".i18n),
+                                actions: [
+                                  ActionButton(
+                                      label: "understand".i18n,
+                                      onTap: () {
+                                        Navigator.of(context).pop();
+                                        settings.update(context, goodStudent: v);
+                                        Provider.of<GradeProvider>(context, listen: false).fetch();
+                                      })
+                                ],
+                              ),
                             ),
                           );
+                        } else {
+                          settings.update(context, goodStudent: v);
+                          Provider.of<GradeProvider>(context, listen: false).fetch();
                         }
                       },
                       value: settings.goodStudent,

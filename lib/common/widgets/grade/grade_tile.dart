@@ -155,16 +155,16 @@ class GradeValueWidget extends StatelessWidget {
         Transform.translate(
           offset: (value.weight >= 200) ? const Offset(2, 1.5) : Offset.zero,
           child: Text(
-            !settings.goodStudent ? value.value.toString() : "5",
+            value.value.toString(),
             textAlign: TextAlign.center,
             style: TextStyle(
               fontWeight: value.weight == 50 ? FontWeight.w600 : FontWeight.bold,
               fontSize: size,
-              color: !settings.goodStudent ? color : gradeColor(context: context, value: 5),
+              color: color,
               shadows: [
                 if (value.weight >= 200)
                   Shadow(
-                    color: (!settings.goodStudent ? color : gradeColor(context: context, value: 5)).withOpacity(.4),
+                    color: color.withOpacity(.4),
                     offset: const Offset(-4, -3),
                   )
               ],
