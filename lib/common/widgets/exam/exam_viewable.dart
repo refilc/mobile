@@ -11,6 +11,6 @@ class ExamViewable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Viewable(tile: ExamTile(exam), view: ExamView(exam));
+    return FilcContextMenu(tile: ExamTile(exam), view: ExamView(exam));
   }
 }

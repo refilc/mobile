@@ -16,7 +16,7 @@ class GradeViewable extends StatelessWidget {
     final subject = SubjectGradesContainer.of(context) != null;
     final tile = GradeTile(grade, padding: subject ? EdgeInsets.zero : padding);
 
-    return Viewable(
+    return FilcContextMenu(
       tile: subject ? SubjectGradesContainer(child: tile) : tile,
       view: GradeView(grade),
     );

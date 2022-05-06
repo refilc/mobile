@@ -16,6 +16,6 @@ class LessonViewable extends StatelessWidget {
 
     if (lesson.subject.id == '' || tile.lesson.isEmpty) return tile;
 
-    return Viewable(tile: tile, view: LessonView(lesson));
+    return FilcContextMenu(tile: tile, view: LessonView(lesson));
   }
 }
