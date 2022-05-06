@@ -25,7 +25,7 @@ class AbsenceViewable extends StatelessWidget {
     final group = AbsenceGroupContainer.of(context) != null;
     final tile = AbsenceTile(absence, padding: padding);
 
-    return Viewable(
+    return FilcContextMenu(
       tile: group ? AbsenceGroupContainer(child: tile) : tile,
       view: AbsenceView(absence, viewable: true),
       actions: [

@@ -1,9 +1,11 @@
+import 'package:filcnaplo/models/settings.dart';
 import 'package:filcnaplo_kreta_api/models/grade.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_card.dart';
 import 'package:filcnaplo_mobile_ui/common/detail.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/grade/grade_tile.dart';
 import 'package:filcnaplo/utils/format.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'grade_view.i18n.dart';
 
 class GradeView extends StatelessWidget {
@@ -30,7 +32,7 @@ class GradeView extends StatelessWidget {
               style: const TextStyle(fontWeight: FontWeight.w600),
             ),
             subtitle: Text(
-              grade.teacher,
+              !Provider.of<SettingsProvider>(context, listen: false).presentationMode ? grade.teacher : "Tanár",
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(fontWeight: FontWeight.w500),
