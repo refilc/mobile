@@ -100,7 +100,7 @@ extension SettingsLocalization on String {
           "delay": "Késleltetés",
           "hurry": "Siettetés",
           "sync": "Szinkronizálás",
-          "sync_help": "Csengetéskor nyomd meg a Szinkrinizálás gombot.",
+          "sync_help": "Csengetéskor nyomd meg a Szinkronizálás gombot.",
         },
         "de_de": {
           "personal_details": "Persönliche Angaben",
