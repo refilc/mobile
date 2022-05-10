@@ -162,51 +162,54 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
             ),
 
             // Bottom Navigaton Bar
-            SafeArea(
-              top: false,
-              child: NavigationBar(
-                destinations: [
-                  NavigationDestination(
-                    label: "home".i18n,
-                    icon: const Icon(FilcIcons.home),
-                  ),
-                  NavigationDestination(
-                    label: "grades".i18n,
-                    icon: const Icon(FeatherIcons.bookmark),
-                  ),
-                  NavigationDestination(
-                    label: "timetable".i18n,
-                    icon: const Icon(FeatherIcons.calendar),
-                  ),
-                  NavigationDestination(
-                    label: "messages".i18n,
-                    icon: const Icon(FeatherIcons.messageSquare),
-                  ),
-                  NavigationDestination(
-                    label: "absences".i18n,
-                    icon: const Icon(FeatherIcons.clock),
-                  ),
-                ],
-                selectedIndex: selected.index,
-                onDestinationSelected: (index) {
-                  // Vibrate, then set the active screen
-                  if (selected.index != index) {
-                    switch (settings.vibrate) {
-                      case VibrationStrength.light:
-                        HapticFeedback.lightImpact();
-                        break;
-                      case VibrationStrength.medium:
-                        HapticFeedback.mediumImpact();
-                        break;
-                      case VibrationStrength.strong:
-                        HapticFeedback.heavyImpact();
-                        break;
-                      default:
+            Material(
+              color: Theme.of(context).backgroundColor,
+              child: SafeArea(
+                top: false,
+                child: NavigationBar(
+                  destinations: [
+                    NavigationDestination(
+                      label: "home".i18n,
+                      icon: const Icon(FilcIcons.home),
+                    ),
+                    NavigationDestination(
+                      label: "grades".i18n,
+                      icon: const Icon(FeatherIcons.bookmark),
+                    ),
+                    NavigationDestination(
+                      label: "timetable".i18n,
+                      icon: const Icon(FeatherIcons.calendar),
+                    ),
+                    NavigationDestination(
+                      label: "messages".i18n,
+                      icon: const Icon(FeatherIcons.messageSquare),
+                    ),
+                    NavigationDestination(
+                      label: "absences".i18n,
+                      icon: const Icon(FeatherIcons.clock),
+                    ),
+                  ],
+                  selectedIndex: selected.index,
+                  onDestinationSelected: (index) {
+                    // Vibrate, then set the active screen
+                    if (selected.index != index) {
+                      switch (settings.vibrate) {
+                        case VibrationStrength.light:
+                          HapticFeedback.lightImpact();
+                          break;
+                        case VibrationStrength.medium:
+                          HapticFeedback.mediumImpact();
+                          break;
+                        case VibrationStrength.strong:
+                          HapticFeedback.heavyImpact();
+                          break;
+                        default:
+                      }
+                      setState(() => selected.index = index);
+                      _navigatorState.currentState?.pushReplacementNamed(selected.name);
                     }
-                    setState(() => selected.index = index);
-                    _navigatorState.currentState?.pushReplacementNamed(selected.name);
-                  }
-                },
+                  },
+                ),
               ),
             ),
           ],
