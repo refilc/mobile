@@ -34,7 +34,7 @@ class LessonTile extends StatelessWidget {
     if (RegExp(r'\d').hasMatch(lesson.lessonIndex)) lessonIndexTrailing = ".";
 
     var now = DateTime.now();
-    if (lesson.start.isBefore(now) && lesson.end.isAfter(now)) {
+    if (lesson.start.isBefore(now) && lesson.end.isAfter(now) && lesson.status?.name != "Elmaradt") {
       fillLeading = true;
     }
 
@@ -277,27 +277,30 @@ class LessonSubtile extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: InkWell(
         onTap: onPressed,
-        borderRadius: BorderRadius.circular(6.0),
-        child: Row(
-          children: [
-            Center(
-              child: SizedBox(
-                width: 30.0,
-                child: Icon(icon, color: iconColor.withOpacity(.75), size: 20.0),
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20.0),
-                child: Text(
-                  title.escapeHtml(),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontWeight: FontWeight.w500, color: AppColors.of(context).text.withOpacity(.65)),
+        borderRadius: BorderRadius.circular(8.0),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4.0),
+          child: Row(
+            children: [
+              Center(
+                child: SizedBox(
+                  width: 30.0,
+                  child: Icon(icon, color: iconColor.withOpacity(.75), size: 20.0),
                 ),
               ),
-            ),
-          ],
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: Text(
+                    title.escapeHtml(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontWeight: FontWeight.w500, color: AppColors.of(context).text.withOpacity(.65)),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

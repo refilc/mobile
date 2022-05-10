@@ -6,6 +6,7 @@ import 'package:filcnaplo_mobile_ui/common/viewable.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/absence/absence_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/absence/absence_view.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/absence_group/absence_group_container.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/card_handle.dart';
 import 'package:filcnaplo_mobile_ui/pages/absences/absence_subject_view_container.dart';
 import 'package:filcnaplo_mobile_ui/pages/timetable/timetable_page.dart';
 import 'package:flutter/material.dart';
@@ -25,9 +26,9 @@ class AbsenceViewable extends StatelessWidget {
     final group = AbsenceGroupContainer.of(context) != null;
     final tile = AbsenceTile(absence, padding: padding);
 
-    return FilcContextMenu(
+    return Viewable(
       tile: group ? AbsenceGroupContainer(child: tile) : tile,
-      view: AbsenceView(absence, viewable: true),
+      view: CardHandle(child: AbsenceView(absence, viewable: true)),
       actions: [
         PanelButton(
           background: true,

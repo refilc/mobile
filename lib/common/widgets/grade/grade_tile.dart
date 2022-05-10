@@ -126,7 +126,6 @@ class GradeValueWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isSubjectView = SubjectGradesContainer.of(context) != null;
-    SettingsProvider settings = Provider.of<SettingsProvider>(context, listen: false);
 
     Color color = gradeColor(context: context, value: value.value);
     Widget valueText;

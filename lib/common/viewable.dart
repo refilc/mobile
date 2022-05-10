@@ -31,13 +31,13 @@ typedef _DismissCallback = void Function(
   double opacity,
 );
 
-typedef FilcContextPreviewBuilder = Widget Function(
+typedef ViewablePreviewBuilder = Widget Function(
   BuildContext context,
   Animation<double> animation,
   Widget child,
 );
 
-typedef _FilcContextPreviewBuilderChildless = Widget Function(
+typedef _ViewablePreviewBuilderChildless = Widget Function(
   BuildContext context,
   Animation<double> animation,
 );
@@ -51,14 +51,14 @@ Rect _getRect(GlobalKey globalKey) {
   return containerOffset & renderBoxContainer.paintBounds.size;
 }
 
-enum _FilcContextLocation {
+enum _ViewableLocation {
   center,
   left,
   right,
 }
 
-class FilcContextMenu extends StatefulWidget {
-  FilcContextMenu({
+class Viewable extends StatefulWidget {
+  const Viewable({
     Key? key,
     required this.view,
     required this.tile,
@@ -71,20 +71,20 @@ class FilcContextMenu extends StatefulWidget {
 
   final List<Widget> actions;
 
-  final FilcContextPreviewBuilder? previewBuilder;
+  final ViewablePreviewBuilder? previewBuilder;
 
   @override
-  State<FilcContextMenu> createState() => _FilcContextMenuState();
+  State<Viewable> createState() => _ViewableState();
 }
 
-class _FilcContextMenuState extends State<FilcContextMenu> with TickerProviderStateMixin {
+class _ViewableState extends State<Viewable> with TickerProviderStateMixin {
   final GlobalKey _childGlobalKey = GlobalKey();
   bool _childHidden = false;
 
   late AnimationController _openController;
   Rect? _decoyChildEndRect;
   OverlayEntry? _lastOverlayEntry;
-  _FilcContextRoute<void>? _route;
+  _ViewableRoute<void>? _route;
 
   @override
   void initState() {
@@ -96,7 +96,7 @@ class _FilcContextMenuState extends State<FilcContextMenu> with TickerProviderSt
     _openController.addStatusListener(_onDecoyAnimationStatusChange);
   }
 
-  _FilcContextLocation get _contextMenuLocation {
+  _ViewableLocation get _contextMenuLocation {
     final Rect childRect = _getRect(_childGlobalKey);
     final double screenWidth = MediaQuery.of(context).size.width;
 
@@ -104,14 +104,14 @@ class _FilcContextMenuState extends State<FilcContextMenu> with TickerProviderSt
     final bool centerDividesChild = childRect.left < center && childRect.right > center;
     final double distanceFromCenter = (center - childRect.center.dx).abs();
     if (centerDividesChild && distanceFromCenter <= childRect.width / 4) {
-      return _FilcContextLocation.center;
+      return _ViewableLocation.center;
     }
 
     if (childRect.center.dx > center) {
-      return _FilcContextLocation.right;
+      return _ViewableLocation.right;
     }
 
-    return _FilcContextLocation.left;
+    return _ViewableLocation.left;
   }
 
   void _openContextMenu() {
@@ -119,7 +119,7 @@ class _FilcContextMenuState extends State<FilcContextMenu> with TickerProviderSt
       _childHidden = true;
     });
 
-    _route = _FilcContextRoute<void>(
+    _route = _ViewableRoute<void>(
       actions: widget.actions,
       barrierLabel: 'Dismiss',
       filter: ui.ImageFilter.blur(
@@ -234,9 +234,6 @@ class _FilcContextMenuState extends State<FilcContextMenu> with TickerProviderSt
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      //onTapCancel: _onTapCancel,
-      //onTapDown: _onTapDown,
-      //onTapUp: _onTapUp,
       onTap: _onTap,
       child: TickerMode(
         enabled: !_childHidden,
@@ -361,12 +358,12 @@ class _DecoyChildState extends State<_DecoyChild> with TickerProviderStateMixin 
   }
 }
 
-class _FilcContextRoute<T> extends PopupRoute<T> {
-  _FilcContextRoute({
+class _ViewableRoute<T> extends PopupRoute<T> {
+  _ViewableRoute({
     required List<Widget> actions,
-    required _FilcContextLocation contextMenuLocation,
+    required _ViewableLocation contextMenuLocation,
     this.barrierLabel,
-    _FilcContextPreviewBuilderChildless? builder,
+    _ViewablePreviewBuilderChildless? builder,
     ui.ImageFilter? filter,
     required Rect previousChildRect,
     RouteSettings? settings,
@@ -384,9 +381,9 @@ class _FilcContextRoute<T> extends PopupRoute<T> {
   static const Duration _kModalPopupTransitionDuration = Duration(milliseconds: 335);
 
   final List<Widget> _actions;
-  final _FilcContextPreviewBuilderChildless? _builder;
+  final _ViewablePreviewBuilderChildless? _builder;
   final GlobalKey _childGlobalKey = GlobalKey();
-  final _FilcContextLocation _contextMenuLocation;
+  final _ViewableLocation _contextMenuLocation;
   bool _externalOffstage = false;
   bool _internalOffstage = false;
   Orientation? _lastOrientation;
@@ -449,27 +446,27 @@ class _FilcContextRoute<T> extends PopupRoute<T> {
     return offsetScaled & sizeScaled;
   }
 
-  static AlignmentDirectional getSheetAlignment(_FilcContextLocation contextMenuLocation) {
+  static AlignmentDirectional getSheetAlignment(_ViewableLocation contextMenuLocation) {
     switch (contextMenuLocation) {
-      case _FilcContextLocation.center:
+      case _ViewableLocation.center:
         return AlignmentDirectional.topCenter;
-      case _FilcContextLocation.right:
+      case _ViewableLocation.right:
         return AlignmentDirectional.topEnd;
-      case _FilcContextLocation.left:
+      case _ViewableLocation.left:
         return AlignmentDirectional.topStart;
     }
   }
 
-  static Rect _getSheetRectBegin(Orientation? orientation, _FilcContextLocation contextMenuLocation, Rect childRect, Rect sheetRect) {
+  static Rect _getSheetRectBegin(Orientation? orientation, _ViewableLocation contextMenuLocation, Rect childRect, Rect sheetRect) {
     switch (contextMenuLocation) {
-      case _FilcContextLocation.center:
+      case _ViewableLocation.center:
         final Offset target = orientation == Orientation.portrait ? childRect.bottomCenter : childRect.topCenter;
         final Offset centered = target - Offset(sheetRect.width / 2, 0.0);
         return centered & sheetRect.size;
-      case _FilcContextLocation.right:
+      case _ViewableLocation.right:
         final Offset target = orientation == Orientation.portrait ? childRect.bottomRight : childRect.topRight;
         return (target - Offset(sheetRect.width, 0.0)) & sheetRect.size;
-      case _FilcContextLocation.left:
+      case _ViewableLocation.left:
         final Offset target = orientation == Orientation.portrait ? childRect.bottomLeft : childRect.topLeft;
         return target & sheetRect.size;
     }
@@ -578,7 +575,7 @@ class _FilcContextRoute<T> extends PopupRoute<T> {
                   child: Transform.scale(
                     alignment: getSheetAlignment(_contextMenuLocation),
                     scale: sheetScale,
-                    child: _FilcContextSheet(
+                    child: _ViewableSheet(
                       key: _sheetGlobalKey,
                       actions: _actions,
                     ),
@@ -623,7 +620,7 @@ class _ContextMenuRouteStatic extends StatefulWidget {
   final List<Widget>? actions;
   final Widget child;
   final GlobalKey? childGlobalKey;
-  final _FilcContextLocation contextMenuLocation;
+  final _ViewableLocation contextMenuLocation;
   final _DismissCallback? onDismiss;
   final Orientation orientation;
   final GlobalKey? sheetGlobalKey;
@@ -722,13 +719,13 @@ class _ContextMenuRouteStaticState extends State<_ContextMenuRouteStatic> with T
     widget.onDismiss!(context, _lastScale, _sheetOpacityAnimation.value);
   }
 
-  Alignment _getChildAlignment(Orientation orientation, _FilcContextLocation contextMenuLocation) {
+  Alignment _getChildAlignment(Orientation orientation, _ViewableLocation contextMenuLocation) {
     switch (contextMenuLocation) {
-      case _FilcContextLocation.center:
+      case _ViewableLocation.center:
         return orientation == Orientation.portrait ? Alignment.bottomCenter : Alignment.topRight;
-      case _FilcContextLocation.right:
+      case _ViewableLocation.right:
         return orientation == Orientation.portrait ? Alignment.bottomCenter : Alignment.topLeft;
-      case _FilcContextLocation.left:
+      case _ViewableLocation.left:
         return orientation == Orientation.portrait ? Alignment.bottomCenter : Alignment.topRight;
     }
   }
@@ -759,7 +756,7 @@ class _ContextMenuRouteStaticState extends State<_ContextMenuRouteStatic> with T
     });
   }
 
-  List<Widget> _getChildren(Orientation orientation, _FilcContextLocation contextMenuLocation) {
+  List<Widget> _getChildren(Orientation orientation, _ViewableLocation contextMenuLocation) {
     final Expanded child = Expanded(
       child: Align(
         alignment: _getChildAlignment(
@@ -780,25 +777,25 @@ class _ContextMenuRouteStaticState extends State<_ContextMenuRouteStatic> with T
     final sheet = AnimatedBuilder(
       animation: _sheetController,
       builder: _buildSheetAnimation,
-      child: _FilcContextSheet(
+      child: _ViewableSheet(
         key: widget.sheetGlobalKey,
         actions: widget.actions!,
       ),
     );
 
     switch (contextMenuLocation) {
-      case _FilcContextLocation.center:
+      case _ViewableLocation.center:
         return <Widget>[child, spacer, sheet];
-      case _FilcContextLocation.right:
+      case _ViewableLocation.right:
         return orientation == Orientation.portrait ? <Widget>[child, spacer, sheet] : <Widget>[sheet, spacer, child];
-      case _FilcContextLocation.left:
+      case _ViewableLocation.left:
         return <Widget>[child, spacer, sheet];
     }
   }
 
   Widget _buildSheetAnimation(BuildContext context, Widget? child) {
     return Transform.scale(
-      alignment: _FilcContextRoute.getSheetAlignment(widget.contextMenuLocation),
+      alignment: _ViewableRoute.getSheetAlignment(widget.contextMenuLocation),
       scale: _sheetScaleAnimation.value,
       child: FadeTransition(
         opacity: _sheetOpacityAnimation,
@@ -900,8 +897,8 @@ class _ContextMenuRouteStaticState extends State<_ContextMenuRouteStatic> with T
   }
 }
 
-class _FilcContextSheet extends StatelessWidget {
-  const _FilcContextSheet({
+class _ViewableSheet extends StatelessWidget {
+  const _ViewableSheet({
     Key? key,
     required this.actions,
   }) : super(key: key);
