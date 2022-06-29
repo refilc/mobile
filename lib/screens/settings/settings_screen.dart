@@ -559,17 +559,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
               PanelButton(
                 leading: const Icon(FeatherIcons.atSign),
                 title: const Text("Discord"),
-                onPressed: () => launch("https://filcnaplo.hu/discord"),
+                onPressed: () => launchUrl(Uri.parse("https://filcnaplo.hu/discord")),
               ),
               PanelButton(
                 leading: const Icon(FeatherIcons.globe),
                 title: const Text("www.filcnaplo.hu"),
-                onPressed: () => launch("https://filcnaplo.hu"),
+                onPressed: () => launchUrl(Uri.parse("https://filcnaplo.hu")),
               ),
               PanelButton(
                 leading: const Icon(FeatherIcons.github),
                 title: const Text("Github"),
-                onPressed: () => launch("https://github.com/filc"),
+                onPressed: () => launchUrl(Uri.parse("https://github.com/filc")),
               ),
               PanelButton(
                 leading: const Icon(FeatherIcons.mail),
