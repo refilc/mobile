@@ -164,8 +164,9 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
             // Bottom Navigaton Bar
             Material(
               color: Theme.of(context).backgroundColor,
-              child: SafeArea(
-                top: false,
+              child: MediaQuery.removePadding(
+                context: context,
+                removeTop: true,
                 child: NavigationBar(
                   destinations: [
                     NavigationDestination(
