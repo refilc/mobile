@@ -9,6 +9,7 @@ import 'package:filcnaplo_kreta_api/models/subject.dart';
 import 'package:filcnaplo_mobile_ui/common/average_display.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_sheet_menu/rounded_bottom_sheet.dart';
 import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
+import 'package:filcnaplo_mobile_ui/common/trend_display.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/cretification/certification_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/grade/grade_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/grade/grade_viewable.dart';
@@ -87,7 +88,7 @@ class _GradeSubjectViewState extends State<GradeSubjectView> {
         if (grade.type == GradeType.midYear) {
           _gradeTiles.add(GradeViewable(grade));
         } else {
-          _gradeTiles.add(CertificationTile(grade));
+          _gradeTiles.add(CertificationTile(grade, padding: EdgeInsets.zero));
         }
       }
     } else if (subjectGrades.isNotEmpty) {
@@ -133,15 +134,27 @@ class _GradeSubjectViewState extends State<GradeSubjectView> {
     gradeProvider = Provider.of<GradeProvider>(context);
     calculatorProvider = Provider.of<GradeCalculatorProvider>(context);
 
-    average = AverageHelper.averageEvals(getSubjectGrades(widget.subject));
     List<Grade> subjectGrades = getSubjectGrades(widget.subject).toList();
+    average = AverageHelper.averageEvals(subjectGrades);
+    final prevAvg = subjectGrades.isNotEmpty
+        ? AverageHelper.averageEvals(subjectGrades
+            .where((e) => e.date.isBefore(subjectGrades.reduce((v, e) => e.date.isAfter(v.date) ? e : v).date.subtract(const Duration(days: 30))))
+            .toList())
+        : 0.0;
 
     gradeGraph = Padding(
-      padding: const EdgeInsets.only(top: 12.0, bottom: 24.0),
+      padding: const EdgeInsets.only(top: 16.0, bottom: 24.0),
       child: Panel(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("annual_average".i18n),
+            if (average != prevAvg) TrendDisplay(current: average, previous: prevAvg),
+          ],
+        ),
         child: Container(
           height: 175.0,
-          padding: const EdgeInsets.only(top: 18.0, right: 16.0, bottom: 4.0),
+          padding: const EdgeInsets.only(top: 16.0, right: 12.0),
           child: GradeGraph(subjectGrades, dayThreshold: 5, classAvg: widget.groupAverage),
         ),
       ),

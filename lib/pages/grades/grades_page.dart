@@ -15,6 +15,7 @@ import 'package:filcnaplo_mobile_ui/common/profile_image/profile_button.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/statistics_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/grade/grade_subject_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/trend_display.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/graph.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/grade_subject_view.dart';
 import 'package:flutter/material.dart';
@@ -131,6 +132,14 @@ class _GradesPageState extends State<GradesPage> {
         ? 0.0
         : gradeProvider.groupAverages.map((e) => e.average).fold(0.0, (double a, double b) => a + b) / gradeProvider.groupAverages.length;
 
+    final now = gradeProvider.grades.isNotEmpty ? gradeProvider.grades.reduce((v, e) => e.date.isAfter(v.date) ? e : v).date : DateTime.now();
+
+    final currentStudentAvg = AverageHelper.averageEvals(gradeProvider.grades.where((e) => e.type == GradeType.midYear).toList());
+    final prevStudentAvg = AverageHelper.averageEvals(gradeProvider.grades
+        .where((e) => e.type == GradeType.midYear)
+        .where((e) => e.date.isBefore(now.subtract(const Duration(days: 30))))
+        .toList());
+
     yearlyGraph = Padding(
       padding: const EdgeInsets.only(top: 12.0, bottom: 24.0),
       child: Panel(
@@ -142,8 +151,8 @@ class _GradesPageState extends State<GradesPage> {
               children: [
                 // if (totalClassAvg >= 1.0) AverageDisplay(average: totalClassAvg, border: true),
                 // const SizedBox(width: 4.0),
-                if (gradeProvider.grades.where((e) => e.type == GradeType.midYear).isNotEmpty)
-                  AverageDisplay(average: AverageHelper.averageEvals(gradeProvider.grades.where((e) => e.type == GradeType.midYear).toList())),
+                TrendDisplay(previous: prevStudentAvg, current: currentStudentAvg),
+                if (gradeProvider.grades.where((e) => e.type == GradeType.midYear).isNotEmpty) AverageDisplay(average: currentStudentAvg),
               ],
             )
           ],
