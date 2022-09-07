@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:filcnaplo/api/client.dart';
 import 'package:filcnaplo/api/login.dart';
-import 'package:filcnaplo/theme.dart';
+import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:filcnaplo_mobile_ui/common/custom_snack_bar.dart';
 import 'package:filcnaplo_mobile_ui/common/system_chrome.dart';
 import 'package:filcnaplo_mobile_ui/screens/login/login_button.dart';

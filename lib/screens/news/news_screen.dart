@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:filcnaplo/theme.dart';
+import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:filcnaplo_mobile_ui/common/empty.dart';
 import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
 import 'package:filcnaplo_mobile_ui/screens/news/news_tile.dart';

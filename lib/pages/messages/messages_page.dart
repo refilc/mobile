@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:filcnaplo/api/providers/update_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/message_provider.dart';
 import 'package:filcnaplo/api/providers/user_provider.dart';
-import 'package:filcnaplo/theme.dart';
+import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:filcnaplo_kreta_api/models/message.dart';
 import 'package:filcnaplo_mobile_ui/common/empty.dart';
 import 'package:filcnaplo_mobile_ui/common/filter_bar.dart';

@@ -1,9 +1,13 @@
 // ignore_for_file: prefer_function_declarations_over_variables
 
+import 'dart:io';
+
 import 'package:filcnaplo/helpers/quick_actions.dart';
 import 'package:filcnaplo/icons/filc_icons.dart';
 import 'package:filcnaplo/models/settings.dart';
-import 'package:filcnaplo/theme.dart';
+import 'package:filcnaplo/theme/colors/colors.dart';
+import 'package:filcnaplo/theme/observer.dart';
+import 'package:filcnaplo/theme/colors/accent.dart';
 import 'package:filcnaplo_kreta_api/models/grade.dart';
 import 'package:filcnaplo_kreta_api/providers/timetable_provider.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_sheet_menu/bottom_sheet_menu.dart';
@@ -54,7 +58,9 @@ class SettingsHelper {
             Provider.of<SettingsProvider>(context, listen: false).update(context, language: lang);
             I18n.of(context).locale = Locale(lang, lang.toUpperCase());
             Navigator.of(context).maybePop();
-            setupQuickActions();
+            if (Platform.isAndroid || Platform.isIOS) {
+              setupQuickActions();
+            }
           },
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

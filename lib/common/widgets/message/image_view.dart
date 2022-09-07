@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:filcnaplo/helpers/share_helper.dart';
-import 'package:filcnaplo/theme.dart';
+import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:photo_view/photo_view.dart';

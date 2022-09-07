@@ -1,4 +1,4 @@
-import 'package:filcnaplo/theme.dart';
+import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:filcnaplo_kreta_api/models/lesson.dart';
 import 'package:flutter/material.dart';
 import 'package:filcnaplo/utils/format.dart';

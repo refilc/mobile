@@ -1,5 +1,5 @@
 import 'package:filcnaplo/api/client.dart';
-import 'package:filcnaplo/theme.dart';
+import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:filcnaplo_mobile_ui/common/dot.dart';
 import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/supporters/supporter_tile.dart';

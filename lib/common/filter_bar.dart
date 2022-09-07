@@ -1,4 +1,4 @@
-import 'package:filcnaplo/theme.dart';
+import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:flutter/material.dart';
 
 class FilterBar extends StatefulWidget implements PreferredSizeWidget {

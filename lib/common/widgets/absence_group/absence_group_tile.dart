@@ -1,4 +1,4 @@
-import 'package:filcnaplo/theme.dart';
+import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:filcnaplo_kreta_api/models/absence.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/absence/absence_viewable.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/absence_group/absence_group_container.dart';

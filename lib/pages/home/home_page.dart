@@ -1,7 +1,7 @@
 // ignore_for_file: dead_code
 import 'dart:math';
 
-import 'package:filcnaplo/theme.dart';
+import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/absence/absence_viewable.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/exam/exam_viewable.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/grade/grade_viewable.dart';

@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:filcnaplo/theme.dart';
+import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:flutter/material.dart';
 
 List<String> faces = [

@@ -1,7 +1,7 @@
 import 'package:filcnaplo/api/providers/update_provider.dart';
 import 'package:filcnaplo/helpers/quick_actions.dart';
 import 'package:filcnaplo/models/settings.dart';
-import 'package:filcnaplo/theme.dart';
+import 'package:filcnaplo/theme/observer.dart';
 import 'package:filcnaplo_kreta_api/client/client.dart';
 import 'package:filcnaplo_mobile_ui/common/system_chrome.dart';
 import 'package:filcnaplo_mobile_ui/screens/navigation/navigation_route.dart';
@@ -31,6 +31,10 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
   late NavigationRoute selected;
   List<String> initializers = [];
   final _navigatorState = GlobalKey<NavigatorState>();
+
+  late SettingsProvider settings;
+  late NewsProvider newsProvider;
+  late UpdateProvider updateProvider;
 
   NavigatorState? get navigator => _navigatorState.currentState;
 
@@ -72,8 +76,8 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
 
   @override
   void dispose() {
-    super.dispose();
     WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   @override
@@ -84,10 +88,6 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
     }
     super.didChangePlatformBrightness();
   }
-
-  late SettingsProvider settings;
-  late NewsProvider newsProvider;
-  late UpdateProvider updateProvider;
 
   void setPage(String page) => setState(() => selected.name = page);
 

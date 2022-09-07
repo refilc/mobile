@@ -1,5 +1,5 @@
 import 'package:filcnaplo/helpers/subject_icon.dart';
-import 'package:filcnaplo/theme.dart';
+import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:filcnaplo_kreta_api/models/homework.dart';
 import 'package:filcnaplo_kreta_api/models/subject.dart';
 import 'package:filcnaplo/utils/format.dart';

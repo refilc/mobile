@@ -1,4 +1,4 @@
-import 'package:filcnaplo/theme.dart';
+import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:flutter/material.dart';
 
 // ignore: non_constant_identifier_names
@@ -10,10 +10,8 @@ SnackBar CustomSnackBar({
   Duration? duration,
 }) {
   // backgroundColor > Brightness > Theme Background
-  Color _backgroundColor = backgroundColor ??
-      (((brightness ?? Theme.of(context).brightness) == Brightness.light) ? LightAppColors().highlight : DarkAppColors().highlight);
-
-  Color textColor = ((brightness ?? Theme.of(context).brightness) == Brightness.light) ? LightAppColors().text : DarkAppColors().text;
+  Color _backgroundColor = backgroundColor ?? (AppColors.fromBrightness(brightness ?? Theme.of(context).brightness).highlight);
+  Color textColor = AppColors.fromBrightness(brightness ?? Theme.of(context).brightness).text;
 
   return SnackBar(
     duration: duration ?? const Duration(seconds: 4),

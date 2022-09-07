@@ -12,7 +12,7 @@ import 'package:filcnaplo/api/providers/database_provider.dart';
 import 'package:filcnaplo/utils/format.dart';
 import 'package:filcnaplo/models/settings.dart';
 import 'package:filcnaplo/models/user.dart';
-import 'package:filcnaplo/theme.dart';
+import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:filcnaplo_kreta_api/client/client.dart';
 import 'package:filcnaplo_mobile_ui/common/action_button.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_sheet_menu/bottom_sheet_menu.dart';

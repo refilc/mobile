@@ -1,6 +1,6 @@
 import 'package:filcnaplo_kreta_api/providers/exam_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/homework_provider.dart';
-import 'package:filcnaplo/theme.dart';
+import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:filcnaplo_kreta_api/models/exam.dart';
 import 'package:filcnaplo_kreta_api/models/homework.dart';
 import 'package:filcnaplo_kreta_api/models/lesson.dart';

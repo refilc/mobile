@@ -1,4 +1,4 @@
-import 'package:filcnaplo/theme.dart';
+import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:filcnaplo_kreta_api/models/message.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/message/message_view_tile.dart';
 import 'package:flutter/cupertino.dart';

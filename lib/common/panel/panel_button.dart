@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:filcnaplo/theme.dart';
+import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:flutter/material.dart';
 
 class PanelButton extends StatelessWidget {
