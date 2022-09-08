@@ -35,7 +35,9 @@ class _SchoolInputState extends State<SchoolInput> {
       if (_focusNode.hasFocus) {
         overlay.createOverlayEntry(context);
         Future.delayed(const Duration(milliseconds: 100)).then((value) {
-          widget.scroll.animateTo(widget.scroll.offset + 500, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+          if (mounted && widget.scroll.hasClients) {
+            widget.scroll.animateTo(widget.scroll.offset + 500, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+          }
         });
       } else {
         overlay.entry?.remove();
