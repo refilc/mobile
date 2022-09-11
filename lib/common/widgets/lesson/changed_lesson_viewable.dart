@@ -1,5 +1,5 @@
 import 'package:filcnaplo_kreta_api/models/lesson.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/timetable/changed_lesson_tile.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/lesson/changed_lesson_tile.dart';
 import 'package:filcnaplo_mobile_ui/pages/timetable/timetable_page.dart';
 import 'package:flutter/material.dart';
 

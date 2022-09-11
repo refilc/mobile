@@ -14,7 +14,7 @@ import 'package:filcnaplo_mobile_ui/common/profile_image/profile_button.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/lesson/lesson_view.dart';
 import 'package:filcnaplo_kreta_api/controllers/timetable_controller.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/timetable/lesson_viewable.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/lesson/lesson_viewable.dart';
 import 'package:filcnaplo_mobile_ui/pages/timetable/day_title.dart';
 import 'package:filcnaplo_mobile_ui/screens/navigation/navigation_route_handler.dart';
 import 'package:filcnaplo_mobile_ui/screens/navigation/navigation_screen.dart';
