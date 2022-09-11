@@ -3,7 +3,6 @@ import 'package:filcnaplo_kreta_api/models/message.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/message/message_view_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 
 class MessageView extends StatefulWidget {
   const MessageView(this.messages, {Key? key}) : super(key: key);

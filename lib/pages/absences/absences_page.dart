@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:animations/animations.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
+import 'package:filcnaplo/ui/date_widget.dart';
 import 'package:filcnaplo_kreta_api/models/absence.dart';
 import 'package:filcnaplo_kreta_api/models/lesson.dart';
 import 'package:filcnaplo_kreta_api/models/subject.dart';
@@ -22,7 +23,7 @@ import 'package:filcnaplo_mobile_ui/common/widgets/absence/absence_viewable.dart
 import 'package:filcnaplo_mobile_ui/common/widgets/statistics_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/miss_tile.dart';
 import 'package:filcnaplo_mobile_ui/pages/absences/absence_subject_view.dart';
-import 'package:filcnaplo_mobile_ui/pages/home/home_page.dart';
+import 'package:filcnaplo/ui/filter/sort.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:provider/provider.dart';

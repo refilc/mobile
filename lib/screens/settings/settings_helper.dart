@@ -15,7 +15,7 @@ import 'package:filcnaplo_mobile_ui/common/bottom_sheet_menu/bottom_sheet_menu_i
 import 'package:filcnaplo_mobile_ui/common/bottom_sheet_menu/rounded_bottom_sheet.dart';
 import 'package:filcnaplo_mobile_ui/common/filter_bar.dart';
 import 'package:filcnaplo_mobile_ui/common/material_action_button.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/grade/grade_tile.dart';
+import 'package:filcnaplo/ui/widgets/grade/grade_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

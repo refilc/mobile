@@ -1,7 +1,7 @@
 import 'package:filcnaplo/helpers/subject_icon.dart';
 import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:filcnaplo_kreta_api/models/grade.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/grade/grade_tile.dart';
+import 'package:filcnaplo/ui/widgets/grade/grade_tile.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/subject_grades_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';

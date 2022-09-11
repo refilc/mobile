@@ -2,7 +2,7 @@ import 'package:filcnaplo/models/settings.dart';
 import 'package:filcnaplo_kreta_api/models/grade.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_card.dart';
 import 'package:filcnaplo_mobile_ui/common/detail.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/grade/grade_tile.dart';
+import 'package:filcnaplo/ui/widgets/grade/grade_tile.dart';
 import 'package:filcnaplo/utils/format.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
