@@ -130,7 +130,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     ]);
   }
 
-  void _openDKT(User u) => tabs.launch("https://dkttanulo.e-kreta.hu/sso?accessToken=${kretaClient.accessToken}",
+  void _openDKT(User u) => tabs.launch("https://dkttanulo.e-kreta.hu/sso?id_token=${kretaClient.idToken}",
       customTabsOption: tabs.CustomTabsOption(
         toolbarColor: Theme.of(context).scaffoldBackgroundColor,
         showPageTitle: true,
