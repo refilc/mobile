@@ -120,6 +120,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     user = Provider.of<UserProvider>(context);
     settings = Provider.of<SettingsProvider>(context);
     statusProvider = Provider.of<StatusProvider>(context, listen: false);
+    updateProvider = Provider.of<UpdateProvider>(context);
 
     List<String> nameParts = user.name?.split(" ") ?? ["?"];
     if (!settings.presentationMode) {
