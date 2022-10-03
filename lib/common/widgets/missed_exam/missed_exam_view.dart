@@ -1,4 +1,4 @@
-import 'package:filcnaplo/helpers/subject_icon.dart';
+import 'package:filcnaplo/helpers/subject.dart';
 import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:filcnaplo_kreta_api/models/lesson.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_sheet_menu/rounded_bottom_sheet.dart';
@@ -36,7 +36,7 @@ class MissedExamViewTile extends StatelessWidget {
         child: ListTile(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
           leading: Icon(
-            SubjectIcon.lookup(subject: lesson.subject),
+            SubjectIcon.resolve(subject: lesson.subject).data,
             color: AppColors.of(context).text.withOpacity(.8),
             size: 32.0,
           ),

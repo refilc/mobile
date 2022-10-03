@@ -1,7 +1,6 @@
-import 'package:filcnaplo/helpers/subject_icon.dart';
+import 'package:filcnaplo/helpers/subject.dart';
 import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:filcnaplo_kreta_api/models/exam.dart';
-import 'package:filcnaplo_kreta_api/models/subject.dart';
 import 'package:flutter/material.dart';
 import 'package:filcnaplo/utils/format.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -30,7 +29,7 @@ class ExamTile extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(top: 2.0),
                 child: Icon(
-                  SubjectIcon.lookup(subject: Subject.fromString(exam.subjectName)),
+                  SubjectIcon.resolve(subjectName: exam.subjectName).data,
                   size: 28.0,
                   color: AppColors.of(context).text.withOpacity(.75),
                 ),

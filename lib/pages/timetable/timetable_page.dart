@@ -133,7 +133,7 @@ class _TimetablePageState extends State<TimetablePage>
     user.addListener(_userListener);
 
     // Register listening for app state changes to refresh the timetable 
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
@@ -141,7 +141,7 @@ class _TimetablePageState extends State<TimetablePage>
     _tabController.dispose();
     _controller.dispose();
     user.removeListener(_userListener);
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 

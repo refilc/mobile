@@ -10,7 +10,7 @@ class HeroScrollView extends StatefulWidget {
       required this.icon,
       this.navBarItems = const [],
       this.onClose,
-      this.iconSize = 100.0,
+      this.iconSize = 64.0,
       this.scrollController})
       : super(key: key);
 
@@ -103,7 +103,8 @@ class _HeroScrollViewState extends State<HeroScrollView> {
                   ),
                 ),
                 Container(
-                  alignment: Alignment.bottomCenter,
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.only(top: 82),
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: Text(
                     widget.title.capital(),

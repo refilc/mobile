@@ -1,6 +1,7 @@
 // ignore_for_file: dead_code
 import 'dart:math';
 
+import 'package:filcnaplo/api/providers/live_card_provider.dart';
 import 'package:filcnaplo/ui/date_widget.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
@@ -22,7 +23,6 @@ import 'package:filcnaplo_mobile_ui/common/filter_bar.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_button.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
 import 'package:filcnaplo_mobile_ui/pages/home/live_card/live_card.dart';
-import 'package:filcnaplo_kreta_api/controllers/live_card_controller.dart';
 import 'package:filcnaplo_mobile_ui/screens/navigation/navigation_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -53,9 +53,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late NoteProvider noteProvider;
   late EventProvider eventProvider;
 
-  late LiveCardController _liveController;
   late PageController _pageController;
   ConfettiController? _confettiController;
+  late LiveCardProvider _liveCard;
+  late AnimationController _liveCardAnimation;
 
   late String greeting;
   late String firstName;
@@ -70,7 +71,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     _tabController = TabController(length: pageCount, vsync: this);
     _pageController = PageController();
     user = Provider.of<UserProvider>(context, listen: false);
-    _liveController = LiveCardController(context: context, vsync: this);
+    _liveCard = Provider.of<LiveCardProvider>(context, listen: false);
+    _liveCardAnimation = AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
+
+    _liveCardAnimation.animateTo(_liveCard.show ? 1.0 : 0.0, duration: Duration.zero);
 
     listOrder = List.generate(pageCount, (index) => "$index");
 
@@ -107,7 +111,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   void dispose() {
     // _filterController.dispose();
-    _liveController.dispose();
     _pageController.dispose();
     _tabController.dispose();
     _confettiController?.dispose();
@@ -121,6 +124,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     settings = Provider.of<SettingsProvider>(context);
     statusProvider = Provider.of<StatusProvider>(context, listen: false);
     updateProvider = Provider.of<UpdateProvider>(context);
+    _liveCard = Provider.of<LiveCardProvider>(context);
+
+    _liveCardAnimation.animateTo(_liveCard.show ? 1.0 : 0.0);
 
     List<String> nameParts = user.name?.split(" ") ?? ["?"];
     if (!settings.presentationMode) {
@@ -138,7 +144,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                 headerSliverBuilder: (context, _) => [
                       AnimatedBuilder(
-                        animation: _liveController.animation,
+                        animation: _liveCardAnimation,
                         builder: (context, child) {
                           return SliverAppBar(
                             automaticallyImplyLeading: false,
@@ -183,7 +189,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               ),
                             ],
 
-                            expandedHeight: _liveController.animation.value * 234.0,
+                            expandedHeight: _liveCardAnimation.value * 234.0,
 
                             // Live Card
                             flexibleSpace: FlexibleSpaceBar(
@@ -194,9 +200,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   top: 58.0 + MediaQuery.of(context).padding.top,
                                   bottom: 52.0,
                                 ),
-                                child: LiveCard(
-                                  controller: _liveController,
-                                ),
+                                child: const LiveCard(),
                               ),
                             ),
                             shadowColor: Colors.black,

@@ -1,4 +1,4 @@
-import 'package:filcnaplo/helpers/subject_icon.dart';
+import 'package:filcnaplo/helpers/subject.dart';
 import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:filcnaplo/ui/date_widget.dart';
 import 'package:filcnaplo/utils/reverse_search.dart';
@@ -56,7 +56,7 @@ class AbsenceSubjectView extends StatelessWidget {
     return Scaffold(
       body: HeroScrollView(
         title: subject.name,
-        icon: SubjectIcon.lookup(subject: subject),
+        icon: SubjectIcon.resolve(subject: subject).data,
         child: AbsenceSubjectViewContainer(
           child: CupertinoScrollbar(
             child: ListView.builder(

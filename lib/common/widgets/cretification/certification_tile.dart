@@ -1,4 +1,4 @@
-import 'package:filcnaplo/helpers/subject_icon.dart';
+import 'package:filcnaplo/helpers/subject.dart';
 import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:filcnaplo_kreta_api/models/grade.dart';
 import 'package:filcnaplo/ui/widgets/grade/grade_tile.dart';
@@ -65,7 +65,7 @@ class CertificationTile extends StatelessWidget {
                 )
               : Padding(
                   padding: const EdgeInsets.only(left: 2.0),
-                  child: Icon(SubjectIcon.lookup(subject: grade.subject), size: 28.0, color: AppColors.of(context).text.withOpacity(.75)),
+                  child: Icon(SubjectIcon.resolve(subject: grade.subject).data, size: 28.0, color: AppColors.of(context).text.withOpacity(.75)),
                 ),
           minLeadingWidth: isSubjectView ? 32.0 : 42.0,
           trailing: isSubjectView

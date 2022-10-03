@@ -1,4 +1,4 @@
-import 'package:filcnaplo/helpers/subject_icon.dart';
+import 'package:filcnaplo/helpers/subject.dart';
 import 'package:filcnaplo_kreta_api/models/homework.dart';
 import 'package:filcnaplo/utils/format.dart';
 import 'package:filcnaplo_mobile_ui/common/detail.dart';
@@ -40,7 +40,7 @@ class HomeworkView extends StatelessWidget {
           // Header
           ListTile(
             leading: Icon(
-              SubjectIcon.lookup(subjectName: homework.subjectName),
+              SubjectIcon.resolve(subjectName: homework.subjectName).data,
               size: 36.0,
             ),
             title: Text(

@@ -1,4 +1,4 @@
-import 'package:filcnaplo/helpers/subject_icon.dart';
+import 'package:filcnaplo/helpers/subject.dart';
 import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:filcnaplo_kreta_api/models/exam.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_card.dart';
@@ -27,7 +27,7 @@ class ExamView extends StatelessWidget {
             leading: Padding(
               padding: const EdgeInsets.only(left: 6.0),
               child: Icon(
-                SubjectIcon.lookup(subjectName: exam.subjectName),
+                SubjectIcon.resolve(subjectName: exam.subjectName).data,
                 size: 36.0,
                 color: AppColors.of(context).text.withOpacity(.75),
               ),

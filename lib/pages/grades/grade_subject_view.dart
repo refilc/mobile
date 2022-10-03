@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:animations/animations.dart';
 import 'package:filcnaplo_kreta_api/providers/grade_provider.dart';
 import 'package:filcnaplo/helpers/average_helper.dart';
-import 'package:filcnaplo/helpers/subject_icon.dart';
+import 'package:filcnaplo/helpers/subject.dart';
 import 'package:filcnaplo_kreta_api/models/grade.dart';
 import 'package:filcnaplo_kreta_api/models/subject.dart';
 import 'package:filcnaplo_mobile_ui/common/average_display.dart';
@@ -195,7 +195,7 @@ class _GradeSubjectViewState extends State<GradeSubjectView> {
                 if (average != 0) Center(child: AverageDisplay(average: average)),
                 const SizedBox(width: 12.0),
               ],
-              icon: SubjectIcon.lookup(subject: widget.subject),
+              icon: SubjectIcon.resolve(subject: widget.subject).data,
               scrollController: _scrollController,
               title: widget.subject.name,
               child: SubjectGradesContainer(

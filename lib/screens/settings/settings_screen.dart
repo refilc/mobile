@@ -25,10 +25,12 @@ import 'package:filcnaplo_mobile_ui/common/widgets/update/updates_view.dart';
 import 'package:filcnaplo_mobile_ui/screens/news/news_screen.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/accounts/account_tile.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/accounts/account_view.dart';
+import 'package:filcnaplo_mobile_ui/screens/settings/debug/subject_icon_gallery.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/privacy_view.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/settings_helper.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/supporters/supporters_screen.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart' as tabs;
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -359,6 +361,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
         ),
+
+        if (kDebugMode)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
+            child: Panel(
+              title: const Text("Debug"),
+              child: Column(
+                children: [
+                  PanelButton(
+                    title: const Text("Subject Icon Gallery"),
+                    leading: const Icon(CupertinoIcons.rectangle_3_offgrid_fill),
+                    trailing: const Icon(Icons.arrow_forward),
+                    onPressed: () {
+                      Navigator.of(context, rootNavigator: true).push(
+                        CupertinoPageRoute(builder: (context) => const SubjectIconGallery()),
+                      );
+                    },
+                  )
+                ],
+              ),
+            ),
+          ),
 
         // Secret Settings
         if (__ss)

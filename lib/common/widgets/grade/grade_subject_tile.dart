@@ -1,4 +1,4 @@
-import 'package:filcnaplo/helpers/subject_icon.dart';
+import 'package:filcnaplo/helpers/subject.dart';
 import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:filcnaplo/utils/format.dart';
 import 'package:filcnaplo_kreta_api/models/subject.dart';
@@ -31,7 +31,7 @@ class GradeSubjectTile extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         visualDensity: VisualDensity.compact,
         onTap: onTap,
-        leading: Icon(SubjectIcon.lookup(subject: subject), color: textColor.withOpacity(.75)),
+        leading: Icon(SubjectIcon.resolve(subject: subject).data, color: textColor.withOpacity(.75)),
         title: Text(
           subject.name.capital(),
           maxLines: 2,
