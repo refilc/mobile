@@ -19,6 +19,7 @@ class LiveCardWidget extends StatelessWidget {
     this.progressCurrent,
     this.progressMax,
     this.progressAccuracy = ProgressAccuracy.minutes,
+    this.onProgressTap,
   }) : super(key: key);
 
   final String? leading;
@@ -31,6 +32,7 @@ class LiveCardWidget extends StatelessWidget {
   final double? progressCurrent;
   final double? progressMax;
   final ProgressAccuracy? progressAccuracy;
+  final Function()? onProgressTap;
 
   @override
   Widget build(BuildContext context) {
@@ -83,13 +85,26 @@ class LiveCardWidget extends StatelessWidget {
                                 child: Text.rich(
                                   TextSpan(
                                     children: [
-                                      TextSpan(
-                                        text: title,
-                                      ),
+                                      TextSpan(text: title!),
                                       if (subtitle != null)
-                                        TextSpan(
-                                          text: "  " + subtitle!,
-                                          style: TextStyle(fontSize: 14.0, color: AppColors.of(context).text.withOpacity(.75)),
+                                        WidgetSpan(
+                                          child: Container(
+                                            margin: const EdgeInsets.only(left: 6.0, bottom: 3.0),
+                                            padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0),
+                                            decoration: BoxDecoration(
+                                              color: Theme.of(context).colorScheme.secondary.withOpacity(.3),
+                                              borderRadius: BorderRadius.circular(4.0),
+                                            ),
+                                            child: Text(
+                                              subtitle!,
+                                              style: TextStyle(
+                                                height: 1.2,
+                                                fontSize: 14.0,
+                                                fontWeight: FontWeight.w600,
+                                                color: Theme.of(context).colorScheme.secondary,
+                                              ),
+                                            ),
+                                          ),
                                         ),
                                     ],
                                   ),
@@ -102,7 +117,7 @@ class LiveCardWidget extends StatelessWidget {
                             if (title != null) const SizedBox(width: 6.0),
                             if (icon != null)
                               Padding(
-                                padding: const EdgeInsets.all(2.0),
+                                padding: const EdgeInsets.symmetric(vertical: 4.0),
                                 child: Icon(
                                   icon,
                                   size: 26.0,
@@ -141,35 +156,49 @@ class LiveCardWidget extends StatelessWidget {
                         child: Text.rich(
                           TextSpan(
                             children: [
-                              // const TextSpan(text: "Következő: "),
-                              TextSpan(
-                                text: nextSubject,
-                                style: TextStyle(
-                                  color: AppColors.of(context).text.withOpacity(.8),
-                                  fontWeight: FontWeight.w600,
+                              TextSpan(text: nextSubject!),
+                              if (nextRoom != null)
+                                WidgetSpan(
+                                  child: Container(
+                                    margin: const EdgeInsets.only(left: 4.0),
+                                    padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 1.5),
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).colorScheme.secondary.withOpacity(.25),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                    child: Text(
+                                      nextRoom!,
+                                      style: TextStyle(
+                                        height: 1.1,
+                                        fontSize: 11.0,
+                                        fontWeight: FontWeight.w600,
+                                        color: Theme.of(context).colorScheme.secondary.withOpacity(.9),
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              if (nextRoom != null) const TextSpan(text: " • ", style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold)),
-                              if (nextRoom != null) TextSpan(text: nextRoom, style: const TextStyle(fontSize: 12.0)),
                             ],
+                          ),
+                          style: TextStyle(
+                            color: AppColors.of(context).text.withOpacity(.8),
+                            fontWeight: FontWeight.w600,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           softWrap: false,
+                        ),
+                      ),
+                    if (progressCurrent != null && progressMax != null)
+                      GestureDetector(
+                        onTap: onProgressTap,
+                        child: Text(
+                          "remaining ${progressAccuracy == ProgressAccuracy.minutes ? 'min' : 'sec'}"
+                              .plural((progressMax! - progressCurrent!).round()),
+                          maxLines: 1,
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                             color: AppColors.of(context).text.withOpacity(.75),
                           ),
-                        ),
-                      ),
-                    if (nextSubject == null) const Spacer(),
-                    if (progressCurrent != null && progressMax != null)
-                      Text(
-                        "remaining ${progressAccuracy == ProgressAccuracy.minutes ? 'min' : 'sec'}".plural((progressMax! - progressCurrent!).round()),
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.of(context).text.withOpacity(.75),
                         ),
                       )
                   ],
