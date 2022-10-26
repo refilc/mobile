@@ -77,9 +77,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     _liveCardAnimation.animateTo(_liveCard.show ? 1.0 : 0.0, duration: Duration.zero);
 
     listOrder = List.generate(pageCount, (index) => "$index");
-
-    setGreeting();
-    user.addListener(setGreeting);
   }
 
   @override
@@ -88,7 +85,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     _pageController.dispose();
     _tabController.dispose();
     _confettiController?.dispose();
-    user.removeListener(setGreeting);
 
     super.dispose();
   }
@@ -133,6 +129,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     _liveCard = Provider.of<LiveCardProvider>(context);
 
     _liveCardAnimation.animateTo(_liveCard.show ? 1.0 : 0.0);
+
+    setGreeting();
 
     List<String> nameParts = user.name?.split(" ") ?? ["?"];
     if (!settings.presentationMode) {

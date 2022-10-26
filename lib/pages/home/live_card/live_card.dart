@@ -2,6 +2,8 @@ import 'package:animations/animations.dart';
 import 'package:filcnaplo/api/providers/user_provider.dart';
 import 'package:filcnaplo/helpers/subject.dart';
 import 'package:filcnaplo/icons/filc_icons.dart';
+import 'package:filcnaplo/theme/colors/colors.dart';
+import 'package:filcnaplo_mobile_ui/pages/home/live_card/heads_up_countdown.dart';
 import 'package:flutter/material.dart';
 import 'package:filcnaplo/utils/format.dart';
 import 'package:filcnaplo/api/providers/live_card_provider.dart';
@@ -107,6 +109,13 @@ class _LiveCardState extends State<LiveCard> {
           progressMax: showMinutes ? maxTime / 60 : maxTime,
           progressCurrent: showMinutes ? elapsedTime / 60 : elapsedTime,
           progressAccuracy: showMinutes ? ProgressAccuracy.minutes : ProgressAccuracy.seconds,
+          onProgressTap: () {
+            showDialog(
+              barrierColor: Colors.black,
+              context: context,
+              builder: (context) => HeadsUpCountdown(maxTime: maxTime, elapsedTime: elapsedTime),
+            );
+          },
         );
         break;
       case LiveCardState.duringBreak:

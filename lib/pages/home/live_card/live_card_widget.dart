@@ -206,13 +206,16 @@ class _LiveCardWidgetState extends State<LiveCardWidget> {
                         if (widget.progressCurrent != null && widget.progressMax != null)
                           GestureDetector(
                             onTap: widget.onProgressTap,
-                            child: Text(
-                              "remaining ${widget.progressAccuracy == ProgressAccuracy.minutes ? 'min' : 'sec'}"
-                                  .plural((widget.progressMax! - widget.progressCurrent!).round()),
-                              maxLines: 1,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.of(context).text.withOpacity(.75),
+                            child: Container(
+                              color: Colors.transparent,
+                              child: Text(
+                                "remaining ${widget.progressAccuracy == ProgressAccuracy.minutes ? 'min' : 'sec'}"
+                                    .plural((widget.progressMax! - widget.progressCurrent!).round()),
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.of(context).text.withOpacity(.75),
+                                ),
                               ),
                             ),
                           )
