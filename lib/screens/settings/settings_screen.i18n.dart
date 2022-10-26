@@ -25,6 +25,7 @@ extension SettingsLocalization on String {
           "grade_colors": "Grade Colors",
           "notifications": "Notifications",
           "news": "News",
+          "extras": "Extras",
           "about": "About",
           "supporters": "Supporters",
           "privacy": "Privacy Policy",
@@ -51,6 +52,7 @@ extension SettingsLocalization on String {
           "hurry": "Hurry",
           "sync": "Synchronize",
           "sync_help": "Press the Synchronize button when the bell rings.",
+          "surprise_grades": "Surprise Grades",
         },
         "hu_hu": {
           "personal_details": "Személyes információk",
@@ -74,6 +76,7 @@ extension SettingsLocalization on String {
           "grade_colors": "Jegyek színei",
           "notifications": "Értesítések",
           "news": "Hírek",
+          "extras": "Extrák",
           "about": "Névjegy",
           "supporters": "Támogatók",
           "privacy": "Adatvédelmi irányelvek",
@@ -101,6 +104,7 @@ extension SettingsLocalization on String {
           "hurry": "Siettetés",
           "sync": "Szinkronizálás",
           "sync_help": "Csengetéskor nyomd meg a Szinkronizálás gombot.",
+          "surprise_grades": "Meglepetés jegyek",
         },
         "de_de": {
           "personal_details": "Persönliche Angaben",
@@ -124,6 +128,7 @@ extension SettingsLocalization on String {
           "grade_colors": "Grad Farben",
           "notifications": "Benachrichtigungen",
           "news": "Nachrichten",
+          "extras": "Extras",
           "about": "Informationen",
           "supporters": "Unterstützer",
           "privacy": "Datenschutzbestimmungen",
@@ -150,6 +155,7 @@ extension SettingsLocalization on String {
           "hurry": "Eile",
           "sync": "Synchronisieren",
           "sync_help": "Drücken Sie die Sync-Taste, wenn die Glocke läutet.",
+          "surprise_grades": "Überraschungsnoten",
         },
       };
 

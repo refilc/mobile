@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
+import 'package:filcnaplo/models/settings.dart';
 import 'package:filcnaplo_kreta_api/providers/grade_provider.dart';
 import 'package:filcnaplo/api/providers/user_provider.dart';
 import 'package:filcnaplo/theme/colors/colors.dart';
@@ -84,21 +85,24 @@ class _GradesPageState extends State<GradesPage> {
 
     if (subjectAvg > 0) {
       tiles.add(Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             child: StatisticsTile(
+              fill: true,
               title: AutoSizeText(
                 "subjectavg".i18n,
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              value: subjectAvg,
+              value: Provider.of<SettingsProvider>(context).goodStudent ? 5.0 : subjectAvg,
             ),
           ),
           const SizedBox(width: 24.0),
           Expanded(
             child: StatisticsTile(
+              outline: true,
               title: AutoSizeText(
                 "classavg".i18n,
                 textAlign: TextAlign.center,

@@ -120,6 +120,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     }
   }
 
+  void openingFun() {
+    if (!settings.gradeOpeningFun) return;
+  }
+
   @override
   Widget build(BuildContext context) {
     user = Provider.of<UserProvider>(context);
