@@ -12,7 +12,7 @@ class AverageDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double average = Provider.of<SettingsProvider>(context).goodStudent ? 5.0 : this.average;
+    double average = Provider.of<SettingsProvider>(context).goodStudent && !border ? 5.0 : this.average;
 
     Color color = gradeColor(context: context, value: average);
 
