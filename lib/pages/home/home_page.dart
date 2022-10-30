@@ -78,6 +78,22 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
     listOrder = List.generate(pageCount, (index) => "$index");
 
+    setGreeting();
+    user.addListener(setGreeting);
+  }
+
+  @override
+  void dispose() {
+    // _filterController.dispose();
+    _pageController.dispose();
+    _tabController.dispose();
+    _confettiController?.dispose();
+    user.removeListener(setGreeting);
+
+    super.dispose();
+  }
+
+  void setGreeting() {
     DateTime now = DateTime.now();
     if (now.isBefore(DateTime(now.year, DateTime.august, 31)) && now.isAfter(DateTime(now.year, DateTime.june, 14))) {
       greeting = "goodrest";
@@ -106,16 +122,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     } else {
       greeting = "goodevening";
     }
-  }
-
-  @override
-  void dispose() {
-    // _filterController.dispose();
-    _pageController.dispose();
-    _tabController.dispose();
-    _confettiController?.dispose();
-
-    super.dispose();
   }
 
   @override
