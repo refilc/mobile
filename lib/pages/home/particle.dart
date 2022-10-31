@@ -20,6 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'dart:math';
 import 'package:flutter/material.dart';
 

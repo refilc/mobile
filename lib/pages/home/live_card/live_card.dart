@@ -2,7 +2,6 @@ import 'package:animations/animations.dart';
 import 'package:filcnaplo/api/providers/user_provider.dart';
 import 'package:filcnaplo/helpers/subject.dart';
 import 'package:filcnaplo/icons/filc_icons.dart';
-import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:filcnaplo_mobile_ui/pages/home/live_card/heads_up_countdown.dart';
 import 'package:flutter/material.dart';
 import 'package:filcnaplo/utils/format.dart';

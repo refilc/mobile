@@ -1,10 +1,8 @@
 // ignore_for_file: dead_code
 import 'dart:math';
 
-import 'package:filcnaplo/api/providers/database_provider.dart';
 import 'package:filcnaplo/api/providers/live_card_provider.dart';
 import 'package:filcnaplo/ui/date_widget.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/grade/surprise_grade.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
 import 'package:filcnaplo/api/providers/sync.dart';
