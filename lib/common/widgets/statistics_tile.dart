@@ -71,7 +71,7 @@ class StatisticsTile extends StatelessWidget {
             margin: const EdgeInsets.only(top: 4.0),
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
             decoration: BoxDecoration(
-              color: fill ? (color ?? gradeColor(context: context, value: value)).withOpacity(.25) : null,
+              color: fill ? (color ?? gradeColor(context: context, value: value)).withOpacity(.2) : null,
               border: outline || fill
                   ? Border.all(
                       color: (color ?? gradeColor(context: context, value: value)).withOpacity(outline ? 1.0 : 0.0),

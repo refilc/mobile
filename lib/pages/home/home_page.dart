@@ -1,8 +1,10 @@
 // ignore_for_file: dead_code
 import 'dart:math';
 
+import 'package:filcnaplo/api/providers/database_provider.dart';
 import 'package:filcnaplo/api/providers/live_card_provider.dart';
 import 'package:filcnaplo/ui/date_widget.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/grade/surprise_grade.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
 import 'package:filcnaplo/api/providers/sync.dart';
@@ -120,10 +122,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     }
   }
 
-  void openingFun() {
-    if (!settings.gradeOpeningFun) return;
-  }
-
   @override
   Widget build(BuildContext context) {
     user = Provider.of<UserProvider>(context);
@@ -131,6 +129,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     statusProvider = Provider.of<StatusProvider>(context, listen: false);
     updateProvider = Provider.of<UpdateProvider>(context);
     _liveCard = Provider.of<LiveCardProvider>(context);
+    gradeProvider = Provider.of<GradeProvider>(context);
 
     _liveCardAnimation.animateTo(_liveCard.show ? 1.0 : 0.0);
 

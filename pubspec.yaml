@@ -31,6 +31,8 @@ dependencies:
   live_activities: ^1.0.0
   animated_flip_counter: ^0.2.5
   lottie: ^1.4.3
+  rive: ^0.9.1
+  animated_background: ^2.0.0
 
 dev_dependencies:
   flutter_lints: ^1.0.0
