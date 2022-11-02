@@ -10,8 +10,8 @@ import 'package:filcnaplo_mobile_ui/common/empty.dart';
 import 'package:filcnaplo_mobile_ui/common/filter_bar.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_button.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
-import 'package:filcnaplo/ui/widgets/message/message_tile.dart';
 import 'package:filcnaplo/ui/filter/sort.dart';
+import 'package:filcnaplo_mobile_ui/common/widgets/message/message_viewable.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:filcnaplo/utils/color.dart';
@@ -107,7 +107,7 @@ class _MessagesPageState extends State<MessagesPage> with TickerProviderStateMix
           if (message.type == MessageType.inbox) {
             items.add(DateWidget(
               date: message.date,
-              widget: MessageTile(message),
+              widget: MessageViewable(message),
             ));
           }
         }
@@ -117,7 +117,7 @@ class _MessagesPageState extends State<MessagesPage> with TickerProviderStateMix
           if (message.type == MessageType.sent && !messageProvider.messages.any((m) => message.id == m.id)) {
             items.add(DateWidget(
               date: message.date,
-              widget: MessageTile(message),
+              widget: MessageViewable(message),
             ));
           }
         }
@@ -127,7 +127,7 @@ class _MessagesPageState extends State<MessagesPage> with TickerProviderStateMix
           if (message.type == MessageType.trash) {
             items.add(DateWidget(
               date: message.date,
-              widget: MessageTile(message),
+              widget: MessageViewable(message),
             ));
           }
         }
@@ -137,7 +137,7 @@ class _MessagesPageState extends State<MessagesPage> with TickerProviderStateMix
           if (message.type == MessageType.draft) {
             items.add(DateWidget(
               date: message.date,
-              widget: MessageTile(message),
+              widget: MessageViewable(message),
             ));
           }
         }

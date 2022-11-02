@@ -91,8 +91,8 @@ class PoppingCircle extends Particle {
       CircleMirror(
         numberOfParticles: 4,
         child: AnimatedPositionedParticle(
-            begin: Offset(0.0, 5.0),
-            end: Offset(0.0, 15.0),
+            begin: const Offset(0.0, 5.0),
+            end: const Offset(0.0, 15.0),
             child: FadingRect(
               color: color,
               height: 7.0,
@@ -109,25 +109,25 @@ class Firework extends Particle {
   void paint(Canvas canvas, Size size, double progress, int seed) {
     FourRandomSlotParticle(children: [
       IntervalParticle(
-        interval: Interval(0.0, 0.5, curve: Curves.easeIn),
+        interval: const Interval(0.0, 0.5, curve: Curves.easeIn),
         child: PoppingCircle(
           color: Colors.deepOrangeAccent,
         ),
       ),
       IntervalParticle(
-        interval: Interval(0.2, 0.5, curve: Curves.easeIn),
+        interval: const Interval(0.2, 0.5, curve: Curves.easeIn),
         child: PoppingCircle(
           color: Colors.green,
         ),
       ),
       IntervalParticle(
-        interval: Interval(0.4, 0.8, curve: Curves.easeIn),
+        interval: const Interval(0.4, 0.8, curve: Curves.easeIn),
         child: PoppingCircle(
           color: Colors.indigo,
         ),
       ),
       IntervalParticle(
-        interval: Interval(0.5, 1.0, curve: Curves.easeIn),
+        interval: const Interval(0.5, 1.0, curve: Curves.easeIn),
         child: PoppingCircle(
           color: Colors.teal,
         ),
@@ -150,7 +150,7 @@ class CircleMirror extends Particle {
 
   CircleMirror.builder({required this.particleBuilder, required this.initialRotation, required this.numberOfParticles});
 
-  CircleMirror({required Particle child, required this.initialRotation, required this.numberOfParticles}) : this.particleBuilder = ((index) => child);
+  CircleMirror({required Particle child, required this.initialRotation, required this.numberOfParticles}) : particleBuilder = ((index) => child);
 
   @override
   void paint(Canvas canvas, Size size, double progress, seed) {
@@ -180,7 +180,7 @@ class RectangleMirror extends Particle {
   RectangleMirror.builder({required this.particleBuilder, required this.initialDistance, required this.numberOfParticles});
 
   RectangleMirror({required Particle child, required this.initialDistance, required this.numberOfParticles})
-      : this.particleBuilder = ((index) => child);
+      : particleBuilder = ((index) => child);
 
   @override
   void paint(Canvas canvas, Size size, double progress, seed) {
