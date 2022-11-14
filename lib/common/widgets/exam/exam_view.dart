@@ -27,7 +27,7 @@ class ExamView extends StatelessWidget {
             leading: Padding(
               padding: const EdgeInsets.only(left: 6.0),
               child: Icon(
-                SubjectIcon.resolve(subjectName: exam.subjectName).data,
+                SubjectIcon.resolveVariant(subjectName: exam.subjectName, context: context),
                 size: 36.0,
                 color: AppColors.of(context).text.withOpacity(.75),
               ),

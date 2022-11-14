@@ -56,7 +56,7 @@ class AbsenceSubjectView extends StatelessWidget {
     return Scaffold(
       body: HeroScrollView(
         title: subject.name,
-        icon: SubjectIcon.resolve(subject: subject).data,
+        icon: SubjectIcon.resolveVariant(subject: subject, context: context),
         child: AbsenceSubjectViewContainer(
           child: CupertinoScrollbar(
             child: ListView.builder(

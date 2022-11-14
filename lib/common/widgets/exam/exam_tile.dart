@@ -29,7 +29,7 @@ class ExamTile extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(top: 2.0),
                 child: Icon(
-                  SubjectIcon.resolve(subjectName: exam.subjectName).data,
+                  SubjectIcon.resolveVariant(subjectName: exam.subjectName, context: context),
                   size: 28.0,
                   color: AppColors.of(context).text.withOpacity(.75),
                 ),

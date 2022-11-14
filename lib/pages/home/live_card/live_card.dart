@@ -101,7 +101,7 @@ class _LiveCardState extends State<LiveCard> {
           leading: liveCard.currentLesson!.lessonIndex + (RegExp(r'\d').hasMatch(liveCard.currentLesson!.lessonIndex) ? "." : ""),
           title: liveCard.currentLesson!.subject.name.capital(),
           subtitle: liveCard.currentLesson!.room,
-          icon: SubjectIcon.resolve(subject: liveCard.currentLesson!.subject).data,
+          icon: SubjectIcon.resolveVariant(subject: liveCard.currentLesson!.subject, context: context),
           description: liveCard.currentLesson!.description != "" ? Text(liveCard.currentLesson!.description) : null,
           nextSubject: liveCard.nextLesson?.subject.name.capital(),
           nextRoom: liveCard.nextLesson?.room,

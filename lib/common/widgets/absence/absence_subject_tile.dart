@@ -28,7 +28,7 @@ class AbsenceSubjectTile extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         visualDensity: VisualDensity.compact,
         onTap: onTap,
-        leading: Icon(SubjectIcon.resolve(subject: subject).data, size: 32.0),
+        leading: Icon(SubjectIcon.resolveVariant(subject: subject, context: context), size: 32.0),
         title: Text(
           subject.name.capital(),
           maxLines: 2,

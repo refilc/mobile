@@ -195,7 +195,7 @@ class _GradeSubjectViewState extends State<GradeSubjectView> {
                 if (average != 0) Center(child: AverageDisplay(average: average)),
                 const SizedBox(width: 12.0),
               ],
-              icon: SubjectIcon.resolve(subject: widget.subject).data,
+              icon: SubjectIcon.resolveVariant(subject: widget.subject, context: context),
               scrollController: _scrollController,
               title: widget.subject.name,
               child: SubjectGradesContainer(

@@ -25,6 +25,8 @@ import 'package:provider/provider.dart';
 import 'package:filcnaplo_mobile_ui/common/screens.i18n.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/settings_screen.i18n.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
+import 'package:filcnaplo/models/icon_pack.dart';
+import 'package:filcnaplo/utils/format.dart';
 
 class SettingsHelper {
   static const Map<String, String> langMap = {"en": "🇬🇧  English", "hu": "🇭🇺  Magyar", "de": "🇩🇪  Deutsch"};
@@ -67,6 +69,33 @@ class SettingsHelper {
             children: [
               Text(langMap.values.toList()[index]),
               if (lang == I18n.of(context).locale.languageCode)
+                Icon(
+                  Icons.check_circle,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+            ],
+          ),
+        );
+      }),
+    );
+  }
+
+  static void iconPack(BuildContext context) {
+    final settings = Provider.of<SettingsProvider>(context, listen: false);
+    showBottomSheetMenu(
+      context,
+      items: List.generate(IconPack.values.length, (index) {
+        IconPack current = IconPack.values[index];
+        return BottomSheetMenuItem(
+          onPressed: () {
+            settings.update(context, iconPack: current);
+            Navigator.of(context).maybePop();
+          },
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(current.name.capital()),
+              if (current == settings.iconPack)
                 Icon(
                   Icons.check_circle,
                   color: Theme.of(context).colorScheme.secondary,

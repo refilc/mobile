@@ -65,7 +65,8 @@ class CertificationTile extends StatelessWidget {
                 )
               : Padding(
                   padding: const EdgeInsets.only(left: 2.0),
-                  child: Icon(SubjectIcon.resolve(subject: grade.subject).data, size: 28.0, color: AppColors.of(context).text.withOpacity(.75)),
+                  child: Icon(SubjectIcon.resolveVariant(subject: grade.subject, context: context),
+                      size: 28.0, color: AppColors.of(context).text.withOpacity(.75)),
                 ),
           minLeadingWidth: isSubjectView ? 32.0 : 42.0,
           trailing: isSubjectView

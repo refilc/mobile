@@ -532,6 +532,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     activeColor: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
+                PanelButton(
+                  onPressed: () {
+                    SettingsHelper.iconPack(context);
+                    setState(() {});
+                  },
+                  title: Text("icon_pack".i18n),
+                  leading: const Icon(FeatherIcons.grid),
+                  trailing: Text(settings.iconPack.name.capital()),
+                ),
               ],
             ),
           ),

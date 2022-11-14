@@ -53,6 +53,7 @@ extension SettingsLocalization on String {
           "sync": "Synchronize",
           "sync_help": "Press the Synchronize button when the bell rings.",
           "surprise_grades": "Surprise Grades",
+          "icon_pack": "Icon Pack",
         },
         "hu_hu": {
           "personal_details": "Személyes információk",
@@ -105,6 +106,7 @@ extension SettingsLocalization on String {
           "sync": "Szinkronizálás",
           "sync_help": "Csengetéskor nyomd meg a Szinkronizálás gombot.",
           "surprise_grades": "Meglepetés jegyek",
+          "icon_pack": "Ikon séma",
         },
         "de_de": {
           "personal_details": "Persönliche Angaben",
@@ -156,6 +158,7 @@ extension SettingsLocalization on String {
           "sync": "Synchronisieren",
           "sync_help": "Drücken Sie die Sync-Taste, wenn die Glocke läutet.",
           "surprise_grades": "Überraschungsnoten",
+          "icon_pack": "Icon-Pack",
         },
       };
 
