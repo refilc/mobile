@@ -8,6 +8,7 @@ import 'package:filcnaplo_mobile_ui/common/material_action_button.dart';
 import 'package:filcnaplo/ui/widgets/grade/grade_tile.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/calculator/grade_calculator_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'grade_calculator.i18n.dart';
 
@@ -22,6 +23,8 @@ class GradeCalculator extends StatefulWidget {
 
 class _GradeCalculatorState extends State<GradeCalculator> {
   late GradeCalculatorProvider calculatorProvider;
+
+  final _weightController = TextEditingController(text: "100");
 
   double newValue = 5.0;
   double newWeight = 100.0;
@@ -58,7 +61,7 @@ class _GradeCalculatorState extends State<GradeCalculator> {
               ),
             ),
             Container(
-              width: 70.0,
+              width: 80.0,
               padding: const EdgeInsets.only(right: 12.0),
               child: Center(child: GradeValueWidget(GradeValue(newValue.toInt(), "", "", 0))),
             ),
@@ -70,21 +73,44 @@ class _GradeCalculatorState extends State<GradeCalculator> {
               child: Slider(
                 thumbColor: Theme.of(context).colorScheme.secondary,
                 activeColor: Theme.of(context).colorScheme.secondary,
-                value: newWeight,
+                value: newWeight.clamp(50, 400),
                 min: 50.0,
                 max: 400.0,
                 divisions: 7,
                 label: "${newWeight.toInt()}%",
-                onChanged: (value) => setState(() => newWeight = value),
+                onChanged: (value) => setState(() {
+                  newWeight = value;
+                  _weightController.text = newWeight.toInt().toString();
+                }),
               ),
             ),
             Container(
-              width: 70.0,
+              width: 80.0,
               padding: const EdgeInsets.only(right: 12.0),
               child: Center(
-                child: Text(
-                  "${newWeight.toInt()}%",
-                  style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18.0),
+                child: TextField(
+                  controller: _weightController,
+                  style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 22.0),
+                  autocorrect: false,
+                  textAlign: TextAlign.right,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                    LengthLimitingTextInputFormatter(3),
+                  ],
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    hintText: "100",
+                    suffixText: "%",
+                    suffixStyle: TextStyle(fontSize: 18.0),
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      newWeight = double.tryParse(value) ?? 100.0;
+                    });
+                  },
                 ),
               ),
             ),
