@@ -39,6 +39,7 @@ import 'package:filcnaplo/utils/color.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'settings_screen.i18n.dart';
 import 'package:flutter/services.dart';
+import 'package:filcnaplo_premium/ui/mobile/settings/nickname.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -114,11 +115,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         icon: Icon(FeatherIcons.grid, color: AppColors.of(context).teal),
         title: Text("open_dkt".i18n),
       ),
-      // BottomSheetMenuItem(
-      //   onPressed: () {},
-      //   icon: Icon(FeatherIcons.edit2),
-      //   title: Text("edit_nickname".i18n),
-      // ),
+      const UserMenuNickname(),
       // BottomSheetMenuItem(
       //   onPressed: () {},
       //   icon: Icon(FeatherIcons.camera),

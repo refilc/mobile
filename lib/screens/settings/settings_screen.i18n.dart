@@ -35,6 +35,7 @@ extension SettingsLocalization on String {
           "vlight": "Light",
           "vmedium": "Medium",
           "vstrong": "Strong",
+          "cancel": "Cancel",
           "done": "Done",
           "reset": "Reset",
           "open": "Open",
@@ -54,6 +55,7 @@ extension SettingsLocalization on String {
           "sync_help": "Press the Synchronize button when the bell rings.",
           "surprise_grades": "Surprise Grades",
           "icon_pack": "Icon Pack",
+          "change_username": "Set a nickname",
         },
         "hu_hu": {
           "personal_details": "Személyes információk",
@@ -87,6 +89,7 @@ extension SettingsLocalization on String {
           "vlight": "Alacsony",
           "vmedium": "Közepes",
           "vstrong": "Erős",
+          "cancel": "Mégsem",
           "done": "Kész",
           "reset": "Visszaállítás",
           "open": "Megnyitás",
@@ -107,6 +110,7 @@ extension SettingsLocalization on String {
           "sync_help": "Csengetéskor nyomd meg a Szinkronizálás gombot.",
           "surprise_grades": "Meglepetés jegyek",
           "icon_pack": "Ikon séma",
+          "change_username": "Becenév beállítása",
         },
         "de_de": {
           "personal_details": "Persönliche Angaben",
@@ -140,6 +144,7 @@ extension SettingsLocalization on String {
           "vlight": "Leicht",
           "vmedium": "Mittel",
           "vstrong": "Stark",
+          "cancel": "Abbrechen",
           "done": "Fertig",
           "reset": "Zurücksetzen",
           "open": "Öffnen",
@@ -159,6 +164,7 @@ extension SettingsLocalization on String {
           "sync_help": "Drücken Sie die Sync-Taste, wenn die Glocke läutet.",
           "surprise_grades": "Überraschungsnoten",
           "icon_pack": "Icon-Pack",
+          "change_username": "Einen Spitznamen festlegen",
         },
       };
 

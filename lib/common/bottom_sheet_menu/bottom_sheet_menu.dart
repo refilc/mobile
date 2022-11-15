@@ -1,11 +1,10 @@
-import 'package:filcnaplo_mobile_ui/common/bottom_sheet_menu/bottom_sheet_menu_item.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_sheet_menu/rounded_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 
 class BottomSheetMenu extends StatelessWidget {
   const BottomSheetMenu({Key? key, this.items = const []}) : super(key: key);
 
-  final List<BottomSheetMenuItem> items;
+  final List<Widget> items;
 
   @override
   Widget build(BuildContext context) {
@@ -19,5 +18,5 @@ class BottomSheetMenu extends StatelessWidget {
   }
 }
 
-void showBottomSheetMenu(BuildContext context, {List<BottomSheetMenuItem> items = const []}) =>
+void showBottomSheetMenu(BuildContext context, {List<Widget> items = const []}) =>
     showRoundedModalBottomSheet(context, child: BottomSheetMenu(items: items));
