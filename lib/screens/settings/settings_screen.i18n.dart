@@ -45,7 +45,7 @@ extension SettingsLocalization on String {
           "graph_class_avg": "Class average on graph",
           "goodstudent": "Good student mode",
           "attention": "Attention!",
-          "goodstudent_disclaimer": "Same in English.",
+          "goodstudent_disclaimer": "Filc Napló® Informatikai Zrt. can not be held liable for the usage of this feature.\n\n(if your mother beats you up because you showed her fake grades, you can only blame yourself for it)",
           "understand": "I understand",
           "secret": "Secret Settings",
           "bell_delay": "Bell Delay",
