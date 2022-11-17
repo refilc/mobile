@@ -276,8 +276,12 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                           borderRadius: BorderRadius.circular(6.0),
                           onTap: () => setState(() {
                             _controller.current();
-                            _controller.jump(_controller.currentWeek,
-                                context: context, loader: _controller.currentWeekId != _controller.previousWeekId);
+                            _controller.jump(
+                              _controller.currentWeek,
+                              context: context,
+                              loader: _controller.currentWeekId != _controller.previousWeekId,
+                            );
+                            _tabController.animateTo(_getDayIndex(DateTime.now()));
                           }),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
