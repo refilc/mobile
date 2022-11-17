@@ -20,6 +20,7 @@ import 'package:filcnaplo_mobile_ui/pages/grades/graph.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/subject_grades_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:provider/provider.dart';
 import 'grades_page.i18n.dart';
@@ -169,14 +170,26 @@ class _GradeSubjectViewState extends State<GradeSubjectView> {
 
     return Scaffold(
         key: _scaffoldKey,
-        floatingActionButton: !gradeCalcMode && subjectGrades.where((e) => e.type == GradeType.midYear).isNotEmpty
-            ? FloatingActionButton(
+        floatingActionButtonLocation: ExpandableFab.location,
+        floatingActionButton: Visibility(
+          visible: !gradeCalcMode && subjectGrades.where((e) => e.type == GradeType.midYear).isNotEmpty,
+          child: ExpandableFab(
+            type: ExpandableFabType.up,
+            distance: 50,
+            children: [
+              FloatingActionButton.small(
                 child: const Icon(FeatherIcons.plus),
-                onPressed: () => gradeCalc(context),
-                backgroundColor: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.grey[900],
-                foregroundColor: Theme.of(context).colorScheme.secondary,
-              )
-            : null,
+                onPressed: () {
+                  gradeCalc(context);
+                },
+              ),
+              FloatingActionButton.small(
+                child: const Icon(FeatherIcons.flag, size: 20.0),
+                onPressed: () {},
+              ),
+            ],
+          ),
+        ),
         body: RefreshIndicator(
           onRefresh: () async {},
           color: Theme.of(context).colorScheme.secondary,
