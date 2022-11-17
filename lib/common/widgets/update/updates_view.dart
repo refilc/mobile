@@ -1,3 +1,4 @@
+import 'package:filcnaplo/api/providers/status_provider.dart';
 import 'package:filcnaplo/models/release.dart';
 import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:filcnaplo/utils/color.dart';
@@ -8,6 +9,8 @@ import 'package:filcnaplo/helpers/update_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:provider/provider.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'updates_view.i18n.dart';
 
 class UpdateView extends StatefulWidget {
@@ -102,12 +105,43 @@ class _UpdateViewState extends State<UpdateView> {
                 ],
               ),
               backgroundColor: AppColors.of(context).filc,
-              onPressed: state == UpdateState.none ? () => download() : null,
+              onPressed: state == UpdateState.none ? () => downloadPrecheck() : null,
             ),
           ),
         ],
       ),
     );
+  }
+
+  String fmtSize() => "${(widget.release.downloads.first.size / 1024 / 1024).toStringAsFixed(1)} MB";
+
+  void downloadPrecheck() {
+    final status = Provider.of<StatusProvider>(context, listen: false);
+    if (status.networkType == ConnectivityResult.mobile) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("mobileAlertTitle".i18n),
+          content: Text("mobileAlertDesc".i18n.fill([fmtSize()])),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: Text("no".i18n),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: Text("yes".i18n),
+            ),
+          ],
+        ),
+      ).then((value) => value ? download() : null);
+    } else {
+      download();
+    }
   }
 
   void download() {

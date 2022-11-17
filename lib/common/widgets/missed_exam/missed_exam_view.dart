@@ -36,7 +36,7 @@ class MissedExamViewTile extends StatelessWidget {
         child: ListTile(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
           leading: Icon(
-            SubjectIcon.resolve(subject: lesson.subject).data,
+            SubjectIcon.resolveVariant(subject: lesson.subject, context: context),
             color: AppColors.of(context).text.withOpacity(.8),
             size: 32.0,
           ),

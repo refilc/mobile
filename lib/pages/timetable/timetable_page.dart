@@ -12,6 +12,7 @@ import 'package:filcnaplo_mobile_ui/common/empty.dart';
 import 'package:filcnaplo_mobile_ui/common/panel/panel.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_button.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
+import 'package:filcnaplo_mobile_ui/common/system_chrome.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/lesson/lesson_view.dart';
 import 'package:filcnaplo_kreta_api/controllers/timetable_controller.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/lesson/lesson_viewable.dart';
@@ -19,11 +20,13 @@ import 'package:filcnaplo_mobile_ui/pages/timetable/day_title.dart';
 import 'package:filcnaplo_mobile_ui/screens/navigation/navigation_route_handler.dart';
 import 'package:filcnaplo_mobile_ui/screens/navigation/navigation_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:filcnaplo/utils/color.dart';
 import 'package:intl/intl.dart';
 import 'package:i18n_extension/i18n_widget.dart';
+import 'package:filcnaplo_premium/ui/mobile/timetable/fs_timetable.dart';
 import 'timetable_page.i18n.dart';
 
 // todo: "fix" overflow (priority: -1)
@@ -55,8 +58,7 @@ class TimetablePage extends StatefulWidget {
   _TimetablePageState createState() => _TimetablePageState();
 }
 
-class _TimetablePageState extends State<TimetablePage>
-    with TickerProviderStateMixin, WidgetsBindingObserver {
+class _TimetablePageState extends State<TimetablePage> with TickerProviderStateMixin, WidgetsBindingObserver {
   late UserProvider user;
   late TimetableProvider timetableProvider;
   late UpdateProvider updateProvider;
@@ -132,7 +134,7 @@ class _TimetablePageState extends State<TimetablePage>
     user = Provider.of<UserProvider>(context, listen: false);
     user.addListener(_userListener);
 
-    // Register listening for app state changes to refresh the timetable 
+    // Register listening for app state changes to refresh the timetable
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -181,6 +183,26 @@ class _TimetablePageState extends State<TimetablePage>
                 floating: false,
                 snap: false,
                 actions: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: IconButton(
+                      splashRadius: 24.0,
+                      onPressed: () {
+                        Navigator.of(context, rootNavigator: true)
+                            .push(PageRouteBuilder(
+                          pageBuilder: (context, animation, secondaryAnimation) => PremiumFSTimetable(
+                            controller: _controller,
+                          ),
+                        ))
+                            .then((_) {
+                          SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+                          setSystemChrome(context);
+                        });
+                      },
+                      icon: const Icon(FeatherIcons.trello),
+                    ),
+                  ),
+
                   // Profile Icon
                   Padding(
                     padding: const EdgeInsets.only(right: 24.0),
@@ -254,8 +276,12 @@ class _TimetablePageState extends State<TimetablePage>
                           borderRadius: BorderRadius.circular(6.0),
                           onTap: () => setState(() {
                             _controller.current();
-                            _controller.jump(_controller.currentWeek,
-                                context: context, loader: _controller.currentWeekId != _controller.previousWeekId);
+                            _controller.jump(
+                              _controller.currentWeek,
+                              context: context,
+                              loader: _controller.currentWeekId != _controller.previousWeekId,
+                            );
+                            _tabController.animateTo(_getDayIndex(DateTime.now()));
                           }),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),

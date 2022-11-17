@@ -65,7 +65,7 @@ class SubjectIconItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: Icon(
-        SubjectIcon.resolve(subjectName: name).data,
+        SubjectIcon.resolveVariant(subjectName: name, context: context),
         color: AppColors.of(context).text,
       ),
       title: Text(

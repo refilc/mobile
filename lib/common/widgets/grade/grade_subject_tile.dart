@@ -31,7 +31,7 @@ class GradeSubjectTile extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         visualDensity: VisualDensity.compact,
         onTap: onTap,
-        leading: Icon(SubjectIcon.resolve(subject: subject).data, color: textColor.withOpacity(.75)),
+        leading: Icon(SubjectIcon.resolveVariant(subject: subject, context: context), color: textColor.withOpacity(.75)),
         title: Text(
           subject.name.capital(),
           maxLines: 2,

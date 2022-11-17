@@ -8,21 +8,34 @@ extension Localization on String {
           "download": "download",
           "downloading": "downloading",
           "installing": "installing",
-          "error": "Failed to install update!"
+          "error": "Failed to install update!",
+          "no": "No",
+          "yes": "Yes",
+          "mobileAlertTitle": "Hold up!",
+          "mobileAlertDesc": "You're on mobile network trying to download a %s update. Are you sure you want to continue?"
         },
         "hu_hu": {
           "new_update": "Új frissítés",
           "download": "Letöltés",
           "downloading": "Letöltés",
           "installing": "Telepítés",
-          "error": "Nem sikerült telepíteni a frissítést!"
+          "error": "Nem sikerült telepíteni a frissítést!",
+          "no": "Nem",
+          "yes": "Igen",
+          "mobileAlertTitle": "Figyelem!",
+          "mobileAlertDesc": "Jelenleg mobil interneten vagy, és egy %s méretű frissítést próbálsz letölteni. Biztosan folytatod?"
         },
         "de_de": {
           "new_update": "Neues Update",
           "download": "herunterladen",
           "downloading": "Herunterladen",
           "installing": "Installation",
-          "error": "Update konnte nicht installiert werden!"
+          "error": "Update konnte nicht installiert werden!",
+          "no": "Nein",
+          "yes": "Ja",
+          "mobileAlertTitle": "Achtung!",
+          "mobileAlertDesc":
+              "Sie befinden sich gerade im mobilen Internet und versuchen, ein %s Update herunterzuladen. Sind Sie sicher, dass Sie weitermachen wollen?"
         },
       };
 

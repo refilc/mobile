@@ -220,7 +220,7 @@ class _SurpriseGradeState extends State<SurpriseGrade> with TickerProviderStateM
                                               ),
                                               const SizedBox(width: 20.0),
                                               Icon(
-                                                SubjectIcon.resolve(subject: widget.grade.subject).data,
+                                                SubjectIcon.resolveVariant(subject: widget.grade.subject, context: context),
                                                 color: Colors.white,
                                                 size: 82.0,
                                               ),
