@@ -85,6 +85,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     _pageController.dispose();
     _tabController.dispose();
     _confettiController?.dispose();
+    _liveCardAnimation.dispose();
 
     super.dispose();
   }

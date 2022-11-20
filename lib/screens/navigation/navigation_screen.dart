@@ -157,13 +157,13 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
 
             // Status bar
             Material(
-              color: Theme.of(context).backgroundColor,
+              color: Theme.of(context).colorScheme.background,
               child: const StatusBar(),
             ),
 
             // Bottom Navigaton Bar
             Material(
-              color: Theme.of(context).backgroundColor,
+              color: Theme.of(context).colorScheme.background,
               child: MediaQuery.removePadding(
                 context: context,
                 removeTop: true,

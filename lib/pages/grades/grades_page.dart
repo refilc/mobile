@@ -23,6 +23,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:filcnaplo/utils/color.dart';
 import 'package:filcnaplo/helpers/average_helper.dart';
+import 'package:filcnaplo_premium/ui/mobile/grades/average_selector.dart';
 import 'grades_page.i18n.dart';
 
 class GradesPage extends StatefulWidget {
@@ -41,15 +42,11 @@ class _GradesPageState extends State<GradesPage> {
   List<Widget> subjectTiles = [];
 
   int avgDropValue = 0;
-  final List<List<dynamic>> avgDropItems = [
-    ["annual_average".i18n, 0],
-    ["30_months_average".i18n, 90],
-    ["30_days_average".i18n, 30],
-    ["14_days_average".i18n, 14],
-    ["7_days_average".i18n, 7],
-  ];
 
-  List<Grade> getSubjectGrades(Subject subject) => gradeProvider.grades.where((e) => e.subject == subject && e.type == GradeType.midYear).toList();
+  List<Grade> getSubjectGrades(Subject subject, {int days = 0}) => gradeProvider.grades
+      .where(
+          (e) => e.subject == subject && e.type == GradeType.midYear && (days == 0 || e.date.isBefore(DateTime.now().subtract(Duration(days: days)))))
+      .toList();
 
   void generateTiles() {
     List<Subject> subjects = gradeProvider.grades.map((e) => e.subject).toSet().toList()..sort((a, b) => a.name.compareTo(b.name));
@@ -61,19 +58,31 @@ class _GradesPageState extends State<GradesPage> {
       List<Grade> subjectGrades = getSubjectGrades(subject);
 
       double avg = AverageHelper.averageEvals(subjectGrades);
+      double averageBefore = 0.0;
+
+      if (avgDropValue != 0) {
+        List<Grade> gradesBefore = getSubjectGrades(subject, days: avgDropItems[avgDropValue][1]);
+        averageBefore = avgDropValue == 0 ? 0.0 : AverageHelper.averageEvals(gradesBefore);
+      }
       var nullavg = GroupAverage(average: 0.0, subject: subject, uid: "0");
       double groupAverage = gradeProvider.groupAverages.firstWhere((e) => e.subject == subject, orElse: () => nullavg).average;
 
       if (avg != 0) subjectAvgs.add(avg);
 
-      return GradeSubjectTile(subject, average: avg, groupAverage: groupAverage, onTap: () {
-        GradeSubjectView(subject, groupAverage: groupAverage).push(context, root: true);
-      });
+      return GradeSubjectTile(
+        subject,
+        averageBefore: averageBefore,
+        average: avg,
+        groupAverage: avgDropValue == 0 ? groupAverage : 0.0,
+        onTap: () {
+          GradeSubjectView(subject, groupAverage: groupAverage).push(context, root: true);
+        },
+      );
     }));
 
     if (tiles.isNotEmpty) {
       tiles.insert(0, yearlyGraph);
-      tiles.insert(1, PanelTitle(title: Text("Subjects".i18n)));
+      tiles.insert(1, PanelTitle(title: Text(avgDropValue == 0 ? "Subjects".i18n : "Subjects_changes".i18n)));
       tiles.insert(2, const PanelHeader(padding: EdgeInsets.only(top: 12.0)));
       tiles.add(const PanelFooter(padding: EdgeInsets.only(bottom: 12.0)));
       tiles.add(const Padding(padding: EdgeInsets.only(bottom: 24.0)));
@@ -165,7 +174,14 @@ class _GradesPageState extends State<GradesPage> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("annual_average".i18n),
+            PremiumAverageSelector(
+              value: avgDropValue,
+              onChanged: (value) {
+                setState(() {
+                  avgDropValue = avgDropItems.indexOf(avgDropItems.firstWhere((e) => e[0] == value!));
+                });
+              },
+            ),
             Row(
               children: [
                 // if (totalClassAvg >= 1.0) AverageDisplay(average: totalClassAvg, border: true),

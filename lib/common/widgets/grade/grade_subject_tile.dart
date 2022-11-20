@@ -56,10 +56,12 @@ class GradeSubjectTile extends StatelessWidget {
                   changeIcon,
                   style: TextStyle(
                     color: changeColor,
+                    fontSize: 20.0,
                   ),
                 ),
-              ),
+              )
             ],
+            if (average != 0) AverageDisplay(average: average)
           ],
         ),
       ),
