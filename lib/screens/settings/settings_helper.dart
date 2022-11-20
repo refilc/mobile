@@ -57,7 +57,7 @@ class SettingsHelper {
         String lang = langMap.keys.toList()[index];
         return BottomSheetMenuItem(
           onPressed: () {
-            Provider.of<SettingsProvider>(context, listen: false).update(context, language: lang);
+            Provider.of<SettingsProvider>(context, listen: false).update(language: lang);
             I18n.of(context).locale = Locale(lang, lang.toUpperCase());
             Navigator.of(context).maybePop();
             if (Platform.isAndroid || Platform.isIOS) {
@@ -88,7 +88,7 @@ class SettingsHelper {
         IconPack current = IconPack.values[index];
         return BottomSheetMenuItem(
           onPressed: () {
-            settings.update(context, iconPack: current);
+            settings.update(iconPack: current);
             Navigator.of(context).maybePop();
           },
           title: Row(
@@ -121,7 +121,7 @@ class SettingsHelper {
       items: List.generate(Pages.values.length, (index) {
         return BottomSheetMenuItem(
           onPressed: () {
-            Provider.of<SettingsProvider>(context, listen: false).update(context, startPage: Pages.values[index]);
+            Provider.of<SettingsProvider>(context, listen: false).update(startPage: Pages.values[index]);
             Navigator.of(context).maybePop();
           },
           title: Row(
@@ -152,7 +152,7 @@ class SettingsHelper {
   static void theme(BuildContext context) {
     var settings = Provider.of<SettingsProvider>(context, listen: false);
     void Function(ThemeMode) setTheme = (mode) {
-      settings.update(context, theme: mode);
+      settings.update(theme: mode);
       Provider.of<ThemeModeObserver>(context, listen: false).changeTheme(mode);
       Navigator.of(context).maybePop();
     };
@@ -237,7 +237,7 @@ class SettingsHelper {
 
         return BottomSheetMenuItem(
           onPressed: () {
-            Provider.of<SettingsProvider>(context, listen: false).update(context, vibrate: value);
+            Provider.of<SettingsProvider>(context, listen: false).update( vibrate: value);
             Navigator.of(context).maybePop();
           },
           title: Row(
@@ -345,7 +345,7 @@ class _RoundingSettingState extends State<RoundingSetting> {
         child: MaterialActionButton(
           child: Text(SettingsLocalization("done").i18n),
           onPressed: () {
-            Provider.of<SettingsProvider>(context, listen: false).update(context, rounding: (r * 10).toInt());
+            Provider.of<SettingsProvider>(context, listen: false).update( rounding: (r * 10).toInt());
             Navigator.of(context).maybePop();
           },
         ),
@@ -436,7 +436,7 @@ class _BellDelaySettingState extends State<BellDelaySetting> with SingleTickerPr
                   if (closest != null) {
                     if (closest.inHours.abs() >= 1) return;
                     currentDelay = closest;
-                    Provider.of<SettingsProvider>(context, listen: false).update(context, bellDelay: currentDelay.inSeconds);
+                    Provider.of<SettingsProvider>(context, listen: false).update( bellDelay: currentDelay.inSeconds);
                     _tabController.index = currentDelay.inSeconds > 0 ? 1 : 0;
                     setState(() {});
                   }
@@ -446,7 +446,7 @@ class _BellDelaySettingState extends State<BellDelaySetting> with SingleTickerPr
                 child: Text(SettingsLocalization("done").i18n),
                 onPressed: () {
                   //Provider.of<SettingsProvider>(context, listen: false).update(context, rounding: (r * 10).toInt());
-                  Provider.of<SettingsProvider>(context, listen: false).update(context, bellDelay: currentDelay.inSeconds);
+                  Provider.of<SettingsProvider>(context, listen: false).update(bellDelay: currentDelay.inSeconds);
                   Navigator.of(context).maybePop();
                 },
               ),
@@ -513,7 +513,7 @@ class _GradeColorsSettingState extends State<GradeColorsSetting> {
                                   List<Color> colors = List.castFrom(settings.gradeColors);
                                   var defaultColors = SettingsProvider.defaultSettings().gradeColors;
                                   colors[index] = defaultColors[index];
-                                  settings.update(context, gradeColors: colors);
+                                  settings.update(gradeColors: colors);
                                   Navigator.of(context).maybePop();
                                 },
                                 child: Text(SettingsLocalization("reset").i18n),
@@ -522,7 +522,7 @@ class _GradeColorsSettingState extends State<GradeColorsSetting> {
                                 onPressed: () {
                                   List<Color> colors = List.castFrom(settings.gradeColors);
                                   colors[index] = currentColor.withAlpha(255);
-                                  settings.update(context, gradeColors: settings.gradeColors);
+                                  settings.update(gradeColors: settings.gradeColors);
                                   Navigator.of(context).maybePop();
                                 },
                                 child: Text(SettingsLocalization("done").i18n),

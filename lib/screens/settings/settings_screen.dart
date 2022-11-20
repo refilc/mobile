@@ -28,7 +28,6 @@ import 'package:filcnaplo_mobile_ui/screens/settings/accounts/account_view.dart'
 import 'package:filcnaplo_mobile_ui/screens/settings/debug/subject_icon_gallery.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/privacy_view.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/settings_helper.dart';
-import 'package:filcnaplo_mobile_ui/screens/settings/supporters/supporters_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +39,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'settings_screen.i18n.dart';
 import 'package:flutter/services.dart';
 import 'package:filcnaplo_premium/ui/mobile/settings/nickname.dart';
+import 'package:filcnaplo_premium/ui/mobile/premium/premium_banner_button.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -291,6 +291,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
 
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
+          child: PremiumBannerButton(),
+        ),
+
         // General Settings
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
@@ -349,7 +354,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       : Icon(FeatherIcons.bellOff, color: AppColors.of(context).text.withOpacity(.25)),
                   trailingDivider: true,
                   trailing: Switch(
-                    onChanged: (v) => settings.update(context, bellDelayEnabled: v),
+                    onChanged: (v) => settings.update(bellDelayEnabled: v),
                     value: settings.bellDelayEnabled,
                     activeColor: Theme.of(context).colorScheme.secondary,
                   ),
@@ -411,7 +416,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       label: "understand".i18n,
                                       onTap: () {
                                         Navigator.of(context).pop();
-                                        settings.update(context, goodStudent: v);
+                                        settings.update(goodStudent: v);
                                         Provider.of<GradeProvider>(context, listen: false).fetch();
                                       })
                                 ],
@@ -419,7 +424,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                           );
                         } else {
-                          settings.update(context, goodStudent: v);
+                          settings.update(goodStudent: v);
                           Provider.of<GradeProvider>(context, listen: false).fetch();
                         }
                       },
@@ -435,7 +440,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       contentPadding: const EdgeInsets.only(left: 12.0),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
                       title: const Text("Presentation Mode", style: TextStyle(fontWeight: FontWeight.w500)),
-                      onChanged: (v) => settings.update(context, presentationMode: v),
+                      onChanged: (v) => settings.update(presentationMode: v),
                       value: settings.presentationMode,
                       activeColor: Theme.of(context).colorScheme.secondary,
                     ),
@@ -524,7 +529,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ],
                     ),
-                    onChanged: (v) => settings.update(context, graphClassAvg: v),
+                    onChanged: (v) => settings.update(graphClassAvg: v),
                     value: settings.graphClassAvg,
                     activeColor: Theme.of(context).colorScheme.secondary,
                   ),
@@ -572,7 +577,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                   ],
                 ),
-                onChanged: (v) => settings.update(context, newsEnabled: v),
+                onChanged: (v) => settings.update(newsEnabled: v),
                 value: settings.newsEnabled,
                 activeColor: Theme.of(context).colorScheme.secondary,
               ),
@@ -610,7 +615,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ],
                   ),
-                  onChanged: (v) => settings.update(context, gradeOpeningFun: v),
+                  onChanged: (v) => settings.update(gradeOpeningFun: v),
                   value: settings.gradeOpeningFun,
                   activeColor: Theme.of(context).colorScheme.secondary,
                 ),
@@ -644,11 +649,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 leading: const Icon(FeatherIcons.mail),
                 title: Text("news".i18n),
                 onPressed: () => _openNews(context),
-              ),
-              PanelButton(
-                leading: const Icon(FeatherIcons.dollarSign),
-                title: Text("supporters".i18n),
-                onPressed: () => _openSupporters(context),
               ),
               PanelButton(
                 leading: const Icon(FeatherIcons.lock),
@@ -697,7 +697,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       } else {
                         newId = settings.xFilcId;
                       }
-                      settings.update(context, xFilcId: newId);
+                      settings.update(xFilcId: newId);
                     },
                     value: settings.xFilcId != "none",
                     activeColor: Theme.of(context).colorScheme.secondary,
@@ -720,7 +720,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       contentPadding: const EdgeInsets.only(left: 12.0),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
                       title: const Text("Developer Mode", style: TextStyle(fontWeight: FontWeight.w500)),
-                      onChanged: (v) => settings.update(context, developerMode: false),
+                      onChanged: (v) => settings.update(developerMode: false),
                       value: settings.developerMode,
                       activeColor: Theme.of(context).colorScheme.secondary,
                     ),
@@ -752,7 +752,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     content: Text("Developer Mode successfully activated."),
                   ));
 
-                  settings.update(context, developerMode: true);
+                  settings.update(developerMode: true);
 
                   setState(() => devmodeCountdown--);
                 }
@@ -764,8 +764,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  void _openSupporters(BuildContext context) =>
-      Navigator.of(context, rootNavigator: true).push(CupertinoPageRoute(builder: (context) => const SupportersScreen()));
   void _openNews(BuildContext context) =>
       Navigator.of(context, rootNavigator: true).push(CupertinoPageRoute(builder: (context) => const NewsScreen()));
   void _openUpdates(BuildContext context) => UpdateView.show(updateProvider.releases.first, context: context);
