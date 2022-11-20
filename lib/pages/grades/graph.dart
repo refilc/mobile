@@ -10,8 +10,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:i18n_extension/i18n_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:filcnaplo_mobile_ui/common/widgets/cretification/certification_tile.i18n.dart';
 import 'package:collection/collection.dart';
+import 'graph.i18n.dart';
 
 class GradeGraph extends StatefulWidget {
   const GradeGraph(this.data, {Key? key, this.dayThreshold = 7, this.classAvg}) : super(key: key);
@@ -141,11 +141,14 @@ class _GradeGraphState extends State<GradeGraph> {
     return Column(
       children: [
         widget.data.length <= 2
-            ? const SizedBox(
+            ? SizedBox(
                 height: 150,
                 child: Center(
-                  child: Text("Nem szereztél még elég jegyet grafikon mutatáshoz.",
-                      textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
+                  child: Text(
+                    "not_enough_grades".i18n,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
               )
             : ClipRect(
