@@ -133,7 +133,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
     setGreeting();
 
-    List<String> nameParts = user.name?.split(" ") ?? ["?"];
+    List<String> nameParts = user.displayName?.split(" ") ?? ["?"];
     if (!settings.presentationMode) {
       firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
     } else {
@@ -169,14 +169,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               ),
                             ),
                             actions: [
-                              // TODO: Search Button
-                              // IconButton(
-                              //   icon: Icon(FeatherIcons.search),
-                              //   color: Theme.of(context).textTheme.bodyText1?.color,
-                              //   splashRadius: 24.0,
-                              //   onPressed: () {},
-                              // ),
-
                               // Profile Icon
                               Padding(
                                 padding: const EdgeInsets.only(right: 24.0),
@@ -185,7 +177,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                     heroTag: "profile",
                                     name: firstName,
                                     backgroundColor: !settings.presentationMode
-                                        ? ColorUtils.stringToColor(user.name ?? "?")
+                                        ? ColorUtils.stringToColor(user.displayName ?? "?")
                                         : Theme.of(context).colorScheme.secondary,
                                     badge: updateProvider.available,
                                     role: user.role,

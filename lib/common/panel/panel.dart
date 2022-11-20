@@ -29,7 +29,7 @@ class Panel extends StatelessWidget {
                   BoxShadow(
                     offset: const Offset(0, 21),
                     blurRadius: 23.0,
-                    color: AppColors.of(context).shadow,
+                    color: Theme.of(context).shadowColor,
                   )
               ],
             ),
@@ -75,7 +75,7 @@ class PanelHeader extends StatelessWidget {
           BoxShadow(
             offset: const Offset(0, 21),
             blurRadius: 23.0,
-            color: AppColors.of(context).shadow,
+            color: Theme.of(context).shadowColor,
           )
         ],
       ),
@@ -99,7 +99,7 @@ class PanelBody extends StatelessWidget {
           BoxShadow(
             offset: const Offset(0, 21),
             blurRadius: 23.0,
-            color: AppColors.of(context).shadow,
+            color: Theme.of(context).shadowColor,
           )
         ],
       ),
@@ -126,7 +126,7 @@ class PanelFooter extends StatelessWidget {
           BoxShadow(
             offset: const Offset(0, 21),
             blurRadius: 23.0,
-            color: AppColors.of(context).shadow,
+            color: Theme.of(context).shadowColor,
           )
         ],
       ),

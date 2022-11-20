@@ -26,7 +26,7 @@ class AbsenceTile extends StatelessWidget {
             BoxShadow(
               offset: Offset(0, 21 * elevation),
               blurRadius: 23.0 * elevation,
-              color: AppColors.of(context).shadow,
+              color: Theme.of(context).shadowColor,
             )
         ],
         borderRadius: BorderRadius.circular(14.0),

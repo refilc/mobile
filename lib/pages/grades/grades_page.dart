@@ -129,7 +129,7 @@ class _GradesPageState extends State<GradesPage> {
     gradeProvider = Provider.of<GradeProvider>(context);
     updateProvider = Provider.of<UpdateProvider>(context);
 
-    List<String> nameParts = user.name?.split(" ") ?? ["?"];
+    List<String> nameParts = user.displayName?.split(" ") ?? ["?"];
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
 
     final double totalClassAvg = gradeProvider.groupAverages.isEmpty
@@ -190,7 +190,7 @@ class _GradesPageState extends State<GradesPage> {
                     child: ProfileImage(
                       heroTag: "profile",
                       name: firstName,
-                      backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
+                      backgroundColor: ColorUtils.stringToColor(user.displayName ?? "?"),
                       badge: updateProvider.available,
                       role: user.role,
                     ),
@@ -205,7 +205,7 @@ class _GradesPageState extends State<GradesPage> {
                   style: TextStyle(color: AppColors.of(context).text, fontSize: 32.0, fontWeight: FontWeight.bold),
                 ),
               ),
-              shadowColor: AppColors.of(context).shadow.withOpacity(0.5),
+              shadowColor: Theme.of(context).shadowColor,
             ),
           ],
           body: RefreshIndicator(

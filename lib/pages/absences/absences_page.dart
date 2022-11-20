@@ -126,7 +126,7 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
     updateProvider = Provider.of<UpdateProvider>(context);
     timetableProvider = Provider.of<TimetableProvider>(context);
 
-    List<String> nameParts = user.name?.split(" ") ?? ["?"];
+    List<String> nameParts = user.displayName?.split(" ") ?? ["?"];
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
 
     buildSubjectAbsences();
@@ -150,7 +150,7 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
                     child: ProfileImage(
                       heroTag: "profile",
                       name: firstName,
-                      backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
+                      backgroundColor: ColorUtils.stringToColor(user.displayName ?? "?"),
                       badge: updateProvider.available,
                       role: user.role,
                     ),
@@ -158,7 +158,7 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
                 ),
               ],
               automaticallyImplyLeading: false,
-              shadowColor: AppColors.of(context).shadow.withOpacity(0.5),
+              shadowColor: Theme.of(context).shadowColor,
               title: Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: Text(

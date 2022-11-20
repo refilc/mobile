@@ -1,5 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:filcnaplo/ui/widgets/grade/grade_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:i18n_extension/i18n_widget.dart';
@@ -48,7 +47,7 @@ class StatisticsTile extends StatelessWidget {
           BoxShadow(
             offset: const Offset(0, 21),
             blurRadius: 23.0,
-            color: AppColors.of(context).shadow,
+            color: Theme.of(context).shadowColor,
           )
         ],
       ),
@@ -76,7 +75,7 @@ class StatisticsTile extends StatelessWidget {
                   ? Border.all(
                       color: (color ?? gradeColor(context: context, value: value)).withOpacity(outline ? 1.0 : 0.0),
                       width: fill ? 2.0 : 5.0,
-                      strokeAlign: BorderSide.strokeAlignInside,
+                      strokeAlign: StrokeAlign.inside,
                     )
                   : null,
               borderRadius: BorderRadius.circular(45.0),

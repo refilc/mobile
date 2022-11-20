@@ -78,7 +78,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
       String _firstName;
 
-      List<String> _nameParts = user.name?.split(" ") ?? ["?"];
+      List<String> _nameParts = user.displayName?.split(" ") ?? ["?"];
       if (!settings.presentationMode) {
         _firstName = _nameParts.length > 1 ? _nameParts[1] : _nameParts[0];
       } else {
@@ -142,7 +142,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     updateProvider = Provider.of<UpdateProvider>(context);
     kretaClient = Provider.of<KretaClient>(context);
 
-    List<String> nameParts = user.name?.split(" ") ?? ["?"];
+    List<String> nameParts = user.displayName?.split(" ") ?? ["?"];
     if (!settings.presentationMode) {
       firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
     } else {
@@ -195,7 +195,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             name: firstName,
             badge: updateProvider.available,
             role: user.role,
-            backgroundColor: !settings.presentationMode ? ColorUtils.stringToColor(user.name ?? "?") : Theme.of(context).colorScheme.secondary,
+            backgroundColor: !settings.presentationMode ? ColorUtils.stringToColor(user.displayName ?? "?") : Theme.of(context).colorScheme.secondary,
           ),
         ),
 
@@ -205,7 +205,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             onTap: () => _showBottomSheet(user.getUser(user.id ?? "")),
             onDoubleTap: () => setState(() => __ss = true),
             child: Text(
-              !settings.presentationMode ? (user.name ?? "?") : "Béla",
+              !settings.presentationMode ? (user.displayName ?? "?") : "Béla",
               maxLines: 1,
               softWrap: false,
               overflow: TextOverflow.ellipsis,

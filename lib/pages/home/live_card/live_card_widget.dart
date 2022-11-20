@@ -61,7 +61,7 @@ class _LiveCardWidgetState extends State<LiveCardWidget> {
               BoxShadow(
                 offset: const Offset(0, 21),
                 blurRadius: 23.0,
-                color: AppColors.of(context).shadow,
+                color: Theme.of(context).shadowColor,
               )
             ],
           ),

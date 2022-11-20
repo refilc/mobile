@@ -38,7 +38,7 @@ class _StatusBarState extends State<StatusBar> {
             height: currentStatus != null ? 28.0 : 0,
             decoration: BoxDecoration(
               color: backgroundColor,
-              boxShadow: [BoxShadow(color: AppColors.of(context).shadow, blurRadius: 8.0)],
+              boxShadow: [BoxShadow(color: Theme.of(context).shadowColor, blurRadius: 8.0)],
               borderRadius: BorderRadius.circular(45.0),
             ),
           ),

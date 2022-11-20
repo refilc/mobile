@@ -44,7 +44,7 @@ class _MessagesPageState extends State<MessagesPage> with TickerProviderStateMix
     messageProvider = Provider.of<MessageProvider>(context);
     updateProvider = Provider.of<UpdateProvider>(context);
 
-    List<String> nameParts = user.name?.split(" ") ?? ["?"];
+    List<String> nameParts = user.displayName?.split(" ") ?? ["?"];
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];
 
     return Scaffold(
@@ -66,7 +66,7 @@ class _MessagesPageState extends State<MessagesPage> with TickerProviderStateMix
                     child: ProfileImage(
                       heroTag: "profile",
                       name: firstName,
-                      backgroundColor: ColorUtils.stringToColor(user.name ?? "?"),
+                      backgroundColor: ColorUtils.stringToColor(user.displayName ?? "?"),
                       badge: updateProvider.available,
                       role: user.role,
                     ),
@@ -74,7 +74,7 @@ class _MessagesPageState extends State<MessagesPage> with TickerProviderStateMix
                 ),
               ],
               automaticallyImplyLeading: false,
-              shadowColor: AppColors.of(context).shadow.withOpacity(0.5),
+              shadowColor: Theme.of(context).shadowColor,
               title: Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: Text(
