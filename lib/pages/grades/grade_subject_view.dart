@@ -24,7 +24,7 @@ import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:provider/provider.dart';
 import 'grades_page.i18n.dart';
-import 'package:filcnaplo_premium/ui/mobile/goalplanner/new_goal.dart';
+// import 'package:filcnaplo_premium/ui/mobile/goalplanner/new_goal.dart';
 
 class GradeSubjectView extends StatefulWidget {
   const GradeSubjectView(this.subject, {Key? key, this.groupAverage = 0.0}) : super(key: key);
@@ -184,12 +184,12 @@ class _GradeSubjectViewState extends State<GradeSubjectView> {
                   gradeCalc(context);
                 },
               ),
-              FloatingActionButton.small(
-                child: const Icon(FeatherIcons.flag, size: 20.0),
-                onPressed: () {
-                  Navigator.of(context).push(CupertinoPageRoute(builder: (context) => PremiumGoalplannerNewGoalScreen(subject: widget.subject)));
-                },
-              ),
+              // FloatingActionButton.small(
+              //   child: const Icon(FeatherIcons.flag, size: 20.0),
+              //   onPressed: () {
+              //     Navigator.of(context).push(CupertinoPageRoute(builder: (context) => PremiumGoalplannerNewGoalScreen(subject: widget.subject)));
+              //   },
+              // ),
             ],
           ),
         ),
