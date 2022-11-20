@@ -45,7 +45,8 @@ extension SettingsLocalization on String {
           "graph_class_avg": "Class average on graph",
           "goodstudent": "Good student mode",
           "attention": "Attention!",
-          "goodstudent_disclaimer": "Filc Napló® Informatikai Zrt. can not be held liable for the usage of this feature.\n\n(if your mother beats you up because you showed her fake grades, you can only blame yourself for it)",
+          "goodstudent_disclaimer":
+              "Filc Napló® Informatikai Zrt. can not be held liable for the usage of this feature.\n\n(if your mother beats you up because you showed her fake grades, you can only blame yourself for it)",
           "understand": "I understand",
           "secret": "Secret Settings",
           "bell_delay": "Bell Delay",
@@ -56,6 +57,10 @@ extension SettingsLocalization on String {
           "surprise_grades": "Surprise Grades",
           "icon_pack": "Icon Pack",
           "change_username": "Set a nickname",
+          "Accent Color": "Accent Color",
+          "Background Color": "Background Color",
+          "Highlight Color": "Highlight Color",
+          "Adaptive Theme": "Adaptive Theme",
         },
         "hu_hu": {
           "personal_details": "Személyes információk",
@@ -111,6 +116,10 @@ extension SettingsLocalization on String {
           "surprise_grades": "Meglepetés jegyek",
           "icon_pack": "Ikon séma",
           "change_username": "Becenév beállítása",
+          "Accent Color": "Egyedi szín",
+          "Background Color": "Háttér színe",
+          "Highlight Color": "Panelek színe",
+          "Adaptive Theme": "Adaptív téma",
         },
         "de_de": {
           "personal_details": "Persönliche Angaben",
@@ -165,6 +174,10 @@ extension SettingsLocalization on String {
           "surprise_grades": "Überraschungsnoten",
           "icon_pack": "Icon-Pack",
           "change_username": "Einen Spitznamen festlegen",
+          "Accent Color": "Accent Color",
+          "Background Color": "Background Color",
+          "Highlight Color": "Highlight Color",
+          "Adaptive Theme": "Adaptive Theme",
         },
       };
 

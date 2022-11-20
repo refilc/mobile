@@ -7,7 +7,6 @@ import 'package:filcnaplo/icons/filc_icons.dart';
 import 'package:filcnaplo/models/settings.dart';
 import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:filcnaplo/theme/observer.dart';
-import 'package:filcnaplo/theme/colors/accent.dart';
 import 'package:filcnaplo_kreta_api/models/grade.dart';
 import 'package:filcnaplo_kreta_api/providers/timetable_provider.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_sheet_menu/bottom_sheet_menu.dart';
@@ -27,6 +26,7 @@ import 'package:filcnaplo_mobile_ui/screens/settings/settings_screen.i18n.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'package:filcnaplo/models/icon_pack.dart';
 import 'package:filcnaplo/utils/format.dart';
+import 'package:filcnaplo_premium/ui/mobile/settings/theme.dart';
 
 class SettingsHelper {
   static const Map<String, String> langMap = {"en": "🇬🇧  English", "hu": "🇭🇺  Magyar", "de": "🇩🇪  Deutsch"};
@@ -216,49 +216,9 @@ class SettingsHelper {
   }
 
   static void accentColor(BuildContext context) {
-    var settings = Provider.of<SettingsProvider>(context, listen: false);
-    void Function(ThemeMode) setTheme = (mode) {
-      settings.update(context, theme: mode);
-      Provider.of<ThemeModeObserver>(context, listen: false).changeTheme(mode);
-      Navigator.of(context).maybePop();
-    };
     showRoundedModalBottomSheet(
       context,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 24.0),
-        child: Center(
-          child: Wrap(
-            alignment: WrapAlignment.start,
-            children: List.generate(AccentColor.values.length, (index) {
-              return Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: ClipOval(
-                  child: Material(
-                    color: accentColorMap[AccentColor.values[index]],
-                    child: InkWell(
-                      onTap: () {
-                        settings.update(context, accentColor: AccentColor.values[index]);
-                        setTheme(settings.theme);
-                        Navigator.of(context).maybePop();
-                      },
-                      child: Container(
-                        width: 54.0,
-                        height: 54.0,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                        ),
-                        child: Provider.of<SettingsProvider>(context, listen: false).accentColor == AccentColor.values[index]
-                            ? Icon(FeatherIcons.check, color: Colors.black.withOpacity(0.7))
-                            : null,
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            }),
-          ),
-        ),
-      ),
+      child: const PremiumCustomAccentColorSetting(),
     );
   }
 
