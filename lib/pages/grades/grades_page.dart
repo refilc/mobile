@@ -40,6 +40,15 @@ class _GradesPageState extends State<GradesPage> {
   late Widget yearlyGraph;
   List<Widget> subjectTiles = [];
 
+  int avgDropValue = 0;
+  final List<List<dynamic>> avgDropItems = [
+    ["annual_average".i18n, 0],
+    ["30_months_average".i18n, 90],
+    ["30_days_average".i18n, 30],
+    ["14_days_average".i18n, 14],
+    ["7_days_average".i18n, 7],
+  ];
+
   List<Grade> getSubjectGrades(Subject subject) => gradeProvider.grades.where((e) => e.subject == subject && e.type == GradeType.midYear).toList();
 
   void generateTiles() {
@@ -144,6 +153,12 @@ class _GradesPageState extends State<GradesPage> {
         .where((e) => e.date.isBefore(now.subtract(const Duration(days: 30))))
         .toList());
 
+    List<Grade> graphGrades = gradeProvider.grades
+        .where((e) =>
+            e.type == GradeType.midYear &&
+            (avgDropItems[avgDropValue][1] == 0 || e.date.isAfter(DateTime.now().subtract(Duration(days: avgDropItems[avgDropValue][1])))))
+        .toList();
+
     yearlyGraph = Padding(
       padding: const EdgeInsets.only(top: 12.0, bottom: 24.0),
       child: Panel(
@@ -162,9 +177,8 @@ class _GradesPageState extends State<GradesPage> {
           ],
         ),
         child: Container(
-          height: 165.0,
           padding: const EdgeInsets.only(top: 12.0, right: 12.0),
-          child: GradeGraph(gradeProvider.grades.where((e) => e.type == GradeType.midYear).toList(), dayThreshold: 2, classAvg: totalClassAvg),
+          child: GradeGraph(graphGrades, dayThreshold: 2, classAvg: totalClassAvg),
         ),
       ),
     );

@@ -40,6 +40,7 @@ import 'settings_screen.i18n.dart';
 import 'package:flutter/services.dart';
 import 'package:filcnaplo_premium/ui/mobile/settings/nickname.dart';
 import 'package:filcnaplo_premium/ui/mobile/premium/premium_banner_button.dart';
+import 'package:filcnaplo_premium/ui/mobile/settings/icon_pack.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -534,15 +535,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     activeColor: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
-                PanelButton(
-                  onPressed: () {
-                    SettingsHelper.iconPack(context);
-                    setState(() {});
-                  },
-                  title: Text("icon_pack".i18n),
-                  leading: const Icon(FeatherIcons.grid),
-                  trailing: Text(settings.iconPack.name.capital()),
-                ),
+                const PremiumIconPackSelector(),
               ],
             ),
           ),

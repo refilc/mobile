@@ -155,7 +155,6 @@ class _GradeSubjectViewState extends State<GradeSubjectView> {
           ],
         ),
         child: Container(
-          height: 175.0,
           padding: const EdgeInsets.only(top: 16.0, right: 12.0),
           child: GradeGraph(subjectGrades, dayThreshold: 5, classAvg: widget.groupAverage),
         ),
