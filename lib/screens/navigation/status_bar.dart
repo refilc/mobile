@@ -28,6 +28,7 @@ class _StatusBarState extends State<StatusBar> {
       curve: Curves.easeInOut,
       height: currentStatus != null ? 32.0 : 0,
       width: double.infinity,
+      color: Theme.of(context).backgroundColor,
       child: Stack(
         children: [
           // Background
