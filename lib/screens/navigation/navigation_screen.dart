@@ -17,6 +17,7 @@ import 'package:provider/provider.dart';
 import 'package:filcnaplo_mobile_ui/common/screens.i18n.dart';
 import 'package:filcnaplo/api/providers/news_provider.dart';
 import 'package:filcnaplo/api/providers/sync.dart';
+import 'package:home_widget/home_widget.dart';
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({Key? key}) : super(key: key);
@@ -48,9 +49,32 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
     return true;
   }
 
+  void _checkForWidgetLaunch() {
+    HomeWidget.initiallyLaunchedFromHomeWidget().then(_launchedFromWidget);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _checkForWidgetLaunch();
+    HomeWidget.widgetClicked.listen(_launchedFromWidget);
+  }
+
+  void _launchedFromWidget(Uri? uri) {
+    if (uri == null) return;
+
+    if (uri.scheme == "timetable" && uri.authority == "refresh") {
+      setPage("timetable");
+      _navigatorState.currentState?.pushReplacementNamed("timetable");
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+
+    HomeWidget.setAppGroupId('hu.filc.naplo.group');
+
     settings = Provider.of<SettingsProvider>(context, listen: false);
     selected = NavigationRoute();
     selected.index = settings.startPage.index; // set page index to start page
