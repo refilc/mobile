@@ -9,6 +9,7 @@ import 'package:filcnaplo_mobile_ui/screens/navigation/navigation_route_handler.
 import 'package:filcnaplo/icons/filc_icons.dart';
 import 'package:filcnaplo_mobile_ui/screens/navigation/status_bar.dart';
 import 'package:filcnaplo_mobile_ui/screens/news/news_view.dart';
+import 'package:filcnaplo_mobile_ui/screens/settings/settings_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,6 +19,7 @@ import 'package:filcnaplo_mobile_ui/common/screens.i18n.dart';
 import 'package:filcnaplo/api/providers/news_provider.dart';
 import 'package:filcnaplo/api/providers/sync.dart';
 import 'package:home_widget/home_widget.dart';
+import 'package:sliding_sheet/sliding_sheet.dart';
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({Key? key}) : super(key: key);
@@ -66,6 +68,27 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
     if (uri.scheme == "timetable" && uri.authority == "refresh") {
       setPage("timetable");
       _navigatorState.currentState?.pushReplacementNamed("timetable");
+    } else if (uri.scheme == "settings" && uri.authority == "premium") {
+      showSlidingBottomSheet(
+          context,
+          useRootNavigator: true,
+          builder: (context) => SlidingSheetDialog(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            duration: const Duration(milliseconds: 400),
+            scrollSpec: const ScrollSpec.bouncingScroll(),
+            snapSpec: const SnapSpec(
+              snap: true,
+              snappings: [1.0],
+              positioning: SnapPositioning.relativeToSheetHeight,
+            ),
+            cornerRadius: 16,
+            cornerRadiusOnFullscreen: 0,
+            builder: (context, state) => Material(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              child: const SettingsScreen(),
+            ),
+          ),
+        );
     }
   }
 
