@@ -66,29 +66,33 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
     if (uri == null) return;
 
     if (uri.scheme == "timetable" && uri.authority == "refresh") {
+      Navigator.of(context).popUntil((route) => route.isFirst);
+
       setPage("timetable");
-      _navigatorState.currentState?.pushReplacementNamed("timetable");
+      _navigatorState.currentState?.pushNamedAndRemoveUntil("timetable", (_) => false);
     } else if (uri.scheme == "settings" && uri.authority == "premium") {
+      Navigator.of(context).popUntil((route) => route.isFirst);
+
       showSlidingBottomSheet(
-          context,
-          useRootNavigator: true,
-          builder: (context) => SlidingSheetDialog(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            duration: const Duration(milliseconds: 400),
-            scrollSpec: const ScrollSpec.bouncingScroll(),
-            snapSpec: const SnapSpec(
-              snap: true,
-              snappings: [1.0],
-              positioning: SnapPositioning.relativeToSheetHeight,
-            ),
-            cornerRadius: 16,
-            cornerRadiusOnFullscreen: 0,
-            builder: (context, state) => Material(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              child: const SettingsScreen(),
-            ),
+        context,
+        useRootNavigator: true,
+        builder: (context) => SlidingSheetDialog(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          duration: const Duration(milliseconds: 400),
+          scrollSpec: const ScrollSpec.bouncingScroll(),
+          snapSpec: const SnapSpec(
+            snap: true,
+            snappings: [1.0],
+            positioning: SnapPositioning.relativeToSheetHeight,
           ),
-        );
+          cornerRadius: 16,
+          cornerRadiusOnFullscreen: 0,
+          builder: (context, state) => Material(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            child: const SettingsScreen(),
+          ),
+        ),
+      );
     }
   }
 
