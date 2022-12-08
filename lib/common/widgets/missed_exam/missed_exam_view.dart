@@ -23,8 +23,9 @@ class MissedExamView extends StatelessWidget {
 }
 
 class MissedExamViewTile extends StatelessWidget {
-  const MissedExamViewTile(this.lesson, {Key? key}) : super(key: key);
+  const MissedExamViewTile(this.lesson, {Key? key, this.padding}) : super(key: key);
 
+  final EdgeInsetsGeometry? padding;
   final Lesson lesson;
 
   @override
@@ -32,7 +33,7 @@ class MissedExamViewTile extends StatelessWidget {
     return Material(
       type: MaterialType.transparency,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+        padding: padding ?? const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
         child: ListTile(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
           leading: Icon(

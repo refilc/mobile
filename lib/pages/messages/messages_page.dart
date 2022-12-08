@@ -114,7 +114,7 @@ class _MessagesPageState extends State<MessagesPage> with TickerProviderStateMix
         break;
       case MessageType.sent:
         for (var message in messageProvider.messages) {
-          if (message.type == MessageType.sent && !messageProvider.messages.any((m) => message.id == m.id)) {
+          if (message.type == MessageType.sent) {
             items.add(DateWidget(
               date: message.date,
               widget: MessageViewable(message),
