@@ -55,14 +55,7 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
     HomeWidget.initiallyLaunchedFromHomeWidget().then(_launchedFromWidget);
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _checkForWidgetLaunch();
-    HomeWidget.widgetClicked.listen(_launchedFromWidget);
-  }
-
-  void _launchedFromWidget(Uri? uri) {
+  void _launchedFromWidget(Uri? uri) async {
     if (uri == null) return;
 
     if (uri.scheme == "timetable" && uri.authority == "refresh") {
@@ -93,9 +86,6 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
           ),
         ),
       );
-
-      _checkForWidgetLaunch();
-      HomeWidget.widgetClicked.listen(_launchedFromWidget);
     }
   }
 
@@ -104,6 +94,9 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
     super.initState();
 
     HomeWidget.setAppGroupId('hu.filc.naplo.group');
+
+    _checkForWidgetLaunch();
+    HomeWidget.widgetClicked.listen(_launchedFromWidget);
 
     settings = Provider.of<SettingsProvider>(context, listen: false);
     selected = NavigationRoute();
