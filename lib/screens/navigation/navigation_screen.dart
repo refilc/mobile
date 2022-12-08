@@ -93,6 +93,9 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
           ),
         ),
       );
+
+      _checkForWidgetLaunch();
+      HomeWidget.widgetClicked.listen(_launchedFromWidget);
     }
   }
 
