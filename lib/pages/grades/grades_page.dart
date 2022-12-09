@@ -17,6 +17,7 @@ import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/statistics_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/grade/grade_subject_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/trend_display.dart';
+import 'package:filcnaplo_mobile_ui/pages/grades/fail_warning.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/graph.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/grade_subject_view.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +53,7 @@ class _GradesPageState extends State<GradesPage> {
     List<Subject> subjects = gradeProvider.grades.map((e) => e.subject).toSet().toList()..sort((a, b) => a.name.compareTo(b.name));
     List<Widget> tiles = [];
 
-    List<double> subjectAvgs = [];
+    Map<Subject, double> subjectAvgs = {};
 
     tiles.addAll(subjects.map((subject) {
       List<Grade> subjectGrades = getSubjectGrades(subject);
@@ -67,7 +68,7 @@ class _GradesPageState extends State<GradesPage> {
       var nullavg = GroupAverage(average: 0.0, subject: subject, uid: "0");
       double groupAverage = gradeProvider.groupAverages.firstWhere((e) => e.subject == subject, orElse: () => nullavg).average;
 
-      if (avg != 0) subjectAvgs.add(avg);
+      if (avg != 0) subjectAvgs[subject] = avg;
 
       return GradeSubjectTile(
         subject,
@@ -82,8 +83,9 @@ class _GradesPageState extends State<GradesPage> {
 
     if (tiles.isNotEmpty) {
       tiles.insert(0, yearlyGraph);
-      tiles.insert(1, PanelTitle(title: Text(avgDropValue == 0 ? "Subjects".i18n : "Subjects_changes".i18n)));
-      tiles.insert(2, const PanelHeader(padding: EdgeInsets.only(top: 12.0)));
+      tiles.insert(1, FailWarning(subjectAvgs: subjectAvgs));
+      tiles.insert(2, PanelTitle(title: Text(avgDropValue == 0 ? "Subjects".i18n : "Subjects_changes".i18n)));
+      tiles.insert(3, const PanelHeader(padding: EdgeInsets.only(top: 12.0)));
       tiles.add(const PanelFooter(padding: EdgeInsets.only(bottom: 12.0)));
       tiles.add(const Padding(padding: EdgeInsets.only(bottom: 24.0)));
     } else {
@@ -96,7 +98,7 @@ class _GradesPageState extends State<GradesPage> {
       );
     }
 
-    double subjectAvg = subjectAvgs.isNotEmpty ? subjectAvgs.fold(0.0, (double a, double b) => a + b) / subjectAvgs.length : 0.0;
+    double subjectAvg = subjectAvgs.isNotEmpty ? subjectAvgs.values.fold(0.0, (double a, double b) => a + b) / subjectAvgs.length : 0.0;
     final double classAvg = gradeProvider.groupAverages.isNotEmpty
         ? gradeProvider.groupAverages.map((e) => e.average).fold(0.0, (double a, double b) => a + b) / gradeProvider.groupAverages.length
         : 0.0;
