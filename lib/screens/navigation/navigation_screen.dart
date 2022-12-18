@@ -4,6 +4,8 @@ import 'package:filcnaplo/models/settings.dart';
 import 'package:filcnaplo/theme/observer.dart';
 import 'package:filcnaplo_kreta_api/client/client.dart';
 import 'package:filcnaplo_mobile_ui/common/system_chrome.dart';
+import 'package:filcnaplo_mobile_ui/screens/navigation/nabar.dart';
+import 'package:filcnaplo_mobile_ui/screens/navigation/navbar_item.dart';
 import 'package:filcnaplo_mobile_ui/screens/navigation/navigation_route.dart';
 import 'package:filcnaplo_mobile_ui/screens/navigation/navigation_route_handler.dart';
 import 'package:filcnaplo/icons/filc_icons.dart';
@@ -214,49 +216,36 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
               child: MediaQuery.removePadding(
                 context: context,
                 removeTop: true,
-                child: NavigationBar(
-                  destinations: [
-                    NavigationDestination(
-                      label: "home".i18n,
+                child: Navbar(
+                  selectedIndex: selected.index,
+                  onSelected: onPageSelected,
+                  items: [
+                    NavItem(
+                      title: "home".i18n,
                       icon: const Icon(FilcIcons.home),
+                      activeIcon: const Icon(FilcIcons.homefill),
                     ),
-                    NavigationDestination(
-                      label: "grades".i18n,
+                    NavItem(
+                      title: "grades".i18n,
                       icon: const Icon(FeatherIcons.bookmark),
+                      activeIcon: const Icon(FilcIcons.gradesfill),
                     ),
-                    NavigationDestination(
-                      label: "timetable".i18n,
+                    NavItem(
+                      title: "timetable".i18n,
                       icon: const Icon(FeatherIcons.calendar),
+                      activeIcon: const Icon(FilcIcons.timetablefill),
                     ),
-                    NavigationDestination(
-                      label: "messages".i18n,
+                    NavItem(
+                      title: "messages".i18n,
                       icon: const Icon(FeatherIcons.messageSquare),
+                      activeIcon: const Icon(FilcIcons.messagesfill),
                     ),
-                    NavigationDestination(
-                      label: "absences".i18n,
+                    NavItem(
+                      title: "absences".i18n,
                       icon: const Icon(FeatherIcons.clock),
+                      activeIcon: const Icon(FilcIcons.absencesfill),
                     ),
                   ],
-                  selectedIndex: selected.index,
-                  onDestinationSelected: (index) {
-                    // Vibrate, then set the active screen
-                    if (selected.index != index) {
-                      switch (settings.vibrate) {
-                        case VibrationStrength.light:
-                          HapticFeedback.lightImpact();
-                          break;
-                        case VibrationStrength.medium:
-                          HapticFeedback.mediumImpact();
-                          break;
-                        case VibrationStrength.strong:
-                          HapticFeedback.heavyImpact();
-                          break;
-                        default:
-                      }
-                      setState(() => selected.index = index);
-                      _navigatorState.currentState?.pushReplacementNamed(selected.name);
-                    }
-                  },
                 ),
               ),
             ),
@@ -264,5 +253,25 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
         ),
       ),
     );
+  }
+
+  void onPageSelected(int index) {
+    // Vibrate, then set the active screen
+    if (selected.index != index) {
+      switch (settings.vibrate) {
+        case VibrationStrength.light:
+          HapticFeedback.lightImpact();
+          break;
+        case VibrationStrength.medium:
+          HapticFeedback.mediumImpact();
+          break;
+        case VibrationStrength.strong:
+          HapticFeedback.heavyImpact();
+          break;
+        default:
+      }
+      setState(() => selected.index = index);
+      _navigatorState.currentState?.pushReplacementNamed(selected.name);
+    }
   }
 }
