@@ -22,6 +22,7 @@ import 'package:filcnaplo_mobile_ui/common/panel/panel_button.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
 import 'package:filcnaplo_mobile_ui/common/system_chrome.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/update/updates_view.dart';
+import 'package:filcnaplo_mobile_ui/premium/premium_button.dart';
 import 'package:filcnaplo_mobile_ui/screens/news/news_screen.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/accounts/account_tile.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/accounts/account_view.dart';
@@ -292,9 +293,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
 
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
-          child: PremiumBannerButton(),
+        // const Padding(
+        //   padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
+        //   child: PremiumBannerButton(),
+        // ),
+        const ClipRect(
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 12.0),
+            child: PremiumButton(),
+          ),
         ),
 
         // General Settings

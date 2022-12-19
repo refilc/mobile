@@ -17,7 +17,7 @@ extension Localization on String {
           "subjectavg": "Subject Average",
           "classavg": "Class Average",
           "fail_warning": "Faliure warning",
-          "fail_warning_description": "You are failing %d subjects",
+          "fail_warning_description": "You are failing %d subject(s)",
         },
         "hu_hu": {
           "Grades": "Jegyek",
@@ -48,8 +48,8 @@ extension Localization on String {
           "7_days_average": "Wöchentlicher Durchschnitt",
           "subjectavg": "Fächer Durchschnitt",
           "classavg": "Klassendurchschnitt",
-          "fail_warning": "Bukás figyelmeztető",
-          "fail_warning_description": "Bukásra állsz %d tantárgyból",
+          "fail_warning": "Ausfallwarnung",
+          "fail_warning_description": "Sie werden in %d des Fachs durchfallen",
         },
       };
 
