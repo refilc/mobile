@@ -237,7 +237,7 @@ class SettingsHelper {
 
         return BottomSheetMenuItem(
           onPressed: () {
-            Provider.of<SettingsProvider>(context, listen: false).update( vibrate: value);
+            Provider.of<SettingsProvider>(context, listen: false).update(vibrate: value);
             Navigator.of(context).maybePop();
           },
           title: Row(
@@ -282,22 +282,22 @@ class RoundingSetting extends StatefulWidget {
 }
 
 class _RoundingSettingState extends State<RoundingSetting> {
-  late double r;
+  late double rounding;
 
   @override
   void initState() {
     super.initState();
-    r = Provider.of<SettingsProvider>(context, listen: false).rounding / 10;
+    rounding = Provider.of<SettingsProvider>(context, listen: false).rounding / 10;
   }
 
   @override
   Widget build(BuildContext context) {
-    int g;
+    int roundingResult;
 
-    if (4.5 > 4.5.floor() + r) {
-      g = 5;
+    if (4.5 >= 4.5.floor() + rounding) {
+      roundingResult = 5;
     } else {
-      g = 4;
+      roundingResult = 4;
     }
 
     return Column(children: [
@@ -306,21 +306,21 @@ class _RoundingSettingState extends State<RoundingSetting> {
         children: [
           Expanded(
             child: Slider(
-              value: r,
+              value: rounding,
               min: 0.1,
               max: 0.9,
               divisions: 8,
-              label: r.toStringAsFixed(1),
+              label: rounding.toStringAsFixed(1),
               activeColor: Theme.of(context).colorScheme.secondary,
               thumbColor: Theme.of(context).colorScheme.secondary,
-              onChanged: (v) => setState(() => r = v),
+              onChanged: (v) => setState(() => rounding = v),
             ),
           ),
           Container(
             width: 50.0,
             padding: const EdgeInsets.only(right: 16.0),
             child: Center(
-              child: Text(r.toStringAsFixed(1),
+              child: Text(rounding.toStringAsFixed(1),
                   style: const TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 18.0,
@@ -337,7 +337,7 @@ class _RoundingSettingState extends State<RoundingSetting> {
             padding: EdgeInsets.symmetric(horizontal: 24.0),
             child: Icon(FeatherIcons.arrowRight, color: Colors.grey),
           ),
-          GradeValueWidget(GradeValue(g, "", "", 100), fill: true, size: 32.0),
+          GradeValueWidget(GradeValue(roundingResult, "", "", 100), fill: true, size: 32.0),
         ],
       ),
       Padding(
@@ -345,7 +345,7 @@ class _RoundingSettingState extends State<RoundingSetting> {
         child: MaterialActionButton(
           child: Text(SettingsLocalization("done").i18n),
           onPressed: () {
-            Provider.of<SettingsProvider>(context, listen: false).update( rounding: (r * 10).toInt());
+            Provider.of<SettingsProvider>(context, listen: false).update(rounding: (rounding * 10).toInt());
             Navigator.of(context).maybePop();
           },
         ),
@@ -436,7 +436,7 @@ class _BellDelaySettingState extends State<BellDelaySetting> with SingleTickerPr
                   if (closest != null) {
                     if (closest.inHours.abs() >= 1) return;
                     currentDelay = closest;
-                    Provider.of<SettingsProvider>(context, listen: false).update( bellDelay: currentDelay.inSeconds);
+                    Provider.of<SettingsProvider>(context, listen: false).update(bellDelay: currentDelay.inSeconds);
                     _tabController.index = currentDelay.inSeconds > 0 ? 1 : 0;
                     setState(() {});
                   }
