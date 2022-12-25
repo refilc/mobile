@@ -390,14 +390,14 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                           labelColor: Theme.of(context).colorScheme.secondary,
                           unselectedLabelColor: AppColors.of(context).text.withOpacity(0.9),
                           // Indicator
-                          indicatorPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          indicatorPadding: const EdgeInsets.symmetric(horizontal: 0.0),
                           indicator: BoxDecoration(
                             color: Theme.of(context).colorScheme.secondary.withOpacity(0.25),
                             borderRadius: BorderRadius.circular(45.0),
                           ),
                           overlayColor: MaterialStateProperty.all(const Color(0x00000000)),
                           // Tabs
-                          padding: const EdgeInsets.symmetric(vertical: 6.0),
+                          padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 8.0),
                           tabs: List.generate(_tabController.length, (index) {
                             String label = DateFormat("E", I18n.of(context).locale.languageCode).format(_controller.days![index].first.date);
                             return Tab(
