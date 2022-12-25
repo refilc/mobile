@@ -1,21 +1,23 @@
-import 'package:filcnaplo/ui/widgets/grade/grade_tile.dart';
-import 'package:filcnaplo_kreta_api/models/grade.dart';
 import 'package:flutter/material.dart';
+import 'package:filcnaplo_kreta_api/models/grade.dart';
+import 'package:filcnaplo_mobile_ui/pages/grades/grades_count_item.dart';
+import 'package:collection/collection.dart';
 
 class GradesCount extends StatelessWidget {
-  const GradesCount({Key? key, required this.count, required this.value}) : super(key: key);
+  const GradesCount({Key? key, required this.grades}) : super(key: key);
 
-  final int count;
-  final int value;
+  final List<Grade> grades;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        GradeValueWidget(GradeValue(count, "Count", "Count", 100), nocolor: true, size: 15.0),
-        const SizedBox(width: 5.0),
-        GradeValueWidget(GradeValue(value, "Value", "Value", 100), size: 19.0, fill: true, shadow: false),
-      ],
+    List<int> gradesCount = List.generate(5, (int index) => grades.where((e) => e.value.value == index + 1).length);
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6.0, top: 6.0, left: 12.0, right: 6.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: gradesCount.mapIndexed((index, e) => GradesCountItem(count: e, value: index + 1)).toList(),
+      ),
     );
   }
 }

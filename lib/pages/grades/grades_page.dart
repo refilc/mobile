@@ -18,6 +18,7 @@ import 'package:filcnaplo_mobile_ui/common/widgets/statistics_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/grade/grade_subject_tile.dart';
 import 'package:filcnaplo_mobile_ui/common/trend_display.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/fail_warning.dart';
+import 'package:filcnaplo_mobile_ui/pages/grades/grades_count.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/graph.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/grade_subject_view.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +41,7 @@ class _GradesPageState extends State<GradesPage> {
   late UpdateProvider updateProvider;
   late String firstName;
   late Widget yearlyGraph;
+  late Widget gradesCount;
   List<Widget> subjectTiles = [];
 
   int avgDropValue = 0;
@@ -83,9 +85,10 @@ class _GradesPageState extends State<GradesPage> {
 
     if (tiles.isNotEmpty) {
       tiles.insert(0, yearlyGraph);
-      tiles.insert(1, FailWarning(subjectAvgs: subjectAvgs));
-      tiles.insert(2, PanelTitle(title: Text(avgDropValue == 0 ? "Subjects".i18n : "Subjects_changes".i18n)));
-      tiles.insert(3, const PanelHeader(padding: EdgeInsets.only(top: 12.0)));
+      tiles.insert(1, gradesCount);
+      tiles.insert(2, FailWarning(subjectAvgs: subjectAvgs));
+      tiles.insert(3, PanelTitle(title: Text(avgDropValue == 0 ? "Subjects".i18n : "Subjects_changes".i18n)));
+      tiles.insert(4, const PanelHeader(padding: EdgeInsets.only(top: 12.0)));
       tiles.add(const PanelFooter(padding: EdgeInsets.only(bottom: 12.0)));
       tiles.add(const Padding(padding: EdgeInsets.only(bottom: 24.0)));
     } else {
@@ -171,7 +174,7 @@ class _GradesPageState extends State<GradesPage> {
         .toList();
 
     yearlyGraph = Padding(
-      padding: const EdgeInsets.only(top: 12.0, bottom: 24.0),
+      padding: const EdgeInsets.only(top: 12.0, bottom: 8.0),
       child: Panel(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -199,6 +202,11 @@ class _GradesPageState extends State<GradesPage> {
           child: GradeGraph(graphGrades, dayThreshold: 2, classAvg: totalClassAvg),
         ),
       ),
+    );
+
+    gradesCount = Padding(
+      padding: const EdgeInsets.only(bottom: 24.0),
+      child: Panel(child: GradesCount(grades: graphGrades)),
     );
 
     generateTiles();

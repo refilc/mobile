@@ -16,6 +16,7 @@ import 'package:filcnaplo_mobile_ui/common/widgets/grade/grade_viewable.dart';
 import 'package:filcnaplo_mobile_ui/common/hero_scrollview.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/calculator/grade_calculator.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/calculator/grade_calculator_provider.dart';
+import 'package:filcnaplo_mobile_ui/pages/grades/grades_count.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/graph.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/subject_grades_container.dart';
 import 'package:flutter/cupertino.dart';
@@ -77,10 +78,17 @@ class _GradeSubjectViewState extends State<GradeSubjectView> {
     List<Widget> tiles = [];
 
     if (showGraph(subjectGrades)) {
-      tiles.insert(0, gradeGraph);
+      tiles.add(gradeGraph);
     } else {
-      tiles.insert(0, Container(height: 24.0));
+      tiles.add(Container(height: 24.0));
     }
+
+    tiles.add(Padding(
+      padding: const EdgeInsets.only(bottom: 24.0),
+      child: Panel(
+        child: GradesCount(grades: getSubjectGrades(widget.subject).toList()),
+      ),
+    ));
 
     List<Widget> _gradeTiles = [];
 
@@ -145,7 +153,7 @@ class _GradeSubjectViewState extends State<GradeSubjectView> {
         : 0.0;
 
     gradeGraph = Padding(
-      padding: const EdgeInsets.only(top: 16.0, bottom: 24.0),
+      padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
       child: Panel(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
