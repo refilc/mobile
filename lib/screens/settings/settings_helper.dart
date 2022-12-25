@@ -216,9 +216,8 @@ class SettingsHelper {
   }
 
   static void accentColor(BuildContext context) {
-    showRoundedModalBottomSheet(
-      context,
-      child: const PremiumCustomAccentColorSetting(),
+    Navigator.of(context, rootNavigator: true).push(
+      CupertinoPageRoute(builder: (context) => const PremiumCustomAccentColorSetting()),
     );
   }
 
