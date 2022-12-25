@@ -20,8 +20,15 @@ class TrendDisplay<T extends num> extends StatelessWidget {
     Color color;
     String icon;
 
-    final percentage = Provider.of<SettingsProvider>(context).goodStudent ? 69 : (current - previous) * 100;
-    final percentageText = percentage.abs().toStringAsFixed(1).replaceAll('.', I18n.of(context).locale.languageCode != 'en' ? ',' : '.');
+    double percentage;
+
+    if (previous > 0) {
+      percentage = Provider.of<SettingsProvider>(context).goodStudent ? 69.0 : (current - previous) * 100.0;
+    } else {
+      percentage = 0.0;
+    }
+
+    final String percentageText = percentage.abs().toStringAsFixed(1).replaceAll('.', I18n.of(context).locale.languageCode != 'en' ? ',' : '.');
 
     if (!percentage.isNegative) {
       color = upColor;
@@ -29,6 +36,10 @@ class TrendDisplay<T extends num> extends StatelessWidget {
     } else {
       color = downColor;
       icon = downIcon;
+    }
+
+    if (percentage == 0) {
+      return const SizedBox();
     }
 
     return Padding(
