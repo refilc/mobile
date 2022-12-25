@@ -102,7 +102,7 @@ class _PremiumButtonState extends State<PremiumButton> with TickerProviderStateM
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 24.0,
+                          fontSize: 20.0,
                         ),
                         textAlign: TextAlign.center,
                       ),
