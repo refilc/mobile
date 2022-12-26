@@ -217,7 +217,11 @@ class SettingsHelper {
 
   static void accentColor(BuildContext context) {
     Navigator.of(context, rootNavigator: true).push(
-      CupertinoPageRoute(builder: (context) => const PremiumCustomAccentColorSetting()),
+      PageRouteBuilder(
+        pageBuilder: (context, _, __) => const PremiumCustomAccentColorSetting(),
+        transitionDuration: Duration.zero,
+        reverseTransitionDuration: Duration.zero,
+      ),
     );
   }
 
