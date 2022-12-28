@@ -32,29 +32,12 @@ class FilterBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _FilterBarState extends State<FilterBar> {
-  List<Widget> censoredItems = [];
+  List<double> censoredItemsWidth = [];
   @override
   void initState() {
     super.initState();
 
-    // prevent unnecessary generating
-    if (!widget.censored) return;
-    
-    censoredItems = List.generate(
-      widget.items.length,
-      (index) => Wrap(
-        children: [
-          Container(
-            width: 25 + Random().nextDouble() * 50,
-            height: 15,
-            decoration: BoxDecoration(
-              color: AppColors.of(context).text.withOpacity(.45),
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-          ),
-        ],
-      ),
-    );
+    censoredItemsWidth = List.generate(widget.items.length, (index) => 25 + Random().nextDouble() * 50).toList();
   }
 
   @override
@@ -80,7 +63,18 @@ class _FilterBarState extends State<FilterBar> {
       overlayColor: MaterialStateProperty.all(const Color(0x00000000)),
       // Tabs
       padding: EdgeInsets.zero,
-      tabs: widget.censored ? censoredItems : widget.items,
+      tabs: widget.censored
+          ? censoredItemsWidth.map(
+              (e) => Container(
+                width: e,
+                height: 15,
+                decoration: BoxDecoration(
+                  color: AppColors.of(context).text.withOpacity(.45),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+            ).toList()
+          : widget.items,
       onTap: widget.onTap,
     );
 
