@@ -28,29 +28,6 @@ class FilterBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> listItems = [];
-    if (censored) {
-      listItems.addAll(
-        List.generate(
-          items.length,
-          (index) => Wrap(
-            children: [
-              Container(
-                width: 25 + Random().nextDouble() * 50,
-                height: 15,
-                decoration: BoxDecoration(
-                  color: AppColors.of(context).text.withOpacity(.45),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    } else {
-      listItems = items;
-    }
-
     final tabbar = TabBar(
       controller: controller,
       isScrollable: scrollable,
@@ -72,7 +49,21 @@ class FilterBar extends StatelessWidget implements PreferredSizeWidget {
       overlayColor: MaterialStateProperty.all(const Color(0x00000000)),
       // Tabs
       padding: EdgeInsets.zero,
-      tabs: listItems,
+      tabs: censored ? List.generate(
+        items.length,
+        (index) => Wrap(
+          children: [
+            Container(
+              width: 25 + Random().nextDouble() * 50,
+              height: 15,
+              decoration: BoxDecoration(
+                color: AppColors.of(context).text.withOpacity(.45),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            ),
+          ],
+        ),
+      ) : items,
       onTap: onTap,
     );
 
