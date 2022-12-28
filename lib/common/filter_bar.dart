@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:flutter/material.dart';
 
-class FilterBar extends StatelessWidget implements PreferredSizeWidget {
+class FilterBar extends StatefulWidget implements PreferredSizeWidget {
   const FilterBar({
     Key? key,
     required this.items,
@@ -20,17 +20,48 @@ class FilterBar extends StatelessWidget implements PreferredSizeWidget {
   final TabController controller;
   final EdgeInsetsGeometry padding;
   final Function(int)? onTap;
-  @override
-  final Size preferredSize = const Size.fromHeight(42.0);
   final bool disableFading;
   final bool scrollable;
   final bool censored;
 
   @override
+  final Size preferredSize = const Size.fromHeight(42.0);
+
+  @override
+  State<FilterBar> createState() => _FilterBarState();
+}
+
+class _FilterBarState extends State<FilterBar> {
+  List<Widget> censoredItems = [];
+  @override
+  void initState() {
+    super.initState();
+
+    // prevent unnecessary generating
+    if (!widget.censored) return;
+    
+    censoredItems = List.generate(
+      widget.items.length,
+      (index) => Wrap(
+        children: [
+          Container(
+            width: 25 + Random().nextDouble() * 50,
+            height: 15,
+            decoration: BoxDecoration(
+              color: AppColors.of(context).text.withOpacity(.45),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     final tabbar = TabBar(
-      controller: controller,
-      isScrollable: scrollable,
+      controller: widget.controller,
+      isScrollable: widget.scrollable,
       physics: const BouncingScrollPhysics(),
       // Label
       labelStyle: Theme.of(context).textTheme.subtitle2!.copyWith(
@@ -49,43 +80,29 @@ class FilterBar extends StatelessWidget implements PreferredSizeWidget {
       overlayColor: MaterialStateProperty.all(const Color(0x00000000)),
       // Tabs
       padding: EdgeInsets.zero,
-      tabs: censored ? List.generate(
-        items.length,
-        (index) => Wrap(
-          children: [
-            Container(
-              width: 25 + Random().nextDouble() * 50,
-              height: 15,
-              decoration: BoxDecoration(
-                color: AppColors.of(context).text.withOpacity(.45),
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-            ),
-          ],
-        ),
-      ) : items,
-      onTap: onTap,
+      tabs: widget.censored ? censoredItems : widget.items,
+      onTap: widget.onTap,
     );
 
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 48.0,
-      padding: padding,
-      child: disableFading
+      padding: widget.padding,
+      child: widget.disableFading
           ? tabbar
           : AnimatedBuilder(
-              animation: controller.animation!,
+              animation: widget.controller.animation!,
               builder: (ctx, child) {
                 // avoid fading over selected tab
                 return ShaderMask(
                     shaderCallback: (Rect bounds) {
                       final Color bg = Theme.of(context).scaffoldBackgroundColor;
-                      final double index = controller.animation!.value;
+                      final double index = widget.controller.animation!.value;
                       return LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [
                         index < 0.2 ? Colors.transparent : bg,
                         Colors.transparent,
                         Colors.transparent,
-                        index > controller.length - 1.2 ? Colors.transparent : bg
+                        index > widget.controller.length - 1.2 ? Colors.transparent : bg
                       ], stops: const [
                         0,
                         0.1,
