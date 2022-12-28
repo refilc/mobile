@@ -66,8 +66,6 @@ class _SchoolInputState extends State<SchoolInput> {
   }
 
   void _selectSchool(School school) {
-    print("selectschool");
-
     FocusScope.of(context).requestFocus(FocusNode());
 
     setState(() {
