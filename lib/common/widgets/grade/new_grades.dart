@@ -10,9 +10,10 @@ import 'package:rive/rive.dart';
 import 'new_grades.i18n.dart';
 
 class NewGradesSurprise extends StatelessWidget {
-  const NewGradesSurprise(this.grades, {Key? key}) : super(key: key);
+  const NewGradesSurprise(this.grades, {Key? key, this.censored = false}) : super(key: key);
 
   final List<Grade> grades;
+  final bool censored;
 
   @override
   Widget build(BuildContext context) {
@@ -47,45 +48,84 @@ class NewGradesSurprise extends StatelessWidget {
               ),
             ),
           ),
-          title: Text(
-            "new_grades".i18n,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontWeight: FontWeight.w600),
-          ),
-          subtitle: Text(
-            "tap_to_open".i18n,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontWeight: FontWeight.w500),
-          ),
-          trailing: Text.rich(
-            TextSpan(children: [
-              TextSpan(
-                  text: "${grades.length}",
-                  style: TextStyle(
-                    shadows: [
-                      Shadow(
-                        color: AppColors.of(context).text.withOpacity(.2),
-                        offset: const Offset(2, 2),
-                      )
-                    ],
-                  )),
-              TextSpan(
-                text: "x",
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: AppColors.of(context).text.withOpacity(.5),
-                  fontWeight: FontWeight.w800,
+          title: censored
+              ? Wrap(
+                  children: [
+                    Container(
+                      width: 85,
+                      height: 15,
+                      decoration: BoxDecoration(
+                        color: AppColors.of(context).text.withOpacity(.85),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                    ),
+                  ],
+                )
+              : Text(
+                  "new_grades".i18n,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
-              )
-            ]),
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 28.0,
-              color: AppColors.of(context).text.withOpacity(.75),
-            ),
-          ),
+          subtitle: censored
+              ? Wrap(
+                  children: [
+                    Container(
+                      width: 125,
+                      height: 10,
+                      decoration: BoxDecoration(
+                        color: AppColors.of(context).text.withOpacity(.45),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                    ),
+                  ],
+                )
+              : Text(
+                  "tap_to_open".i18n,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontWeight: FontWeight.w500),
+                ),
+          trailing: censored
+              ? Wrap(
+                  children: [
+                    Container(
+                      width: 25,
+                      height: 25,
+                      decoration: BoxDecoration(
+                        color: AppColors.of(context).text.withOpacity(.45),
+                        borderRadius: BorderRadius.circular(25.0),
+                      ),
+                    ),
+                  ],
+                )
+              : Text.rich(
+                  TextSpan(children: [
+                    TextSpan(
+                        text: "${grades.length}",
+                        style: TextStyle(
+                          shadows: [
+                            Shadow(
+                              color: AppColors.of(context).text.withOpacity(.2),
+                              offset: const Offset(2, 2),
+                            )
+                          ],
+                        )),
+                    TextSpan(
+                      text: "x",
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: AppColors.of(context).text.withOpacity(.5),
+                        fontWeight: FontWeight.w800,
+                      ),
+                    )
+                  ]),
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 28.0,
+                    color: AppColors.of(context).text.withOpacity(.75),
+                  ),
+                ),
         ),
       ),
     );

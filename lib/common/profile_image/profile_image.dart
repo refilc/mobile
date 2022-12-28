@@ -14,6 +14,7 @@ class ProfileImage extends StatelessWidget {
     this.heroTag,
     this.badge = false,
     this.role = Role.student,
+    this.censored = false,
   }) : super(key: key);
 
   final void Function()? onTap;
@@ -23,6 +24,7 @@ class ProfileImage extends StatelessWidget {
   final String? heroTag;
   final bool badge;
   final Role? role;
+  final bool censored;
 
   @override
   Widget build(BuildContext context) {
@@ -61,14 +63,23 @@ class ProfileImage extends StatelessWidget {
               ),
               child: name != null && (name?.trim().length ?? 0) > 0
                   ? Center(
-                      child: Text(
-                        (name?.trim().length ?? 0) > 0 ? (name ?? "?").trim()[0] : "?",
-                        style: TextStyle(
-                          color: color,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18.0 * (radius / 20.0),
-                        ),
-                      ),
+                      child: censored
+                          ? Container(
+                              width: 15,
+                              height: 15,
+                              decoration: BoxDecoration(
+                                color: color.withOpacity(.5),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                            )
+                          : Text(
+                              (name?.trim().length ?? 0) > 0 ? (name ?? "?").trim()[0] : "?",
+                              style: TextStyle(
+                                color: color,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 18.0 * (radius / 20.0),
+                              ),
+                            ),
                     )
                   : Container(),
             ),
