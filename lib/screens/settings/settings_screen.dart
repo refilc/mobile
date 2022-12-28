@@ -146,7 +146,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
   @override
   void initState() {
     super.initState();
-    _hideContainersController = AnimationController(vsync: this, duration: const Duration(milliseconds: 250));
+    _hideContainersController = AnimationController(vsync: this, duration: const Duration(milliseconds: 200));
   }
 
   @override
