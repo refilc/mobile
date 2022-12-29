@@ -1,5 +1,7 @@
+import 'package:filcnaplo_premium/providers/premium_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class GithubConnectButton extends StatelessWidget {
@@ -7,6 +9,12 @@ class GithubConnectButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final premium = Provider.of<PremiumProvider>(context);
+
+    if (premium.hasPremium) {
+      return const SizedBox();
+    }
+
     return Card(
       margin: EdgeInsets.zero,
       elevation: 0,
@@ -14,7 +22,27 @@ class GithubConnectButton extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.0)),
       child: InkWell(
         onTap: () {
-          launchUrl(Uri.parse("https://github.com/sponsors/filc"));
+          premium.auth.initAuth();
+          showDialog(
+            context: context,
+            useRootNavigator: true,
+            builder: (context) {
+              final premium = Provider.of<PremiumProvider>(context);
+
+              if (premium.hasPremium) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  Navigator.of(context, rootNavigator: true).maybePop();
+                });
+              }
+
+              return AlertDialog(
+                title: const Text("Premium auth token"),
+                content: TextField(
+                  onSubmitted: (token) => premium.auth.finishAuth(token),
+                ),
+              );
+            },
+          );
         },
         borderRadius: BorderRadius.circular(14.0),
         child: Padding(

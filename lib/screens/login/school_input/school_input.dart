@@ -33,7 +33,7 @@ class _SchoolInputState extends State<SchoolInput> {
     // Show school list when focused
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
-        overlay.createOverlayEntry(context);
+        WidgetsBinding.instance.addPostFrameCallback((_) => overlay.createOverlayEntry(context));
         Future.delayed(const Duration(milliseconds: 100)).then((value) {
           if (mounted && widget.scroll.hasClients) {
             widget.scroll.animateTo(widget.scroll.offset + 500, duration: const Duration(milliseconds: 500), curve: Curves.ease);
@@ -61,7 +61,7 @@ class _SchoolInputState extends State<SchoolInput> {
                 ))
             .toList();
       });
-      Overlay.of(context)?.setState(() {});
+      Overlay.of(context).setState(() {});
     });
   }
 

@@ -10,7 +10,7 @@ class SchoolInputOverlay {
 
   void createOverlayEntry(BuildContext context) {
     entry = OverlayEntry(builder: (_) => buildOverlayEntry(context));
-    Overlay.of(context)?.insert(entry!);
+    Overlay.of(context).insert(entry!);
   }
 
   Widget buildOverlayEntry(BuildContext context) {

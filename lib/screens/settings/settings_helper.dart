@@ -216,9 +216,12 @@ class SettingsHelper {
   }
 
   static void accentColor(BuildContext context) {
-    showRoundedModalBottomSheet(
-      context,
-      child: const PremiumCustomAccentColorSetting(),
+    Navigator.of(context, rootNavigator: true).push(
+      PageRouteBuilder(
+        pageBuilder: (context, _, __) => const PremiumCustomAccentColorSetting(),
+        transitionDuration: Duration.zero,
+        reverseTransitionDuration: Duration.zero,
+      ),
     );
   }
 
