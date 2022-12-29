@@ -61,7 +61,7 @@ class _SchoolInputState extends State<SchoolInput> {
                 ))
             .toList();
       });
-      Overlay.of(context).setState(() {});
+      Overlay.of(context)?.setState(() {});
     });
   }
 
