@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:filcnaplo/api/providers/update_provider.dart';
@@ -69,6 +70,7 @@ class _MessagesPageState extends State<MessagesPage> with TickerProviderStateMix
                       backgroundColor: ColorUtils.stringToColor(user.displayName ?? "?"),
                       badge: updateProvider.available,
                       role: user.role,
+                        profilePictureString: user.picture,
                     ),
                   ),
                 ),

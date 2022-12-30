@@ -1,4 +1,5 @@
 // ignore_for_file: dead_code
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:filcnaplo/api/providers/live_card_provider.dart';
@@ -182,6 +183,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                         : Theme.of(context).colorScheme.secondary,
                                     badge: updateProvider.available,
                                     role: user.role,
+                                    profilePictureString: user.picture,
                                   ),
                                 ),
                               ),

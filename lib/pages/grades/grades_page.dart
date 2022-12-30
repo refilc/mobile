@@ -233,6 +233,7 @@ class _GradesPageState extends State<GradesPage> {
                       backgroundColor: ColorUtils.stringToColor(user.displayName ?? "?"),
                       badge: updateProvider.available,
                       role: user.role,
+                      profilePictureString: user.picture,
                     ),
                   ),
                 ),

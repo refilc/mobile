@@ -193,6 +193,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                         backgroundColor: ColorUtils.stringToColor(user.displayName ?? "?"),
                         badge: updateProvider.available,
                         role: user.role,
+                        profilePictureString: user.picture,
                       ),
                     ),
                   ),

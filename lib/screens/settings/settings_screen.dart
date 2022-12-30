@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:filcnaplo/api/providers/update_provider.dart';
 import 'package:filcnaplo/theme/colors/accent.dart';
 import 'package:filcnaplo/theme/observer.dart';
@@ -44,7 +46,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'settings_screen.i18n.dart';
 import 'package:flutter/services.dart';
 import 'package:filcnaplo_premium/ui/mobile/settings/nickname.dart';
-import 'package:filcnaplo_premium/ui/mobile/premium/premium_banner_button.dart';
+import 'package:filcnaplo_premium/ui/mobile/settings/profile_pic.dart';
 import 'package:filcnaplo_premium/ui/mobile/settings/icon_pack.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -124,6 +126,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
         title: Text("open_dkt".i18n),
       ),
       const UserMenuNickname(),
+      const UserMenuProfilePic(),
       // BottomSheetMenuItem(
       //   onPressed: () {},
       //   icon: Icon(FeatherIcons.camera),
@@ -213,6 +216,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
                 name: firstName,
                 badge: updateProvider.available,
                 role: user.role,
+                profilePictureString: user.picture,
                 backgroundColor:
                     !settings.presentationMode ? ColorUtils.stringToColor(user.displayName ?? "?") : Theme.of(context).colorScheme.secondary,
               ),

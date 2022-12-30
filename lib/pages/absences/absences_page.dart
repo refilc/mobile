@@ -153,6 +153,7 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
                       backgroundColor: ColorUtils.stringToColor(user.displayName ?? "?"),
                       badge: updateProvider.available,
                       role: user.role,
+                      profilePictureString: user.picture,
                     ),
                   ),
                 ),
