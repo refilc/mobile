@@ -8,6 +8,7 @@ class HeroScrollView extends StatefulWidget {
       required this.child,
       required this.title,
       required this.icon,
+      this.italic = false,
       this.navBarItems = const [],
       this.onClose,
       this.iconSize = 64.0,
@@ -21,6 +22,7 @@ class HeroScrollView extends StatefulWidget {
   final VoidCallback? onClose;
   final double iconSize;
   final ScrollController? scrollController;
+  final bool italic;
 
   @override
   _HeroScrollViewState createState() => _HeroScrollViewState();
@@ -74,7 +76,8 @@ class _HeroScrollViewState extends State<HeroScrollView> {
                       widget.title.capital(),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
-                      style: TextStyle(color: AppColors.of(context).text, fontWeight: FontWeight.w500),
+                      style: TextStyle(
+                          color: AppColors.of(context).text, fontWeight: FontWeight.w500, fontStyle: widget.italic ? FontStyle.italic : null),
                     ),
                   ),
                 ],

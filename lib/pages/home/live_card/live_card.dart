@@ -61,11 +61,13 @@ class _LiveCardState extends State<LiveCard> {
                     children: [
                       TextSpan(text: "first_lesson_1".i18n),
                       TextSpan(
-                        text: liveCard.nextLesson!.subject.name.capital(),
+                        text: liveCard.nextLesson!.subject.renamedTo != null
+                            ? liveCard.nextLesson!.subject.renamedTo!
+                            : liveCard.nextLesson!.subject.name.capital(),
                         style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context).colorScheme.secondary.withOpacity(.85),
-                        ),
+                            fontWeight: FontWeight.w600,
+                            color: Theme.of(context).colorScheme.secondary.withOpacity(.85),
+                            fontStyle: liveCard.nextLesson!.subject.renamedTo != null ? FontStyle.italic : null),
                       ),
                       TextSpan(text: "first_lesson_2".i18n),
                       TextSpan(
@@ -99,11 +101,16 @@ class _LiveCardState extends State<LiveCard> {
         child = LiveCardWidget(
           key: const Key('livecard.duringLesson'),
           leading: liveCard.currentLesson!.lessonIndex + (RegExp(r'\d').hasMatch(liveCard.currentLesson!.lessonIndex) ? "." : ""),
-          title: liveCard.currentLesson!.subject.name.capital(),
+          title: liveCard.currentLesson!.subject.renamedTo != null
+              ? liveCard.currentLesson!.subject.renamedTo!
+              : liveCard.currentLesson!.subject.name.capital(),
+          titleItalic: liveCard.nextLesson!.subject.renamedTo != null,
           subtitle: liveCard.currentLesson!.room,
           icon: SubjectIcon.resolveVariant(subject: liveCard.currentLesson!.subject, context: context),
           description: liveCard.currentLesson!.description != "" ? Text(liveCard.currentLesson!.description) : null,
-          nextSubject: liveCard.nextLesson?.subject.name.capital(),
+          nextSubject:
+              liveCard.nextLesson?.subject.renamedTo != null ? liveCard.nextLesson?.subject.renamedTo! : liveCard.nextLesson?.subject.name.capital(),
+          nextSubjectItalic: liveCard.nextLesson!.subject.renamedTo != null,
           nextRoom: liveCard.nextLesson?.room,
           progressMax: showMinutes ? maxTime / 60 : maxTime,
           progressCurrent: showMinutes ? elapsedTime / 60 : elapsedTime,
@@ -134,7 +141,9 @@ class _LiveCardState extends State<LiveCard> {
           description: liveCard.nextLesson!.room != liveCard.prevLesson!.room
               ? Text("go $diff".i18n.fill([diff != "to room" ? (liveCard.nextLesson!.getFloor() ?? 0) : liveCard.nextLesson!.room]))
               : Text("stay".i18n),
-          nextSubject: liveCard.nextLesson?.subject.name.capital(),
+          nextSubject:
+              liveCard.nextLesson?.subject.renamedTo != null ? liveCard.nextLesson?.subject.renamedTo! : liveCard.nextLesson?.subject.name.capital(),
+          nextSubjectItalic: liveCard.nextLesson?.subject.renamedTo != null,
           nextRoom: diff != "to room" ? liveCard.nextLesson?.room : null,
           progressMax: liveCard.nextLesson!.start.difference(liveCard.prevLesson!.end).inMinutes.toDouble(),
           progressCurrent: DateTime.now().difference(liveCard.prevLesson!.end).inMinutes.toDouble() + bellDelay.inMinutes.toDouble(),

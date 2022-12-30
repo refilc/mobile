@@ -48,6 +48,7 @@ import 'package:flutter/services.dart';
 import 'package:filcnaplo_premium/ui/mobile/settings/nickname.dart';
 import 'package:filcnaplo_premium/ui/mobile/settings/profile_pic.dart';
 import 'package:filcnaplo_premium/ui/mobile/settings/icon_pack.dart';
+import 'package:filcnaplo_premium/ui/mobile/settings/modify_subject_names.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -613,37 +614,42 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
               padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
               child: Panel(
                 title: Text("extras".i18n),
-                child: Column(children: [
-                  Material(
-                    type: MaterialType.transparency,
-                    child: SwitchListTile(
-                      contentPadding: const EdgeInsets.only(left: 12.0),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-                      title: Row(
-                        children: [
-                          Icon(
-                            FeatherIcons.gift,
-                            color: settings.gradeOpeningFun ? Theme.of(context).colorScheme.secondary : AppColors.of(context).text.withOpacity(.25),
-                          ),
-                          const SizedBox(width: 24.0),
-                          Expanded(
-                            child: Text(
-                              "surprise_grades".i18n,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16.0,
-                                color: AppColors.of(context).text.withOpacity(settings.gradeOpeningFun ? 1.0 : .5),
+                child: Column(
+                  children: [
+                    Material(
+                      type: MaterialType.transparency,
+                      child: SwitchListTile(
+                        contentPadding: const EdgeInsets.only(left: 12.0),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+                        title: Row(
+                          children: [
+                            Icon(
+                              FeatherIcons.gift,
+                              color: settings.gradeOpeningFun ? Theme.of(context).colorScheme.secondary : AppColors.of(context).text.withOpacity(.25),
+                            ),
+                            const SizedBox(width: 24.0),
+                            Expanded(
+                              child: Text(
+                                "surprise_grades".i18n,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16.0,
+                                  color: AppColors.of(context).text.withOpacity(settings.gradeOpeningFun ? 1.0 : .5),
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
+                        onChanged: (v) => settings.update(gradeOpeningFun: v),
+                        value: settings.gradeOpeningFun,
+                        activeColor: Theme.of(context).colorScheme.secondary,
                       ),
-                      onChanged: (v) => settings.update(gradeOpeningFun: v),
-                      value: settings.gradeOpeningFun,
-                      activeColor: Theme.of(context).colorScheme.secondary,
                     ),
-                  ),
-                ]),
+                    MenuRenamedSubjects(
+                      settings: settings,
+                    ),
+                  ],
+                ),
               ),
             ),
 

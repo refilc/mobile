@@ -11,11 +11,13 @@ class LiveCardWidget extends StatefulWidget {
     Key? key,
     this.leading,
     this.title,
+    this.titleItalic = false,
     this.subtitle,
     this.icon,
     this.description,
     this.nextRoom,
     this.nextSubject,
+    this.nextSubjectItalic = false,
     this.progressCurrent,
     this.progressMax,
     this.progressAccuracy = ProgressAccuracy.minutes,
@@ -24,10 +26,12 @@ class LiveCardWidget extends StatefulWidget {
 
   final String? leading;
   final String? title;
+  final bool titleItalic;
   final String? subtitle;
   final IconData? icon;
   final Widget? description;
   final String? nextSubject;
+  final bool nextSubjectItalic;
   final String? nextRoom;
   final double? progressCurrent;
   final double? progressMax;
@@ -100,7 +104,7 @@ class _LiveCardWidgetState extends State<LiveCardWidget> {
                                     child: Text.rich(
                                       TextSpan(
                                         children: [
-                                          TextSpan(text: widget.title!),
+                                          TextSpan(text: widget.title!, style: TextStyle(fontStyle: widget.titleItalic ? FontStyle.italic : null)),
                                           if (widget.subtitle != null)
                                             WidgetSpan(
                                               child: Container(
@@ -171,7 +175,8 @@ class _LiveCardWidgetState extends State<LiveCardWidget> {
                             child: Text.rich(
                               TextSpan(
                                 children: [
-                                  TextSpan(text: widget.nextSubject!),
+                                  TextSpan(
+                                      text: widget.nextSubject!, style: TextStyle(fontStyle: widget.nextSubjectItalic ? FontStyle.italic : null)),
                                   if (widget.nextRoom != null)
                                     WidgetSpan(
                                       child: Container(

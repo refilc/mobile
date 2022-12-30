@@ -42,8 +42,8 @@ class MissedExamViewTile extends StatelessWidget {
             size: 32.0,
           ),
           title: Text(
-            "${lesson.subject.name.capital()} • ${lesson.date.format(context)}",
-            style: const TextStyle(fontWeight: FontWeight.w600),
+            "${lesson.subject.renamedTo != null ? lesson.subject.renamedTo! : lesson.subject.name.capital()} • ${lesson.date.format(context)}",
+            style: TextStyle(fontWeight: FontWeight.w600, fontStyle: lesson.subject.renamedTo != null ? FontStyle.italic : null),
           ),
           subtitle: Text(
             "missed_exam_contact".i18n.fill([lesson.teacher]),

@@ -26,10 +26,10 @@ class GradeView extends StatelessWidget {
           ListTile(
             leading: GradeValueWidget(grade.value, fill: true),
             title: Text(
-              grade.subject.name.capital(),
+              grade.subject.renamedTo != null ? grade.subject.renamedTo! : grade.subject.name.capital(),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontWeight: FontWeight.w600),
+              style: TextStyle(fontWeight: FontWeight.w600, fontStyle: grade.subject.renamedTo != null ? FontStyle.italic : null),
             ),
             subtitle: Text(
               !Provider.of<SettingsProvider>(context, listen: false).presentationMode ? grade.teacher : "Tanár",

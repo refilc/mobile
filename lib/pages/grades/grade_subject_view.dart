@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:animations/animations.dart';
+import 'package:filcnaplo/utils/format.dart';
 import 'package:filcnaplo_kreta_api/providers/grade_provider.dart';
 import 'package:filcnaplo/helpers/average_helper.dart';
 import 'package:filcnaplo/helpers/subject.dart';
@@ -220,7 +221,8 @@ class _GradeSubjectViewState extends State<GradeSubjectView> {
               ],
               icon: SubjectIcon.resolveVariant(subject: widget.subject, context: context),
               scrollController: _scrollController,
-              title: widget.subject.name,
+              title: widget.subject.renamedTo != null ? widget.subject.renamedTo! : widget.subject.name.capital(),
+              italic: widget.subject.renamedTo != null,
               child: SubjectGradesContainer(
                 child: CupertinoScrollbar(
                   child: ListView.builder(

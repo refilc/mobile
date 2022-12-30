@@ -61,10 +61,10 @@ class ChangedLessonTile extends StatelessWidget {
             style: const TextStyle(fontWeight: FontWeight.w600),
           ),
           subtitle: Text(
-            lesson.subject.name.capital(),
+            lesson.subject.renamedTo != null ? lesson.subject.renamedTo! : lesson.subject.name.capital(),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontWeight: FontWeight.w500),
+            style: TextStyle(fontWeight: FontWeight.w500, fontStyle: lesson.subject.renamedTo != null ? FontStyle.italic : null),
           ),
           trailing: const Icon(FeatherIcons.arrowRight),
           minLeadingWidth: 0,
