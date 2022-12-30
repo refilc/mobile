@@ -165,7 +165,7 @@ class _ProfileImageState extends State<ProfileImage> {
               child: Material(
                 clipBehavior: Clip.hardEdge,
                 shape: const CircleBorder(),
-                color: widget.backgroundColor ?? AppColors.of(context).text.withOpacity(.15),
+                color: profilePicture != null ? Colors.transparent : widget.backgroundColor ?? AppColors.of(context).text.withOpacity(.15),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   height: widget.radius * 2,
