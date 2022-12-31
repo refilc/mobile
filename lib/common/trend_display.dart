@@ -23,7 +23,7 @@ class TrendDisplay<T extends num> extends StatelessWidget {
     double percentage;
 
     if (previous > 0) {
-      percentage = Provider.of<SettingsProvider>(context).goodStudent ? 69.0 : (current - previous) * 100.0;
+      percentage = (current - previous) * 100.0;
     } else {
       percentage = 0.0;
     }

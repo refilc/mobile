@@ -46,7 +46,7 @@ class GradeView extends StatelessWidget {
           // Grade Details
           Detail(
             title: "value".i18n,
-            description: "${Provider.of<SettingsProvider>(context).goodStudent ? "Példás" : grade.value.valueName} " + percentText(),
+            description: "${grade.value.valueName} " + percentText(),
           ),
           if (grade.description != "") Detail(title: "description".i18n, description: grade.description),
           if (grade.mode.description != "") Detail(title: "mode".i18n, description: grade.mode.description),

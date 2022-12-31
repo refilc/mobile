@@ -447,7 +447,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
                                           onTap: () {
                                             Navigator.of(context).pop();
                                             settings.update(goodStudent: v);
-                                            Provider.of<GradeProvider>(context, listen: false).fetch();
+                                            Provider.of<GradeProvider>(context, listen: false).convertBySettings();
                                           })
                                     ],
                                   ),
@@ -455,7 +455,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
                               );
                             } else {
                               settings.update(goodStudent: v);
-                              Provider.of<GradeProvider>(context, listen: false).fetch();
+                              Provider.of<GradeProvider>(context, listen: false).convertBySettings();
                             }
                           },
                           value: settings.goodStudent,

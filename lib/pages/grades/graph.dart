@@ -44,7 +44,7 @@ class _GradeGraphState extends State<GradeGraph> {
 
     // Create FlSpots from points
     for (var dataList in sortedData) {
-      double average = settings.goodStudent ? 5.0 : AverageHelper.averageEvals(dataList);
+      double average = AverageHelper.averageEvals(dataList);
 
       if (dataList.isNotEmpty) {
         subjectData.add(FlSpot(
@@ -77,7 +77,7 @@ class _GradeGraphState extends State<GradeGraph> {
     List<Grade> ghostData = widget.data.where((e) => e.value.weight != 0).where((e) => e.type == GradeType.ghost).toList();
 
     // Calculate average
-    double average = settings.goodStudent ? 5.0 : AverageHelper.averageEvals(data);
+    double average = AverageHelper.averageEvals(data);
 
     // Calculate graph color
     Color averageColor = average >= 1 && average <= 5

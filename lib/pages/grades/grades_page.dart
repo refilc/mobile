@@ -119,7 +119,7 @@ class _GradesPageState extends State<GradesPage> {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              value: Provider.of<SettingsProvider>(context).goodStudent ? 5.0 : subjectAvg,
+              value: subjectAvg,
             ),
           ),
           const SizedBox(width: 24.0),
