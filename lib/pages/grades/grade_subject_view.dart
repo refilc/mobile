@@ -183,11 +183,16 @@ class _GradeSubjectViewState extends State<GradeSubjectView> {
         floatingActionButton: Visibility(
           visible: !gradeCalcMode && subjectGrades.where((e) => e.type == GradeType.midYear).isNotEmpty,
           child: ExpandableFab(
+            backgroundColor: Theme.of(context).colorScheme.secondary,
             type: ExpandableFabType.up,
             distance: 50,
+            closeButtonStyle: ExpandableFabCloseButtonStyle(
+              backgroundColor: Theme.of(context).colorScheme.secondary,
+            ),
             children: [
               FloatingActionButton.small(
                 child: const Icon(FeatherIcons.plus),
+                backgroundColor: Theme.of(context).colorScheme.secondary,
                 onPressed: () {
                   gradeCalc(context);
                 },
