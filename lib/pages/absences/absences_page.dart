@@ -142,6 +142,7 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
               floating: false,
               snap: false,
               centerTitle: false,
+              surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
               actions: [
                 // Profile Icon
                 Padding(

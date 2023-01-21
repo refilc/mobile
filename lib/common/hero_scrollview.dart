@@ -65,6 +65,7 @@ class _HeroScrollViewState extends State<HeroScrollView> {
           snap: false,
           centerTitle: false,
           titleSpacing: 0,
+          surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
           title: AnimatedOpacity(
               opacity: showBarTitle ? 1.0 : 0.0,
               child: Row(

@@ -222,6 +222,7 @@ class _GradesPageState extends State<GradesPage> {
               pinned: true,
               floating: false,
               snap: false,
+              surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
               actions: [
                 // Profile Icon
                 Padding(

@@ -9,6 +9,7 @@ class SubjectIconGallery extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
         leading: BackButton(color: AppColors.of(context).text),
         title: Text(
           "Subject Icon Gallery",

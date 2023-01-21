@@ -180,6 +180,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                 pinned: true,
                 floating: false,
                 snap: false,
+                surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
                 actions: [
                   PremiumFSTimetableButton(controller: _controller),
 

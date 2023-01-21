@@ -22,6 +22,7 @@ class NewsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
         leading: BackButton(color: AppColors.of(context).text),
         title: Text("News", style: TextStyle(color: AppColors.of(context).text)),
       ),

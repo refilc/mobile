@@ -1,5 +1,4 @@
 // ignore_for_file: dead_code
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:filcnaplo/api/providers/live_card_provider.dart';
@@ -155,6 +154,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         builder: (context, child) {
                           return SliverAppBar(
                             automaticallyImplyLeading: false,
+                            surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
                             centerTitle: false,
                             titleSpacing: 0.0,
                             // Welcome text

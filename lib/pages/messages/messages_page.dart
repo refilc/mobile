@@ -59,6 +59,7 @@ class _MessagesPageState extends State<MessagesPage> with TickerProviderStateMix
               floating: false,
               snap: false,
               centerTitle: false,
+              surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
               actions: [
                 // Profile Icon
                 Padding(
@@ -70,7 +71,7 @@ class _MessagesPageState extends State<MessagesPage> with TickerProviderStateMix
                       backgroundColor: ColorUtils.stringToColor(user.displayName ?? "?"),
                       badge: updateProvider.available,
                       role: user.role,
-                        profilePictureString: user.picture,
+                      profilePictureString: user.picture,
                     ),
                   ),
                 ),

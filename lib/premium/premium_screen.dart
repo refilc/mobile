@@ -27,6 +27,7 @@ class PremiumScreen extends StatelessWidget {
               physics: const ClampingScrollPhysics(),
               slivers: [
                 SliverAppBar(
+                  surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
                   automaticallyImplyLeading: false,
                   flexibleSpace: Container(
                     decoration: BoxDecoration(

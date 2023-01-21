@@ -25,6 +25,7 @@ class SupportersScreen extends StatelessWidget {
             body: CustomScrollView(
               slivers: [
                 SliverAppBar.large(
+                  surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
                   title: const Text(
                     "Támogatók",
                     style: TextStyle(fontWeight: FontWeight.w700),
