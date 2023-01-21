@@ -143,8 +143,8 @@ class _GradesPageState extends State<GradesPage> {
 
     tiles.add(Provider.of<PremiumProvider>(context, listen: false).hasPremium
         ? const SizedBox()
-        : Padding(
-            padding: const EdgeInsets.only(top: 24.0),
+        : const Padding(
+            padding: EdgeInsets.only(top: 24.0),
             child: PremiumInline(features: [
               PremiumInlineFeature.goal,
               PremiumInlineFeature.stats,
