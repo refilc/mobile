@@ -188,18 +188,6 @@ class NavigationScreenState extends State<NavigationScreen> with WidgetsBindingO
                     initialRoute: selected.name,
                     onGenerateRoute: (settings) => navigationRouteHandler(settings),
                   ),
-                  Container(
-                    height: 8.0,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Colors.black.withOpacity(Theme.of(context).brightness == Brightness.light ? .03 : .08), Colors.transparent],
-                        stops: const [0.0, 1.0],
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),

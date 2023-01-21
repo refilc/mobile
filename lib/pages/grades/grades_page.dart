@@ -182,7 +182,7 @@ class _GradesPageState extends State<GradesPage> {
               value: avgDropValue,
               onChanged: (value) {
                 setState(() {
-                  avgDropValue = avgDropItems.indexOf(avgDropItems.firstWhere((e) => e[0] == value!));
+                  avgDropValue = value!;
                 });
               },
             ),

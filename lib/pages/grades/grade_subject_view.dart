@@ -20,6 +20,9 @@ import 'package:filcnaplo_mobile_ui/pages/grades/calculator/grade_calculator_pro
 import 'package:filcnaplo_mobile_ui/pages/grades/grades_count.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/graph.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/subject_grades_container.dart';
+import 'package:filcnaplo_premium/models/premium_scopes.dart';
+import 'package:filcnaplo_premium/providers/premium_provider.dart';
+import 'package:filcnaplo_premium/ui/mobile/premium/upsell.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
@@ -197,12 +200,20 @@ class _GradeSubjectViewState extends State<GradeSubjectView> {
                   gradeCalc(context);
                 },
               ),
-              // FloatingActionButton.small(
-              //   child: const Icon(FeatherIcons.flag, size: 20.0),
-              //   onPressed: () {
-              //     Navigator.of(context).push(CupertinoPageRoute(builder: (context) => PremiumGoalplannerNewGoalScreen(subject: widget.subject)));
-              //   },
-              // ),
+              FloatingActionButton.small(
+                child: const Icon(FeatherIcons.flag, size: 20.0),
+                backgroundColor: Theme.of(context).colorScheme.secondary,
+                onPressed: () {
+                  if (!Provider.of<PremiumProvider>(context, listen: false).hasScope(PremiumScopes.goalPlanner)) {
+                    PremiumLockedFeatureUpsell.show(context: context, feature: PremiumFeature.goalplanner);
+                    return;
+                  }
+
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Hamarosan...")));
+
+                  // Navigator.of(context).push(CupertinoPageRoute(builder: (context) => PremiumGoalplannerNewGoalScreen(subject: widget.subject)));
+                },
+              ),
             ],
           ),
         ),
