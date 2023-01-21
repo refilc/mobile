@@ -255,19 +255,19 @@ class PremiumScreen extends StatelessWidget {
                         const PremiumRewardCard(
                           title: Text("Mire költitek a pénzt?"),
                           description: Text(
-                              "A pénz elsősorban az appstore évi \$100-os díját fizeti ki, a maradék pénzt a szerver a weboldal és új funkciók fejlesztésére fordítjuk."),
+                              "A pénz elsősorban az appstore évi \$100-os díját fedezi, a maradék a szerver a weboldal és új funkciók fejlesztésére fordítjuk."),
                         ),
                         const SizedBox(height: 14.0),
                         const PremiumRewardCard(
                           title: Text("Még mindig nyílt a forráskód?"),
                           description: Text(
-                              "Igen, a Filc napló teljesen nyílt forráskódú, és ez így is fog maradni. A prémium funkciók forráskódjához hozzáférnek az előfizetők."),
+                              "Igen, a Filc napló teljesen nyílt forráskódú, és ez így is fog maradni. A prémium funkciók forráskódjához hozzáférnek a támogatók."),
                         ),
                         const SizedBox(height: 14.0),
                         const PremiumRewardCard(
-                          title: Text("Hol fizetek elő?"),
+                          title: Text("Hol tudok támogatni?"),
                           description: Text(
-                              "A támogatáshoz szükséged van egy Github profilra, amit hozzá kell kötnöd a filc naplóhoz. A Github “Sponsors” funkciója segítségével kezeljük az előfizetésed."),
+                              "A támogatáshoz szükséged van egy Github profilra, amit hozzá kell kötnöd a filc naplóhoz. A Github “Sponsors” funkciója segítségével kezeljük az támogatásod."),
                         ),
                       ],
                     ),
