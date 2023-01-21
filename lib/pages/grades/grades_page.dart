@@ -20,11 +20,13 @@ import 'package:filcnaplo_mobile_ui/pages/grades/fail_warning.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/grades_count.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/graph.dart';
 import 'package:filcnaplo_mobile_ui/pages/grades/grade_subject_view.dart';
+import 'package:filcnaplo_premium/providers/premium_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:filcnaplo/utils/color.dart';
 import 'package:filcnaplo/helpers/average_helper.dart';
 import 'package:filcnaplo_premium/ui/mobile/grades/average_selector.dart';
+import 'package:filcnaplo_premium/ui/mobile/premium/premium_inline.dart';
 import 'grades_page.i18n.dart';
 
 class GradesPage extends StatefulWidget {
@@ -138,6 +140,16 @@ class _GradesPageState extends State<GradesPage> {
         ],
       ));
     }
+
+    tiles.add(Provider.of<PremiumProvider>(context, listen: false).hasPremium
+        ? const SizedBox()
+        : Padding(
+            padding: const EdgeInsets.only(top: 24.0),
+            child: PremiumInline(features: [
+              PremiumInlineFeature.goal,
+              PremiumInlineFeature.stats,
+            ]),
+          ));
 
     // padding
     tiles.add(const SizedBox(height: 32.0));

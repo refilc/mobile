@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:filcnaplo/api/providers/live_card_provider.dart';
 import 'package:filcnaplo/ui/date_widget.dart';
+import 'package:filcnaplo_premium/providers/premium_provider.dart';
 import 'package:implicitly_animated_reorderable_list_2/implicitly_animated_reorderable_list_2.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
 import 'package:filcnaplo/api/providers/sync.dart';
@@ -267,7 +268,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                     color: Theme.of(context).colorScheme.secondary,
                                     onRefresh: () => syncAll(context),
                                     child: ImplicitlyAnimatedList<Widget>(
-                                      items: sortDateWidgets(context, dateWidgets: dateWidgets.data!),
+                                      items: [
+                                        if (index == 0) const SizedBox(key: Key("\$premium")),
+                                        ...sortDateWidgets(context, dateWidgets: dateWidgets.data!),
+                                      ],
                                       itemBuilder: filterItemBuilder,
                                       spawnIsolate: false,
                                       areItemsTheSame: (a, b) => a.key == b.key,
