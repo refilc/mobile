@@ -75,7 +75,6 @@ class StatisticsTile extends StatelessWidget {
                   ? Border.all(
                       color: (color ?? gradeColor(context: context, value: value)).withOpacity(outline ? 1.0 : 0.0),
                       width: fill ? 2.0 : 5.0,
-                      strokeAlign: BorderSide.strokeAlignInside,
                     )
                   : null,
               borderRadius: BorderRadius.circular(45.0),
