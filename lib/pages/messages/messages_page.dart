@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:filcnaplo/api/providers/update_provider.dart';

@@ -66,7 +66,7 @@ class GradeSubjectTile extends StatelessWidget {
                 ),
               )
             ],
-            if (average != 0) AverageDisplay(average: average)
+            AverageDisplay(average: average)
           ],
         ),
       ),

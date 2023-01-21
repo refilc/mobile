@@ -1,12 +1,10 @@
 import 'dart:convert';
 
-import 'package:filcnaplo/api/providers/user_provider.dart';
 import 'package:filcnaplo/models/user.dart';
 import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:filcnaplo_mobile_ui/common/new_content_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:filcnaplo/utils/color.dart';
-import 'package:provider/provider.dart';
 
 class ProfileImage extends StatefulWidget {
   const ProfileImage({

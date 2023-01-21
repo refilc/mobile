@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:filcnaplo/api/providers/update_provider.dart';
 import 'package:filcnaplo/theme/colors/accent.dart';
 import 'package:filcnaplo/theme/observer.dart';
@@ -33,7 +31,6 @@ import 'package:filcnaplo_mobile_ui/screens/settings/accounts/account_view.dart'
 import 'package:filcnaplo_mobile_ui/screens/settings/debug/subject_icon_gallery.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/privacy_view.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/settings_helper.dart';
-import 'package:filcnaplo_premium/models/premium_scopes.dart';
 import 'package:filcnaplo_premium/providers/premium_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
