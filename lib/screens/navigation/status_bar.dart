@@ -28,7 +28,7 @@ class _StatusBarState extends State<StatusBar> {
       curve: Curves.easeInOut,
       height: currentStatus != null ? 32.0 : 0,
       width: double.infinity,
-      color: Theme.of(context).backgroundColor,
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: Stack(
         children: [
           // Background
@@ -96,7 +96,15 @@ class _StatusBarState extends State<StatusBar> {
       case Status.network:
       case Status.syncing:
       default:
-        return Theme.of(context).backgroundColor;
+        HSLColor color = HSLColor.fromColor(Theme.of(context).scaffoldBackgroundColor);
+        if (color.lightness >= 0.5) {
+          color = color.withSaturation(0.3);
+          color = color.withLightness(color.lightness - 0.1);
+        } else {
+          color = color.withSaturation(0);
+          color = color.withLightness(color.lightness + 0.2);
+        }
+        return color.toColor();
     }
   }
 }
