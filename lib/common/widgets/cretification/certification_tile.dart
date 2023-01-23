@@ -76,7 +76,7 @@ class CertificationTile extends StatelessWidget {
                   complemented: grade.description == 'Dicséret',
                 ),
           title: Text(isSubjectView ? certificationName : grade.subject.renamedTo ?? grade.subject.name.capital(),
-              maxLines: 1,
+              maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18.0, fontStyle: grade.subject.isRenamed ? FontStyle.italic : null)),
           subtitle: Text(grade.value.valueName, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16.0)),
