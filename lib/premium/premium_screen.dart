@@ -1,6 +1,7 @@
 import 'package:filcnaplo/api/client.dart';
 import 'package:filcnaplo/icons/filc_icons.dart';
 import 'package:filcnaplo/models/supporter.dart';
+import 'package:filcnaplo_mobile_ui/premium/components/active_sponsor_card.dart';
 import 'package:filcnaplo_mobile_ui/premium/components/github_card.dart';
 import 'package:filcnaplo_mobile_ui/premium/components/github_connect_button.dart';
 import 'package:filcnaplo_mobile_ui/premium/components/goal_card.dart';
@@ -8,8 +9,12 @@ import 'package:filcnaplo_mobile_ui/premium/components/plan_card.dart';
 import 'package:filcnaplo_mobile_ui/premium/components/reward_card.dart';
 import 'package:filcnaplo_mobile_ui/premium/components/supporters_button.dart';
 import 'package:filcnaplo_mobile_ui/premium/styles/gradients.dart';
+import 'package:filcnaplo_premium/providers/premium_provider.dart';
+import 'package:filcnaplo_premium/ui/mobile/premium/activation_view/activation_view.dart';
+import 'package:filcnaplo_premium/ui/mobile/premium/upsell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 class PremiumScreen extends StatelessWidget {
   const PremiumScreen({Key? key}) : super(key: key);
@@ -19,8 +24,10 @@ class PremiumScreen extends StatelessWidget {
     final middleColor =
         Theme.of(context).brightness == Brightness.dark ? const Color.fromARGB(255, 20, 57, 46) : const Color.fromARGB(255, 10, 140, 123);
 
+    final future = FilcAPI.getSupporters();
+
     return FutureBuilder<Supporters?>(
-        future: FilcAPI.getSupporters(),
+        future: future,
         builder: (context, snapshot) {
           return Scaffold(
             body: CustomScrollView(
@@ -92,7 +99,7 @@ class PremiumScreen extends StatelessWidget {
                                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20, color: Colors.white.withOpacity(.8)),
                                   ),
                                   const SizedBox(height: 25.0),
-                                  const SupportersButton(),
+                                  SupportersButton(supporters: future),
                                 ],
                               ),
                             ),
@@ -109,24 +116,22 @@ class PremiumScreen extends StatelessWidget {
                       children: [
                         PremiumPlanCard(
                           icon: const Icon(FilcIcons.kupak),
-                          title: Text(
-                            "Kupak",
-                            style: TextStyle(foreground: GradientStyles.kupak),
-                          ),
+                          title: Text("Kupak", style: TextStyle(foreground: GradientStyles.kupakPaint)),
+                          gradient: GradientStyles.kupak,
                           price: 2,
                           description: const Text("Szabd személyre a filcet és láss részletesebb statisztikákat."),
                           url: "https://github.com/sponsors/filc/sponsorships?tier_id=238453&preview=true",
+                          active: ActiveSponsorCard.estimateLevel(context.watch<PremiumProvider>().scopes) == PremiumFeatureLevel.kupak,
                         ),
                         const SizedBox(height: 8.0),
                         PremiumPlanCard(
                           icon: const Icon(FilcIcons.tinta),
-                          title: Text(
-                            "Tinta",
-                            style: TextStyle(foreground: GradientStyles.tinta),
-                          ),
+                          title: Text("Tinta", style: TextStyle(foreground: GradientStyles.tintaPaint)),
+                          gradient: GradientStyles.tinta,
                           price: 5,
                           description: const Text("Kényelmesebb órarend, asztali alkalmazás és célok kitűzése."),
                           url: "https://github.com/sponsors/filc/sponsorships?tier_id=238454&preview=true",
+                          active: ActiveSponsorCard.estimateLevel(context.watch<PremiumProvider>().scopes) == PremiumFeatureLevel.tinta,
                         ),
                         const SizedBox(height: 12.0),
                         PremiumGoalCard(progress: snapshot.data?.progress ?? 0, target: snapshot.data?.max ?? 1),
@@ -237,7 +242,13 @@ class PremiumScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                        const GithubCard(),
+                        GithubCard(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                              return const PremiumActivationView();
+                            }));
+                          },
+                        ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 14.0).add(const EdgeInsets.only(top: 12.0)),
                           child: Row(

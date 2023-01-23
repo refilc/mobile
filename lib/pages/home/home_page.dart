@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:filcnaplo/api/providers/live_card_provider.dart';
 import 'package:filcnaplo/ui/date_widget.dart';
+import 'package:filcnaplo_premium/providers/premium_provider.dart';
 import 'package:implicitly_animated_reorderable_list_2/implicitly_animated_reorderable_list_2.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
 import 'package:filcnaplo/api/providers/sync.dart';
@@ -129,6 +130,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     updateProvider = Provider.of<UpdateProvider>(context);
     _liveCard = Provider.of<LiveCardProvider>(context);
     gradeProvider = Provider.of<GradeProvider>(context);
+    context.watch<PremiumProvider>();
 
     _liveCardAnimation.animateTo(_liveCard.show ? 1.0 : 0.0);
 

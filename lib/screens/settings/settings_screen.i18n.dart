@@ -104,7 +104,7 @@ extension SettingsLocalization on String {
           "open": "Megnyitás",
           "data_collected": "Gyűjtött adat: Platform (pl. Android), App verzió (pl. 3.0.0), Egyedi telepítési azonosító",
           "Analytics": "Analitika",
-          "Anonymous Usage Analytics": "Névtelen használási analitika",
+          "Anonymous Usage Analytics": "Névtelen használati analitika",
           "graph_class_avg": "Osztályátlag a grafikonon",
           "goodstudent": "Jó tanuló mód",
           "attention": "Figyelem!",

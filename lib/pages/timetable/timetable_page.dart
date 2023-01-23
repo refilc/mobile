@@ -18,6 +18,7 @@ import 'package:filcnaplo_mobile_ui/common/widgets/lesson/lesson_viewable.dart';
 import 'package:filcnaplo_mobile_ui/pages/timetable/day_title.dart';
 import 'package:filcnaplo_mobile_ui/screens/navigation/navigation_route_handler.dart';
 import 'package:filcnaplo_mobile_ui/screens/navigation/navigation_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:provider/provider.dart';
@@ -79,14 +80,14 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
   // Update timetable on user change
   Future<void> _userListener() async {
     await Provider.of<KretaClient>(context, listen: false).refreshLogin();
-    _controller.jump(_controller.currentWeek, context: context);
+    if (mounted) _controller.jump(_controller.currentWeek, context: context);
   }
 
   // When the app comes to foreground, refresh the timetable
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      _controller.jump(_controller.currentWeek, context: context);
+      if (mounted) _controller.jump(_controller.currentWeek, context: context);
     }
   }
 
@@ -122,10 +123,12 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
       });
     });
 
-    if (widget.initialWeek != null) {
-      _controller.jump(widget.initialWeek!, context: context, initial: true);
-    } else {
-      _controller.jump(_controller.currentWeek, context: context, initial: true, skip: true);
+    if (mounted) {
+      if (widget.initialWeek != null) {
+        _controller.jump(widget.initialWeek!, context: context, initial: true);
+      } else {
+        _controller.jump(_controller.currentWeek, context: context, initial: true, skip: true);
+      }
     }
 
     // Listen for user changes
@@ -169,7 +172,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
       body: Padding(
         padding: const EdgeInsets.only(top: 9.0),
         child: RefreshIndicator(
-          onRefresh: () => _controller.jump(_controller.currentWeek, context: context, loader: false),
+          onRefresh: () => mounted ? _controller.jump(_controller.currentWeek, context: context, loader: false) : Future.value(null),
           color: Theme.of(context).colorScheme.secondary,
           edgeOffset: 132.0,
           child: NestedScrollView(
@@ -223,16 +226,43 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8.0),
-                    child: (_controller.days?.length ?? 0) > 0
-                        ? DayTitle(controller: _tabController, dayTitle: dayTitle)
-                        : Text(
-                            "timetable".i18n,
-                            style: TextStyle(
-                              fontSize: 32.0,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.of(context).text,
+                    child: Row(
+                      children: [
+                        () {
+                          final show =
+                              _controller.days == null || (_controller.loadType != LoadType.offline && _controller.loadType != LoadType.online);
+                          const duration = Duration(milliseconds: 150);
+                          return AnimatedOpacity(
+                            opacity: show ? 1.0 : 0.0,
+                            duration: duration,
+                            curve: Curves.easeInOut,
+                            child: AnimatedContainer(
+                              duration: duration,
+                              width: show ? 24.0 : 0.0,
+                              curve: Curves.easeInOut,
+                              child: const Padding(
+                                padding: EdgeInsets.only(right: 12.0),
+                                child: CupertinoActivityIndicator(),
+                              ),
                             ),
-                          ),
+                          );
+                        }(),
+                        () {
+                          if ((_controller.days?.length ?? 0) > 0) {
+                            return DayTitle(controller: _tabController, dayTitle: dayTitle);
+                          } else {
+                            return Text(
+                              "timetable".i18n,
+                              style: TextStyle(
+                                fontSize: 32.0,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.of(context).text,
+                              ),
+                            );
+                          }
+                        }(),
+                      ],
+                    ),
                   ),
                 ),
                 shadowColor: Theme.of(context).shadowColor,
@@ -258,11 +288,13 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                           borderRadius: BorderRadius.circular(6.0),
                           onTap: () => setState(() {
                             _controller.current();
-                            _controller.jump(
-                              _controller.currentWeek,
-                              context: context,
-                              loader: _controller.currentWeekId != _controller.previousWeekId,
-                            );
+                            if (mounted) {
+                              _controller.jump(
+                                _controller.currentWeek,
+                                context: context,
+                                loader: _controller.currentWeekId != _controller.previousWeekId,
+                              );
+                            }
                             _tabController.animateTo(_getDayIndex(DateTime.now()));
                           }),
                           child: Padding(
@@ -321,6 +353,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
               },
               child: _controller.days != null
                   ? Column(
+                      key: Key(_controller.currentWeek.toString()),
                       children: [
                         // Week view
                         _tabController.length > 0
@@ -332,7 +365,8 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                                   children: List.generate(
                                     _controller.days!.length,
                                     (tab) => RefreshIndicator(
-                                      onRefresh: () => _controller.jump(_controller.currentWeek, context: context, loader: false),
+                                      onRefresh: () =>
+                                          mounted ? _controller.jump(_controller.currentWeek, context: context, loader: false) : Future.value(null),
                                       color: Theme.of(context).colorScheme.secondary,
                                       child: ListView.builder(
                                         padding: EdgeInsets.zero,
@@ -423,11 +457,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                         ),
                       ],
                     )
-                  : Center(
-                      child: CircularProgressIndicator(
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                    ),
+                  : const SizedBox(),
             ),
           ),
         ),

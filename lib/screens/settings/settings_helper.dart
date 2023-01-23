@@ -8,6 +8,7 @@ import 'package:filcnaplo/models/settings.dart';
 import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:filcnaplo/theme/observer.dart';
 import 'package:filcnaplo_kreta_api/models/grade.dart';
+import 'package:filcnaplo_kreta_api/models/week.dart';
 import 'package:filcnaplo_kreta_api/providers/timetable_provider.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_sheet_menu/bottom_sheet_menu.dart';
 import 'package:filcnaplo_mobile_ui/common/bottom_sheet_menu/bottom_sheet_menu_item.dart';
@@ -425,11 +426,10 @@ class _BellDelaySettingState extends State<BellDelaySetting> with SingleTickerPr
                 child: Text(SettingsLocalization("sync").i18n),
                 onPressed: () {
                   final lessonProvider = Provider.of<TimetableProvider>(context, listen: false);
-                  lessonProvider.restore();
 
                   Duration? closest;
                   DateTime now = DateTime.now();
-                  for (var lesson in lessonProvider.lessons) {
+                  for (var lesson in lessonProvider.getWeek(Week.current()) ?? []) {
                     Duration sdiff = lesson.start.difference(now);
                     Duration ediff = lesson.end.difference(now);
 

@@ -162,6 +162,7 @@ class _GradesPageState extends State<GradesPage> {
     user = Provider.of<UserProvider>(context);
     gradeProvider = Provider.of<GradeProvider>(context);
     updateProvider = Provider.of<UpdateProvider>(context);
+    context.watch<PremiumProvider>();
 
     List<String> nameParts = user.displayName?.split(" ") ?? ["?"];
     firstName = nameParts.length > 1 ? nameParts[1] : nameParts[0];

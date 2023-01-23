@@ -1,17 +1,19 @@
-import 'package:filcnaplo/api/client.dart';
 import 'package:filcnaplo/icons/filc_icons.dart';
 import 'package:filcnaplo/models/supporter.dart';
+import 'package:filcnaplo/theme/colors/colors.dart';
 import 'package:filcnaplo_mobile_ui/premium/components/supporter_group_card.dart';
 import 'package:filcnaplo_mobile_ui/premium/styles/gradients.dart';
 import 'package:flutter/material.dart';
 
 class SupportersScreen extends StatelessWidget {
-  const SupportersScreen({Key? key}) : super(key: key);
+  const SupportersScreen({Key? key, required this.supporters}) : super(key: key);
+
+  final Future<Supporters?> supporters;
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Supporters?>(
-        future: FilcAPI.getSupporters(),
+        future: supporters,
         builder: (context, snapshot) {
           final highlightedSupporters =
               snapshot.data?.github.where((e) => e.type == DonationType.monthly && e.price >= 5 && e.comment != "").toList() ?? [];
@@ -31,6 +33,16 @@ class SupportersScreen extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.w700),
                   ),
                 ),
+                if (snapshot.hasData)
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0).add(const EdgeInsets.only(bottom: 24.0)),
+                    sliver: SliverToBoxAdapter(
+                      child: Text(
+                        snapshot.data!.description,
+                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0, color: AppColors.of(context).text.withOpacity(.7)),
+                      ),
+                    ),
+                  ),
                 if (!snapshot.hasData)
                   const SliverPadding(
                     padding: EdgeInsets.all(12.0),
@@ -58,7 +70,7 @@ class SupportersScreen extends StatelessWidget {
                         title: Text(
                           "Tinta",
                           style: TextStyle(
-                            foreground: GradientStyles.tinta,
+                            foreground: GradientStyles.tintaPaint,
                           ),
                         ),
                         glow: Colors.purple,
@@ -74,7 +86,7 @@ class SupportersScreen extends StatelessWidget {
                         icon: const Icon(FilcIcons.kupak),
                         title: Text(
                           "Kupak",
-                          style: TextStyle(foreground: GradientStyles.kupak),
+                          style: TextStyle(foreground: GradientStyles.kupakPaint),
                         ),
                         glow: Colors.lightGreen,
                         supporters: kupakSupporters,

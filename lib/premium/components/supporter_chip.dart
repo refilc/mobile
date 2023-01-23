@@ -12,6 +12,7 @@ class SupporterChip extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       avatar: supporter.avatar != ""
           ? CircleAvatar(
+              backgroundColor: Theme.of(context).colorScheme.secondary,
               backgroundImage: NetworkImage(supporter.avatar),
             )
           : null,

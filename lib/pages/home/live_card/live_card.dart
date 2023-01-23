@@ -13,6 +13,8 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'live_card.i18n.dart';
 
+// TODO: fetch current week
+
 class LiveCard extends StatefulWidget {
   const LiveCard({Key? key}) : super(key: key);
 

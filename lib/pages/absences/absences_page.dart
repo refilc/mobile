@@ -7,6 +7,7 @@ import 'package:filcnaplo/ui/date_widget.dart';
 import 'package:filcnaplo_kreta_api/models/absence.dart';
 import 'package:filcnaplo_kreta_api/models/lesson.dart';
 import 'package:filcnaplo_kreta_api/models/subject.dart';
+import 'package:filcnaplo_kreta_api/models/week.dart';
 import 'package:filcnaplo_kreta_api/providers/absence_provider.dart';
 import 'package:filcnaplo_kreta_api/providers/note_provider.dart';
 import 'package:filcnaplo/api/providers/user_provider.dart';
@@ -66,9 +67,7 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
     timetableProvider = Provider.of<TimetableProvider>(context, listen: false);
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await timetableProvider.restore();
-
-      for (final lesson in timetableProvider.lessons) {
+      for (final lesson in timetableProvider.getWeek(Week.current()) ?? []) {
         if (!lesson.isEmpty && lesson.subject.id != '' && lesson.lessonYearIndex != null) {
           _lessonCount.update(
             lesson.subject,
@@ -83,6 +82,7 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
           );
         }
       }
+      setState(() {});
     });
   }
 

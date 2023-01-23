@@ -24,6 +24,7 @@ import 'package:filcnaplo_mobile_ui/common/panel/panel_button.dart';
 import 'package:filcnaplo_mobile_ui/common/profile_image/profile_image.dart';
 import 'package:filcnaplo_mobile_ui/common/system_chrome.dart';
 import 'package:filcnaplo_mobile_ui/common/widgets/update/updates_view.dart';
+import 'package:filcnaplo_mobile_ui/premium/components/active_sponsor_card.dart';
 import 'package:filcnaplo_mobile_ui/premium/premium_button.dart';
 import 'package:filcnaplo_mobile_ui/screens/news/news_screen.dart';
 import 'package:filcnaplo_mobile_ui/screens/settings/accounts/account_tile.dart';
@@ -69,7 +70,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
 
   Future<void> restore() => Future.wait([
         Provider.of<GradeProvider>(context, listen: false).restore(),
-        Provider.of<TimetableProvider>(context, listen: false).restore(),
+        Provider.of<TimetableProvider>(context, listen: false).restoreUser(),
         Provider.of<ExamProvider>(context, listen: false).restore(),
         Provider.of<HomeworkProvider>(context, listen: false).restore(),
         Provider.of<MessageProvider>(context, listen: false).restore(),
@@ -316,12 +317,18 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
             //   padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
             //   child: PremiumBannerButton(),
             // ),
-            const ClipRect(
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 12.0),
-                child: PremiumButton(),
+            if (!context.watch<PremiumProvider>().hasPremium)
+              const ClipRect(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 12.0),
+                  child: PremiumButton(),
+                ),
+              )
+            else
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
+                child: ActiveSponsorCard(),
               ),
-            ),
 
             // General Settings
             Padding(
