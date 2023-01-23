@@ -12,6 +12,7 @@ import 'package:filcnaplo_mobile_ui/pages/timetable/timetable_page.dart';
 import 'package:filcnaplo/ui/filter/sort.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:filcnaplo/utils/format.dart';
 
 import 'package:filcnaplo_mobile_ui/common/widgets/absence/absence_view.i18n.dart';
 
@@ -55,7 +56,8 @@ class AbsenceSubjectView extends StatelessWidget {
 
     return Scaffold(
       body: HeroScrollView(
-        title: subject.name,
+        title: subject.renamedTo ?? subject.name.capital(),
+        italic: subject.isRenamed,
         icon: SubjectIcon.resolveVariant(subject: subject, context: context),
         child: AbsenceSubjectViewContainer(
           child: CupertinoScrollbar(

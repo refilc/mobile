@@ -115,7 +115,11 @@ class _HeroScrollViewState extends State<HeroScrollView> {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 36.0, color: AppColors.of(context).text.withOpacity(.9), fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 36.0,
+                        color: AppColors.of(context).text.withOpacity(.9),
+                        fontStyle: widget.italic ? FontStyle.italic : null,
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
               ],
