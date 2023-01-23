@@ -195,15 +195,12 @@ class _SurpriseGradeState extends State<SurpriseGrade> with TickerProviderStateM
                                                         overflow: TextOverflow.ellipsis,
                                                       ),
                                                     Text(
-                                                      widget.grade.subject.renamedTo != null
-                                                          ? widget.grade.subject.renamedTo!
-                                                          : widget.grade.subject.name.capital(),
+                                                      widget.grade.subject.renamedTo ?? widget.grade.subject.name.capital(),
                                                       style: TextStyle(
-                                                        color: Colors.white.withOpacity(.8),
-                                                        fontWeight: FontWeight.bold,
-                                                        fontSize: 24.0,
-                                                        fontStyle: widget.grade.subject.renamedTo != null ? FontStyle.italic : null
-                                                      ),
+                                                          color: Colors.white.withOpacity(.8),
+                                                          fontWeight: FontWeight.bold,
+                                                          fontSize: 24.0,
+                                                          fontStyle: widget.grade.subject.isRenamed ? FontStyle.italic : null),
                                                       maxLines: 2,
                                                       overflow: TextOverflow.ellipsis,
                                                     ),

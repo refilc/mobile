@@ -63,15 +63,14 @@ class AbsenceTile extends StatelessWidget {
                     ],
                   ))
                 : Text(
-                    (absence.lessonIndex != null ? "${absence.lessonIndex}. " : "") +
-                        (absence.subject.renamedTo != null ? absence.subject.renamedTo! : absence.subject.name.capital()),
-                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0, fontStyle: absence.subject.renamedTo != null ? FontStyle.italic : null),
+                    (absence.lessonIndex != null ? "${absence.lessonIndex}. " : "") + (absence.subject.renamedTo ?? absence.subject.name.capital()),
+                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0, fontStyle: absence.subject.isRenamed ? FontStyle.italic : null),
                   ),
             subtitle: !group
                 ? Text(
-                    absence.subject.renamedTo != null ? absence.subject.renamedTo! : absence.subject.name.capital(),
+                    absence.subject.renamedTo ?? absence.subject.name.capital(),
                     // DateFormat("MM. dd. (EEEEE)", I18n.of(context).locale.toString()).format(absence.date),
-                    style: TextStyle(fontWeight: FontWeight.w500, fontStyle: absence.subject.renamedTo != null ? FontStyle.italic : null),
+                    style: TextStyle(fontWeight: FontWeight.w500, fontStyle: absence.subject.isRenamed ? FontStyle.italic : null),
                   )
                 : null,
           ),

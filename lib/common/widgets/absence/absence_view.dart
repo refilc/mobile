@@ -54,8 +54,8 @@ class AbsenceView extends StatelessWidget {
               ),
             ),
             title: Text(
-              absence.subject.renamedTo != null ? absence.subject.renamedTo! : absence.subject.name.capital(),
-              style: TextStyle(fontWeight: FontWeight.w700, fontStyle: absence.subject.renamedTo != null ? FontStyle.italic : null),
+              absence.subject.renamedTo ?? absence.subject.name.capital(),
+              style: TextStyle(fontWeight: FontWeight.w700, fontStyle: absence.subject.isRenamed ? FontStyle.italic : null),
             ),
             subtitle: Text(
               absence.teacher,

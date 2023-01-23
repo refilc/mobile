@@ -50,7 +50,7 @@ class LessonView extends StatelessWidget {
               lesson.subject.name.capital(),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontWeight: FontWeight.w600, fontStyle: lesson.subject.renamedTo != null ? FontStyle.italic : null),
+              style: TextStyle(fontWeight: FontWeight.w600, fontStyle: lesson.subject.isRenamed ? FontStyle.italic : null),
             ),
             subtitle: Text(
               lesson.substituteTeacher == "" ? lesson.teacher : lesson.substituteTeacher,

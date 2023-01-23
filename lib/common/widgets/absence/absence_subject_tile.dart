@@ -30,10 +30,10 @@ class AbsenceSubjectTile extends StatelessWidget {
         onTap: onTap,
         leading: Icon(SubjectIcon.resolveVariant(subject: subject, context: context), size: 32.0),
         title: Text(
-          subject.renamedTo != null ? subject.renamedTo! : subject.name.capital(),
+          subject.renamedTo ?? subject.name.capital(),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15.0, fontStyle: subject.renamedTo != null ? FontStyle.italic : null),
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15.0, fontStyle: subject.isRenamed ? FontStyle.italic : null),
         ),
         subtitle: AbsenceDisplay(excused, unexcused, pending),
         trailing: Row(

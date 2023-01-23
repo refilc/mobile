@@ -237,8 +237,8 @@ class _GradeSubjectViewState extends State<GradeSubjectView> {
               ],
               icon: SubjectIcon.resolveVariant(subject: widget.subject, context: context),
               scrollController: _scrollController,
-              title: widget.subject.renamedTo != null ? widget.subject.renamedTo! : widget.subject.name.capital(),
-              italic: widget.subject.renamedTo != null,
+              title: widget.subject.renamedTo ?? widget.subject.name.capital(),
+              italic: widget.subject.isRenamed,
               child: SubjectGradesContainer(
                 child: CupertinoScrollbar(
                   child: ListView.builder(

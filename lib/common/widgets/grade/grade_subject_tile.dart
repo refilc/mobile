@@ -38,15 +38,10 @@ class GradeSubjectTile extends StatelessWidget {
         onTap: onTap,
         leading: Icon(SubjectIcon.resolveVariant(subject: subject, context: context), color: textColor.withOpacity(.75)),
         title: Text(
-          subject.renamedTo != null
-              ? subject.renamedTo!
-              : subject.renamedTo != null
-                  ? subject.renamedTo!
-                  : subject.name.capital(),
+          subject.renamedTo ?? subject.name.capital(),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-              fontWeight: FontWeight.w600, fontSize: 14.0, color: textColor, fontStyle: subject.renamedTo != null ? FontStyle.italic : null),
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14.0, color: textColor, fontStyle: subject.isRenamed ? FontStyle.italic : null),
         ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
