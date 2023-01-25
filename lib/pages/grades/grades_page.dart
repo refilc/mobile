@@ -65,7 +65,7 @@ class _GradesPageState extends State<GradesPage> {
       double averageBefore = 0.0;
 
       if (avgDropValue != 0) {
-        List<Grade> gradesBefore = getSubjectGrades(subject, days: avgDropItems[avgDropValue][1]);
+        List<Grade> gradesBefore = getSubjectGrades(subject, days: avgDropValue);
         averageBefore = avgDropValue == 0 ? 0.0 : AverageHelper.averageEvals(gradesBefore);
       }
       var nullavg = GroupAverage(average: 0.0, subject: subject, uid: "0");
@@ -180,9 +180,7 @@ class _GradesPageState extends State<GradesPage> {
         .toList());
 
     List<Grade> graphGrades = gradeProvider.grades
-        .where((e) =>
-            e.type == GradeType.midYear &&
-            (avgDropItems[avgDropValue][1] == 0 || e.date.isAfter(DateTime.now().subtract(Duration(days: avgDropItems[avgDropValue][1])))))
+        .where((e) => e.type == GradeType.midYear && (avgDropValue == 0 || e.date.isAfter(DateTime.now().subtract(Duration(days: avgDropValue)))))
         .toList();
 
     yearlyGraph = Padding(
