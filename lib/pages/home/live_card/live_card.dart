@@ -13,8 +13,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'live_card.i18n.dart';
 
-// TODO: fetch current week
-
 class LiveCard extends StatefulWidget {
   const LiveCard({Key? key}) : super(key: key);
 
@@ -131,6 +129,11 @@ class _LiveCardState extends State<LiveCard> {
 
         final diff = liveCard.getFloorDifference();
 
+        final maxTime = liveCard.nextLesson!.start.difference(liveCard.prevLesson!.end).inSeconds.toDouble();
+        final elapsedTime = DateTime.now().difference(liveCard.prevLesson!.end).inSeconds.toDouble() + bellDelay.inSeconds.toDouble();
+
+        final showMinutes = maxTime - elapsedTime > 60;
+
         child = LiveCardWidget(
           key: const Key('livecard.duringBreak'),
           title: "break".i18n,
@@ -141,8 +144,19 @@ class _LiveCardState extends State<LiveCard> {
           nextSubject: liveCard.nextLesson?.subject.renamedTo ?? liveCard.nextLesson?.subject.name.capital(),
           nextSubjectItalic: liveCard.nextLesson?.subject.isRenamed ?? false,
           nextRoom: diff != "to room" ? liveCard.nextLesson?.room : null,
-          progressMax: liveCard.nextLesson!.start.difference(liveCard.prevLesson!.end).inMinutes.toDouble(),
-          progressCurrent: DateTime.now().difference(liveCard.prevLesson!.end).inMinutes.toDouble() + bellDelay.inMinutes.toDouble(),
+          progressMax: showMinutes ? maxTime / 60 : maxTime,
+          progressCurrent: showMinutes ? elapsedTime / 60 : elapsedTime,
+          progressAccuracy: showMinutes ? ProgressAccuracy.minutes : ProgressAccuracy.seconds,
+          onProgressTap: () {
+            showDialog(
+              barrierColor: Colors.black,
+              context: context,
+              builder: (context) => HeadsUpCountdown(
+                maxTime: maxTime,
+                elapsedTime: elapsedTime,
+              ),
+            );
+          },
         );
         break;
       case LiveCardState.afternoon:
