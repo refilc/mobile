@@ -105,7 +105,7 @@ class _LiveCardState extends State<LiveCard> {
           icon: SubjectIcon.resolveVariant(subject: liveCard.currentLesson!.subject, context: context),
           description: liveCard.currentLesson!.description != "" ? Text(liveCard.currentLesson!.description) : null,
           nextSubject: liveCard.nextLesson?.subject.renamedTo ?? liveCard.nextLesson?.subject.name.capital(),
-          nextSubjectItalic: liveCard.nextLesson!.subject.isRenamed,
+          nextSubjectItalic: liveCard.nextLesson?.subject.isRenamed ?? false,
           nextRoom: liveCard.nextLesson?.room,
           progressMax: showMinutes ? maxTime / 60 : maxTime,
           progressCurrent: showMinutes ? elapsedTime / 60 : elapsedTime,
