@@ -14,7 +14,7 @@ class BottomCard extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14.0),
-            color: Theme.of(context).backgroundColor,
+            color: Theme.of(context).colorScheme.background,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,

@@ -55,7 +55,7 @@ class PanelButton extends StatelessWidget {
               )
             : trailing,
         title: title != null
-            ? DefaultTextStyle(style: Theme.of(context).textTheme.subtitle2!.copyWith(fontWeight: FontWeight.w600, fontSize: 16.0), child: title!)
+            ? DefaultTextStyle(style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600, fontSize: 16.0), child: title!)
             : null,
         contentPadding: EdgeInsets.zero,
         visualDensity: VisualDensity.compact,

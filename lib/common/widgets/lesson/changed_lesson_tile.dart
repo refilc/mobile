@@ -30,7 +30,7 @@ class ChangedLessonTile extends StatelessWidget {
     }
 
     return Material(
-      color: Theme.of(context).backgroundColor,
+      color: Theme.of(context).colorScheme.background,
       borderRadius: BorderRadius.circular(14.0),
       child: Padding(
         padding: padding ?? const EdgeInsets.symmetric(horizontal: 8.0),

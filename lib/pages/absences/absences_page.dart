@@ -278,7 +278,7 @@ class _AbsencesPageState extends State<AbsencesPage> with TickerProviderStateMix
                   child: child,
                   animation: primaryAnimation,
                   secondaryAnimation: secondaryAnimation,
-                  fillColor: Theme.of(context).backgroundColor,
+                  fillColor: Theme.of(context).colorScheme.background,
                 );
               },
               child: Column(

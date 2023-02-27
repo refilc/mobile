@@ -42,7 +42,7 @@ class PremiumRewardCard extends StatelessWidget {
                 if (title != null)
                   Expanded(
                     child: DefaultTextStyle(
-                      style: Theme.of(context).textTheme.bodyText2!.copyWith(fontWeight: FontWeight.w700, fontSize: 20),
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w700, fontSize: 20),
                       child: title!,
                     ),
                   ),
@@ -53,7 +53,7 @@ class PremiumRewardCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0).add(const EdgeInsets.only(top: 4.0, bottom: 12.0)),
               child: DefaultTextStyle(
-                style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 16),
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
                 child: description!,
               ),
             ),

@@ -21,7 +21,7 @@ class MaterialActionButton extends StatelessWidget {
       shape: const StadiumBorder(),
       child: DefaultTextStyle(
         child: child,
-        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
               fontWeight: FontWeight.w600,
               color: backgroundColor != null ? ColorUtils.foregroundColor(backgroundColor!) : null,
             ),

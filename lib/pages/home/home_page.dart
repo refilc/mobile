@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:filcnaplo/api/providers/live_card_provider.dart';
 import 'package:filcnaplo/ui/date_widget.dart';
 import 'package:filcnaplo_premium/providers/premium_provider.dart';
-import 'package:implicitly_animated_reorderable_list_2/implicitly_animated_reorderable_list_2.dart';
+import 'package:animated_list_plus/animated_list_plus.dart';
 import 'package:filcnaplo/api/providers/update_provider.dart';
 import 'package:filcnaplo/api/providers/sync.dart';
 import 'package:confetti/confetti.dart';
@@ -168,7 +168,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18.0,
-                                  color: Theme.of(context).textTheme.bodyText1?.color,
+                                  color: Theme.of(context).textTheme.bodyMedium?.color,
                                 ),
                               ),
                             ),

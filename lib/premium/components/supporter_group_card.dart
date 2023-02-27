@@ -46,7 +46,7 @@ class SupporterGroupCard extends StatelessWidget {
                   if (title != null)
                     Expanded(
                       child: DefaultTextStyle(
-                        style: Theme.of(context).textTheme.headline6!.copyWith(fontWeight: FontWeight.w700),
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.w700),
                         child: title!,
                       ),
                     ),

@@ -59,7 +59,7 @@ class _LiveCardWidgetState extends State<LiveCardWidget> {
           margin: const EdgeInsets.symmetric(vertical: 2.0),
           padding: const EdgeInsets.all(12.0),
           decoration: BoxDecoration(
-            color: Theme.of(context).backgroundColor,
+            color: Theme.of(context).colorScheme.background,
             borderRadius: BorderRadius.circular(16.0),
             boxShadow: [
               BoxShadow(
@@ -147,7 +147,7 @@ class _LiveCardWidgetState extends State<LiveCardWidget> {
                             ),
                             if (widget.description != null)
                               DefaultTextStyle(
-                                style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 16.0,
                                       color: AppColors.of(context).text.withOpacity(.75),
@@ -208,6 +208,7 @@ class _LiveCardWidgetState extends State<LiveCardWidget> {
                               softWrap: false,
                             ),
                           ),
+                        if (widget.nextRoom == null && widget.nextSubject == null) const Spacer(),
                         if (widget.progressCurrent != null && widget.progressMax != null)
                           GestureDetector(
                             onTap: widget.onProgressTap,

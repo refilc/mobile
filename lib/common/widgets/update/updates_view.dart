@@ -164,6 +164,7 @@ class _UpdateViewState extends State<UpdateView> {
             ));
             setState(() => state = UpdateState.none);
           }
+          return true;
         });
   }
 }

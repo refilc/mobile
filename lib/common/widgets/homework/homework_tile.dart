@@ -16,7 +16,7 @@ class HomeworkTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Theme.of(context).backgroundColor,
+      color: Theme.of(context).colorScheme.background,
       borderRadius: BorderRadius.circular(8.0),
       child: Padding(
         padding: padding ?? const EdgeInsets.symmetric(horizontal: 8.0),

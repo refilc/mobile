@@ -132,7 +132,7 @@ class _ViewableState extends State<Viewable> with TickerProviderStateMixin {
         return ClipRRect(
           borderRadius: BorderRadius.circular(16.0),
           child: Material(
-            color: Theme.of(context).backgroundColor,
+            color: Theme.of(context).colorScheme.background,
             borderRadius: BorderRadius.circular(16.0),
             child: Stack(
               children: [
@@ -227,7 +227,7 @@ class _ViewableState extends State<Viewable> with TickerProviderStateMixin {
         );
       },
     );
-    Overlay.of(context, rootOverlay: true)!.insert(_lastOverlayEntry!);
+    Overlay.of(context, rootOverlay: true).insert(_lastOverlayEntry!);
     _openController.forward(from: anim ? 0.0 : 1.0);
   }
 

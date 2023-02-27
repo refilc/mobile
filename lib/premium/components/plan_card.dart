@@ -57,7 +57,7 @@ class PremiumPlanCard extends StatelessWidget {
                             const SizedBox(height: 12.0),
                           ],
                           DefaultTextStyle(
-                            style: Theme.of(context).textTheme.headline3!.copyWith(fontWeight: FontWeight.bold, fontSize: 25.0),
+                            style: Theme.of(context).textTheme.displaySmall!.copyWith(fontWeight: FontWeight.bold, fontSize: 25.0),
                             child: title!,
                           ),
                         ],
@@ -95,7 +95,7 @@ class PremiumPlanCard extends StatelessWidget {
                       TextSpan(text: "\$$price"),
                       TextSpan(
                         text: " / hó",
-                        style: TextStyle(color: Theme.of(context).textTheme.bodyText2!.color!.withOpacity(.7)),
+                        style: TextStyle(color: Theme.of(context).textTheme.bodyMedium!.color!.withOpacity(.7)),
                       ),
                     ]),
                     style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0),
@@ -114,7 +114,7 @@ class PremiumPlanCard extends StatelessWidget {
                     ],
                     const SizedBox(width: 12.0),
                     DefaultTextStyle(
-                      style: Theme.of(context).textTheme.headline3!.copyWith(fontWeight: FontWeight.bold, fontSize: 25.0),
+                      style: Theme.of(context).textTheme.displaySmall!.copyWith(fontWeight: FontWeight.bold, fontSize: 25.0),
                       child: title!,
                     ),
                   ],
@@ -125,8 +125,8 @@ class PremiumPlanCard extends StatelessWidget {
                 DefaultTextStyle(
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText2!
-                      .copyWith(color: Theme.of(context).textTheme.bodyText2!.color!.withOpacity(.8), fontSize: 18),
+                      .bodyMedium!
+                      .copyWith(color: Theme.of(context).textTheme.bodyMedium!.color!.withOpacity(.8), fontSize: 18),
                   child: description!,
                 ),
             ],

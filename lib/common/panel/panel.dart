@@ -23,7 +23,7 @@ class Panel extends StatelessWidget {
             width: double.infinity,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16.0),
-              color: Theme.of(context).backgroundColor,
+              color: Theme.of(context).colorScheme.background,
               boxShadow: [
                 if (hasShadow)
                   BoxShadow(
@@ -51,7 +51,7 @@ class PanelTitle extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 14.0, bottom: 8.0),
       child: DefaultTextStyle(
-        style: Theme.of(context).textTheme.subtitle2!.copyWith(fontWeight: FontWeight.w600, color: AppColors.of(context).text.withOpacity(0.65)),
+        style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600, color: AppColors.of(context).text.withOpacity(0.65)),
         child: title,
       ),
     );
@@ -70,7 +70,7 @@ class PanelHeader extends StatelessWidget {
       padding: padding,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.only(topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
-        color: Theme.of(context).backgroundColor,
+        color: Theme.of(context).colorScheme.background,
         boxShadow: [
           BoxShadow(
             offset: const Offset(0, 21),
@@ -94,7 +94,7 @@ class PanelBody extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Theme.of(context).backgroundColor,
+        color: Theme.of(context).colorScheme.background,
         boxShadow: [
           BoxShadow(
             offset: const Offset(0, 21),
@@ -121,7 +121,7 @@ class PanelFooter extends StatelessWidget {
       padding: padding,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(16.0), bottomRight: Radius.circular(16.0)),
-        color: Theme.of(context).backgroundColor,
+        color: Theme.of(context).colorScheme.background,
         boxShadow: [
           BoxShadow(
             offset: const Offset(0, 21),

@@ -23,7 +23,7 @@ SnackBar CustomSnackBar({
       ),
       padding: const EdgeInsets.all(12.0),
       child: DefaultTextStyle(
-        style: Theme.of(context).textTheme.bodyText2!.copyWith(color: textColor, fontWeight: FontWeight.w500),
+        style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: textColor, fontWeight: FontWeight.w500),
         child: content,
       ),
     ),

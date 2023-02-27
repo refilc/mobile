@@ -42,7 +42,7 @@ class StatisticsTile extends StatelessWidget {
       padding: const EdgeInsets.all(18.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.0),
-        color: Theme.of(context).backgroundColor,
+        color: Theme.of(context).colorScheme.background,
         boxShadow: [
           BoxShadow(
             offset: const Offset(0, 21),
@@ -59,7 +59,7 @@ class StatisticsTile extends StatelessWidget {
         children: [
           if (title != null)
             DefaultTextStyle(
-              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     fontWeight: FontWeight.w600,
                     fontSize: 18.0,
                   ),

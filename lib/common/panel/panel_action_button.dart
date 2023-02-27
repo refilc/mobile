@@ -34,7 +34,7 @@ class PanelActionButton extends StatelessWidget {
             : null,
         trailing: trailing,
         title: title != null
-            ? DefaultTextStyle(style: Theme.of(context).textTheme.subtitle2!.copyWith(fontWeight: FontWeight.w500, fontSize: 15.0), child: title!)
+            ? DefaultTextStyle(style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500, fontSize: 15.0), child: title!)
             : null,
         contentPadding: EdgeInsets.zero,
         visualDensity: VisualDensity.compact,
