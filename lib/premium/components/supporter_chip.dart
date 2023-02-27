@@ -9,6 +9,8 @@ class SupporterChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Chip(
+      side: BorderSide.none,
+      shape: const StadiumBorder(side: BorderSide.none),
       padding: const EdgeInsets.all(8.0),
       avatar: supporter.avatar != ""
           ? CircleAvatar(
