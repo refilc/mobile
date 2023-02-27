@@ -55,7 +55,8 @@ class _FilterBarState extends State<FilterBar> {
       labelColor: Theme.of(context).colorScheme.secondary,
       unselectedLabelColor: AppColors.of(context).text.withOpacity(0.65),
       // Indicator
-      indicatorPadding: const EdgeInsets.symmetric(vertical: 8),
+      indicatorSize: TabBarIndicatorSize.tab,
+      indicatorPadding: const EdgeInsets.symmetric(vertical: 8.0),
       indicator: BoxDecoration(
         color: Theme.of(context).colorScheme.secondary.withOpacity(0.25),
         borderRadius: BorderRadius.circular(45.0),
@@ -64,16 +65,18 @@ class _FilterBarState extends State<FilterBar> {
       // Tabs
       padding: EdgeInsets.zero,
       tabs: widget.censored
-          ? censoredItemsWidth.map(
-              (e) => Container(
-                width: e,
-                height: 15,
-                decoration: BoxDecoration(
-                  color: AppColors.of(context).text.withOpacity(.45),
-                  borderRadius: BorderRadius.circular(8.0),
+          ? censoredItemsWidth
+              .map(
+                (e) => Container(
+                  width: e,
+                  height: 15,
+                  decoration: BoxDecoration(
+                    color: AppColors.of(context).text.withOpacity(.45),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
                 ),
-              ),
-            ).toList()
+              )
+              .toList()
           : widget.items,
       onTap: widget.onTap,
     );

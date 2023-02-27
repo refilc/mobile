@@ -420,13 +420,15 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
 
                         // Day selector
                         TabBar(
+                          dividerColor: Colors.transparent,
                           controller: _tabController,
                           // Label
                           labelPadding: EdgeInsets.zero,
                           labelColor: Theme.of(context).colorScheme.secondary,
                           unselectedLabelColor: AppColors.of(context).text.withOpacity(0.9),
                           // Indicator
-                          indicatorPadding: const EdgeInsets.symmetric(horizontal: 0.0),
+                          indicatorSize: TabBarIndicatorSize.tab,
+                          indicatorPadding: EdgeInsets.zero,
                           indicator: BoxDecoration(
                             color: Theme.of(context).colorScheme.secondary.withOpacity(0.25),
                             borderRadius: BorderRadius.circular(45.0),
@@ -437,7 +439,7 @@ class _TimetablePageState extends State<TimetablePage> with TickerProviderStateM
                           tabs: List.generate(_tabController.length, (index) {
                             String label = DateFormat("E", I18n.of(context).locale.languageCode).format(_controller.days![index].first.date);
                             return Tab(
-                              height: 42.0,
+                              height: 46.0,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
