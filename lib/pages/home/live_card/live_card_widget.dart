@@ -150,6 +150,7 @@ class _LiveCardWidgetState extends State<LiveCardWidget> {
                                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 16.0,
+                                      height: 1.0,
                                       color: AppColors.of(context).text.withOpacity(.75),
                                     ),
                                 maxLines: !(widget.nextSubject == null && widget.progressCurrent == null && widget.progressMax == null) ? 1 : 2,
