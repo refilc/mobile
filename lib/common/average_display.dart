@@ -17,7 +17,7 @@ class AverageDisplay extends StatelessWidget {
     if (I18n.of(context).locale.languageCode != "en") averageText = averageText.replaceAll(".", ",");
 
     return Container(
-      width: border ? 54.0 : 52.0,
+      width: border ? 57.0 : 54.0,
       padding: EdgeInsets.symmetric(horizontal: 8.0 - (border ? 2 : 0), vertical: 6.0 - (border ? 2 : 0)),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(45.0),
@@ -28,6 +28,7 @@ class AverageDisplay extends StatelessWidget {
         average == 0.0 ? "-" : averageText,
         textAlign: TextAlign.center,
         style: TextStyle(color: color, fontWeight: FontWeight.w600),
+        maxLines: 1,
       ),
     );
   }

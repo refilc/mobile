@@ -202,7 +202,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   top: 58.0 + MediaQuery.of(context).padding.top,
                                   bottom: 52.0,
                                 ),
-                                child: const LiveCard(),
+                                child: Transform.scale(
+                                  scale: _liveCardAnimation.value,
+                                  child: Opacity(
+                                    opacity: _liveCardAnimation.value,
+                                    child: const LiveCard(),
+                                  ),
+                                ),
                               ),
                             ),
                             shadowColor: Colors.black,
